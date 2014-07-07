@@ -1,0 +1,46 @@
+ext {
+    springVersion = "4.0.5.RELEASE"
+    jerseyVersion = "2.10"
+    slf4jVersion = "1.6.1"
+    qosLogBackVersion = "1.1.1"
+    javaeeApiVersion = "7.0"
+}
+
+dependencies {
+	compile group: 'commons-collections', name: 'commons-collections', version: '3.2'
+ 	
+ 	//Spring Depedancy   
+    compile ([group: 'org.springframework', name: 'spring-context', version: springVersion],
+    		 [group: 'org.springframework', name: 'spring-web', version: springVersion],
+    		 [group: 'org.springframework', name: 'spring-beans', version: springVersion],
+    		 [group: 'org.springframework', name: 'spring-core', version: springVersion]
+    		 )
+    //Spring ENd
+    
+    compile group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet', version: jerseyVersion
+    compile group: 'org.glassfish.jersey.ext', name: 'jersey-spring3', version: jerseyVersion
+    
+    //Logging
+    compile ([group: 'org.slf4j', name: 'slf4j-api', version: slf4jVersion],
+    		 [group: 'org.slf4j', name: 'jcl-over-slf4j', version: slf4jVersion]
+    		)
+    compile (group: 'log4j', name: 'log4j', version: '1.2.15'){
+    	exclude (group: 'com.sun.jdmk', module: 'jmxtools')
+    	exclude	(group: 'com.sun.jmx', module: 'jmxri')
+    			 
+    }
+    compile ([group: 'ch.qos.logback', name: 'logback-classic', version: qosLogBackVersion],
+    		 [group: 'ch.qos.logback', name: 'logback-core', version: qosLogBackVersion],
+    		)
+    //Logging End
+    compile group: 'javax', name: 'javaee-api', version: javaeeApiVersion
+    
+    //JSR 303 Validation API
+    compile group: 'org.hibernate', name: 'hibernate-validator', version: '4.3.1.Final'
+    compile group: 'javax.validation', name: 'validation-api', version: '1.1.0.Final'
+    	
+    //Test jars
+    testCompile 'junit:junit:4.10'
+    testCompile group: 'org.springframework', name: 'spring-test', version: springVersion
+    
+}
