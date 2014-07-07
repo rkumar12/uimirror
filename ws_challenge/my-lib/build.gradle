@@ -1,19 +1,10 @@
 ext {
     springVersion = "4.0.5.RELEASE"
     jerseyVersion = "2.10"
-    slf4jVersion = "1.6.1"
+    slf4jVersion = "1.7.2"
     qosLogBackVersion = "1.1.1"
     javaeeApiVersion = "7.0"
 }
-
-repositories {
-       mavenCentral()
-       mavenLocal()
-       maven {
-            url "https://repository.jboss.org/nexus/content/groups/public"
-        }
-     
-    }
 
 dependencies {
 	compile group: 'commons-collections', name: 'commons-collections', version: '3.2'
@@ -31,20 +22,12 @@ dependencies {
     
     //Logging
     compile ([group: 'org.slf4j', name: 'slf4j-api', version: slf4jVersion],
-    		 [group: 'org.slf4j', name: 'jcl-over-slf4j', version: slf4jVersion]
     		)
-    compile (group: 'log4j', name: 'log4j', version: '1.2.16'){
-    	exclude (group: 'com.sun.jdmk', module: 'jmxtools')
-    	exclude	(group: 'com.sun.jmx', module: 'jmxri')
-    			 
-    }
     compile ([group: 'ch.qos.logback', name: 'logback-classic', version: qosLogBackVersion],
     		 [group: 'ch.qos.logback', name: 'logback-core', version: qosLogBackVersion],
     		)
     //Logging End
     compile group: 'javax', name: 'javaee-api', version: javaeeApiVersion
-    
-    compile group: 'javax.jms', name: 'jms', version: '1.1'
     
     //JSR 303 Validation API
     compile group: 'org.hibernate', name: 'hibernate-validator', version: '4.3.1.Final'
