@@ -42,4 +42,8 @@ subprojects {
     	
     	testCompile("org.springframework.boot:spring-boot-starter-test:1.1.4.BUILD-SNAPSHOT")    
     }
+	//Gradle Wrapper genrator
+	task wrapper(type: Wrapper) {
+		gradleVersion = '2.0'
+	}
 }
