@@ -16,13 +16,18 @@ import org.glassfish.jersey.server.ServerProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.uimirror.challenge.config.filter.PoweredByResponseFilter;
+import com.uimirror.challenge.config.filter.SecurityContextFilter;
+
 public class JerssyApplicationInitializer extends ResourceConfig{
 	protected static final Logger LOG = LoggerFactory.getLogger(JerssyApplicationInitializer.class);
 	public JerssyApplicationInitializer(){
 		// Register resources and providers using package-scanning.
 		packages(true, "com.uimirror.challenge.controller");
+		packages(true, "com.uimirror.challenge.config");
 		// Register my custom provider - not needed if it's in my.package.
-        //register(SecurityRequestFilter.class);
+        register(SecurityContextFilter.class);
+        register(PoweredByResponseFilter.class);
 
 		// Register an instance of LoggingFilter.
         register(new LoggingFilter());

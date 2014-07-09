@@ -14,6 +14,13 @@
 				%clr(%logger){cyan} %clr(:){faint} %m%n%wex</Pattern>
 		</encoder>
 	</appender>
+	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<Pattern>%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(%5p)
+				%clr(${PID:- }){magenta} %clr(-){faint} %clr([%15.15t{14}]){faint}
+				%clr(%logger){cyan} %clr(:){faint} %m%n%wex</Pattern>
+		</encoder>
+	</appender>
 
 	<appender name="ROLLING"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
@@ -87,14 +94,21 @@
 	<logger name="org.apache.catalina" level="debug" />
 
 	<logger name="org.springframework.integration" level="debug" />
-	<logger name="com.uimirror.challenge" level="debug" />
+	
+	<logger name="com.uimirror.challenge" level="DEBUG">
+		<appender-ref ref="CONSOLE" />
+	</logger>
 
 	<logger name="TEST.EVENTS" level="info" additivity="false">
 		<appender-ref ref="ASYNCMESSAGE" />
 	</logger>
 
-	<root level="OFF">
-		<appender-ref ref="STDOUT" />
+	<!-- <root level="OFF">
+		<appender-ref ref="CONSOLE" />
+		<appender-ref ref="ASYNCAPPLICATION" />
+	</root> -->
+	<root level="DEBUG">
+		<appender-ref ref="CONSOLE" />
 		<appender-ref ref="ASYNCAPPLICATION" />
 	</root>
 </configuration>
