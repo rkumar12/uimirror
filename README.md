@@ -20,6 +20,6 @@ Gradle Tasks For ws_challenge
   					
 Don't
 ======
-      1- Never checked in project content from build, bin, .gradle folder
+      1- Never check in project content from build, bin, .gradle folder
       
   
