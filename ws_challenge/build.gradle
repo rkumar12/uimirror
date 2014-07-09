@@ -2,7 +2,6 @@ subprojects {
     apply plugin: 'java'
     apply plugin: 'eclipse'
 	apply plugin: 'distribution'
-	//apply plugin: 'spring-boot'
 	
 	buildscript {
     	repositories {
@@ -45,5 +44,15 @@ subprojects {
 	//Gradle Wrapper genrator
 	task wrapper(type: Wrapper) {
 		gradleVersion = '2.0'
+	}
+	
+	//Distrubutions
+	distributions {
+		main {
+			baseName = '${project.name}'
+			contents {
+				from { 'src/readme' }
+			}
+		}
 	}
 }

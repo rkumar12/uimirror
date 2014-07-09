@@ -9,10 +9,19 @@ subprojects {
     dependencies {
         testCompile 'junit:junit:4.8.2'
     }
-
+	
+	group = 'com.uimirror.ws.api'
     version = '1.0'
-
+	description = "Common Utils By Uimirror Team."
+	targetCompatibility = "1.8"
+	sourceCompatibility = "1.8"
+	
     jar {
-        manifest.attributes provider: 'my cool company'
+        manifest.attributes provider: 'uimirror'
     }
+	
+	//Gradle Wrapper genrator
+	task wrapper(type: Wrapper) {
+		gradleVersion = '2.0'
+	}
 }
