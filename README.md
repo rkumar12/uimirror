@@ -16,4 +16,10 @@ Gradle Tasks For ws_challenge
 =============================
 						build : to build the project
   					distZip: create a distrubtion in zip
+  					
+  					
+Don't
+======
+      1- Never checked in project content from build, bin, .gradle folder
+      
   
