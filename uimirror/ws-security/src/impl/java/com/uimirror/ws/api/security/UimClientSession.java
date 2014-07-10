@@ -14,6 +14,6 @@ package com.uimirror.ws.api.security;
  * @author Jayaram
  *
  */
-public class Client {
+public final class UimClientSession extends ClientSession{
 
 }

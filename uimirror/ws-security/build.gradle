@@ -1,13 +1,12 @@
-apply plugin: "java"
-apply plugin: "maven"
-apply plugin: 'maven-publish'
+ext {
+	jerseyVersion = "2.10.1"
+}
+
 
 group = "com.uimirror.ws.api"
 version = 1.0
 
-repositories {
-    mavenCentral()
-}
+
 
 sourceSets.all { set ->
     def jarTask = task("${set.name}Jar", type: Jar) {
@@ -31,6 +30,13 @@ dependencies {
 
     implCompile sourceSets.api.output
     implCompile 'commons-lang:commons-lang:2.6'
+	implCompile group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet', version: jerseyVersion
+//	implCompile (group: 'org.glassfish.jersey.ext', name: 'jersey-spring3', version: jerseyVersion){
+//			//excluding a particular transitive dependency:
+//			//exclude module: 'cglib' //by artifact name
+//			exclude group: 'org.springframework' //by group
+//			//exclude group: 'org.unwanted', module: 'iAmBuggy' //by both name and group
+//		}
 
     testCompile 'junit:junit:4.10'
     testCompile sourceSets.api.output

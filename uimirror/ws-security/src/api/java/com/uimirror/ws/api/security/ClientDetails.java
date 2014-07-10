@@ -73,7 +73,7 @@ public class ClientDetails implements Serializable{
 	/**
 	 * <p>This will create a new instance with the time zone</p>
 	 * @param timeZone in string format
-	 * @return
+	 * @return new instance of <code>{@link ClientDetails#ClientDetails(long, String, String, String, String, String)}</code>
 	 */
 	public ClientDetails addTimeZone(String timeZone){
 		return new ClientDetails(this.privateKey, this.name, this.applicationUrl, TimeZone.getTimeZone(timeZone).getDisplayName(), this.loacle, this.currency);
@@ -82,7 +82,7 @@ public class ClientDetails implements Serializable{
 	/**
 	 * <p>This will create a new instance with the locale</p>
 	 * @param loacle in string format
-	 * @return
+	 * @return new instance of <code>{@link ClientDetails#ClientDetails(long, String, String, String, String, String)}</code>
 	 */
 	public ClientDetails addLoacle(String loacle){
 		return new ClientDetails(this.privateKey, this.name, this.applicationUrl, this.timezone, Locale.forLanguageTag(loacle).getDisplayName(), this.currency);
@@ -91,7 +91,7 @@ public class ClientDetails implements Serializable{
 	/**
 	 * <p>This will create a new instance with the currency</p>
 	 * @param currency in string format
-	 * @return
+	 * @return new instance of <code>{@link ClientDetails#ClientDetails(long, String, String, String, String, String)}</code>
 	 * @throws <code>{@link IllegalArgumentException}</code> in case currency is not a valid representation
 	 */
 	public ClientDetails addCurrency(String currency){
@@ -101,7 +101,7 @@ public class ClientDetails implements Serializable{
 	/**
 	 * <p>This will create a new instance with the updated url</p>
 	 * @param url in string format wrt IEE standard
-	 * @return
+	 * @return new instance of <code>{@link ClientDetails#ClientDetails(long, String, String, String, String, String)}</code>
 	 * @throws <code>{@link IllegalArgumentException}</code> in case url is not a valid representation or url specified without schema i.e protocol
 	 */
 	public ClientDetails updateUrl(String url){
@@ -110,7 +110,7 @@ public class ClientDetails implements Serializable{
 	/**
 	 * <p>This will create a new instance with the update name </p>
 	 * @param name
-	 * @return
+	 * @return new instance of <code>{@link ClientDetails#ClientDetails(long, String, String, String, String, String)}</code>
 	 * @throws <code>{@link IllegalArgumentException}</code> in case name is empty or blank or <code>null</code>
 	 */
 	public ClientDetails updateName(String name){
