@@ -30,7 +30,24 @@ dependencies {
 
     implCompile sourceSets.api.output
     implCompile 'commons-lang:commons-lang:2.6'
-	implCompile group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet', version: jerseyVersion
+	implCompile (group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet', version: jerseyVersion){
+		exclude module: 'jersey-client'
+		exclude module: 'javax.annotation-api'
+		exclude module: 'validation-api'
+		exclude module: 'aopalliance-repackaged'
+		exclude module: 'javax.inject'
+		exclude module: 'hk2-api'
+		exclude module: 'hk2-locator'
+		exclude module: 'hk2-utils'
+		exclude module: 'tiger-types'
+		exclude module: 'osgi-resource-locator'
+		exclude module: 'jersey-guava'
+		exclude module: 'jersey-container-servlet-core'
+		exclude module: 'jersey-container-servlet'
+		exclude module: 'jersey-common'
+		exclude module: 'jersey-server'
+		
+	}
 //	implCompile (group: 'org.glassfish.jersey.ext', name: 'jersey-spring3', version: jerseyVersion){
 //			//excluding a particular transitive dependency:
 //			//exclude module: 'cglib' //by artifact name
