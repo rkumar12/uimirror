@@ -26,6 +26,7 @@ sourceSets {
 }
 
 dependencies {
+	implCompile project(':commonutil')
     apiCompile 'commons-codec:commons-codec:1.5'
 
     implCompile sourceSets.api.output

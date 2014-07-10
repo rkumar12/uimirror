@@ -29,6 +29,8 @@ dependencies {
 
     implCompile sourceSets.api.output
     implCompile 'commons-lang:commons-lang:2.6'
+	implCompile 'com.google.code.gson:gson:2.2.4'
+	implCompile 'org.apache.commons:commons-io:1.3.2'
 
     testCompile 'junit:junit:4.9'
     testCompile sourceSets.api.output

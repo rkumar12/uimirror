@@ -8,19 +8,13 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.ws.api.security;
-
-import java.io.Serializable;
+package com.uimirror.util;
 
 /**
- * <p>Bean to hold all the client details
  * @author Jayaram
+ *
  */
-public class ClientDetails implements Serializable{
+public interface Constants {
 
-	private static final long serialVersionUID = 7467080501618136784L;
-	private String privateKey;
-	private String name;
-	
-
+	public static final String UTF_8 = "utf-8";
 }
