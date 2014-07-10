@@ -1,0 +1,36 @@
+[
+{
+	"in":"http://127.0.0.1",
+	"out" : true
+},{
+	"in":"abc.com",
+	"out" : false
+},
+{
+	"in":"abc.com/test",
+	"out" : false
+},
+{
+	"in":"http://abc.com/test",
+	"out" : true
+},
+{
+	"in":"https://abc.com/test",
+	"out" : true
+},
+{
+	"in":"",
+	"out" : false
+},
+{
+	"in":"     ",
+	"out" : false
+},
+{
+	"out" : false
+},
+{
+	"in":"abc",
+	"out" : false
+}
+]

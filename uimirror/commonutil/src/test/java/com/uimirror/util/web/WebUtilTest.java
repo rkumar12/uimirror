@@ -48,5 +48,14 @@ public class WebUtilTest {
 			}
 		}
 	}
+	
+	@Test
+	public void testIsValidUrl() {
+		@SuppressWarnings("unchecked")
+		List<Map<String, Object>> dataSets = (List<Map<String, Object>>)LoadExternalGson.loadData("com/uimirror/util/web/web_util_test_data_set_2.json", List.class);
+		for(Map<String, Object> data : dataSets){
+			Assert.assertEquals((boolean)data.get(OUTPUT), WebUtil.isValidUrl(data.get(INPUT) != null ? data.get(INPUT).toString() : null));
+		}
+	}
 
 }

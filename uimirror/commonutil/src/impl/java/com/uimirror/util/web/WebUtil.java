@@ -43,4 +43,19 @@ public class WebUtil {
 	        throw new IllegalArgumentException("URL can't be formed, url string is mailformed");
 	    }
 	}
+	
+	/**
+	 * <p>This will test if the provided string is a valid url or not</p>
+	 * Check Out <code> {@link WebUtil#getUrl(String)}</code> for the url checking rules
+	 * @param spec
+	 * @return <code>true</code> if the string is a valid url else <code>false</code>
+	 */
+	public static boolean isValidUrl(String spec){
+		try{
+			getUrl(spec);
+			return Boolean.TRUE;
+		}catch(IllegalArgumentException e){
+			return Boolean.FALSE;
+		}
+	}
 }

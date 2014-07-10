@@ -17,4 +17,5 @@ package com.uimirror.util;
 public interface Constants {
 
 	public static final String UTF_8 = "utf-8";
+	public static final String EMPTY = "";
 }
