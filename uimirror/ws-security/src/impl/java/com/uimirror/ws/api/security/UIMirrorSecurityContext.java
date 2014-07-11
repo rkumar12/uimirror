@@ -20,13 +20,22 @@ import javax.ws.rs.core.SecurityContext;
  */
 public class UIMirrorSecurityContext implements SecurityContext{
 
+	private final UimClientSession session;
+	
+	/**
+	 * @param session
+	 */
+	public UIMirrorSecurityContext(UimClientSession session) {
+		super();
+		this.session = session;
+	}
+
 	/* (non-Javadoc)
 	 * @see javax.ws.rs.core.SecurityContext#getUserPrincipal()
 	 */
 	@Override
 	public Principal getUserPrincipal() {
-		// TODO Auto-generated method stub
-		return null;
+		return session.getClient();
 	}
 
 	/* (non-Javadoc)
@@ -35,7 +44,7 @@ public class UIMirrorSecurityContext implements SecurityContext{
 	@Override
 	public boolean isUserInRole(String role) {
 		// TODO Auto-generated method stub
-		return false;
+		return Boolean.TRUE;
 	}
 
 	/* (non-Javadoc)
@@ -43,7 +52,6 @@ public class UIMirrorSecurityContext implements SecurityContext{
 	 */
 	@Override
 	public boolean isSecure() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -52,8 +60,8 @@ public class UIMirrorSecurityContext implements SecurityContext{
 	 */
 	@Override
 	public String getAuthenticationScheme() {
-		// TODO Auto-generated method stub
-		return null;
+		return SecurityContext.BASIC_AUTH;
 	}
 
+	
 }

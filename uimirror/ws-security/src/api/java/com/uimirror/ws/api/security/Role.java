@@ -52,6 +52,6 @@ public enum Role {
     		throw new IllegalArgumentException("Role Can't be empty");
     	for(Role v : values())
     		if(role.equalsIgnoreCase(v.getRole())) return v;
-    	throw new IllegalArgumentException();
+    	throw new IllegalArgumentException("No Role Found");
     }
 }

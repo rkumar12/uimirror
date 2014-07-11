@@ -185,7 +185,7 @@ public class Client implements Serializable, Principal{
 	@Override
 	public String getName() {
 		// TODO Auto-generated method stub
-		return this.clientDetails.getName();
+		return this.getApiKey();
 	}
 
 	

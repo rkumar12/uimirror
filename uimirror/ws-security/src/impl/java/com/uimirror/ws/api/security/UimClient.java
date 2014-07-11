@@ -26,7 +26,7 @@ public final class UimClient extends Client {
 	 * @param uimClientDetails
 	 * @param roles
 	 */
-	public UimClient(UimClientDetails uimClientDetails, Set<Role> roles) {
+	public UimClient(ClientDetails uimClientDetails, Set<Role> roles) {
 		super(uimClientDetails, roles);
 	}
 
@@ -37,7 +37,7 @@ public final class UimClient extends Client {
 	 * @param roles
 	 * @param isActive
 	 */
-	public UimClient(String apiKey, UimClientDetails uimClientDetails,
+	public UimClient(String apiKey, ClientDetails uimClientDetails,
 			long createdOn, Set<Role> roles, boolean isActive) {
 		super(apiKey, uimClientDetails, createdOn, roles, isActive);
 	}
