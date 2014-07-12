@@ -5,4 +5,5 @@
 	
 	<context:annotation-config />
 	<context:component-scan base-package="com.uimirror.challenge" />
+	<context:component-scan base-package="com.uimirror.ws.api.security"/>
 </beans>

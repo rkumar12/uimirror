@@ -9,6 +9,7 @@
  * Uimirror Team
  *******************************************************************************/
 package com.uimirror.challenge.controller;
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -21,9 +22,12 @@ import org.springframework.stereotype.Component;
  */
 @Path("/")
 @Component
+//@RolesAllowed({ "ADMIN"})
 public class ChallengeController {
+
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
+	@RolesAllowed("ADMIN")
 	public String getHello() {
 		return String.format("Hello world");
 	}

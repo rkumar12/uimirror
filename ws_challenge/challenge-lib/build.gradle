@@ -13,7 +13,7 @@ dependencies {
  	
  	//Spring Depedancy   
     compile ([group: 'org.springframework', name: 'spring-context', version: springVersion],
-    		 [group: 'org.springframework', name: 'spring-web', version: springVersion],
+    		 //[group: 'org.springframework', name: 'spring-web', version: springVersion],
     		 [group: 'org.springframework', name: 'spring-beans', version: springVersion],
     		 [group: 'org.springframework', name: 'spring-core', version: springVersion]
     		 )

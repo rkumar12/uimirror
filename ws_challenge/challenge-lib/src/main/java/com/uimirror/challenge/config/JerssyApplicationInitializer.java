@@ -13,6 +13,7 @@ package com.uimirror.challenge.config;
 import org.glassfish.jersey.filter.LoggingFilter;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.ServerProperties;
+import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,7 +29,7 @@ public class JerssyApplicationInitializer extends ResourceConfig{
 		// Register my custom provider - not needed if it's in my.package.
         register(SecurityContextFilter.class);
         register(PoweredByResponseFilter.class);
-
+        register(RolesAllowedDynamicFeature.class);
 		// Register an instance of LoggingFilter.
         register(new LoggingFilter());
  

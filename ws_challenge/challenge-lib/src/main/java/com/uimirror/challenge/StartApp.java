@@ -23,14 +23,15 @@ import org.springframework.context.annotation.ImportResource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.FileCopyUtils;
 
+import com.uimirror.challenge.app.BeanIntitializer;
 import com.uimirror.challenge.app.WebAppInitializer;
 
 @Configuration
 @ImportResource("classpath*:applicationContext.xml")
 @EnableAutoConfiguration
-@ComponentScan
+@ComponentScan(basePackages= {"com.uimirror.challenge", })
 @Import({
-	WebAppInitializer.class,
+	WebAppInitializer.class, BeanIntitializer.class
 })
 public class StartApp{
 

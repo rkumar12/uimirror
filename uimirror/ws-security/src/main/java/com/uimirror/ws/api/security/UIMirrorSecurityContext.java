@@ -11,8 +11,8 @@
 package com.uimirror.ws.api.security;
 
 import java.security.Principal;
-
 import javax.ws.rs.core.SecurityContext;
+import com.uimirror.ws.api.security.base.ClientSession;
 
 /**
  * @author Jayaram
@@ -20,12 +20,12 @@ import javax.ws.rs.core.SecurityContext;
  */
 public class UIMirrorSecurityContext implements SecurityContext{
 
-	private final UimClientSession session;
+	private final ClientSession session;
 	
 	/**
 	 * @param session
 	 */
-	public UIMirrorSecurityContext(UimClientSession session) {
+	public UIMirrorSecurityContext(ClientSession session) {
 		super();
 		this.session = session;
 	}

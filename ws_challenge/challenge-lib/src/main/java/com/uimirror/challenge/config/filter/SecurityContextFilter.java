@@ -14,23 +14,32 @@ import java.io.IOException;
 
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
+import javax.ws.rs.container.PreMatching;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 
 import com.uimirror.challenge.config.Constants;
+import com.uimirror.ws.api.security.UIMirrorSecurityContext;
+import com.uimirror.ws.api.security.base.ClientSession;
+import com.uimirror.ws.api.security.service.ClientSecurityService;
 
 /**
  * @author Jayaram
  *
  */
+@PreMatching
 public class SecurityContextFilter implements ContainerRequestFilter{
 	protected static final Logger LOG = LoggerFactory.getLogger(SecurityContextFilter.class);
 	
 	public SecurityContextFilter(){
 		//TODO DO Some initialization
 	}
+	
+	@Autowired
+	private ClientSecurityService clientSecurityService;
 	
 	@Override
 	public void filter(final ContainerRequestContext request) throws IOException {
@@ -39,10 +48,12 @@ public class SecurityContextFilter implements ContainerRequestFilter{
 		final String apiKey = request.getHeaderString(Constants.API_KEY);
 //		Session session = null;
 		if (!StringUtils.hasText(apiKey)) {
+			ClientSession session = clientSecurityService.getClientSession(apiKey);
 			// Get the session details from the data base or cache
 			//session = userAuthenticationService.getUserSessionByAPIKey(apiKey);
+			request.setSecurityContext(new UIMirrorSecurityContext(session));
+			//TODO analyse session Like DOes he have crossed daily and monthly limit etc
 		}
-		//request.setSecurityContext(new UIMirrorSecurityContext(session));
 
 	}
 
