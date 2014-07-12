@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.ws.api.security;
+package com.uimirror.ws.api.security.base;
 
 import com.uimirror.util.Constants;
 

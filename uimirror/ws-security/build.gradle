@@ -2,35 +2,14 @@ ext {
 	jerseyVersion = "2.10.1"
 }
 
-
 group = "com.uimirror.ws.api"
 version = 1.0
 
-
-
-sourceSets.all { set ->
-    def jarTask = task("${set.name}Jar", type: Jar) {
-        baseName = baseName + "-$set.name"
-        from set.output
-    }
-
-    artifacts {
-        archives jarTask
-    }
-}
-
-sourceSets {
-    api
-    impl
-}
-
 dependencies {
-	implCompile project(':commonutil')
-    apiCompile 'commons-codec:commons-codec:1.5'
-
-    implCompile sourceSets.api.output
-    implCompile 'commons-lang:commons-lang:2.6'
-	implCompile (group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet', version: jerseyVersion){
+	compile project(':commonutil')
+    compile 'commons-codec:commons-codec:1.5'
+	compile 'commons-lang:commons-lang:2.6'
+	compile (group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet', version: jerseyVersion){
 		exclude module: 'jersey-client'
 		exclude module: 'javax.annotation-api'
 		exclude module: 'validation-api'
@@ -56,56 +35,23 @@ dependencies {
 //		}
 
     testCompile 'junit:junit:4.10'
-    testCompile sourceSets.api.output
-    testCompile sourceSets.impl.output
-    runtime configurations.apiRuntime
-    runtime configurations.implRuntime
 }
 
-jar {
-    from sourceSets.api.output
-    from sourceSets.impl.output
+task sourceJar(type: Jar) {
+    from sourceSets.main.allJava
 }
-
-task buildApiJar(type: Jar) {
-	from sourceSets.main.output
-	exclude '**/impl/**'
-}
-
-task buildImplJar(type: Jar) {
-	from sourceSets.main.output
-	exclude '**/api/**'
-}
-
-task sourceApiJar(type: Jar) {
-	from sourceSets.main.allJava
-	exclude '**/impl/**'
-}
-task sourceImplJar(type: Jar) {
-	from sourceSets.main.allJava
-	exclude '**/api/**'
-}
-
 publishing {
 	publications {
-		impl(MavenPublication) {
-				groupId group
-				artifactId "${project.name}-impl"
-				version version
-				artifact buildImplJar
-				artifact sourceImplJar {
+		mavenJava(MavenPublication) {
+            groupId project.group
+            artifactId project.name
+            version project.version
+            from components.java
+			artifact sourceJar {
 					classifier "sources"
-				}
 			}
-			api(MavenPublication) {
-				groupId group
-				artifactId "${project.name}-api"
-				version version
-
-				artifact buildApiJar
-				artifact sourceApiJar {
-					classifier "sources"
-				}
-			}
+        }
 	}
 }
+
+defaultTasks 'clean', 'build', 'intsall'

@@ -8,22 +8,21 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.ws.api.security;
+package com.uimirror.ws.api.security.service;
+
+import com.uimirror.ws.api.security.base.ClientSession;
 
 /**
- * <p>This wil old uimirror ws client access info</p>
  * @author Jayaram
+ *
  */
-public final class UimClientSession extends ClientSession{
-
-	private static final long serialVersionUID = -4597676136856201630L;
+public interface ClientSecurityService {
 
 	/**
-	 * @param client
-	 * @param clientAccessInfo
+	 * <p>This will load the client session from the cache or the storage
+	 * system, based on the availability by apiKey</p>
+	 * @param apiKey
+	 * @return
 	 */
-	public UimClientSession(Client client, ClientAccessInfo clientAccessInfo) {
-		super(client, clientAccessInfo);
-	}
-
+	public ClientSession getClientSession(final String apiKey);
 }

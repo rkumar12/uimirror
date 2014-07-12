@@ -1,67 +1,32 @@
-apply plugin: "java"
-apply plugin: "maven"
-
-group = "myorg"
+ext {
+}
+group = "com.uimirror.api"
 version = 1.0
 
-repositories {
-    mavenCentral()
-}
-
-sourceSets.all { set ->
-    def jarTask = task("${set.name}Jar", type: Jar) {
-        baseName = baseName + "-$set.name"
-        from set.output
-    }
-
-    artifacts {
-        archives jarTask
-    }
-}
-
-sourceSets {
-    api
-    impl
-}
-
 dependencies {
-    apiCompile 'commons-codec:commons-codec:1.5'
-
-    implCompile sourceSets.api.output
-    implCompile 'commons-lang:commons-lang:2.6'
-	implCompile 'com.google.code.gson:gson:2.2.4'
-	implCompile 'org.apache.commons:commons-io:1.3.2'
-
-    testCompile 'junit:junit:4.9'
-    testCompile sourceSets.api.output
-    testCompile sourceSets.impl.output
-    runtime configurations.apiRuntime
-    runtime configurations.implRuntime
+    compile 'commons-codec:commons-codec:1.5'
+    compile 'commons-lang:commons-lang:2.6'
+	compile 'com.google.code.gson:gson:2.2.4'
+	compile 'org.apache.commons:commons-io:1.3.2'
+    testCompile 'junit:junit:4.10'
 }
 
-jar {
-    from sourceSets.api.output
-    from sourceSets.impl.output
+
+task sourceJar(type: Jar) {
+	classifier "source"
 }
 
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            repository(url: uri("${buildDir}/repo"))
-
-            addFilter("main") { artifact, file -> artifact.name == project.name }
-            ["api", "impl"].each { type ->
-                addFilter(type) { artifact, file -> artifact.name.endsWith("-$type") }
-                
-                // We now have to map our configurations to the correct maven scope for each pom
-                ["compile", "runtime"].each { scope ->
-                    configuration = configurations[type + scope.capitalize()]
-                    ["main", type].each { pomName ->
-                        pom(pomName).scopeMappings.addMapping 1, configuration, scope
-                    }
-                }
-            }
-
-        }
-    }
+publishing {
+	  publications {
+		  mavenJava(MavenPublication) {
+			  groupId project.group
+			  artifactId project.name
+			  version project.version
+			  from components.java
+			  artifact sourceJar {
+				  classifier "sources"
+			  }
+		  }
+	  }
 }
+defaultTasks 'clean', 'build', 'intsall', 'publishToMavenLocal'

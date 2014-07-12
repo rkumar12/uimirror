@@ -12,6 +12,8 @@ package com.uimirror.ws.api.security;
 
 import java.io.Serializable;
 
+import com.uimirror.ws.api.security.base.ClientDetails;
+
 /**
  * <p>Bean to hold all the client details of uimirror
  * <p>Class has been marked as immutable </p>

@@ -14,8 +14,12 @@ import java.io.IOException;
 
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
+
+import com.uimirror.challenge.config.Constants;
 
 /**
  * @author Jayaram
@@ -32,13 +36,13 @@ public class SecurityContextFilter implements ContainerRequestFilter{
 	public void filter(final ContainerRequestContext request) throws IOException {
 		LOG.debug("[AUTH]-Request Getting Intercepted");
 		// Get session id from request header
-//		final String apiKey = request.getHeaderString(API_KEY);
+		final String apiKey = request.getHeaderString(Constants.API_KEY);
 //		Session session = null;
-//		if (!StringUtils.hasText(apiKey)) {
-//			// Get the session details from the data base or cache
-//			session = userAuthenticationService.getUserSessionByAPIKey(apiKey);
-//		}
-//		request.setSecurityContext(new UIMirrorSecurityContext(session));
+		if (!StringUtils.hasText(apiKey)) {
+			// Get the session details from the data base or cache
+			//session = userAuthenticationService.getUserSessionByAPIKey(apiKey);
+		}
+		//request.setSecurityContext(new UIMirrorSecurityContext(session));
 
 	}
 

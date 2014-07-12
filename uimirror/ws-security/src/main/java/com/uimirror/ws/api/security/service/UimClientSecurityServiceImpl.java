@@ -13,11 +13,11 @@ package com.uimirror.ws.api.security.service;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.uimirror.ws.api.security.ClientSession;
-import com.uimirror.ws.api.security.Role;
 import com.uimirror.ws.api.security.UimClient;
 import com.uimirror.ws.api.security.UimClientDetails;
 import com.uimirror.ws.api.security.UimClientSession;
+import com.uimirror.ws.api.security.base.ClientSession;
+import com.uimirror.ws.api.security.base.Role;
 
 /**
  * @author Jayaram

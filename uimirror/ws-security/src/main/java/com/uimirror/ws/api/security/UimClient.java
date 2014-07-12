@@ -12,6 +12,10 @@ package com.uimirror.ws.api.security;
 
 import java.util.Set;
 
+import com.uimirror.ws.api.security.base.Client;
+import com.uimirror.ws.api.security.base.ClientDetails;
+import com.uimirror.ws.api.security.base.Role;
+
 /**
  * <p>Bean to hold all the client info of uimirror
  * <p>Class has been marked as immutable </p>
