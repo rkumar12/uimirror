@@ -1,2 +1,2 @@
 
-include "challenge-lib", "challenge", "challenge-dao"
+include "challenge-lib", "challenge-conf", "challenge-dao", "challenge"

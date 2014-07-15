@@ -1,5 +1,5 @@
 #org.springsource.ide.eclipse.gradle.core.preferences.GradleImportPreferences
-#Wed Jul 16 01:10:24 IST 2014
+#Wed Jul 16 01:31:34 IST 2014
 addResourceFilters=true
 afterTasks=afterEclipseImport;
 beforeTasks=cleanEclipse;eclipse;
@@ -7,4 +7,4 @@ enableAfterTasks=true
 enableBeforeTasks=true
 enableDSLD=false
 enableDependendencyManagement=true
-projects=;challenge;challenge-dao;challenge-lib;
+projects=;challenge;challenge-conf;challenge-dao;challenge-lib;
