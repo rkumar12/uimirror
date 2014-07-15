@@ -1,3 +1,4 @@
 dependencies {
 	compile project(':challenge-lib')
+	compile project(':challenge-dao')
 }

@@ -25,13 +25,14 @@ import org.springframework.util.FileCopyUtils;
 
 import com.uimirror.challenge.app.BeanIntitializer;
 import com.uimirror.challenge.app.WebAppInitializer;
+import com.uimirror.challenge.dao.conf.DaoBeanIntitializer;
 
 @Configuration
 @ImportResource("classpath*:applicationContext.xml")
 @EnableAutoConfiguration
 @ComponentScan(basePackages= {"com.uimirror.challenge", })
 @Import({
-	WebAppInitializer.class, BeanIntitializer.class
+	WebAppInitializer.class, BeanIntitializer.class, DaoBeanIntitializer.class
 })
 public class StartApp{
 

@@ -11,6 +11,7 @@
 package com.uimirror.challenge.controller;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.IntegrationTest;
@@ -44,6 +45,8 @@ public class SampleServletApplicationTests {
 	}
 
 	@Test
+	@Ignore
+	//TODO Ignoring test method
 	public void testHomeWithSsl() throws Exception {
 		ResponseEntity<String> entity = new TestRestTemplate().getForEntity(
 				"https://127.0.0.1:8443/ws/challenge/", String.class);
