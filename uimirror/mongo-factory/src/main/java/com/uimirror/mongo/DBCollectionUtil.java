@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.challenge.dao.conf;
+package com.uimirror.mongo;
 
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
@@ -17,20 +17,19 @@ import com.mongodb.DBCollection;
  * <p>Factory bean to get the collection namespaces.</p>
  * @author Jayaram
  */
-public class DBCollectionFactory {
+public final class DBCollectionUtil {
 
-	private final DB db;
-	
-	public DBCollectionFactory(DB db) {
-		super();
-		this.db = db;
-	}
-	
 	/**
 	 * <p>Returns the collection specified in the collection construct
 	 * @return
 	 */
-	public DBCollection getCollection(String collectionName){
-		return this.db.getCollection(collectionName);
+	public static DBCollection getCollection(final DB db, final String collectionName){
+		if(db == null){
+			throw new IllegalArgumentException("No Database to get a collection from");
+		}
+		if(collectionName == null || collectionName.trim().isEmpty()){
+			throw new IllegalArgumentException("Collection Name can't be empty");
+		}
+		return db.getCollection(collectionName);
 	}
 }

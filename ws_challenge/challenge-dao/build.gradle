@@ -4,5 +4,6 @@ ext {
 dependencies {
 	//compile project(':challenge-lib')
 	//Mongo Jar
-	compile group: 'org.mongodb', name: 'mongo-java-driver', version: mongoVersion
+	//compile group: 'org.mongodb', name: 'mongo-java-driver', version: mongoVersion
+	compile group: 'com.uimirror.mongo', name: 'mongo-factory', version: 1.0
 }

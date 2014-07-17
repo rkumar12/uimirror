@@ -34,7 +34,6 @@ dependencies {
 //			//exclude group: 'org.unwanted', module: 'iAmBuggy' //by both name and group
 //		}
 
-    testCompile 'junit:junit:4.10'
 }
 
 task sourceJar(type: Jar) {

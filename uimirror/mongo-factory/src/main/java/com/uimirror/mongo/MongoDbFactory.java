@@ -8,9 +8,7 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.challenge.dao.conf;
-
-import org.springframework.util.StringUtils;
+package com.uimirror.mongo;
 
 import com.mongodb.DB;
 import com.mongodb.Mongo;
@@ -29,31 +27,20 @@ import com.mongodb.Mongo;
  * @modifiedon 15-Mar-2014 9:09:48 PM
  * ***********************************************************************
  */
-public class MongoDbFactory {
-	
-	private final Mongo mongo;
-
-	public MongoDbFactory(Mongo mongo) {
-		super();
-		this.mongo = mongo;
-	}
+public final class MongoDbFactory {
 	
 	/**
 	 * <p>Gets or create the db from the 
 	 * @return
 	 */
-	public DB getDB(String dbName){
-		if(StringUtils.isEmpty(dbName)){
+	public static DB getDB(Mongo mongo, String dbName){
+		if(dbName == null || dbName.trim().isEmpty()){
 			throw new IllegalArgumentException("Can't get DB from Mongo connection, as dbName can't be empty.");
 		}
-		return this.mongo.getDB(dbName);
-	}
-	
-	/**
-	 * <p>Close all the open connection with mongo server.
-	 */
-	public void close(){
-		this.mongo.close();
+		if(mongo == null){
+			throw new IllegalArgumentException("No Mongo connection to retrive a data base from");
+		}
+		return mongo.getDB(dbName);
 	}
 
 }
