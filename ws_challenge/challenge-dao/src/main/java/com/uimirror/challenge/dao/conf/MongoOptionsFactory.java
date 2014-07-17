@@ -28,9 +28,9 @@ public class MongoOptionsFactory {
 	private int maxPoolSize;
 	@Value(("${uimirror.mongo.connecttimeout:2000}"))
 	private int connectTimeout;
-	@Value(("${T(com.mongodb.ReadPreference).secondaryPreferred()}"))
+	@Value(("#{T(com.mongodb.ReadPreference).secondaryPreferred()}"))
 	private ReadPreference readPreference;
-	@Value(("${T(com.mongodb.WriteConcern).ACKNOWLEDGED}"))
+	@Value(("#{T(com.mongodb.WriteConcern).ACKNOWLEDGED}"))
 	private WriteConcern writeConcern;
 
 	public MongoOptionsFactory(int maxPoolSize, int connectTimeout) {
