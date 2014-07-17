@@ -12,8 +12,7 @@ package com.uimirror.challenge.dao.conf;
 
 import java.net.UnknownHostException;
 
-import javax.inject.Inject;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -39,7 +38,7 @@ public class DaoBeanIntitializer {
 	@Value("${mongo.cl.challenge:challenge}")
 	protected String challengeCollection;
 	//Inject main options factory like timeout etc
-	@Inject
+	@Autowired
 	private MongoOptionsFactory mongoOptionsFactory;
 	
 	/**
