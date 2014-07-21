@@ -32,12 +32,13 @@ public class UimClientSecurityServiceImpl implements ClientSecurityService {
 	public ClientSession getClientSession(String apiKey) {
 		//TODO implemnt the mongo and redis part by tommorow
 		//TODO populate the client details
-		UimClientDetails details = new UimClientDetails(12, "Test", "http://abc.com");
-		Set<Role> roles = new HashSet<Role>();
-		roles.add(Role.ADMIN);
-		UimClient client = new UimClient(apiKey, details , 123l, roles, Boolean.TRUE);
-		UimClientSession uimSession = new UimClientSession(client, null);
-		return uimSession;
+//		UimClientDetails details = new UimClientDetails(12, "Test", "http://abc.com");
+//		Set<Role> roles = new HashSet<Role>();
+//		roles.add(Role.ADMIN);
+//		UimClient client = new UimClient(apiKey, details , 123l, roles, Boolean.TRUE);
+//		UimClientSession uimSession = new UimClientSession(client, null);
+//		return uimSession;
+		return null;
 	}
 
 }

@@ -12,7 +12,6 @@ package com.uimirror.ws.api.security.base;
 
 import java.io.Serializable;
 import java.security.Principal;
-import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -27,11 +26,12 @@ import java.util.UUID;
 public class Client implements Serializable, Principal{
 	
 	private static final long serialVersionUID = -4993504324270707065L;
+	private final long id;
 	private final String apiKey;
 	private final ClientDetails clientDetails;
-	private final long createdOn;
 	private final Set<Role> roles;
 	private final boolean isActive;
+	
 	/**
 	 * <p>First Time Creating a Client will have to populate the client details along with the
 	 * role, other details are system populated.</p>
@@ -41,28 +41,31 @@ public class Client implements Serializable, Principal{
 	 */
 	public Client(ClientDetails clientDetails, Set<Role> roles) {
 		super();
+		if(this.clientDetails == null){
+			throw new IllegalArgumentException("Client Details Can't be empty.");
+		}
 		this.clientDetails = clientDetails;
 		this.roles = (roles == null ? new HashSet<Role>() : roles);
 		this.apiKey = UUID.randomUUID().toString();
-		this.createdOn = Instant.now().toEpochMilli();
 		this.isActive = Boolean.TRUE;
+		this.id = 0l;
 	}
 	/**
 	 * <p>Constructor to populate all the fields when de-serializing.</p>
+	 * @param id
 	 * @param apiKey
 	 * @param clientDetails
-	 * @param createdOn
 	 * @param roles
 	 * @param isActive
 	 */
-	public Client(String apiKey, ClientDetails clientDetails, long createdOn,
+	protected Client(long id, String apiKey, ClientDetails clientDetails,
 			Set<Role> roles, boolean isActive) {
 		super();
 		this.apiKey = apiKey;
 		this.clientDetails = clientDetails;
-		this.createdOn = createdOn;
 		this.roles = roles;
 		this.isActive = isActive;
+		this.id = id;
 	}
 	
 	/**
@@ -74,7 +77,7 @@ public class Client implements Serializable, Principal{
 	 */
 	public Client addRole(String role){
 		this.roles.add(Role.getEnum(role));
-		return new Client(this.apiKey, this.clientDetails, this.createdOn, this.roles, this.isActive);
+		return new Client(this.id, this.apiKey, this.clientDetails, this.roles, this.isActive);
 	}
 	
 	/**
@@ -86,7 +89,7 @@ public class Client implements Serializable, Principal{
 	 */
 	public Client revokeRole(String role){
 		this.roles.remove(Role.getEnum(role));
-		return new Client(this.apiKey, this.clientDetails, this.createdOn, this.roles, this.isActive);
+		return new Client(this.id, this.apiKey, this.clientDetails, this.roles, this.isActive);
 	}
 	
 	/**
@@ -96,7 +99,7 @@ public class Client implements Serializable, Principal{
 	 * @return new instance of <code>{@link Client#Client(String, ClientDetails, long, Set, boolean)}</code>
 	 */
 	public Client updateActiveStatus(boolean status){
-		return new Client(this.apiKey, this.clientDetails, this.createdOn, this.roles, status);
+		return new Client(this.id, this.apiKey, this.clientDetails, this.roles, status);
 	}
 	
 	/**
@@ -106,7 +109,7 @@ public class Client implements Serializable, Principal{
 	 * @return new instance of <code>{@link Client#Client(String, ClientDetails, long, Set, boolean)}</code>
 	 */
 	public Client regenrateApiKey(){
-		return new Client(UUID.randomUUID().toString(), this.clientDetails, this.createdOn, this.roles, this.isActive);
+		return new Client(this.id, UUID.randomUUID().toString(), this.clientDetails, this.roles, this.isActive);
 	}
 	/**
 	 * @return the apiKey
@@ -121,12 +124,6 @@ public class Client implements Serializable, Principal{
 		return clientDetails;
 	}
 	/**
-	 * @return the createdOn
-	 */
-	public long getCreatedOn() {
-		return createdOn;
-	}
-	/**
 	 * @return the roles
 	 */
 	public Set<Role> getRoles() {
@@ -138,6 +135,14 @@ public class Client implements Serializable, Principal{
 	public boolean isActive() {
 		return isActive;
 	}
+	
+	/**
+	 * @return the id
+	 */
+	public long getId() {
+		return id;
+	}
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
 	 */
@@ -146,7 +151,6 @@ public class Client implements Serializable, Principal{
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((apiKey == null) ? 0 : apiKey.hashCode());
-		result = prime * result + (int) (createdOn ^ (createdOn >>> 32));
 		return result;
 	}
 	/* (non-Javadoc)
@@ -166,8 +170,6 @@ public class Client implements Serializable, Principal{
 				return false;
 		} else if (!apiKey.equals(other.apiKey))
 			return false;
-		if (createdOn != other.createdOn)
-			return false;
 		return true;
 	}
 	/* (non-Javadoc)
@@ -175,9 +177,9 @@ public class Client implements Serializable, Principal{
 	 */
 	@Override
 	public String toString() {
-		return "Client [apiKey=" + apiKey + ", clientDetails=" + clientDetails
-				+ ", createdOn=" + createdOn + ", roles=" + roles
-				+ ", isActive=" + isActive + "]";
+		return "Client [id=" + id + ", apiKey=" + apiKey + ", clientDetails="
+				+ clientDetails + ", roles=" + roles + ", isActive=" + isActive
+				+ "]";
 	}
 	/* (non-Javadoc)
 	 * @see java.security.Principal#getName()

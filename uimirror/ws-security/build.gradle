@@ -1,5 +1,6 @@
 ext {
 	jerseyVersion = "2.10.1"
+	springVersion = "4.0.5.RELEASE"
 }
 
 group = "com.uimirror.ws.api"
@@ -9,6 +10,13 @@ dependencies {
 	compile project(':commonutil')
     compile 'commons-codec:commons-codec:1.5'
 	compile 'commons-lang:commons-lang:2.6'
+	//Spring Depedancy
+	compile ([group: 'org.springframework', name: 'spring-context', version: springVersion],
+			 //[group: 'org.springframework', name: 'spring-web', version: springVersion],
+			 [group: 'org.springframework', name: 'spring-beans', version: springVersion],
+			 [group: 'org.springframework', name: 'spring-core', version: springVersion]
+			 )
+	//Spring ENd
 	compile (group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet', version: jerseyVersion){
 		exclude module: 'jersey-client'
 		exclude module: 'javax.annotation-api'
@@ -27,12 +35,7 @@ dependencies {
 		exclude module: 'jersey-server'
 		
 	}
-//	implCompile (group: 'org.glassfish.jersey.ext', name: 'jersey-spring3', version: jerseyVersion){
-//			//excluding a particular transitive dependency:
-//			//exclude module: 'cglib' //by artifact name
-//			exclude group: 'org.springframework' //by group
-//			//exclude group: 'org.unwanted', module: 'iAmBuggy' //by both name and group
-//		}
+	compile group: 'com.uimirror.mongo', name: 'mongo-factory', version: 1.0
 
 }
 
