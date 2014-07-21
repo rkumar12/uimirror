@@ -16,6 +16,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * <p>Bean to hold all the client Created Information</p>
  * <p>Class has been marked as immutable, leaving the modifier as final to enable other users
@@ -76,6 +78,9 @@ public class Client implements Serializable, Principal{
 	 * @return new instance of <code>{@link Client#Client(String, ClientDetails, long, Set, boolean)}</code>
 	 */
 	public Client addRole(String role){
+		if(StringUtils.isBlank(role)){
+			throw new IllegalArgumentException("Role Can't be invalid");
+		}
 		this.roles.add(Role.getEnum(role));
 		return new Client(this.id, this.apiKey, this.clientDetails, this.roles, this.isActive);
 	}
@@ -88,6 +93,9 @@ public class Client implements Serializable, Principal{
 	 * @return new instance of <code>{@link Client#Client(String, ClientDetails, long, Set, boolean)}</code>
 	 */
 	public Client revokeRole(String role){
+		if(StringUtils.isBlank(role)){
+			throw new IllegalArgumentException("Role Can't be invalid");
+		}
 		this.roles.remove(Role.getEnum(role));
 		return new Client(this.id, this.apiKey, this.clientDetails, this.roles, this.isActive);
 	}
@@ -110,6 +118,22 @@ public class Client implements Serializable, Principal{
 	 */
 	public Client regenrateApiKey(){
 		return new Client(this.id, UUID.randomUUID().toString(), this.clientDetails, this.roles, this.isActive);
+	}
+	/**
+	 * <p>This will update the client details.</p>
+	 * @return
+	 */
+	public Client updateClientDetails(ClientDetails clientDetails){
+		if(clientDetails == null){
+			throw new IllegalArgumentException("Client Details can't be empty");
+		}
+		return new Client(clientDetails.getClientId(), this.apiKey, clientDetails, this.roles, this.isActive);
+	}
+	public Client updateClientId(long id){
+		if(id < 0l){
+			throw new IllegalArgumentException("Client Id is not valid");
+		}
+		return new Client(id, this.apiKey, this.clientDetails, this.roles, this.isActive);
 	}
 	/**
 	 * @return the apiKey
