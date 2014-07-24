@@ -17,6 +17,8 @@ package com.uimirror.ws.api.security.base;
  */
 public interface SecurityFieldConstants {
 
+	//MONGO Commands
+	public static final String _SET = "$set";
 	//Common Fields
 	public static final String _ID = "_id";
 	public static final String _TIME_ZONE = "tz";
@@ -25,6 +27,17 @@ public interface SecurityFieldConstants {
 	public static final String _IP = "ip";
 	
 	//Client Details Field
+	public static final String _CLIENT_SECRET = "secret";
+	public static final String _CLIENT_RESOURCE_IDS = "resource_ids";
+	public static final String _CLIENT_SCOPE = "scope";
+	public static final String _CLIENT_AUTHORIZED_GRANT_TYPE = "authorized_grant_types";
+	public static final String _CLIENT_WEB_REDIRECT_URI = "redirect_uri";
+	public static final String _CLIENT_AUTHORITIES = "authorities";
+	public static final String _CLIENT_ACCESS_TOKEN_VALIDITY = "access_token_validity";
+	public static final String _CLIENT_REFRESH_TOKEN_VALIDITY = "refresh_token_validity";
+	public static final String _CLIENT_ADDITIONAL_INFORMATION = "additional_information";
+	
+	//DUPLICATE Remove the below fields latter
 	public static final String _CLIENT_NAME = "name";
 	public static final String _CLIENT_APP_URL = "appurl";
 	public static final String _CLIENT_CREATED_ON = "on";

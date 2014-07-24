@@ -56,6 +56,25 @@ public class ClientDetails implements Serializable{
 		this.locale = Locale.ENGLISH.getDisplayName();
 		this.createdOn = Instant.now().toEpochMilli();
 	}
+	
+	/**
+	 * <p>This will create a instance of client details by the provided details.</p>
+	 * @param name
+	 * @param applicationUrl
+	 * @param timeZone
+	 * @param locale
+	 * @param currency
+	 */
+	public ClientDetails(String name, String applicationUrl, String timeZone, String locale, String currency){
+		super();
+		this.name = name;
+		this.clientId = 0l;
+		this.applicationUrl = applicationUrl;
+		this.timezone = TimeZone.getTimeZone(timeZone).getDisplayName();
+		this.currency = Currency.getInstance(currency).getSymbol();
+		this.locale = Locale.forLanguageTag(locale).getDisplayName();
+		this.createdOn = Instant.now().toEpochMilli();
+	}
 
 	/**
 	 * <p>A constructor with the fields to create an object</p>

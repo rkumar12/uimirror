@@ -15,6 +15,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
 
 import com.uimirror.ws.api.security.base.ClientDetails;
@@ -30,6 +32,7 @@ public final class UimClientDetails extends ClientDetails implements Serializabl
 
 
 	private static final long serialVersionUID = 5424883781797485757L;
+	protected static final Logger LOG = LoggerFactory.getLogger(UimClientDetails.class);
 
 	/**
 	 * @param id
@@ -54,10 +57,22 @@ public final class UimClientDetails extends ClientDetails implements Serializabl
 	}
 	
 	/**
+	 * <p>This will populate the client details.</p>
+	 * @param name
+	 * @param applicationUrl
+	 * @param timezone
+	 * @param loacle
+	 * @param currency
+	 */
+	public UimClientDetails(String name, String applicationUrl, String timezone, String loacle, String currency) {
+		super(name, applicationUrl, timezone, loacle, currency);
+	}
+	
+	/**
 	 *<p>This will populate the Map from the details available</p> 
 	 */
 	public Map<String, String> serailizeToDoucmentMap() {
-		
+		LOG.debug("[START]-Serailizing objects state to save into the document.");
 		Map<String, String> map = new HashMap<String, String>(7,1);
 		if(this.getClientId() < 0l){
 			throw new IllegalArgumentException("Can't do serailization as required field as of now is not yet present i.e id");
@@ -77,6 +92,7 @@ public final class UimClientDetails extends ClientDetails implements Serializabl
 		if(StringUtils.isNotBlank(this.getCurrency())){
 			map.put(SecurityFieldConstants._CURRENCY, this.getCurrency());
 		}
+		LOG.debug("[END]-Serailizing objects state to save into the document");
 		return map;
 	}
 
@@ -88,9 +104,11 @@ public final class UimClientDetails extends ClientDetails implements Serializabl
 	 * @return a new instance of <code>{@link ClientDetails}</code>
 	 */
 	public static ClientDetails deserailizeFromDocumentMap(Map<String, String> data){
+		LOG.debug("[START]-De-Serailizing map state to object.");
 		if(CollectionUtils.isEmpty(data) || !StringUtils.isNumeric(data.get(SecurityFieldConstants._ID))){
 			throw new IllegalArgumentException("Data Can't be Deserailized as it has no data.");
 		}
+		LOG.debug("[END]-De-Serailizing map state to object.");
 		return new UimClientDetails(Long.valueOf(data.get(SecurityFieldConstants._ID)), 
 				data.get(SecurityFieldConstants._CLIENT_NAME), 
 				data.get(SecurityFieldConstants._CLIENT_APP_URL), 

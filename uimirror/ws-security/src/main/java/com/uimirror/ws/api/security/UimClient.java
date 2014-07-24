@@ -49,8 +49,7 @@ public final class UimClient extends Client {
 	 * @param roles
 	 * @param isActive
 	 */
-	private UimClient(long id, String apiKey, ClientDetails uimClientDetails,
-			Set<Role> roles, boolean isActive) {
+	private UimClient(long id, String apiKey, ClientDetails uimClientDetails, Set<Role> roles, boolean isActive) {
 		super(id, apiKey, uimClientDetails, roles, isActive);
 	}
 	

@@ -52,6 +52,7 @@ public class Client implements Serializable, Principal{
 		this.isActive = Boolean.TRUE;
 		this.id = 0l;
 	}
+	
 	/**
 	 * <p>Constructor to populate all the fields when de-serializing.</p>
 	 * @param id

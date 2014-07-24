@@ -1,6 +1,9 @@
 ext {
 	jerseyVersion = "2.10.1"
 	springVersion = "4.0.5.RELEASE"
+	slf4jVersion = "1.7.2"
+	qosLogBackVersion = "1.1.1"
+	springSecurityOuthVersion = "2.0.1.RELEASE"
 }
 
 group = "com.uimirror.ws.api"
@@ -10,11 +13,14 @@ dependencies {
 	compile project(':commonutil')
     compile 'commons-codec:commons-codec:1.5'
 	compile 'commons-lang:commons-lang:2.6'
+	//Jackson fasterxml
+	compile 'com.fasterxml.jackson.core:jackson-annotations:2.3.3'
 	//Spring Depedancy
 	compile ([group: 'org.springframework', name: 'spring-context', version: springVersion],
 			 //[group: 'org.springframework', name: 'spring-web', version: springVersion],
 			 [group: 'org.springframework', name: 'spring-beans', version: springVersion],
-			 [group: 'org.springframework', name: 'spring-core', version: springVersion]
+			 [group: 'org.springframework', name: 'spring-core', version: springVersion],
+			 [group: 'org.springframework.security.oauth', name: 'spring-security-oauth2', version: springSecurityOuthVersion]
 			 )
 	//Spring ENd
 	compile (group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet', version: jerseyVersion){
@@ -36,6 +42,13 @@ dependencies {
 		
 	}
 	compile group: 'com.uimirror.mongo', name: 'mongo-factory', version: 1.0
+	//Logging
+	compile ([group: 'org.slf4j', name: 'slf4j-api', version: slf4jVersion],
+			)
+	compile ([group: 'ch.qos.logback', name: 'logback-classic', version: qosLogBackVersion],
+			 [group: 'ch.qos.logback', name: 'logback-core', version: qosLogBackVersion],
+			)
+	//Logging End
 
 }
 
