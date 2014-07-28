@@ -51,7 +51,7 @@ public class MongoClientDetailsService implements ClientDetailsService, ClientRe
 	private PasswordEncoder passwordEncoder = NoOpPasswordEncoder.getInstance();
 	
 	private final DBCollection uimClientCollection;
-	private static final DBObject PROJECT_FIELDS = new BasicDBObject(15); 
+	private DBObject PROJECT_FIELDS = new BasicDBObject(15); 
 
 	public MongoClientDetailsService(DBCollection clientCollection){
 		Assert.notNull(clientCollection, "Data Base Client Collection Can't be null");
@@ -66,7 +66,7 @@ public class MongoClientDetailsService implements ClientDetailsService, ClientRe
 		this.passwordEncoder = passwordEncoder;
 	}
 	
-	private static void initialize(){
+	private void initialize(){
 		PROJECT_FIELDS.put(SecurityFieldConstants._ID, 1);
 		PROJECT_FIELDS.put(SecurityFieldConstants._CLIENT_SECRET, 1);
 		PROJECT_FIELDS.put(SecurityFieldConstants._CLIENT_RESOURCE_IDS, 1);
