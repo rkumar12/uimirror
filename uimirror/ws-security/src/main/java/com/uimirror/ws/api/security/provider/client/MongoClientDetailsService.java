@@ -8,11 +8,13 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.ws.api.security.provider;
+package com.uimirror.ws.api.security.provider.client;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
@@ -75,6 +77,7 @@ public class MongoClientDetailsService implements ClientDetailsService, ClientRe
 		PROJECT_FIELDS.put(SecurityFieldConstants._CLIENT_ACCESS_TOKEN_VALIDITY, 1);
 		PROJECT_FIELDS.put(SecurityFieldConstants._CLIENT_REFRESH_TOKEN_VALIDITY, 1);
 		PROJECT_FIELDS.put(SecurityFieldConstants._CLIENT_ADDITIONAL_INFORMATION, 1);
+		PROJECT_FIELDS.put(SecurityFieldConstants._CLIENT_AUTO_APPROVAL_SCOPES, 1);
 	}
 	
 	/* (non-Javadoc)
@@ -179,27 +182,41 @@ public class MongoClientDetailsService implements ClientDetailsService, ClientRe
 	 */
 	private DBObject convertToFields(ClientDetails clientDetails){
 		DBObject updateFields = new BasicDBObject(15);
-		
+		//Resource Id Not empty then populate
 		if(!CollectionUtils.isEmpty(clientDetails.getResourceIds())){
-			updateFields.put(SecurityFieldConstants._CLIENT_RESOURCE_IDS, StringUtils.collectionToCommaDelimitedString(clientDetails.getResourceIds()));
+			updateFields.put(SecurityFieldConstants._CLIENT_RESOURCE_IDS, clientDetails.getResourceIds());
 		}
+		//Scope not empty then populate
 		if(!CollectionUtils.isEmpty(clientDetails.getScope())){
-			updateFields.put(SecurityFieldConstants._CLIENT_SCOPE, StringUtils.collectionToCommaDelimitedString(clientDetails.getScope()));
+			updateFields.put(SecurityFieldConstants._CLIENT_SCOPE, clientDetails.getScope());
 		}
+		//Grant Type Not empty then populate
 		if(!CollectionUtils.isEmpty(clientDetails.getAuthorizedGrantTypes())){
-			updateFields.put(SecurityFieldConstants._CLIENT_AUTHORIZED_GRANT_TYPE, StringUtils.collectionToCommaDelimitedString(clientDetails.getAuthorizedGrantTypes()) );
+			updateFields.put(SecurityFieldConstants._CLIENT_AUTHORIZED_GRANT_TYPE, clientDetails.getAuthorizedGrantTypes());
 		}
+		//Redirect URI of the client is not empty then populate
 		if(!CollectionUtils.isEmpty(clientDetails.getRegisteredRedirectUri())){
-			updateFields.put(SecurityFieldConstants._CLIENT_WEB_REDIRECT_URI, StringUtils.collectionToCommaDelimitedString(clientDetails.getRegisteredRedirectUri()));
+			updateFields.put(SecurityFieldConstants._CLIENT_WEB_REDIRECT_URI, clientDetails.getRegisteredRedirectUri());
 		}
+		//Authorities Not empty then populate
 		if(!CollectionUtils.isEmpty(clientDetails.getAuthorities())){
-			updateFields.put(SecurityFieldConstants._CLIENT_AUTHORITIES, StringUtils.collectionToCommaDelimitedString(clientDetails.getAuthorities()));
+			updateFields.put(SecurityFieldConstants._CLIENT_AUTHORITIES, clientDetails.getAuthorities());
 		}
-		updateFields.put(SecurityFieldConstants._CLIENT_ACCESS_TOKEN_VALIDITY, clientDetails.getAccessTokenValiditySeconds());
-		updateFields.put(SecurityFieldConstants._CLIENT_REFRESH_TOKEN_VALIDITY, clientDetails.getRefreshTokenValiditySeconds());
+		//Access Token Validity more than default value
+		if(clientDetails.getAccessTokenValiditySeconds() > 0){
+			updateFields.put(SecurityFieldConstants._CLIENT_ACCESS_TOKEN_VALIDITY, clientDetails.getAccessTokenValiditySeconds());
+		}
+		//Refresh Token Validity more than default value
+		if(clientDetails.getRefreshTokenValiditySeconds() > 0){
+			updateFields.put(SecurityFieldConstants._CLIENT_REFRESH_TOKEN_VALIDITY, clientDetails.getRefreshTokenValiditySeconds());
+		}
+		//Any additional Information associated with the client
 		if(!CollectionUtils.isEmpty(clientDetails.getAdditionalInformation())){
 			updateFields.put(SecurityFieldConstants._CLIENT_ADDITIONAL_INFORMATION, clientDetails.getAdditionalInformation());
 		}
+		//Any Auto Approval associated for client
+		updateFields.put(SecurityFieldConstants._CLIENT_AUTO_APPROVAL_SCOPES, getAutoApproveScopes(clientDetails));
+		
 		return updateFields; 
 	}
 	
@@ -208,13 +225,21 @@ public class MongoClientDetailsService implements ClientDetailsService, ClientRe
 	 * @param result
 	 * @return instance of <code>{@link ClientDetails}</code>
 	 */
+	@SuppressWarnings("unchecked")
 	private ClientDetails buildClientDetails(DBObject result){
-		BaseClientDetails details = new BaseClientDetails((String)result.get(SecurityFieldConstants._ID), 
-				(String)result.get(SecurityFieldConstants._CLIENT_RESOURCE_IDS), (String)result.get(SecurityFieldConstants._CLIENT_SCOPE),
-				(String)result.get(SecurityFieldConstants._CLIENT_AUTHORIZED_GRANT_TYPE), (String)result.get(SecurityFieldConstants._CLIENT_AUTHORITIES), 
-				(String)result.get(SecurityFieldConstants._CLIENT_WEB_REDIRECT_URI));
+		
+		String clientId = (String)result.get(SecurityFieldConstants._ID);
+		String resourceIds = StringUtils.collectionToCommaDelimitedString((Set<String>)result.get(SecurityFieldConstants._CLIENT_RESOURCE_IDS));
+		String scopes = StringUtils.collectionToCommaDelimitedString((Set<String>)result.get(SecurityFieldConstants._CLIENT_SCOPE));
+		String grantedAuthoritiesType = StringUtils.collectionToCommaDelimitedString((Set<String>)result.get(SecurityFieldConstants._CLIENT_AUTHORIZED_GRANT_TYPE));
+		String authorities = StringUtils.collectionToCommaDelimitedString((List<Object>)result.get(SecurityFieldConstants._CLIENT_AUTHORITIES));
+		String redirectURI = StringUtils.collectionToCommaDelimitedString((Set<String>)result.get(SecurityFieldConstants._CLIENT_WEB_REDIRECT_URI));
+		
+		//Build a basic client details object based on the result get from the database
+		BaseClientDetails details = new BaseClientDetails(clientId, resourceIds, scopes, grantedAuthoritiesType, authorities, redirectURI);
 		
 		details.setClientSecret((String)result.get(SecurityFieldConstants._CLIENT_SECRET));
+		
 		if (result.get(SecurityFieldConstants._CLIENT_ACCESS_TOKEN_VALIDITY) != null) {
 			details.setAccessTokenValiditySeconds((int)result.get(SecurityFieldConstants._CLIENT_ACCESS_TOKEN_VALIDITY));
 		}
@@ -223,13 +248,21 @@ public class MongoClientDetailsService implements ClientDetailsService, ClientRe
 		}
 		Object additionalInfo = result.get(SecurityFieldConstants._CLIENT_ADDITIONAL_INFORMATION);
 		if (additionalInfo != null) {
-			@SuppressWarnings("unchecked")
 			Map<String, Object> additionalInformation = ((BasicDBObject)additionalInfo).toMap();
 			details.setAdditionalInformation(additionalInformation);
+		}
+		Object autoApproveScopes = result.get(SecurityFieldConstants._CLIENT_AUTO_APPROVAL_SCOPES);
+		if(autoApproveScopes != null){
+			details.setAutoApproveScopes((Set<String>)autoApproveScopes);
 		}
 		return details;
 	}
 	
+	/**
+	 * <p>This will build the list of client details from the cursor.</p>
+	 * @param cursor
+	 * @return <code>{@link List} of {@link ClientDetails}</code>
+	 */
 	private List<ClientDetails> buildClientDetailsFromCursor(DBCursor cursor){
 		List<ClientDetails> clientDetails = new ArrayList<ClientDetails>(cursor.size());
 		cursor.batchSize(20);
@@ -237,4 +270,22 @@ public class MongoClientDetailsService implements ClientDetailsService, ClientRe
 		return clientDetails;
 	}
 
+	/**
+	 * <p>This will do the Auto Approve for the client.</p>
+	 * @param clientDetails
+	 * @return
+	 */
+	private Set<String> getAutoApproveScopes(ClientDetails clientDetails) {
+		Set<String> scopes = new HashSet<String>();
+		if (clientDetails.isAutoApprove("true")) {
+			scopes.add("true");
+			return scopes; // all scopes autoapproved
+		}
+		for (String scope : clientDetails.getScope()) {
+			if (clientDetails.isAutoApprove(scope)) {
+				scopes.add(scope);
+			}
+		}
+		return scopes;
+	}
 }

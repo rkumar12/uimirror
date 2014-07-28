@@ -30,12 +30,22 @@ public interface SecurityFieldConstants {
 	public static final String _CLIENT_SECRET = "secret";
 	public static final String _CLIENT_RESOURCE_IDS = "resource_ids";
 	public static final String _CLIENT_SCOPE = "scope";
-	public static final String _CLIENT_AUTHORIZED_GRANT_TYPE = "authorized_grant_types";
+	public static final String _CLIENT_AUTHORIZED_GRANT_TYPE = "grantTypes";
 	public static final String _CLIENT_WEB_REDIRECT_URI = "redirect_uri";
 	public static final String _CLIENT_AUTHORITIES = "authorities";
 	public static final String _CLIENT_ACCESS_TOKEN_VALIDITY = "access_token_validity";
 	public static final String _CLIENT_REFRESH_TOKEN_VALIDITY = "refresh_token_validity";
 	public static final String _CLIENT_ADDITIONAL_INFORMATION = "additional_information";
+	public static final String _CLIENT_AUTO_APPROVAL_SCOPES = "autoApproveScopes";
+	
+	//oauth_access_token Field
+	public static final String _OAUTH_ACCESS_TOKEN_ID = "token_id";
+	public static final String _OAUTH_ACCESS_TOKEN = "token";
+	public static final String _OAUTH_ACCESS_AUTHENTICATION_ID = "authentication_id";
+	public static final String _OAUTH_ACCESS_USER_NAME = "user_name";
+	public static final String _OAUTH_ACCESS_CLIENT_ID = "client_id";
+	public static final String _OAUTH_ACCESS_AUTHENTICATION = "authentication";
+	public static final String _OAUTH_ACCESS_REFRESH_TOKEN = "refresh_token";
 	
 	//DUPLICATE Remove the below fields latter
 	public static final String _CLIENT_NAME = "name";
