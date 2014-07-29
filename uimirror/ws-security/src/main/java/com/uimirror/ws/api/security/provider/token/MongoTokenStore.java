@@ -10,19 +10,27 @@
  *******************************************************************************/
 package com.uimirror.ws.api.security.provider.token;
 
+import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Collection;
 
+import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2RefreshToken;
+import org.springframework.security.oauth2.common.util.SerializationUtils;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.token.AuthenticationKeyGenerator;
 import org.springframework.security.oauth2.provider.token.DefaultAuthenticationKeyGenerator;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.util.Assert;
 
+import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
+import com.mongodb.DBObject;
 
 /**
  * <p>Implementation of token services that stores tokens in a mongo database.</p>
@@ -53,33 +61,11 @@ public class MongoTokenStore implements TokenStore{
 		OAuth2AccessToken accessToken = null;
 
 		String key = authenticationKeyGenerator.extractKey(authentication);
-		
-//		try {
-//			DBObject query = new BasicDBObject(SecurityFieldConstants._ID, new ObjectId(key));
-//			DBObject result = uimTokenCollection.findOne();
-//			accessToken = jdbcTemplate.queryForObject(selectAccessTokenFromAuthenticationSql,
-//					new RowMapper<OAuth2AccessToken>() {
-//						public OAuth2AccessToken mapRow(ResultSet rs, int rowNum) throws SQLException {
-//							return deserializeAccessToken(rs.getBytes(2));
-//						}
-//					}, key);
-//		}
-//		catch (EmptyResultDataAccessException e) {
-//			if (LOG.isInfoEnabled()) {
-//				LOG.debug("Failed to find access token for authentication " + authentication);
-//			}
-//		}
-//		catch (IllegalArgumentException e) {
-//			LOG.error("Could not extract access token for authentication " + authentication, e);
-//		}
-//
-//		if (accessToken != null
-//				&& !key.equals(authenticationKeyGenerator.extractKey(readAuthentication(accessToken.getValue())))) {
-//			removeAccessToken(accessToken.getValue());
-//			// Keep the store consistent (maybe the same user is represented by this authentication but the details have
-//			// changed)
-//			storeAccessToken(accessToken, authentication);
-//		}
+		DBObject result = uimTokenCollection.findOne();
+		if(result == null || result.toMap().isEmpty()){
+			LOG.debug("Failed to find access token for authentication " + authentication);
+		}
+		//accessToken = deserializeAccessToken(result.get(SecurityFieldConstants._OAUTH_ACCESS_TOKEN));
 		return accessToken;
 	}
 
@@ -95,10 +81,22 @@ public class MongoTokenStore implements TokenStore{
 		return null;
 	}
 
+	
+	/* (non-Javadoc)
+	 * @see org.springframework.security.oauth2.provider.token.TokenStore#storeAccessToken(org.springframework.security.oauth2.common.OAuth2AccessToken, org.springframework.security.oauth2.provider.OAuth2Authentication)
+	 */
 	@Override
-	public void storeAccessToken(OAuth2AccessToken token,
-			OAuth2Authentication authentication) {
-		// TODO Auto-generated method stub
+	public void storeAccessToken(OAuth2AccessToken token, OAuth2Authentication authentication) {
+		String refreshToken = null;
+		if (token.getRefreshToken() != null) {
+			refreshToken = token.getRefreshToken().getValue();
+		}
+		
+		if (readAccessToken(token.getValue())!=null) {
+			removeAccessToken(token.getValue());
+		}
+		DBObject fields = new BasicDBObject(1);
+		ObjectMapper ob = new ObjectMapper();
 		
 	}
 
@@ -112,6 +110,9 @@ public class MongoTokenStore implements TokenStore{
 	public void removeAccessToken(OAuth2AccessToken token) {
 		// TODO Auto-generated method stub
 		
+	}
+	public void removeAccessToken(String tokenValue) {
+		//jdbcTemplate.update(deleteAccessTokenSql, extractTokenKey(tokenValue));
 	}
 
 	@Override
@@ -158,6 +159,36 @@ public class MongoTokenStore implements TokenStore{
 	public Collection<OAuth2AccessToken> findTokensByClientId(String clientId) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	/**
+	 * <p>Token Key extraction from the value specified.</p>
+	 * @param value
+	 * @return
+	 */
+	protected String extractTokenKey(String value) {
+		if (value == null) {
+			return null;
+		}
+		MessageDigest digest;
+		try {
+			digest = MessageDigest.getInstance("MD5");
+		}
+		catch (NoSuchAlgorithmException e) {
+			throw new IllegalStateException("MD5 algorithm not available.  Fatal (should be in the JDK).");
+		}
+
+		try {
+			byte[] bytes = digest.digest(value.getBytes("UTF-8"));
+			return String.format("%032x", new BigInteger(1, bytes));
+		}
+		catch (UnsupportedEncodingException e) {
+			throw new IllegalStateException("UTF-8 encoding not available.  Fatal (should be in the JDK).");
+		}
+	}
+	
+	protected byte[] serializeAuthentication(OAuth2Authentication authentication) {
+		return SerializationUtils.serialize(authentication);
 	}
 
 }

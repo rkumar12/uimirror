@@ -47,6 +47,14 @@ public interface SecurityFieldConstants {
 	public static final String _OAUTH_ACCESS_AUTHENTICATION = "authentication";
 	public static final String _OAUTH_ACCESS_REFRESH_TOKEN = "refresh_token";
 	
+	//oauth_access_token DefaultOAuth2AccessToken Field
+	public static final String _ACCESS_TOKEN_VALUE = "value";
+	public static final String _ACCESS_TOKEN_EXPIRATION = "expiration";
+	public static final String _ACCESS_TOKEN_TOKENTYPE = "tokenType";
+	public static final String _ACCESS_TOKEN_OAUTH2REFRESH_TOKEN = "refreshToken";
+	public static final String _ACCESS_TOKEN_SCOPE = "scope";
+	public static final String _ACCESS_TOKEN_ADD_INFO = "additionalInformation";
+	
 	//DUPLICATE Remove the below fields latter
 	public static final String _CLIENT_NAME = "name";
 	public static final String _CLIENT_APP_URL = "appurl";

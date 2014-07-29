@@ -51,7 +51,7 @@ public class MongoClientDetailsService implements ClientDetailsService, ClientRe
 	private PasswordEncoder passwordEncoder = NoOpPasswordEncoder.getInstance();
 	
 	private final DBCollection uimClientCollection;
-	private DBObject PROJECT_FIELDS = new BasicDBObject(15); 
+	private DBObject projected_fields;
 
 	public MongoClientDetailsService(DBCollection clientCollection){
 		Assert.notNull(clientCollection, "Data Base Client Collection Can't be null");
@@ -60,6 +60,13 @@ public class MongoClientDetailsService implements ClientDetailsService, ClientRe
 	}
 	
 	/**
+	 * <p>If by any means somebody want custom fields to see developer can set the fields e want to retrieve.</p>
+	 * @param projected_fields
+	 */
+	public void setProjected_fields(DBObject projected_fields) {
+		this.projected_fields = projected_fields;
+	}
+	/**
 	 * @param passwordEncoder the password encoder to set
 	 */
 	public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
@@ -67,17 +74,18 @@ public class MongoClientDetailsService implements ClientDetailsService, ClientRe
 	}
 	
 	private void initialize(){
-		PROJECT_FIELDS.put(SecurityFieldConstants._ID, 1);
-		PROJECT_FIELDS.put(SecurityFieldConstants._CLIENT_SECRET, 1);
-		PROJECT_FIELDS.put(SecurityFieldConstants._CLIENT_RESOURCE_IDS, 1);
-		PROJECT_FIELDS.put(SecurityFieldConstants._CLIENT_SCOPE, 1);
-		PROJECT_FIELDS.put(SecurityFieldConstants._CLIENT_AUTHORIZED_GRANT_TYPE, 1);
-		PROJECT_FIELDS.put(SecurityFieldConstants._CLIENT_WEB_REDIRECT_URI, 1);
-		PROJECT_FIELDS.put(SecurityFieldConstants._CLIENT_AUTHORITIES, 1);
-		PROJECT_FIELDS.put(SecurityFieldConstants._CLIENT_ACCESS_TOKEN_VALIDITY, 1);
-		PROJECT_FIELDS.put(SecurityFieldConstants._CLIENT_REFRESH_TOKEN_VALIDITY, 1);
-		PROJECT_FIELDS.put(SecurityFieldConstants._CLIENT_ADDITIONAL_INFORMATION, 1);
-		PROJECT_FIELDS.put(SecurityFieldConstants._CLIENT_AUTO_APPROVAL_SCOPES, 1);
+		projected_fields = new BasicDBObject(15);
+		projected_fields.put(SecurityFieldConstants._ID, 1);
+		projected_fields.put(SecurityFieldConstants._CLIENT_SECRET, 1);
+		projected_fields.put(SecurityFieldConstants._CLIENT_RESOURCE_IDS, 1);
+		projected_fields.put(SecurityFieldConstants._CLIENT_SCOPE, 1);
+		projected_fields.put(SecurityFieldConstants._CLIENT_AUTHORIZED_GRANT_TYPE, 1);
+		projected_fields.put(SecurityFieldConstants._CLIENT_WEB_REDIRECT_URI, 1);
+		projected_fields.put(SecurityFieldConstants._CLIENT_AUTHORITIES, 1);
+		projected_fields.put(SecurityFieldConstants._CLIENT_ACCESS_TOKEN_VALIDITY, 1);
+		projected_fields.put(SecurityFieldConstants._CLIENT_REFRESH_TOKEN_VALIDITY, 1);
+		projected_fields.put(SecurityFieldConstants._CLIENT_ADDITIONAL_INFORMATION, 1);
+		projected_fields.put(SecurityFieldConstants._CLIENT_AUTO_APPROVAL_SCOPES, 1);
 	}
 	
 	/* (non-Javadoc)
@@ -87,7 +95,7 @@ public class MongoClientDetailsService implements ClientDetailsService, ClientRe
 	public ClientDetails loadClientByClientId(String clientId) throws ClientRegistrationException {
 		Assert.hasText(clientId, "Client Id Can't be Empty");
 		DBObject query = new BasicDBObject(SecurityFieldConstants._ID, new ObjectId(clientId));
-		DBObject result = uimClientCollection.findOne(query, PROJECT_FIELDS);
+		DBObject result = uimClientCollection.findOne(query, projected_fields);
 		if(result == null){
 			throw new NoSuchClientException("No client with requested id: " + clientId);
 		}
