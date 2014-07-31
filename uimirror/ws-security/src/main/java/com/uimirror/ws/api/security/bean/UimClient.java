@@ -16,7 +16,7 @@ import java.util.Map;
 import org.springframework.util.CollectionUtils;
 
 import com.uimirror.ws.api.security.bean.base.Client;
-import com.uimirror.ws.api.security.bean.base.SecurityFieldConstants;
+import com.uimirror.ws.api.security.common.SecurityFieldConstants;
 import com.uimirror.ws.api.security.ouath.License;
 
 /**

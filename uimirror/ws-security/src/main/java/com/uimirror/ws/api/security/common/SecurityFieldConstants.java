@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.ws.api.security.bean.base;
+package com.uimirror.ws.api.security.common;
 
 /**
  * <p>This contains the data base field name as key</p>
