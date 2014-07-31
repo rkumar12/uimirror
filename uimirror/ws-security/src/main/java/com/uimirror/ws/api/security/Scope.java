@@ -8,7 +8,9 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.ws.api.security.bean.base;
+package com.uimirror.ws.api.security;
+
+import com.uimirror.ws.api.security.ReadWriteScope;
 
 /**
  * <p>This defines the scope for the accesstoken.</p>

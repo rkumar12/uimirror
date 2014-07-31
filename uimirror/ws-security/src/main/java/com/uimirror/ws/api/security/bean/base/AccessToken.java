@@ -15,6 +15,7 @@ import java.time.ZonedDateTime;
 
 import org.springframework.util.Assert;
 
+import com.uimirror.ws.api.security.Scope;
 import com.uimirror.ws.api.security.ouath.UIMPrincipal;
 
 /**

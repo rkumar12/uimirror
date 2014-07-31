@@ -17,6 +17,8 @@ import javax.ws.rs.core.MediaType;
 
 import org.glassfish.jersey.server.JSONP;
 import org.springframework.stereotype.Component;
+
+import com.google.gson.Gson;
 /**
  * @author Jayaram
  *
@@ -27,10 +29,10 @@ import org.springframework.stereotype.Component;
 public class ChallengeController {
 
 	@GET
-	@Produces(MediaType.APPLICATION_JSON)
+	@Produces({ "application/x-javascript", MediaType.APPLICATION_JSON })
+	@JSONP(queryParam="cb", callback="callback")
 	@RolesAllowed("ADMIN")
-	@JSONP(queryParam="cb")
 	public String getHello() {
-		return String.format("Hello world");
+		return new Gson().toJson("Hello JsonP");
 	}
 }

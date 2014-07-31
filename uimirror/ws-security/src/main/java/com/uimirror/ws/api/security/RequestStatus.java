@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.ws.api.security.bean.base;
+package com.uimirror.ws.api.security;
 
 /**
  * <p>This will contain the request served status.</p>

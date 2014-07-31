@@ -64,7 +64,6 @@ public class UIMirrorSecurity implements UIMSecurityContext{
 	 */
 	@Override
 	public boolean isSecure() {
-		System.out.println(uriInfo);
 		return false;
 	}
 

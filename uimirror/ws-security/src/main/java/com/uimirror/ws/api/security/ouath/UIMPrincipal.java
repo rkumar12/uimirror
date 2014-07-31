@@ -13,8 +13,8 @@ package com.uimirror.ws.api.security.ouath;
 import java.security.Principal;
 import java.time.ZonedDateTime;
 
+import com.uimirror.ws.api.security.Scope;
 import com.uimirror.ws.api.security.bean.base.Client;
-import com.uimirror.ws.api.security.bean.base.Scope;
 import com.uimirror.ws.api.security.bean.base.User;
 
 /**

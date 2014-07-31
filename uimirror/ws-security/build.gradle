@@ -1,5 +1,5 @@
 ext {
-	jerseyVersion = "2.10.1"
+	jerseyVersion = "2.11"
 	springVersion = "4.0.5.RELEASE"
 	slf4jVersion = "1.7.2"
 	qosLogBackVersion = "1.1.1"
@@ -15,9 +15,8 @@ dependencies {
 	//Jackson fasterxml
 	compile 'com.fasterxml.jackson.core:jackson-annotations:2.3.3'
 	//Spring Depedancy
-	compile ([group: 'org.springframework', name: 'spring-context', version: springVersion],
-			 //[group: 'org.springframework', name: 'spring-web', version: springVersion],
-			 [group: 'org.springframework', name: 'spring-beans', version: springVersion],
+	compile (//[group: 'org.springframework', name: 'spring-context', version: springVersion],
+			 //[group: 'org.springframework', name: 'spring-beans', version: springVersion],
 			 [group: 'org.springframework', name: 'spring-core', version: springVersion],
 			 )
 	//Spring ENd

@@ -12,10 +12,6 @@ package com.uimirror.ws.api.security.conf;
 
 import java.net.UnknownHostException;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.Mongo;
@@ -27,14 +23,10 @@ import com.uimirror.mongo.MongoDbFactory;
  * <p>Configures and register the beans 
  * @author Jayaram
  */
-@Configuration
 public class SecurityDataStoreIntitializer {
 	
-	@Value("${mongo.host:127.0.0.1}")
 	protected String host;
-	@Value("${mongo.db.uim.ouath:uim_ouath}")
 	protected String uimOuathDB;
-	@Value("${mongo.cl.uim.ouath.client.details:uim_client_details}")
 	protected String uimClientDetails;
 	
 	/**
@@ -44,7 +36,6 @@ public class SecurityDataStoreIntitializer {
 	 * @throws UnknownHostException 
 	 */
 	//@Bean(destroyMethod="destroy")
-	@Bean
 	public Mongo createConnection() throws UnknownHostException{
 		ConnectionFactory cf = new ConnectionFactory();
 		cf.setHost(host);
@@ -57,7 +48,6 @@ public class SecurityDataStoreIntitializer {
 	 * @return
 	 * @throws UnknownHostException
 	 */
-	@Bean
 	public DB getDB() throws UnknownHostException{
 		return MongoDbFactory.getDB(createConnection(), this.uimOuathDB);
 	}
@@ -68,7 +58,6 @@ public class SecurityDataStoreIntitializer {
 	 * @return
 	 * @throws UnknownHostException
 	 */
-	@Bean(name="uimClientDetails")
 	public DBCollection getClientDetailsCollection() throws UnknownHostException{
 		return DBCollectionUtil.getCollection(getDB(), this.uimClientDetails);
 	}

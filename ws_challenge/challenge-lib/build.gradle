@@ -2,7 +2,7 @@ import java.lang.invoke.LambdaForm.Compiled;
 
 ext {
     springVersion = "4.0.5.RELEASE"
-    jerseyVersion = "2.10.1"
+    jerseyVersion = "2.11"
     slf4jVersion = "1.7.2"
     qosLogBackVersion = "1.1.1"
     javaeeApiVersion = "7.0"
@@ -23,7 +23,8 @@ dependencies {
     
     compile group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet', version: jerseyVersion
     compile group: 'org.glassfish.jersey.ext', name: 'jersey-spring3', version: jerseyVersion
-    
+	compile group: 'org.glassfish.jersey.media', name: 'jersey-media-json-processing', version: jerseyVersion
+	
     //Logging
 //    compile ([group: 'org.slf4j', name: 'slf4j-api', version: slf4jVersion],
 //    		)
