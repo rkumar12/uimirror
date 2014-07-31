@@ -23,7 +23,7 @@ public class UimClientSecurityServiceImpl implements ClientSecurityService {
 	 * @see com.uimirror.ws.api.security.service.ClientSecurityService#getClientSession(java.lang.String)
 	 */
 	@Override
-	public AccessToken getClientSession(String apiKey) {
+	public AccessToken getAccessTokenDetails(String token) {
 		//TODO implemnt the mongo and redis part by tommorow
 		//TODO populate the client details
 //		UimClientDetails details = new UimClientDetails(12, "Test", "http://abc.com");

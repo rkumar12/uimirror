@@ -12,6 +12,12 @@ package com.uimirror.ws.api.security.ouath;
 
 import java.security.Principal;
 
+import javax.ws.rs.core.UriInfo;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.util.Assert;
+
 import com.uimirror.ws.api.security.bean.base.AccessToken;
 
 /**
@@ -20,15 +26,20 @@ import com.uimirror.ws.api.security.bean.base.AccessToken;
  */
 public class UIMirrorSecurity implements UIMSecurityContext{
 
+	protected static final Logger LOG = LoggerFactory.getLogger(UIMirrorSecurity.class);
 	private final AccessToken token;
+	private final UriInfo uriInfo;
 	
 	
 	/**
 	 * @param session
 	 */
-	public UIMirrorSecurity(AccessToken token) {
+	public UIMirrorSecurity(AccessToken token, UriInfo uriInfo) {
 		super();
+		Assert.notNull(token, "Access Token can't be Empty, user/client should have authenticated eariller.");
+		System.out.println(uriInfo);
 		this.token = token;
+		this.uriInfo = uriInfo;
 	}
 
 	/* (non-Javadoc)
@@ -44,7 +55,7 @@ public class UIMirrorSecurity implements UIMSecurityContext{
 	 */
 	@Override
 	public boolean isUserInRole(String role) {
-		// TODO Auto-generated method stub
+		//TODO this implemntation is pending
 		return Boolean.TRUE;
 	}
 
@@ -53,6 +64,7 @@ public class UIMirrorSecurity implements UIMSecurityContext{
 	 */
 	@Override
 	public boolean isSecure() {
+		System.out.println(uriInfo);
 		return false;
 	}
 

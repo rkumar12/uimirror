@@ -26,5 +26,5 @@ public interface ClientSecurityService {
 	 * @param apiKey
 	 * @return
 	 */
-	public AccessToken getClientSession(final String token);
+	public AccessToken getAccessTokenDetails(final String token);
 }

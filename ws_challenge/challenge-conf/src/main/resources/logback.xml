@@ -9,16 +9,12 @@
 	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
 		<target>System.out</target>
 		<encoder>
-			<Pattern>%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(%5p)
-				%clr(${PID:- }){magenta} %clr(-){faint} %clr([%15.15t{14}]){faint}
-				%clr(%logger){cyan} %clr(:){faint} %m%n%wex</Pattern>
+			<Pattern>%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(%5p) %clr(${PID:- }){magenta} %clr(-){faint} %clr([%15.15t{14}]){faint} %clr(%logger){cyan} %clr(:){faint} %m%n%wex</Pattern>
 		</encoder>
 	</appender>
 	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder>
-			<Pattern>%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(%5p)
-				%clr(${PID:- }){magenta} %clr(-){faint} %clr([%15.15t{14}]){faint}
-				%clr(%logger){cyan} %clr(:){faint} %m%n%wex</Pattern>
+			<Pattern>%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(%5p) %clr(${PID:- }){magenta} %clr(-){faint} %clr([%15.15t{14}]){faint} %clr(%logger){cyan} %clr(:){faint} %m%n%wex</Pattern>
 		</encoder>
 	</appender>
 
@@ -95,7 +91,7 @@
 
 	<logger name="org.springframework.integration" level="debug" />
 	
-	<logger name="com.uimirror.challenge" level="DEBUG">
+	<logger name="com.uimirror.challenge" level="DEBUG" additivity="false">
 		<appender-ref ref="CONSOLE" />
 	</logger>
 
@@ -103,11 +99,7 @@
 		<appender-ref ref="ASYNCMESSAGE" />
 	</logger>
 
-	<!-- <root level="OFF">
-		<appender-ref ref="CONSOLE" />
-		<appender-ref ref="ASYNCAPPLICATION" />
-	</root> -->
-	<root level="DEBUG">
+	<root level="OFF">
 		<appender-ref ref="CONSOLE" />
 		<appender-ref ref="ASYNCAPPLICATION" />
 	</root>

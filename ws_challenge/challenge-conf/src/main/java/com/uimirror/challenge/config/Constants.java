@@ -16,5 +16,5 @@ package com.uimirror.challenge.config;
  */
 public interface Constants {
 
-	public static final String API_KEY = "apikey";
+	public static final String AUTHORIZATION = "Authorization";
 }

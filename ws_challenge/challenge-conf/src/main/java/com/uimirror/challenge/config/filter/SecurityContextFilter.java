@@ -16,16 +16,15 @@ import javax.annotation.Priority;
 import javax.ws.rs.Priorities;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
-import javax.ws.rs.container.PreMatching;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.StringUtils;
 
 import com.uimirror.challenge.config.Constants;
-import com.uimirror.ws.api.security.UIMirrorSecurityContext;
-import com.uimirror.ws.api.security.base.ClientSession;
+import com.uimirror.ws.api.security.bean.base.AccessToken;
+import com.uimirror.ws.api.security.ouath.UIMSecurityContext;
+import com.uimirror.ws.api.security.ouath.UIMirrorSecurity;
 import com.uimirror.ws.api.security.service.ClientSecurityService;
 
 /**
@@ -48,16 +47,13 @@ public class SecurityContextFilter implements ContainerRequestFilter{
 	public void filter(final ContainerRequestContext request) throws IOException {
 		LOG.debug("[AUTH]-Request Getting Intercepted");
 		// Get session id from request header
-		final String apiKey = request.getHeaderString(Constants.API_KEY);
-		System.out.println("outh2"+request.getHeaderString("Authorization"));
+		final String token = request.getHeaderString(Constants.AUTHORIZATION);
 //		Session session = null;
-		if (!StringUtils.hasText(apiKey)) {
-			ClientSession session = clientSecurityService.getClientSession(apiKey);
-			// Get the session details from the data base or cache
-			//session = userAuthenticationService.getUserSessionByAPIKey(apiKey);
-			request.setSecurityContext(new UIMirrorSecurityContext(session));
-			//TODO analyse session Like DOes he have crossed daily and monthly limit etc
-		}
+		AccessToken tokenDetails = clientSecurityService.getAccessTokenDetails(token);
+		// Get the session details from the data base or cache
+		//session = userAuthenticationService.getUserSessionByAPIKey(apiKey);
+		request.setProperty("authScheme", UIMSecurityContext.BEARER);
+		request.setSecurityContext(new UIMirrorSecurity(new AccessToken(null, null, null, null, null, null), request.getUriInfo()));
 
 	}
 
