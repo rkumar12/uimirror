@@ -10,14 +10,8 @@
  *******************************************************************************/
 package com.uimirror.ws.api.security.service;
 
-import java.util.HashSet;
-import java.util.Set;
+import com.uimirror.ws.api.security.bean.base.AccessToken;
 
-import com.uimirror.ws.api.security.bean.UimClient;
-import com.uimirror.ws.api.security.bean.UimClientDetails;
-import com.uimirror.ws.api.security.bean.UimClientSession;
-import com.uimirror.ws.api.security.bean.base.ClientSession;
-import com.uimirror.ws.api.security.bean.base.Role;
 
 /**
  * @author Jayaram
@@ -29,7 +23,7 @@ public class UimClientSecurityServiceImpl implements ClientSecurityService {
 	 * @see com.uimirror.ws.api.security.service.ClientSecurityService#getClientSession(java.lang.String)
 	 */
 	@Override
-	public ClientSession getClientSession(String apiKey) {
+	public AccessToken getClientSession(String apiKey) {
 		//TODO implemnt the mongo and redis part by tommorow
 		//TODO populate the client details
 //		UimClientDetails details = new UimClientDetails(12, "Test", "http://abc.com");

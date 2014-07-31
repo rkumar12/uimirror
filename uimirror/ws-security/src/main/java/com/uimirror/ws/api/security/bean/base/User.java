@@ -8,23 +8,20 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.ws.api.security.service;
-
-import com.uimirror.ws.api.security.bean.base.AccessToken;
-
+package com.uimirror.ws.api.security.bean.base;
 
 /**
- * @author Jayaram
+ * @author Jay
  *
  */
-public interface ClientSecurityService {
+public class User {
+	
+	private String id;
 
-	/**
-	 * <p>This will load the Access Key, client and user info 
-	 * from the cache or the storage
-	 * system, based on the availability by access_key</p>
-	 * @param apiKey
-	 * @return
-	 */
-	public AccessToken getClientSession(final String token);
+	public String getId() {
+		return id;
+	}
+	
+	
+
 }

@@ -11,18 +11,13 @@
 package com.uimirror.ws.api.security.bean;
 
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
 import org.springframework.util.CollectionUtils;
 
 import com.uimirror.ws.api.security.bean.base.Client;
-import com.uimirror.ws.api.security.bean.base.ClientDetails;
-import com.uimirror.ws.api.security.bean.base.Role;
 import com.uimirror.ws.api.security.bean.base.SecurityFieldConstants;
+import com.uimirror.ws.api.security.ouath.License;
 
 /**
  * <p>Bean to hold all the client info of uimirror
@@ -33,38 +28,31 @@ import com.uimirror.ws.api.security.bean.base.SecurityFieldConstants;
 public final class UimClient extends Client {
 
 	private static final long serialVersionUID = -1347152923071428219L;
-
-	/**
-	 * @param uimClientDetails
-	 * @param roles
-	 */
-	public UimClient(ClientDetails uimClientDetails, Set<Role> roles) {
-		super(uimClientDetails, roles);
-	}
-
-	/**
-	 * @param id
-	 * @param apiKey
-	 * @param uimClientDetails
-	 * @param roles
-	 * @param isActive
-	 */
-	private UimClient(long id, String apiKey, ClientDetails uimClientDetails, Set<Role> roles, boolean isActive) {
-		super(id, apiKey, uimClientDetails, roles, isActive);
-	}
 	
+	public UimClient(String id, String apiKey, String secret, String redirectURI, License clientLicense, boolean active, boolean autoApproval, Map<String, Object> additionalInfo) {
+		super(id, apiKey, secret, redirectURI, clientLicense, active, autoApproval, additionalInfo);
+	}
+
+	public UimClient(String id, String apiKey, String secret, String redirectURI, License clientLicense, boolean active, boolean autoApproval) {
+		super(id, apiKey, secret, redirectURI, clientLicense, active, autoApproval);
+	}
+
 	/**
 	 *<p>This will populate the Map from the details available</p> 
 	 */
+	@Override
 	public Map<String, Object> serailizeToDoucmentMap() {
-		Map<String, Object> map = new HashMap<String, Object>(4,1);
-		
-		map.put(SecurityFieldConstants._ID, String.valueOf(this.getId()));
+
+		Map<String, Object> map = new HashMap<String, Object>(8,1);
+		map.put(SecurityFieldConstants._ID, this.getId());
 		map.put(SecurityFieldConstants._API_KEY, this.getApiKey());
-		map.put(SecurityFieldConstants._CLIENT_IS_ACTIEVE, this.isActive());
-		
-		if(!CollectionUtils.isEmpty(this.getRoles())){
-			map.put(SecurityFieldConstants._CLIENT_ROLES, this.getRoles());
+		map.put(SecurityFieldConstants._CLIENT_SECRET, this.getSecret());
+		map.put(SecurityFieldConstants._CLIENT_REDIRECT_URL, this.getRedirectURI());
+		map.put(SecurityFieldConstants._CLIENT_LICENSE, this.getClientLicense().getLicense());
+		map.put(SecurityFieldConstants._CLIENT_IS_ACTIEVE, this.isActive() ? SecurityFieldConstants._ST_NUM_1 : SecurityFieldConstants._ST_NUM_0);
+		map.put(SecurityFieldConstants._CLIENT_IS_AUTO_APPROVE, this.isAutoApproval() ? SecurityFieldConstants._ST_NUM_1 : SecurityFieldConstants._ST_NUM_0);
+		if(!CollectionUtils.isEmpty(this.getAdditionalInfo())){
+			map.put(SecurityFieldConstants._CLIENT_ADDITIONAL_INFO, this.getAdditionalInfo());
 		}
 		return map;
 	}
@@ -77,19 +65,32 @@ public final class UimClient extends Client {
 	 * @return a new instance of <code>{@link Client}</code>
 	 */
 	public static Client deserailizeFromDocumentMap(Map<String, Object> data){
-		if(CollectionUtils.isEmpty(data) || !StringUtils.isNumeric((String)data.get(SecurityFieldConstants._ID))){
+		
+		Client cl = null;
+		if(CollectionUtils.isEmpty(data)){
 			throw new IllegalArgumentException("Data Can't be Deserailized as it has no data.");
 		}
+		String _id = (String) data.get(SecurityFieldConstants._ID);
+		String _api_key = (String)data.get(SecurityFieldConstants._API_KEY);
+		String _secret = (String) data.get(SecurityFieldConstants._CLIENT_SECRET);
+		//TODO work on the url shortening part
+		String _redirect_uri = (String) data.get(SecurityFieldConstants._CLIENT_REDIRECT_URL);
+		License _license = License.getEnum((String) data.get(SecurityFieldConstants._CLIENT_LICENSE));
+		boolean _active = ((int)data.get(SecurityFieldConstants._CLIENT_IS_ACTIEVE)) == SecurityFieldConstants.NUM_1 ? Boolean.TRUE : Boolean.FALSE;
+		boolean _auto_approve = ((int)data.get(SecurityFieldConstants._CLIENT_IS_AUTO_APPROVE)) == SecurityFieldConstants.NUM_1 ? Boolean.TRUE : Boolean.FALSE;
+		
 		@SuppressWarnings("unchecked")
-		List<String> roles = (List<String>)data.get(SecurityFieldConstants._CLIENT_ROLES);
-		Set<Role> assignedRole = new HashSet<Role>();
-		for (String role : roles){
-			assignedRole.add(Role.getEnum(role));
+		Map<String, Object> additional_info = (Map<String, Object>) data.get(SecurityFieldConstants._CLIENT_ADDITIONAL_INFO);
+		if(CollectionUtils.isEmpty(additional_info)){
+			cl = new UimClient(_id, _api_key, _secret, _redirect_uri, _license, _active, _auto_approve);
+		}else{
+			cl = new UimClient(_id, _api_key, _secret, _redirect_uri, _license, _active, _auto_approve, additional_info);
 		}
-		return new UimClient(Long.valueOf((String)data.get(SecurityFieldConstants._ID)), 
-				(String)data.get(SecurityFieldConstants._API_KEY), 
-				null, 
-				assignedRole, 
-				(boolean)data.get(SecurityFieldConstants._CLIENT_IS_ACTIEVE));
+		return cl;
+	}
+
+	@Override
+	public Client updateAdditionalInfo(Map<String, Object> info) {
+		return new UimClient(this.getId(), this.getApiKey(), this.getSecret(), this.getRedirectURI(), this.getClientLicense(), this.isActive(), this.isAutoApproval(), info);
 	}
 }

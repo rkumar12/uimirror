@@ -12,7 +12,7 @@ package com.uimirror.ws.api.security.ouath;
 
 import java.security.Principal;
 
-import com.uimirror.ws.api.security.bean.base.ClientSession;
+import com.uimirror.ws.api.security.bean.base.AccessToken;
 
 /**
  * @author Jayaram
@@ -20,15 +20,15 @@ import com.uimirror.ws.api.security.bean.base.ClientSession;
  */
 public class UIMirrorSecurity implements UIMSecurityContext{
 
-	private final ClientSession session;
+	private final AccessToken token;
 	
 	
 	/**
 	 * @param session
 	 */
-	public UIMirrorSecurity(ClientSession session) {
+	public UIMirrorSecurity(AccessToken token) {
 		super();
-		this.session = session;
+		this.token = token;
 	}
 
 	/* (non-Javadoc)
@@ -36,7 +36,7 @@ public class UIMirrorSecurity implements UIMSecurityContext{
 	 */
 	@Override
 	public Principal getUserPrincipal() {
-		return session.getClient();
+		return token;
 	}
 
 	/* (non-Javadoc)

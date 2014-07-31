@@ -11,12 +11,13 @@
 package com.uimirror.ws.api.security.bean.base;
 
 import java.io.Serializable;
-import java.security.Principal;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.HashMap;
+import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
+import org.springframework.util.Assert;
+
+import com.uimirror.util.web.WebUtil;
+import com.uimirror.ws.api.security.ouath.License;
 
 /**
  * <p>Bean to hold all the client Created Information</p>
@@ -25,162 +26,116 @@ import org.apache.commons.lang.StringUtils;
  * 
  * @author Jayaram
  */
-public class Client implements Serializable, Principal{
+public abstract class Client implements Serializable{
 	
 	private static final long serialVersionUID = -4993504324270707065L;
-	private final long id;
+	
+	private final String id;
 	private final String apiKey;
-	private final ClientDetails clientDetails;
-	private final Set<Role> roles;
-	private final boolean isActive;
+	private final String secret;
+	private final String redirectURI;
+	private final License clientLicense;
+	private final boolean active;
+	private final boolean autoApproval;
+	private final Map<String, Object> additionalInfo;
 	
-	/**
-	 * <p>First Time Creating a Client will have to populate the client details along with the
-	 * role, other details are system populated.</p>
-	 * @param clientDetails
-	 * @param roles
-	 * @param isActive
-	 */
-	public Client(ClientDetails clientDetails, Set<Role> roles) {
+	public Client(String id, String apiKey, String secret, String redirectURI, License clientLicense, boolean isActive, boolean autoApproval) {
 		super();
-		if(this.clientDetails == null){
-			throw new IllegalArgumentException("Client Details Can't be empty.");
-		}
-		this.clientDetails = clientDetails;
-		this.roles = (roles == null ? new HashSet<Role>() : roles);
-		this.apiKey = UUID.randomUUID().toString();
-		this.isActive = Boolean.TRUE;
-		this.id = 0l;
-	}
-	
-	/**
-	 * <p>Constructor to populate all the fields when de-serializing.</p>
-	 * @param id
-	 * @param apiKey
-	 * @param clientDetails
-	 * @param roles
-	 * @param isActive
-	 */
-	protected Client(long id, String apiKey, ClientDetails clientDetails,
-			Set<Role> roles, boolean isActive) {
-		super();
-		this.apiKey = apiKey;
-		this.clientDetails = clientDetails;
-		this.roles = roles;
-		this.isActive = isActive;
+		vaidate(id, apiKey, secret, redirectURI, clientLicense);
 		this.id = id;
+		this.apiKey = apiKey;
+		this.secret = secret;
+		this.redirectURI = redirectURI;
+		this.clientLicense = clientLicense;
+		this.active = isActive;
+		this.autoApproval = autoApproval;
+		this.additionalInfo = new HashMap<String, Object>(5,1);
+	}
+
+	protected Client(String id, String apiKey, String secret, String redirectURI, License clientLicense, boolean isActive, boolean autoApproval, Map<String, Object> additionalInfo) {
+		super();
+		vaidate(id, apiKey, secret, redirectURI, clientLicense);
+		Assert.notNull(additionalInfo, "Additional Info Can't be empty");
+		this.id = id;
+		this.apiKey = apiKey;
+		this.secret = secret;
+		this.redirectURI = redirectURI;
+		this.clientLicense = clientLicense;
+		this.active = isActive;
+		this.autoApproval = autoApproval;
+		this.additionalInfo = additionalInfo;
 	}
 	
 	/**
-	 * <p>This will add a new role for the client</p>
-	 * <p>If the role is already present it will not do anything</p>
-	 * 
-	 * @param role
-	 * @return new instance of <code>{@link Client#Client(String, ClientDetails, long, Set, boolean)}</code>
-	 */
-	public Client addRole(String role){
-		if(StringUtils.isBlank(role)){
-			throw new IllegalArgumentException("Role Can't be invalid");
-		}
-		this.roles.add(Role.getEnum(role));
-		return new Client(this.id, this.apiKey, this.clientDetails, this.roles, this.isActive);
-	}
-	
-	/**
-	 * <p>This will revoke the role for the client</p>
-	 * <p>If the role is already present it will remove else will not do anything</p>
-	 * 
-	 * @param role
-	 * @return new instance of <code>{@link Client#Client(String, ClientDetails, long, Set, boolean)}</code>
-	 */
-	public Client revokeRole(String role){
-		if(StringUtils.isBlank(role)){
-			throw new IllegalArgumentException("Role Can't be invalid");
-		}
-		this.roles.remove(Role.getEnum(role));
-		return new Client(this.id, this.apiKey, this.clientDetails, this.roles, this.isActive);
-	}
-	
-	/**
-	 * <p>This will update the active status of the client.</p>
-	 * 
-	 * @param role
-	 * @return new instance of <code>{@link Client#Client(String, ClientDetails, long, Set, boolean)}</code>
-	 */
-	public Client updateActiveStatus(boolean status){
-		return new Client(this.id, this.apiKey, this.clientDetails, this.roles, status);
-	}
-	
-	/**
-	 * <p>This will update the api Key of the client.</p>
-	 * 
-	 * @param role
-	 * @return new instance of <code>{@link Client#Client(String, ClientDetails, long, Set, boolean)}</code>
-	 */
-	public Client regenrateApiKey(){
-		return new Client(this.id, UUID.randomUUID().toString(), this.clientDetails, this.roles, this.isActive);
-	}
-	/**
-	 * <p>This will update the client details.</p>
+	 * <p>This will create a new instance of client by adding additional information to it.</p>
+	 * @param info
 	 * @return
 	 */
-	public Client updateClientDetails(ClientDetails clientDetails){
-		if(clientDetails == null){
-			throw new IllegalArgumentException("Client Details can't be empty");
-		}
-		return new Client(clientDetails.getClientId(), this.apiKey, clientDetails, this.roles, this.isActive);
-	}
-	public Client updateClientId(long id){
-		if(id < 0l){
-			throw new IllegalArgumentException("Client Id is not valid");
-		}
-		return new Client(id, this.apiKey, this.clientDetails, this.roles, this.isActive);
-	}
-	/**
-	 * @return the apiKey
-	 */
-	public String getApiKey() {
-		return apiKey;
-	}
-	/**
-	 * @return the clientDetails
-	 */
-	public ClientDetails getClientDetails() {
-		return clientDetails;
-	}
-	/**
-	 * @return the roles
-	 */
-	public Set<Role> getRoles() {
-		return roles;
-	}
-	/**
-	 * @return the isActive
-	 */
-	public boolean isActive() {
-		return isActive;
-	}
+	public abstract Client updateAdditionalInfo(Map<String, Object> info);
 	
 	/**
-	 * @return the id
+	 * <p>This will add the additional info to the existing</p>
+	 * @param key
+	 * @param value
 	 */
-	public long getId() {
+	public Client addAdditionalInfo(String key, Object value){
+		Assert.notEmpty(additionalInfo, "Additional Info can't be updated as it doesn");
+		this.additionalInfo.putIfAbsent(key, value);
+		return this;
+	}
+
+	public String getId() {
 		return id;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
-	 */
+	public String getApiKey() {
+		return apiKey;
+	}
+
+	public String getRedirectURI() {
+		return redirectURI;
+	}
+
+	public License getClientLicense() {
+		return clientLicense;
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public Map<String, Object> getAdditionalInfo() {
+		return additionalInfo;
+	}
+
+	public String getSecret() {
+		return secret;
+	}
+
+	public boolean isAutoApproval() {
+		return autoApproval;
+	}
+	
+	private static void vaidate(String id, String apiKey, String secret, String redirectURI, License clientLicense){
+		Assert.hasText(id, "Client Id Can't be empty.");
+		Assert.hasText(apiKey, "Client API Key Can't be empty.");
+		Assert.hasText(secret, "Client Secret Key Can't be empty.");
+		if(!WebUtil.isValidUrl(redirectURI)){
+			throw new IllegalArgumentException("Redirect URI is not valid");
+		}
+		Assert.notNull(clientLicense, "License Should have a license");
+	}
+	public abstract Map<String, Object> serailizeToDoucmentMap();
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((apiKey == null) ? 0 : apiKey.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
-	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -195,25 +150,20 @@ public class Client implements Serializable, Principal{
 				return false;
 		} else if (!apiKey.equals(other.apiKey))
 			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
 		return true;
 	}
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
+
 	@Override
 	public String toString() {
-		return "Client [id=" + id + ", apiKey=" + apiKey + ", clientDetails="
-				+ clientDetails + ", roles=" + roles + ", isActive=" + isActive
-				+ "]";
+		return "Client [id=" + id + ", apiKey=" + apiKey + ", secret=" + secret
+				+ ", redirectURI=" + redirectURI + ", clientLicense="
+				+ clientLicense + ", active=" + active + ", autoApproval="
+				+ autoApproval + ", additionalInfo=" + additionalInfo + "]";
 	}
-	/* (non-Javadoc)
-	 * @see java.security.Principal#getName()
-	 */
-	@Override
-	public String getName() {
-		// TODO Auto-generated method stub
-		return this.getApiKey();
-	}
-
 	
 }
