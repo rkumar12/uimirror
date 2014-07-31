@@ -15,6 +15,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.glassfish.jersey.server.JSONP;
 import org.springframework.stereotype.Component;
 /**
  * @author Jayaram
@@ -22,12 +23,13 @@ import org.springframework.stereotype.Component;
  */
 @Path("/")
 @Component
-//@RolesAllowed({ "ADMIN"})
+@RolesAllowed({ "ADMIN"})
 public class ChallengeController {
 
 	@GET
-	@Produces(MediaType.TEXT_PLAIN)
+	@Produces(MediaType.APPLICATION_JSON)
 	@RolesAllowed("ADMIN")
+	@JSONP(queryParam="cb")
 	public String getHello() {
 		return String.format("Hello world");
 	}

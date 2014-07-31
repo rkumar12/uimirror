@@ -38,7 +38,7 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.DuplicateKeyException;
 import com.mongodb.WriteResult;
-import com.uimirror.ws.api.security.base.SecurityFieldConstants;
+import com.uimirror.ws.api.security.bean.base.SecurityFieldConstants;
 
 /**
  * <p>Basic MONGO implementation of the client details service.</p>

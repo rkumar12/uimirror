@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.ws.api.security;
+package com.uimirror.ws.api.security.bean;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -19,10 +19,10 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.util.CollectionUtils;
 
-import com.uimirror.ws.api.security.base.Client;
-import com.uimirror.ws.api.security.base.ClientDetails;
-import com.uimirror.ws.api.security.base.Role;
-import com.uimirror.ws.api.security.base.SecurityFieldConstants;
+import com.uimirror.ws.api.security.bean.base.Client;
+import com.uimirror.ws.api.security.bean.base.ClientDetails;
+import com.uimirror.ws.api.security.bean.base.Role;
+import com.uimirror.ws.api.security.bean.base.SecurityFieldConstants;
 
 /**
  * <p>Bean to hold all the client info of uimirror

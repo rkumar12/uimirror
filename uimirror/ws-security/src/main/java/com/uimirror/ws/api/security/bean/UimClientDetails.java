@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.ws.api.security;
+package com.uimirror.ws.api.security.bean;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -19,8 +19,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
 
-import com.uimirror.ws.api.security.base.ClientDetails;
-import com.uimirror.ws.api.security.base.SecurityFieldConstants;
+import com.uimirror.ws.api.security.bean.base.ClientDetails;
+import com.uimirror.ws.api.security.bean.base.SecurityFieldConstants;
 
 /**
  * <p>Bean to hold all the client details of uimirror

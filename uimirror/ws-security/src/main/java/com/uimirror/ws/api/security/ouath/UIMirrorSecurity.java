@@ -8,24 +8,25 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.ws.api.security;
+package com.uimirror.ws.api.security.ouath;
 
 import java.security.Principal;
-import javax.ws.rs.core.SecurityContext;
-import com.uimirror.ws.api.security.base.ClientSession;
+
+import com.uimirror.ws.api.security.bean.base.ClientSession;
 
 /**
  * @author Jayaram
  *
  */
-public class UIMirrorSecurityContext implements SecurityContext{
+public class UIMirrorSecurity implements UIMSecurityContext{
 
 	private final ClientSession session;
+	
 	
 	/**
 	 * @param session
 	 */
-	public UIMirrorSecurityContext(ClientSession session) {
+	public UIMirrorSecurity(ClientSession session) {
 		super();
 		this.session = session;
 	}
@@ -60,7 +61,19 @@ public class UIMirrorSecurityContext implements SecurityContext{
 	 */
 	@Override
 	public String getAuthenticationScheme() {
-		return SecurityContext.BASIC_AUTH;
+		return UIMSecurityContext.BEARER;
+	}
+
+	@Override
+	public boolean isUserHasLicense(String license) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public License getUserLicense() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	

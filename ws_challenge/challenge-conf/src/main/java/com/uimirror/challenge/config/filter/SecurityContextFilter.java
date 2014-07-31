@@ -12,6 +12,8 @@ package com.uimirror.challenge.config.filter;
 
 import java.io.IOException;
 
+import javax.annotation.Priority;
+import javax.ws.rs.Priorities;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.container.PreMatching;
@@ -30,7 +32,8 @@ import com.uimirror.ws.api.security.service.ClientSecurityService;
  * @author Jayaram
  *
  */
-@PreMatching
+//@PreMatching
+@Priority(Priorities.AUTHORIZATION)
 public class SecurityContextFilter implements ContainerRequestFilter{
 	protected static final Logger LOG = LoggerFactory.getLogger(SecurityContextFilter.class);
 	
@@ -46,6 +49,7 @@ public class SecurityContextFilter implements ContainerRequestFilter{
 		LOG.debug("[AUTH]-Request Getting Intercepted");
 		// Get session id from request header
 		final String apiKey = request.getHeaderString(Constants.API_KEY);
+		System.out.println("outh2"+request.getHeaderString("Authorization"));
 //		Session session = null;
 		if (!StringUtils.hasText(apiKey)) {
 			ClientSession session = clientSecurityService.getClientSession(apiKey);

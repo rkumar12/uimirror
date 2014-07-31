@@ -10,7 +10,7 @@
  *******************************************************************************/
 package com.uimirror.ws.api.security.service;
 
-import com.uimirror.ws.api.security.base.ClientSession;
+import com.uimirror.ws.api.security.bean.base.ClientSession;
 
 /**
  * @author Jayaram

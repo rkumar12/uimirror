@@ -8,11 +8,11 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.ws.api.security;
+package com.uimirror.ws.api.security.bean;
 
-import com.uimirror.ws.api.security.base.Client;
-import com.uimirror.ws.api.security.base.ClientAccessInfo;
-import com.uimirror.ws.api.security.base.ClientSession;
+import com.uimirror.ws.api.security.bean.base.Client;
+import com.uimirror.ws.api.security.bean.base.ClientAccessInfo;
+import com.uimirror.ws.api.security.bean.base.ClientSession;
 
 /**
  * <p>This wil old uimirror ws client access info</p>

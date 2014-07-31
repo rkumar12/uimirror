@@ -49,7 +49,7 @@ public class WebAppInitializer extends SpringBootServletInitializer {
         ServletRegistrationBean registration = new ServletRegistrationBean(dispatcherServlet());
         Map<String,String> params = new HashMap<String,String>();
         params.put("javax.ws.rs.Application","com.uimirror.challenge.config.JerssyApplicationInitializer");
-        params.put("jersey.config.server.provider.classnames","com.uimirror.api.filter.SecurityContextFilter,com.uimirror.api.filter.PoweredByResponseFilter");
+        params.put("jersey.config.server.provider.classnames","com.uimirror.api.filter.SecurityContextFilter,com.uimirror.challenge.config.filter.UimCORSFilter, com.uimirror.api.filter.PoweredByResponseFilter");
         registration.setInitParameters(params);
         registration.addUrlMappings("/*");
         return registration;

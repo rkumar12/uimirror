@@ -22,7 +22,7 @@ import org.springframework.util.CollectionUtils;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
-import com.uimirror.ws.api.security.base.SecurityFieldConstants;
+import com.uimirror.ws.api.security.bean.base.SecurityFieldConstants;
 
 /**
  * <p>This class works as a bridge between java bean and mongo serialization</p>
