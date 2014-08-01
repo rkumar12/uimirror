@@ -12,10 +12,14 @@ package com.uimirror.ws.api.security.bean.base;
 
 import java.io.Serializable;
 import java.time.ZonedDateTime;
+import java.util.Map;
 
 import org.springframework.util.Assert;
 
+import com.uimirror.mongo.feature.BeanBasedDocument;
+import com.uimirror.ws.api.security.ReadWriteScope;
 import com.uimirror.ws.api.security.Scope;
+import com.uimirror.ws.api.security.common.SecurityFieldConstants;
 import com.uimirror.ws.api.security.ouath.UIMPrincipal;
 
 /**
@@ -23,7 +27,7 @@ import com.uimirror.ws.api.security.ouath.UIMPrincipal;
  * @author Jay
  *
  */
-public final class AccessToken implements Serializable, UIMPrincipal{
+public final class AccessToken extends BeanBasedDocument implements Serializable, UIMPrincipal{
 
 	private static final long serialVersionUID = 1920019552923852689L;
 	private final String token;
@@ -32,15 +36,49 @@ public final class AccessToken implements Serializable, UIMPrincipal{
 	private final Scope scope;
 	private Client client;
 	private User user;
+	private final String clientId;
+	private final String userId;
 
 	public AccessToken(String token, ZonedDateTime grantedOn, ZonedDateTime expiresOn, Scope scope, Client client, User user) {
-		super();
+		super(8);
 		this.token = token;
 		this.grantedOn = grantedOn;
 		this.expiresOn = expiresOn;
 		this.scope = scope;
 		this.client = client;
+		this.clientId = this.client.getId();
 		this.user = user;
+		this.userId = this.user.getId();
+		intialize();
+	}
+	
+	public AccessToken(String token, ZonedDateTime grantedOn, ZonedDateTime expiresOn, Scope scope, String clientId, String userId) {
+		super(8);
+		this.token = token;
+		this.grantedOn = grantedOn;
+		this.expiresOn = expiresOn;
+		this.scope = scope;
+		this.clientId = clientId;
+		this.userId = userId;
+		intialize();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public AccessToken(Map<String, Object> m) {
+		super(m);
+		Assert.notEmpty(m, "Object Can't be Deserailized");
+		String token = (String)m.get(SecurityFieldConstants._ID);
+		Map<String, Object> scope = (Map<String, Object>)m.get(SecurityFieldConstants._CLIENT_ACCESS_SCOPE);
+		Assert.hasText(token, "Access Token Doesn't have a valid token");
+		Assert.notEmpty(scope, "Access Token doesn't have a valid scope");
+		int appCode = (int)scope.get(SecurityFieldConstants._APP);
+		String grantedAuthority = (String)scope.get(SecurityFieldConstants._CLIENT_ACCESS_READ_WRITE);
+		this.token = token;
+		this.grantedOn = (ZonedDateTime)m.get(SecurityFieldConstants._CLIENT_ACCESS_GRANTED_ON);
+		this.expiresOn = (ZonedDateTime)m.get(SecurityFieldConstants._CLIENT_ACCESS_EXPIRIES_ON);
+		this.scope = new Scope(appCode, ReadWriteScope.getEnum(grantedAuthority));
+		this.clientId = (String)m.get(SecurityFieldConstants._CLIENT_ACCESS_CLIENT_ID);
+		this.userId = (String)m.get(SecurityFieldConstants._CLIENT_ACCESS_USER_ID);
 	}
 
 	@Override
@@ -97,12 +135,16 @@ public final class AccessToken implements Serializable, UIMPrincipal{
 		return this.expiresOn;
 	}
 	
+	/**
+	 * <p>This validated the context of the access token</p>
+	 * <p>validate whether input parameters has sufficient attributes or not</p>
+	 */
 	private void validateContext(){
 		Assert.hasText(this.token, "No Security context available");
 		Assert.notNull(this.user, "No Security context available");
 		Assert.notNull(this.client, "No Security context available");
 	}
-
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -145,6 +187,18 @@ public final class AccessToken implements Serializable, UIMPrincipal{
 		return "AccessToken [token=" + token + ", grantedOn=" + grantedOn
 				+ ", expiresOn=" + expiresOn + ", scope=" + scope + ", client="
 				+ client + ", user=" + user + "]";
+	}
+	
+	/**
+	 * <p>Initialize to the DB Map Object</p>
+	 */
+	private void intialize(){
+		super.put(SecurityFieldConstants._ID, this.token);
+		super.put(SecurityFieldConstants._CLIENT_ACCESS_GRANTED_ON, this.grantedOn);
+		super.put(SecurityFieldConstants._CLIENT_ACCESS_EXPIRIES_ON, this.expiresOn);
+		super.put(SecurityFieldConstants._CLIENT_ACCESS_SCOPE, this.scope);
+		super.put(SecurityFieldConstants._CLIENT_ACCESS_CLIENT_ID, this.clientId);
+		super.put(SecurityFieldConstants._CLIENT_ACCESS_USER_ID, this.userId);
 	}
 	
 }

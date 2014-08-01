@@ -25,6 +25,7 @@ public interface SecurityFieldConstants {
 	public static final String _CURRENCY = "cur";
 	public static final String _LOCALE = "loacle";
 	public static final String _IP = "ip";
+	public static final String _APP = "app";
 	
 	//Client Embed Accessed Document Field
 	public static final String _ACCESSED_ON = "on";
@@ -39,6 +40,15 @@ public interface SecurityFieldConstants {
 	public static final String _CLIENT_IS_ACTIEVE = "status";
 	public static final String _CLIENT_IS_AUTO_APPROVE = "approve";
 	public static final String _CLIENT_ADDITIONAL_INFO = "extra";
+	
+	//Access Token Fields
+	public static final String _CLIENT_ACCESS_TOKEN = "token";
+	public static final String _CLIENT_ACCESS_GRANTED_ON = "createon";
+	public static final String _CLIENT_ACCESS_EXPIRIES_ON = "expireson";
+	public static final String _CLIENT_ACCESS_SCOPE = "scope";
+	public static final String _CLIENT_ACCESS_CLIENT_ID = "client_id";
+	public static final String _CLIENT_ACCESS_USER_ID = "user_id";
+	public static final String _CLIENT_ACCESS_READ_WRITE = "ga";//Granted Authorities
 	
 	//Common Attributes
 	public static final String _ST_NUM_0 = "0";

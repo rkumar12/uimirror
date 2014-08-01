@@ -32,6 +32,13 @@ public final class Scope {
 		this.applicationCode = application;
 		this.readWriteScope = readWriteScope;
 	}
+	
+	public Scope(int application, String readWriteScope) {
+		if(application <= 0)
+			throw new IllegalArgumentException("Not a Valid Appplication Identifier.");
+		this.applicationCode = application;
+		this.readWriteScope = ReadWriteScope.getEnum(readWriteScope);
+	}
 
 	public int getApplicationName() {
 		return applicationCode;

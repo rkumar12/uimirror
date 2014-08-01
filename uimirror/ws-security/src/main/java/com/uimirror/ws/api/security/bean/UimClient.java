@@ -32,7 +32,7 @@ public final class UimClient extends Client {
 		super(id, apiKey, secret, redirectURI, clientLicense, active, autoApproval, additionalInfo);
 		this.initialize();
 		if(!CollectionUtils.isEmpty(this.getAdditionalInfo())){
-			put(SecurityFieldConstants._CLIENT_ADDITIONAL_INFO, this.getAdditionalInfo());
+			super.put(SecurityFieldConstants._CLIENT_ADDITIONAL_INFO, this.getAdditionalInfo());
 		}
 	}
 
@@ -70,21 +70,21 @@ public final class UimClient extends Client {
 	 * <p>Initialize the common and frequent used variable</p>
 	 */
 	private void initializeLess(){
-		put(SecurityFieldConstants._ID, this.getId());
-		put(SecurityFieldConstants._CLIENT_LICENSE, this.getClientLicense());
+		super.put(SecurityFieldConstants._ID, this.getId());
+		super.put(SecurityFieldConstants._CLIENT_LICENSE, this.getClientLicense());
 	}
 	
 	/**
 	 * <p>Initialize the commonly used attributes into the map</p>
 	 */
 	private void initialize() {
-		put(SecurityFieldConstants._ID, this.getId());
-		put(SecurityFieldConstants._API_KEY, this.getApiKey());
-		put(SecurityFieldConstants._CLIENT_SECRET, this.getSecret());
-		put(SecurityFieldConstants._CLIENT_REDIRECT_URL, this.getRedirectURI());
-		put(SecurityFieldConstants._CLIENT_LICENSE, this.getClientLicense().getLicense());
-		put(SecurityFieldConstants._CLIENT_IS_ACTIEVE, this.isActive() ? SecurityFieldConstants._ST_NUM_1 : SecurityFieldConstants._ST_NUM_0);
-		put(SecurityFieldConstants._CLIENT_IS_AUTO_APPROVE, this.isAutoApproval() ? SecurityFieldConstants._ST_NUM_1 : SecurityFieldConstants._ST_NUM_0);
+		super.put(SecurityFieldConstants._ID, this.getId());
+		super.put(SecurityFieldConstants._API_KEY, this.getApiKey());
+		super.put(SecurityFieldConstants._CLIENT_SECRET, this.getSecret());
+		super.put(SecurityFieldConstants._CLIENT_REDIRECT_URL, this.getRedirectURI());
+		super.put(SecurityFieldConstants._CLIENT_LICENSE, this.getClientLicense().getLicense());
+		super.put(SecurityFieldConstants._CLIENT_IS_ACTIEVE, this.isActive() ? SecurityFieldConstants._ST_NUM_1 : SecurityFieldConstants._ST_NUM_0);
+		super.put(SecurityFieldConstants._CLIENT_IS_AUTO_APPROVE, this.isAutoApproval() ? SecurityFieldConstants._ST_NUM_1 : SecurityFieldConstants._ST_NUM_0);
 	}
 
 }

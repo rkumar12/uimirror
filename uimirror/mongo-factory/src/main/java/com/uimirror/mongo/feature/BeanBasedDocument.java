@@ -11,6 +11,7 @@
 package com.uimirror.mongo.feature;
 
 import java.io.Serializable;
+import java.util.Map;
 
 import org.bson.BasicBSONObject;
 
@@ -30,6 +31,10 @@ public class BeanBasedDocument extends BasicBSONObject implements Serializable, 
 	}
 	
 	public BeanBasedDocument(){
+	}
+	
+	public BeanBasedDocument(Map<String, Object> m){
+		super(m);
 	}
 
 	@Override
