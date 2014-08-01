@@ -14,10 +14,9 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.bson.BasicBSONObject;
 import org.springframework.util.Assert;
 
-import com.mongodb.DBObject;
+import com.uimirror.mongo.feature.BeanBasedDocument;
 import com.uimirror.util.web.WebUtil;
 import com.uimirror.ws.api.security.common.SecurityFieldConstants;
 import com.uimirror.ws.api.security.ouath.License;
@@ -29,7 +28,7 @@ import com.uimirror.ws.api.security.ouath.License;
  * 
  * @author Jayaram
  */
-public class Client extends BasicBSONObject implements Serializable, DBObject{
+public class Client extends BeanBasedDocument implements Serializable{
 	
 	private static final long serialVersionUID = -4993504324270707065L;
 	
@@ -88,7 +87,7 @@ public class Client extends BasicBSONObject implements Serializable, DBObject{
 	}
 
 	protected Client(String id, String apiKey, String secret, String redirectURI, License clientLicense, boolean isActive, boolean autoApproval, Map<String, Object> additionalInfo) {
-		super();
+		super(10);
 		vaidate(id, apiKey, secret, redirectURI, clientLicense);
 		Assert.notNull(additionalInfo, "Additional Info Can't be empty");
 		this.id = id;
@@ -203,16 +202,4 @@ public class Client extends BasicBSONObject implements Serializable, DBObject{
 				+ autoApproval + ", additionalInfo=" + additionalInfo + "]";
 	}
 
-	@Override
-	public void markAsPartialObject() {
-		_isPartialObject = Boolean.TRUE;
-		
-	}
-
-	@Override
-	public boolean isPartialObject() {
-		return _isPartialObject;
-	}
-
-	private boolean _isPartialObject;
 }
