@@ -14,9 +14,12 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bson.BasicBSONObject;
 import org.springframework.util.Assert;
 
+import com.mongodb.DBObject;
 import com.uimirror.util.web.WebUtil;
+import com.uimirror.ws.api.security.common.SecurityFieldConstants;
 import com.uimirror.ws.api.security.ouath.License;
 
 /**
@@ -26,7 +29,7 @@ import com.uimirror.ws.api.security.ouath.License;
  * 
  * @author Jayaram
  */
-public abstract class Client implements Serializable{
+public class Client extends BasicBSONObject implements Serializable, DBObject{
 	
 	private static final long serialVersionUID = -4993504324270707065L;
 	
@@ -39,8 +42,40 @@ public abstract class Client implements Serializable{
 	private final boolean autoApproval;
 	private final Map<String, Object> additionalInfo;
 	
+	/**
+	 * <p>For Security context client id and license is sufficient to gather the principal</p>
+	 * @param id
+	 */
+	public Client(String id, License clientLicense) {
+		super(5);
+		this.id = id;
+		this.apiKey=SecurityFieldConstants.EMPTY;
+		this.secret = SecurityFieldConstants.EMPTY;
+		this.redirectURI = SecurityFieldConstants.EMPTY;
+		this.clientLicense = clientLicense;
+		this.active = Boolean.TRUE;
+		this.autoApproval = Boolean.FALSE;
+		this.additionalInfo = null;
+	}
+	
+	/**
+	 * <p>For Security context client id and license is sufficient to gather the principal</p>
+	 * @param id
+	 */
+	public Client(String id, String license) {
+		super(5);
+		this.id = id;
+		this.apiKey=SecurityFieldConstants.EMPTY;
+		this.secret = SecurityFieldConstants.EMPTY;
+		this.redirectURI = SecurityFieldConstants.EMPTY;
+		this.clientLicense = License.getEnum(license);
+		this.active = Boolean.TRUE;
+		this.autoApproval = Boolean.FALSE;
+		this.additionalInfo = null;
+	}
+
 	public Client(String id, String apiKey, String secret, String redirectURI, License clientLicense, boolean isActive, boolean autoApproval) {
-		super();
+		super(10);
 		vaidate(id, apiKey, secret, redirectURI, clientLicense);
 		this.id = id;
 		this.apiKey = apiKey;
@@ -67,11 +102,13 @@ public abstract class Client implements Serializable{
 	}
 	
 	/**
-	 * <p>This will create a new instance of client by adding additional information to it.</p>
+	 * <p>This will create a new instance</p>
 	 * @param info
 	 * @return
 	 */
-	public abstract Client updateAdditionalInfo(Map<String, Object> info);
+	public Client updateAdditionalInfo(Map<String, Object> info) {
+		return new Client(this.getId(), this.getApiKey(), this.getSecret(), this.getRedirectURI(), this.getClientLicense(), this.isActive(), this.isAutoApproval(), info);
+	}
 	
 	/**
 	 * <p>This will add the additional info to the existing</p>
@@ -79,7 +116,7 @@ public abstract class Client implements Serializable{
 	 * @param value
 	 */
 	public Client addAdditionalInfo(String key, Object value){
-		Assert.notEmpty(additionalInfo, "Additional Info can't be updated as it doesn");
+		Assert.notEmpty(additionalInfo, "Additional Info can't be updated as it's not yet intialized.");
 		this.additionalInfo.putIfAbsent(key, value);
 		return this;
 	}
@@ -125,7 +162,7 @@ public abstract class Client implements Serializable{
 		}
 		Assert.notNull(clientLicense, "License Should have a license");
 	}
-	public abstract Map<String, Object> serailizeToDoucmentMap();
+	
 
 	@Override
 	public int hashCode() {
@@ -165,5 +202,17 @@ public abstract class Client implements Serializable{
 				+ clientLicense + ", active=" + active + ", autoApproval="
 				+ autoApproval + ", additionalInfo=" + additionalInfo + "]";
 	}
-	
+
+	@Override
+	public void markAsPartialObject() {
+		_isPartialObject = Boolean.TRUE;
+		
+	}
+
+	@Override
+	public boolean isPartialObject() {
+		return _isPartialObject;
+	}
+
+	private boolean _isPartialObject;
 }

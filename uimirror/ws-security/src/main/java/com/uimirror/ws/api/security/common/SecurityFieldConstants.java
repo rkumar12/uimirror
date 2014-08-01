@@ -40,7 +40,9 @@ public interface SecurityFieldConstants {
 	public static final String _CLIENT_IS_AUTO_APPROVE = "approve";
 	public static final String _CLIENT_ADDITIONAL_INFO = "extra";
 	
+	//Common Attributes
 	public static final String _ST_NUM_0 = "0";
 	public static final String _ST_NUM_1 = "1";
 	public static final int NUM_1 = 1;
+	public static final String EMPTY = "";
 }
