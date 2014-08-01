@@ -17,7 +17,7 @@ import com.uimirror.ws.api.security.bean.base.AccessToken;
  * @author Jayaram
  *
  */
-public class UimClientSecurityServiceImpl implements ClientSecurityService {
+public class UimAccessTokenServiceImpl implements AccessTokenService {
 
 	/* (non-Javadoc)
 	 * @see com.uimirror.ws.api.security.service.ClientSecurityService#getClientSession(java.lang.String)

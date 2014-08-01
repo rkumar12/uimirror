@@ -17,7 +17,7 @@ import com.uimirror.ws.api.security.bean.base.AccessToken;
  * @author Jayaram
  *
  */
-public interface ClientSecurityService {
+public interface AccessTokenService {
 
 	/**
 	 * <p>This will load the Access Key, client and user info 
