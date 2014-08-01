@@ -63,6 +63,11 @@ public final class AccessToken extends BeanBasedDocument implements Serializable
 		intialize();
 	}
 	
+	/**
+	 * <p>It will de-serialize from the map to bean</p>
+	 * <p>If the map doesn't have sufficient(As in all required final fields) keys, it might through {@link NullPointerException}, {@link ClassCastException} or {@link IllegalArgumentException}</p>
+	 * @param m
+	 */
 	@SuppressWarnings("unchecked")
 	public AccessToken(Map<String, Object> m) {
 		super(m);
