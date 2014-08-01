@@ -11,11 +11,11 @@
 package com.uimirror.ws.api.security.bean.base;
 
 import java.io.Serializable;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
-
 import org.springframework.util.Assert;
-
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 import com.uimirror.mongo.feature.BeanBasedDocument;
 import com.uimirror.util.web.WebUtil;
 import com.uimirror.ws.api.security.common.SecurityFieldConstants;
@@ -40,6 +40,35 @@ public class Client extends BeanBasedDocument implements Serializable{
 	private final boolean active;
 	private final boolean autoApproval;
 	private final Map<String, Object> additionalInfo;
+	
+	/**
+	 * @param m
+	 */
+	@SuppressWarnings("unchecked")
+	public Client(Map<String, Object> m){
+		super(m);
+		Assert.notEmpty(m, "Object Can't be Deserailized");
+		//Fail fast if Id and license is not valid.
+		String _id = (String)m.get(SecurityFieldConstants._ID);
+		Assert.hasText(_id, "Client Id Can't be empty.");
+		this.id = _id;
+		String _license_id = (String)m.get(SecurityFieldConstants._CLIENT_LICENSE);
+		this.clientLicense = License.getEnum(_license_id);
+		String _apiKey = (String)m.get(SecurityFieldConstants._API_KEY);
+		String _secret = (String)m.get(SecurityFieldConstants._CLIENT_SECRET);
+		String _redirectUri = (String)m.get(SecurityFieldConstants._CLIENT_REDIRECT_URL);
+		
+		String _status = (String)m.get(SecurityFieldConstants._CLIENT_IS_ACTIEVE);
+		String _autoApproval = (String)m.get(SecurityFieldConstants._CLIENT_IS_AUTO_APPROVE);
+		Map<String, Object> _additionalInfo = (Map<String, Object>)m.get(SecurityFieldConstants._CLIENT_ADDITIONAL_INFO);
+		//Below are the optional fields
+		this.apiKey= StringUtils.hasText(_apiKey)? _apiKey : SecurityFieldConstants.EMPTY;
+		this.secret = StringUtils.hasText(_secret)? _secret : SecurityFieldConstants.EMPTY;
+		this.redirectURI = StringUtils.hasText(_redirectUri)? _redirectUri : SecurityFieldConstants.EMPTY;
+		this.active = SecurityFieldConstants._ST_NUM_1.equals(_status) ? Boolean.TRUE : Boolean.FALSE;
+		this.autoApproval = SecurityFieldConstants._ST_NUM_1.equals(_autoApproval) ? Boolean.TRUE : Boolean.FALSE;
+		this.additionalInfo = CollectionUtils.isEmpty(_additionalInfo) ? new LinkedHashMap<String, Object>(5): _additionalInfo;
+	}
 	
 	/**
 	 * <p>For Security context client id and license is sufficient to gather the principal</p>
@@ -73,6 +102,15 @@ public class Client extends BeanBasedDocument implements Serializable{
 		this.additionalInfo = null;
 	}
 
+	/**
+	 * @param id
+	 * @param apiKey
+	 * @param secret
+	 * @param redirectURI
+	 * @param clientLicense
+	 * @param isActive
+	 * @param autoApproval
+	 */
 	public Client(String id, String apiKey, String secret, String redirectURI, License clientLicense, boolean isActive, boolean autoApproval) {
 		super(10);
 		vaidate(id, apiKey, secret, redirectURI, clientLicense);
@@ -83,9 +121,19 @@ public class Client extends BeanBasedDocument implements Serializable{
 		this.clientLicense = clientLicense;
 		this.active = isActive;
 		this.autoApproval = autoApproval;
-		this.additionalInfo = new HashMap<String, Object>(5,1);
+		this.additionalInfo = new LinkedHashMap<String, Object>(5,1);
 	}
 
+	/**
+	 * @param id
+	 * @param apiKey
+	 * @param secret
+	 * @param redirectURI
+	 * @param clientLicense
+	 * @param isActive
+	 * @param autoApproval
+	 * @param additionalInfo
+	 */
 	protected Client(String id, String apiKey, String secret, String redirectURI, License clientLicense, boolean isActive, boolean autoApproval, Map<String, Object> additionalInfo) {
 		super(10);
 		vaidate(id, apiKey, secret, redirectURI, clientLicense);
@@ -152,6 +200,13 @@ public class Client extends BeanBasedDocument implements Serializable{
 		return autoApproval;
 	}
 	
+	/**
+	 * @param id
+	 * @param apiKey
+	 * @param secret
+	 * @param redirectURI
+	 * @param clientLicense
+	 */
 	private static void vaidate(String id, String apiKey, String secret, String redirectURI, License clientLicense){
 		Assert.hasText(id, "Client Id Can't be empty.");
 		Assert.hasText(apiKey, "Client API Key Can't be empty.");

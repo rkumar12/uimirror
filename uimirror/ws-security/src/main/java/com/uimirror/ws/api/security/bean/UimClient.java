@@ -22,12 +22,23 @@ import com.uimirror.ws.api.security.ouath.License;
  * <p>Bean to hold all the client info of uimirror
  * <p>Class has been marked as immutable </p>
  * <code>{@link Client}</code>
+ * <p>This can be directly serialized to or from the DB</p>
  * @author Jayaram
  */
 public final class UimClient extends Client {
 
 	private static final long serialVersionUID = -1347152923071428219L;
 	
+	/**
+	 * @param id
+	 * @param apiKey
+	 * @param secret
+	 * @param redirectURI
+	 * @param clientLicense
+	 * @param active
+	 * @param autoApproval
+	 * @param additionalInfo
+	 */
 	public UimClient(String id, String apiKey, String secret, String redirectURI, License clientLicense, boolean active, boolean autoApproval, Map<String, Object> additionalInfo) {
 		super(id, apiKey, secret, redirectURI, clientLicense, active, autoApproval, additionalInfo);
 		this.initialize();
@@ -36,21 +47,48 @@ public final class UimClient extends Client {
 		}
 	}
 
+	/**
+	 * @param id
+	 * @param apiKey
+	 * @param secret
+	 * @param redirectURI
+	 * @param clientLicense
+	 * @param active
+	 * @param autoApproval
+	 */
 	public UimClient(String id, String apiKey, String secret, String redirectURI, License clientLicense, boolean active, boolean autoApproval) {
 		super(id, apiKey, secret, redirectURI, clientLicense, active, autoApproval);
 		this.initialize();
 	}
 
+	/**
+	 * @param id
+	 * @param clientLicense
+	 */
 	public UimClient(String id, License clientLicense) {
 		super(id, clientLicense);
 		this.initializeLess();
 	}
 
+	/**
+	 * @param id
+	 * @param license
+	 */
 	public UimClient(String id, String license) {
 		super(id, license);
 		this.initializeLess();
 	}
+	
+	/**
+	 * @param m
+	 */
+	public UimClient(Map<String, Object> m) {
+		super(m);
+	}
 
+	/* (non-Javadoc)
+	 * @see com.uimirror.ws.api.security.bean.base.Client#updateAdditionalInfo(java.util.Map)
+	 */
 	@Override
 	public Client updateAdditionalInfo(Map<String, Object> info) {
 		return new UimClient(this.getId(), this.getApiKey(), this.getSecret(), this.getRedirectURI(), this.getClientLicense(), this.isActive(), this.isAutoApproval(), info);

@@ -39,6 +39,14 @@ public final class AccessToken extends BeanBasedDocument implements Serializable
 	private final String clientId;
 	private final String userId;
 
+	/**
+	 * @param token
+	 * @param grantedOn
+	 * @param expiresOn
+	 * @param scope
+	 * @param client
+	 * @param user
+	 */
 	public AccessToken(String token, ZonedDateTime grantedOn, ZonedDateTime expiresOn, Scope scope, Client client, User user) {
 		super(8);
 		this.token = token;
@@ -52,6 +60,14 @@ public final class AccessToken extends BeanBasedDocument implements Serializable
 		intialize();
 	}
 	
+	/**
+	 * @param token
+	 * @param grantedOn
+	 * @param expiresOn
+	 * @param scope
+	 * @param clientId
+	 * @param userId
+	 */
 	public AccessToken(String token, ZonedDateTime grantedOn, ZonedDateTime expiresOn, Scope scope, String clientId, String userId) {
 		super(8);
 		this.token = token;
@@ -86,54 +102,81 @@ public final class AccessToken extends BeanBasedDocument implements Serializable
 		this.userId = (String)m.get(SecurityFieldConstants._CLIENT_ACCESS_USER_ID);
 	}
 
+	/* (non-Javadoc)
+	 * @see java.security.Principal#getName()
+	 */
 	@Override
 	public String getName() {
 		this.validateContext();
 		return this.token;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.uimirror.ws.api.security.ouath.UIMPrincipal#getUserId()
+	 */
 	@Override
 	public String getUserId() {
 		this.validateContext();
 		return this.user.getId();
 	}
 
+	/* (non-Javadoc)
+	 * @see com.uimirror.ws.api.security.ouath.UIMPrincipal#getClientId()
+	 */
 	@Override
 	public String getClientId() {
 		this.validateContext();
 		return this.client.getId();
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.uimirror.ws.api.security.ouath.UIMPrincipal#getClientApiKey()
+	 */
 	@Override
 	public String getClientApiKey() {
 		this.validateContext();
 		return this.client.getApiKey();
 	}
 
+	/* (non-Javadoc)
+	 * @see com.uimirror.ws.api.security.ouath.UIMPrincipal#getScope()
+	 */
 	@Override
 	public Scope getScope() {
 		this.validateContext();
 		return this.scope;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.uimirror.ws.api.security.ouath.UIMPrincipal#getClient()
+	 */
 	@Override
 	public Client getClient() {
 		this.validateContext();
 		return this.client;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.uimirror.ws.api.security.ouath.UIMPrincipal#getUser()
+	 */
 	@Override
 	public User getUser() {
 		this.validateContext();
 		return this.user;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.uimirror.ws.api.security.ouath.UIMPrincipal#getTokenCreationDate()
+	 */
 	@Override
 	public ZonedDateTime getTokenCreationDate() {
 		this.validateContext();
 		return this.grantedOn;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.uimirror.ws.api.security.ouath.UIMPrincipal#getExpiresOn()
+	 */
 	@Override
 	public ZonedDateTime getExpiresOn() {
 		this.validateContext();
