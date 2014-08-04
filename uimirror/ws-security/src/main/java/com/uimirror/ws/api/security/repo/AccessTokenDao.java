@@ -66,6 +66,18 @@ public interface AccessTokenDao {
 	public void markAsExpired(String token);
 	
 	/**
+	 * <p>This will expire all token issued to a client for all other user</p>
+	 * @param clientid
+	 */
+	public void expireAllTokenForClient(String clientid);
+	
+	/**
+	 * <p>This will expire all token issued to different client for a specific user</p>
+	 * @param userId
+	 */
+	public void expireAllTokenForUser(String userId);
+	
+	/**
 	 * <p>delete a {@link AccessToken} by token_id</p>
 	 * @param token
 	 */
@@ -76,5 +88,11 @@ public interface AccessTokenDao {
 	 * @param clientId
 	 */
 	public void deleteByClientId(String clientId);
+	
+	/**
+	 * <p>Delete all the {@link AccessToken} issued for any {@link Client} by user_id</p></p>
+	 * @param userId
+	 */
+	public void deleteByUserId(String userId);
 
 }

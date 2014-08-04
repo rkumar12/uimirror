@@ -48,4 +48,10 @@ public final class Scope {
 		return readWriteScope;
 	}
 
+	@Override
+	public String toString() {
+		return "Scope [applicationCode=" + applicationCode
+				+ ", readWriteScope=" + readWriteScope + "]";
+	}
+
 }
