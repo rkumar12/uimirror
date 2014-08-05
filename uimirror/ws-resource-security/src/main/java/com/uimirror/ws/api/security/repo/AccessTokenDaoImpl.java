@@ -21,9 +21,13 @@ import org.springframework.util.Assert;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.BasicDBObjectBuilder;
+import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
+import com.mongodb.Mongo;
+import com.uimirror.mongo.DBCollectionUtil;
+import com.uimirror.mongo.MongoDbFactory;
 import com.uimirror.ws.api.security.bean.base.AccessToken;
 import com.uimirror.ws.api.security.common.SecurityFieldConstants;
 
@@ -34,15 +38,46 @@ import com.uimirror.ws.api.security.common.SecurityFieldConstants;
 public class AccessTokenDaoImpl implements AccessTokenDao {
 
 	protected static final Logger LOG = LoggerFactory.getLogger(AccessTokenDaoImpl.class);
+
 	private final DBCollection accesstokenStore;
+	private final Mongo mongo;
+	private final DB db;
+	private String dbName = ACCESS_TOKEN_DB;
+	private String collectionName = ACCESS_TOKEN_COLLECTION;
 	
 	/**
-	 * <p>Initialize the Token store</p>
+	 * <p>Initialize the Token store by collection</p>
 	 * @param uimAccessTokenStore
 	 */
 	public AccessTokenDaoImpl(DBCollection uimAccessTokenStore){
 		Assert.notNull(uimAccessTokenStore, "Access Token Collection Can't be empty");
 		this.accesstokenStore = uimAccessTokenStore;
+		this.accesstokenStore.setObjectClass(AccessToken.class);
+		this.mongo = null;
+		this.db = null;
+	}
+	
+	/**
+	 * <p>Initialize the Token store by Mongo Intsance</p>
+	 * @param mongo
+	 */
+	public AccessTokenDaoImpl(Mongo mongo){
+		Assert.notNull(mongo, "Mongo Instance Can't be null");
+		this.mongo = mongo;
+		this.db = MongoDbFactory.getDB(this.mongo, this.dbName);
+		this.accesstokenStore = DBCollectionUtil.getCollection(this.db, this.collectionName);
+		this.accesstokenStore.setObjectClass(AccessToken.class);
+	}
+	
+	/**
+	 * <p>Initialize the Token store by DB instance</p>
+	 * @param db
+	 */
+	public AccessTokenDaoImpl(DB db){
+		Assert.notNull(db, "Mongo DB Instance Can't be null");
+		this.mongo = null;
+		this.db = db;
+		this.accesstokenStore = DBCollectionUtil.getCollection(this.db, this.collectionName);
 		this.accesstokenStore.setObjectClass(AccessToken.class);
 	}
 
@@ -212,4 +247,11 @@ public class AccessTokenDaoImpl implements AccessTokenDao {
 		
 	}
 
+	public void setDbName(String dbName) {
+		this.dbName = dbName;
+	}
+
+	public void setCollectionName(String collectionName) {
+		this.collectionName = collectionName;
+	}
 }

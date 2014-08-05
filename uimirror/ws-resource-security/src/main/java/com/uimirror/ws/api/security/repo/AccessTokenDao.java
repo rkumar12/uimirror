@@ -21,6 +21,9 @@ import com.uimirror.ws.api.security.bean.base.Client;
  */
 public interface AccessTokenDao {
 	
+	public static final String ACCESS_TOKEN_DB = "uim_ouath";
+	public static final String ACCESS_TOKEN_COLLECTION = "accesstoken";
+	
 	/**
 	 * <p>This will save the access-token</p>
 	 * <p>It assumes the document coming for the saving is final and it stores as it is
