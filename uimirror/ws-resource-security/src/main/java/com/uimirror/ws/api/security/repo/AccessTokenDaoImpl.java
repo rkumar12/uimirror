@@ -96,7 +96,7 @@ public class AccessTokenDaoImpl implements AccessTokenDao {
 	 * @see com.uimirror.ws.api.security.repo.AccessTokenDao#findByToken(java.lang.String)
 	 */
 	@Override
-	public AccessToken findByToken(String token) {
+	public AccessToken findByToken(String token){
 		LOG.debug("[START] -Trying to find a Access token by token id");
 		Assert.hasText(token, "Serach can't be performed as token id is not valid");
 		DBObject query = new BasicDBObject(4);
@@ -110,7 +110,7 @@ public class AccessTokenDaoImpl implements AccessTokenDao {
 	 * @see com.uimirror.ws.api.security.repo.AccessTokenDao#findAll()
 	 */
 	@Override
-	public List<AccessToken> findAll() {
+	public List<AccessToken> findAll(){
 		LOG.debug("[START] -Trying to find a Access all the available access token");
 		DBCursor cursor = accesstokenStore.find();
 		//Retrieve max of 20 at a time

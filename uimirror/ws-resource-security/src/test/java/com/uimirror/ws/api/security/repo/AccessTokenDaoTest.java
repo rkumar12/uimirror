@@ -23,6 +23,7 @@ import com.uimirror.ws.api.security.Scope;
 import com.uimirror.ws.api.security.bean.base.AccessToken;
 import com.uimirror.ws.api.security.common.SecurityFieldConstants;
 
+//TODO update all possible test case for AccessTokenDaoImpl
 public class AccessTokenDaoTest {
 	
 	protected static final Logger LOG = LoggerFactory.getLogger(AccessTokenDaoTest.class);
@@ -64,13 +65,13 @@ public class AccessTokenDaoTest {
 	
 	@Test
 	public void findAccessTokenByIdtest() {
+		LOG.info("[VERIFY-START]- Finding all the access token details by token id instaniating by collection");
 		String tokenId = "123";
-		AccessToken token = new AccessToken("123", 
-				ZonedDateTime.now(Clock.systemUTC()), ZonedDateTime.now(Clock.systemUTC()), new Scope(1, ReadWriteScope.READ), "12345", "678");
-		DBCollection dbCollection = Mockito.mock(DBCollection.class);
+		AccessToken token = new AccessToken("123", ZonedDateTime.now(Clock.systemUTC()), ZonedDateTime.now(Clock.systemUTC()), new Scope(1, ReadWriteScope.READ), "12345", "678");
 		Mockito.when(dbCollection.findOne(new BasicDBObject(SecurityFieldConstants._ID,tokenId))).thenReturn(token);
 		AccessTokenDao accessTokenDao = new AccessTokenDaoImpl(dbCollection);
 		Assert.assertEquals(token, accessTokenDao.findByToken("123"));
+		LOG.info("[VERIFY-END]- Finding all the access token details by token id instaniating by collection");
 	}
 
 }
