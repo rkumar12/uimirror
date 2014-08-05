@@ -48,8 +48,9 @@ public class AccessTokenDaoImpl implements AccessTokenDao {
 	/**
 	 * <p>Initialize the Token store by collection</p>
 	 * @param uimAccessTokenStore
+	 * @throws IllegalArgumentException
 	 */
-	public AccessTokenDaoImpl(DBCollection uimAccessTokenStore){
+	public AccessTokenDaoImpl(DBCollection uimAccessTokenStore) throws IllegalArgumentException{
 		Assert.notNull(uimAccessTokenStore, "Access Token Collection Can't be empty");
 		this.accesstokenStore = uimAccessTokenStore;
 		this.accesstokenStore.setObjectClass(AccessToken.class);
@@ -60,8 +61,9 @@ public class AccessTokenDaoImpl implements AccessTokenDao {
 	/**
 	 * <p>Initialize the Token store by Mongo Intsance</p>
 	 * @param mongo
+	 * @throws IllegalArgumentException
 	 */
-	public AccessTokenDaoImpl(Mongo mongo){
+	public AccessTokenDaoImpl(Mongo mongo) throws IllegalArgumentException{
 		Assert.notNull(mongo, "Mongo Instance Can't be null");
 		this.mongo = mongo;
 		this.db = MongoDbFactory.getDB(this.mongo, this.dbName);
@@ -72,8 +74,9 @@ public class AccessTokenDaoImpl implements AccessTokenDao {
 	/**
 	 * <p>Initialize the Token store by DB instance</p>
 	 * @param db
+	 * @throws IllegalArgumentException
 	 */
-	public AccessTokenDaoImpl(DB db){
+	public AccessTokenDaoImpl(DB db) throws IllegalArgumentException{
 		Assert.notNull(db, "Mongo DB Instance Can't be null");
 		this.mongo = null;
 		this.db = db;
@@ -85,7 +88,7 @@ public class AccessTokenDaoImpl implements AccessTokenDao {
 	 * @see com.uimirror.ws.api.security.repo.AccessTokenDao#save(com.uimirror.ws.api.security.bean.base.AccessToken)
 	 */
 	@Override
-	public void insert(AccessToken accessToken) {
+	public void insert(AccessToken accessToken) throws IllegalArgumentException {
 		LOG.debug("[START] -Trying to save a new Access Token");
 		Assert.notEmpty(accessToken, "Empty Acces token can't be saved.");
 		accesstokenStore.insert(accessToken);
@@ -96,7 +99,7 @@ public class AccessTokenDaoImpl implements AccessTokenDao {
 	 * @see com.uimirror.ws.api.security.repo.AccessTokenDao#findByToken(java.lang.String)
 	 */
 	@Override
-	public AccessToken findByToken(String token){
+	public AccessToken findByToken(String token) throws IllegalArgumentException{
 		LOG.debug("[START] -Trying to find a Access token by token id");
 		Assert.hasText(token, "Serach can't be performed as token id is not valid");
 		DBObject query = new BasicDBObject(4);
@@ -125,7 +128,7 @@ public class AccessTokenDaoImpl implements AccessTokenDao {
 	 * @see com.uimirror.ws.api.security.repo.AccessTokenDao#findByClientId(java.lang.String)
 	 */
 	@Override
-	public List<AccessToken> findByClientId(String clientId) {
+	public List<AccessToken> findByClientId(String clientId) throws IllegalArgumentException {
 		LOG.debug("[START] -Trying to find list of access token issued for the client by clinet_id");
 		Assert.hasText(clientId, "Serach can't be performed as client id is not valid");
 		DBObject query = new BasicDBObject(4);
@@ -141,7 +144,7 @@ public class AccessTokenDaoImpl implements AccessTokenDao {
 	 * @see com.uimirror.ws.api.security.repo.AccessTokenDao#findByUserId(java.lang.String)
 	 */
 	@Override
-	public List<AccessToken> findByUserId(String userId) {
+	public List<AccessToken> findByUserId(String userId) throws IllegalArgumentException {
 		LOG.debug("[START] -Trying to find list of access token issued for the User by user_id");
 		Assert.hasText(userId, "Serach can't be performed as user id is not valid");
 		DBObject query = new BasicDBObject(4);
@@ -157,7 +160,7 @@ public class AccessTokenDaoImpl implements AccessTokenDao {
 	 * @see com.uimirror.ws.api.security.repo.AccessTokenDao#markAsExpired(java.lang.String)
 	 */
 	@Override
-	public void markAsExpired(String token) {
+	public void markAsExpired(String token) throws IllegalArgumentException {
 		LOG.debug("[START] -Trying to expire a token by ID");
 		Assert.hasText(token, "Expiry can't be performed as token id is not valid");
 		DBObject query = new BasicDBObject(4);
@@ -173,7 +176,7 @@ public class AccessTokenDaoImpl implements AccessTokenDao {
 	 * @see com.uimirror.ws.api.security.repo.AccessTokenDao#expireAllTokenForClient(java.lang.String)
 	 */
 	@Override
-	public void expireAllTokenForClient(String clientid) {
+	public void expireAllTokenForClient(String clientid) throws IllegalArgumentException {
 		LOG.debug("[START] -Trying to expire a token by Client ID");
 		Assert.hasText(clientid, "Expiry can't be performed as client id is not valid");
 		DBObject query = new BasicDBObject(4);
@@ -191,7 +194,7 @@ public class AccessTokenDaoImpl implements AccessTokenDao {
 	 * @see com.uimirror.ws.api.security.repo.AccessTokenDao#expireAllTokenForUser(java.lang.String)
 	 */
 	@Override
-	public void expireAllTokenForUser(String userId) {
+	public void expireAllTokenForUser(String userId) throws IllegalArgumentException {
 		LOG.debug("[START] -Trying to expire a token by User ID");
 		Assert.hasText(userId, "Expiry can't be performed as user id is not valid");
 		DBObject query = new BasicDBObject(4);
@@ -209,7 +212,7 @@ public class AccessTokenDaoImpl implements AccessTokenDao {
 	 * @see com.uimirror.ws.api.security.repo.AccessTokenDao#deleteByToken(java.lang.String)
 	 */
 	@Override
-	public void deleteByToken(String token) {
+	public void deleteByToken(String token) throws IllegalArgumentException {
 		LOG.debug("[START] -Trying to delete a token by ID");
 		Assert.hasText(token, "Delete can't be performed as token id is not valid");
 		DBObject query = new BasicDBObject(4);
@@ -223,7 +226,7 @@ public class AccessTokenDaoImpl implements AccessTokenDao {
 	 * @see com.uimirror.ws.api.security.repo.AccessTokenDao#deleteByClientId(java.lang.String)
 	 */
 	@Override
-	public void deleteByClientId(String clientId) {
+	public void deleteByClientId(String clientId) throws IllegalArgumentException {
 		LOG.debug("[START] -Trying to delete a token by client ID");
 		Assert.hasText(clientId, "Delete can't be performed as client id is not valid");
 		DBObject query = new BasicDBObject(4);
@@ -237,7 +240,7 @@ public class AccessTokenDaoImpl implements AccessTokenDao {
 	 * @see com.uimirror.ws.api.security.repo.AccessTokenDao#deleteByUserId(java.lang.String)
 	 */
 	@Override
-	public void deleteByUserId(String userId) {
+	public void deleteByUserId(String userId) throws IllegalArgumentException {
 		LOG.debug("[START] -Trying to delete a token by User ID");
 		Assert.hasText(userId, "Delete can't be performed as user id is not valid");
 		DBObject query = new BasicDBObject(4);

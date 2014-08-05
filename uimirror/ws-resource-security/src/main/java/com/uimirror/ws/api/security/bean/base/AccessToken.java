@@ -107,7 +107,6 @@ public final class AccessToken extends BeanBasedDocument implements Serializable
 	 */
 	@Override
 	public String getName() {
-		this.validateContext();
 		return this.token;
 	}
 
@@ -116,7 +115,7 @@ public final class AccessToken extends BeanBasedDocument implements Serializable
 	 */
 	@Override
 	public String getUserId() {
-		this.validateContext();
+		Assert.notNull(this.user, "No Security context available");
 		return this.user.getId();
 	}
 
@@ -125,7 +124,7 @@ public final class AccessToken extends BeanBasedDocument implements Serializable
 	 */
 	@Override
 	public String getClientId() {
-		this.validateContext();
+		Assert.notNull(this.client, "No Security context available");
 		return this.client.getId();
 	}
 	
@@ -134,7 +133,7 @@ public final class AccessToken extends BeanBasedDocument implements Serializable
 	 */
 	@Override
 	public String getClientApiKey() {
-		this.validateContext();
+		Assert.notNull(this.client, "No Security context available");
 		return this.client.getApiKey();
 	}
 
@@ -143,7 +142,6 @@ public final class AccessToken extends BeanBasedDocument implements Serializable
 	 */
 	@Override
 	public Scope getScope() {
-		this.validateContext();
 		return this.scope;
 	}
 
@@ -152,7 +150,6 @@ public final class AccessToken extends BeanBasedDocument implements Serializable
 	 */
 	@Override
 	public Client getClient() {
-		this.validateContext();
 		return this.client;
 	}
 
@@ -161,7 +158,6 @@ public final class AccessToken extends BeanBasedDocument implements Serializable
 	 */
 	@Override
 	public User getUser() {
-		this.validateContext();
 		return this.user;
 	}
 
@@ -170,7 +166,6 @@ public final class AccessToken extends BeanBasedDocument implements Serializable
 	 */
 	@Override
 	public ZonedDateTime getTokenCreationDate() {
-		this.validateContext();
 		return this.grantedOn;
 	}
 
@@ -179,18 +174,7 @@ public final class AccessToken extends BeanBasedDocument implements Serializable
 	 */
 	@Override
 	public ZonedDateTime getExpiresOn() {
-		this.validateContext();
 		return this.expiresOn;
-	}
-	
-	/**
-	 * <p>This validated the context of the access token</p>
-	 * <p>validate whether input parameters has sufficient attributes or not</p>
-	 */
-	private void validateContext(){
-		Assert.hasText(this.token, "No Security context available");
-		Assert.notNull(this.user, "No Security context available");
-		Assert.notNull(this.client, "No Security context available");
 	}
 	
 	@Override

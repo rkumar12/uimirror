@@ -30,8 +30,9 @@ public interface AccessTokenDao {
 	 * , it will not perform any validation, its the the job of the caller needs to validate before requesting for save</p>
 	 * <p>How ever, it checks, provided argument shouldn't be empty, else {@link IllegalArgumentException} </p>
 	 * @param accessToken
+	 * @throws IllegalArgumentException if input parameter is null
 	 */
-	public void insert(AccessToken accessToken);
+	public void insert(AccessToken accessToken) throws IllegalArgumentException;
 	
 	/**
 	 * <p>Find the Access Token by token</p>
@@ -39,8 +40,9 @@ public interface AccessTokenDao {
 	 * why its required?</p>
 	 * @param token token_id to be searched 
 	 * @return <code>{@link AccessToken}</code>
+	 * @throws IllegalArgumentException if input parameter is null
 	 */
-	public AccessToken findByToken(String token);
+	public AccessToken findByToken(String token) throws IllegalArgumentException;
 	
 	/**
 	 * <p>Find All the access Token available<p/>
@@ -52,50 +54,58 @@ public interface AccessTokenDao {
 	 * <pFind/search list of {@link AccessToken} By Client Id</p>
 	 * @param clientId
 	 * @return
+	 * @throws IllegalArgumentException if input parameter is null
 	 */
-	public List<AccessToken> findByClientId(String clientId);
+	public List<AccessToken> findByClientId(String clientId) throws IllegalArgumentException;
 	
 	/**
 	 * <p>Find/Search List of {@link AccessToken} by User Id</p>
 	 * @param userId
 	 * @return
+	 * @throws IllegalArgumentException if input parameter is null
 	 */
-	public List<AccessToken> findByUserId(String userId);
+	public List<AccessToken> findByUserId(String userId) throws IllegalArgumentException;
 	
 	/**
 	 * <p>Mark a {@link AccessToken} as invalid as its expired</p>
 	 * @param token
+	 * @throws IllegalArgumentException if input parameter is null
 	 */
-	public void markAsExpired(String token);
+	public void markAsExpired(String token) throws IllegalArgumentException;
 	
 	/**
 	 * <p>This will expire all token issued to a client for all other user</p>
 	 * @param clientid
+	 * @throws IllegalArgumentException if input parameter is null
 	 */
-	public void expireAllTokenForClient(String clientid);
+	public void expireAllTokenForClient(String clientid) throws IllegalArgumentException;
 	
 	/**
 	 * <p>This will expire all token issued to different client for a specific user</p>
 	 * @param userId
+	 * @throws IllegalArgumentException if input parameter is null
 	 */
-	public void expireAllTokenForUser(String userId);
+	public void expireAllTokenForUser(String userId) throws IllegalArgumentException;
 	
 	/**
 	 * <p>delete a {@link AccessToken} by token_id</p>
 	 * @param token
+	 * @throws IllegalArgumentException if input parameter is null
 	 */
-	public void deleteByToken(String token);
+	public void deleteByToken(String token) throws IllegalArgumentException;
 	
 	/**
 	 * <p>Delete all the {@link AccessToken} issued for the {@link Client} by clinet_id</p>
 	 * @param clientId
+	 * @throws IllegalArgumentException if input parameter is null
 	 */
-	public void deleteByClientId(String clientId);
+	public void deleteByClientId(String clientId) throws IllegalArgumentException;
 	
 	/**
 	 * <p>Delete all the {@link AccessToken} issued for any {@link Client} by user_id</p></p>
 	 * @param userId
+	 * @throws IllegalArgumentException if input parameter is null
 	 */
-	public void deleteByUserId(String userId);
+	public void deleteByUserId(String userId) throws IllegalArgumentException;
 
 }

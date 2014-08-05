@@ -20,4 +20,6 @@ public interface ErrorConstant {
 	public static final int TOKEN_NOT_FOUND = 404;
 	//Token has been expired
 	public static final int TOKEN_EXPIRED = 419;
+	//MONGO data base error
+	public static final int MONGO_ERROR = 500;
 }
