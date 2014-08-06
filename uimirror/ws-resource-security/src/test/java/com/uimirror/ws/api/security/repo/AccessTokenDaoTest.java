@@ -49,7 +49,7 @@ public class AccessTokenDaoTest {
 		LOG.info("[VERIFY-END]- Finding all the access token details by instaniating by collection");
 		
 		LOG.info("[VERIFY-START]- Finding all the access token details by instaniating by mongo instance");
-		Mockito.when(MongoDbFactory.getDB(mongo, AccessTokenDao.ACCESS_TOKEN_DB)).thenReturn(db);
+		Mockito.when(MongoDbFactory.getDB(mongo, AccessTokenDao.OUATH_DB)).thenReturn(db);
 		Mockito.when(DBCollectionUtil.getCollection(db, AccessTokenDao.ACCESS_TOKEN_COLLECTION)).thenReturn(dbCollection);
 		AccessTokenDao accessTokenDaoByMongo = new AccessTokenDaoImpl(mongo);
 		Assert.assertEquals(new ArrayList<AccessToken>(), accessTokenDaoByMongo.findAll());

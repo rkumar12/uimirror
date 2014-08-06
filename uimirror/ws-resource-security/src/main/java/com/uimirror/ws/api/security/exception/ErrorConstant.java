@@ -16,10 +16,15 @@ package com.uimirror.ws.api.security.exception;
  */
 public interface ErrorConstant {
 
+	public static final int _404 = 404;
+	public static final int _500 = 500;
 	//Token Details not found
-	public static final int TOKEN_NOT_FOUND = 404;
+	public static final int TOKEN_NOT_FOUND = _404;
 	//Token has been expired
 	public static final int TOKEN_EXPIRED = 419;
 	//MONGO data base error
-	public static final int MONGO_ERROR = 500;
+	public static final int MONGO_ERROR = _500;
+	
+	//Client Not found
+	public static final int CLIENT_NOT_FOUND = _404;
 }

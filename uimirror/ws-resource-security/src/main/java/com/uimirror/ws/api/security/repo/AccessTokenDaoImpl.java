@@ -42,7 +42,7 @@ public class AccessTokenDaoImpl implements AccessTokenDao {
 	private final DBCollection accesstokenStore;
 	private final Mongo mongo;
 	private final DB db;
-	private String dbName = ACCESS_TOKEN_DB;
+	private String dbName = OUATH_DB;
 	private String collectionName = ACCESS_TOKEN_COLLECTION;
 	
 	/**

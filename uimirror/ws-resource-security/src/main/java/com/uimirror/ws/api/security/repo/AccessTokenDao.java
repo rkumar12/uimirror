@@ -21,7 +21,7 @@ import com.uimirror.ws.api.security.bean.base.Client;
  */
 public interface AccessTokenDao {
 	
-	public static final String ACCESS_TOKEN_DB = "uim_ouath";
+	public static final String OUATH_DB = "uim_ouath";
 	public static final String ACCESS_TOKEN_COLLECTION = "accesstoken";
 	
 	/**

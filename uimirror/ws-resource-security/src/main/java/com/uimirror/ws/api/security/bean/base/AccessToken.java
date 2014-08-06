@@ -115,8 +115,8 @@ public final class AccessToken extends BeanBasedDocument implements Serializable
 	 */
 	@Override
 	public String getUserId() {
-		Assert.notNull(this.user, "No Security context available");
-		return this.user.getId();
+		Assert.hasText(this.userId, "No Security context available");
+		return this.userId;
 	}
 
 	/* (non-Javadoc)
@@ -124,8 +124,8 @@ public final class AccessToken extends BeanBasedDocument implements Serializable
 	 */
 	@Override
 	public String getClientId() {
-		Assert.notNull(this.client, "No Security context available");
-		return this.client.getId();
+		Assert.hasText(this.clientId, "No Security context available");
+		return this.clientId;
 	}
 	
 	/* (non-Javadoc)
@@ -177,6 +177,23 @@ public final class AccessToken extends BeanBasedDocument implements Serializable
 		return this.expiresOn;
 	}
 	
+	/**
+	 * <p>This will update the client details to token</p>
+	 * @param client
+	 * @return
+	 */
+	public AccessToken updateClient(Client client) {
+		return new AccessToken(this.token, this.grantedOn, this.expiresOn, this.scope, client, this.user);
+	}
+	
+	/**
+	 * <p>This will update the user to the token</p>
+	 * @param usr
+	 * @return
+	 */
+	public AccessToken updateUser(User usr){
+		return new AccessToken(this.token, this.grantedOn, this.expiresOn, this.scope, this.client, user);
+	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;

@@ -19,6 +19,8 @@ import org.springframework.util.Assert;
 
 import com.mongodb.MongoException;
 import com.uimirror.ws.api.security.bean.base.AccessToken;
+import com.uimirror.ws.api.security.bean.base.Client;
+import com.uimirror.ws.api.security.bean.base.User;
 import com.uimirror.ws.api.security.exception.AccessTokenException;
 import com.uimirror.ws.api.security.exception.ErrorConstant;
 import com.uimirror.ws.api.security.repo.AccessTokenDao;
@@ -33,7 +35,11 @@ public class UimAccessTokenServiceImpl implements AccessTokenService {
 
 	protected static final Logger LOG = LoggerFactory.getLogger(UimAccessTokenServiceImpl.class);
 	private final AccessTokenDao accessTokenDao;
-	public UimAccessTokenServiceImpl(AccessTokenDao accessTokenDao) {
+	private ClientService clientService;
+	
+	public UimAccessTokenServiceImpl(AccessTokenDao accessTokenDao) throws IllegalStateException{
+		if(accessTokenDao == null)
+			throw new IllegalStateException("Dao instance can't be empty to avail the service.");
 		this.accessTokenDao = accessTokenDao;
 	}
 	/* (non-Javadoc)
@@ -50,7 +56,10 @@ public class UimAccessTokenServiceImpl implements AccessTokenService {
 				LOG.debug("[INTERIM]- No Token Found for the token ID: {}", token);
 				throw new AccessTokenException(ErrorConstant.TOKEN_NOT_FOUND, String.format("No Token Details for the token Id : %s", token));
 			}
-			//TODO remaining user and client information pending
+			Client client = clientService.getClientById(accessToken.getClientId());
+			User usr = null;
+			accessToken = accessToken.updateClient(client).updateUser(usr);
+			//TODO user is hardcoded remove that once functional done
 		}catch(MongoException me){
 			LOG.error("[EXCEPTION]- Getting the access Token details for token experiencing some internal issue {}",me);
 			throw new AccessTokenException(ErrorConstant.MONGO_ERROR, "Mongo Connection issue", me);
@@ -167,6 +176,10 @@ public class UimAccessTokenServiceImpl implements AccessTokenService {
 			throw new AccessTokenException(ErrorConstant.TOKEN_EXPIRED, String.format("Token Id: %s has been expired", token.getName()));
 		}
 	}
-
-
+	public ClientService getClientService() {
+		return clientService;
+	}
+	public void setClientService(ClientService clientService) {
+		this.clientService = clientService;
+	}
 }
