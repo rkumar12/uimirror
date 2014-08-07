@@ -20,9 +20,10 @@ dependencies {
 			 [group: 'org.springframework', name: 'spring-core', version: springVersion],
 			 )
 	//Spring ENd
+	compile 'javax.annotation:javax.annotation-api:1.2'
 	compile (group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet', version: jerseyVersion){
 		exclude module: 'jersey-client'
-		exclude module: 'javax.annotation-api'
+		//exclude module: 'javax.annotation-api'
 		exclude module: 'validation-api'
 		exclude module: 'aopalliance-repackaged'
 		exclude module: 'javax.inject'

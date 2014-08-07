@@ -31,13 +31,13 @@ import com.uimirror.ws.api.security.repo.AccessTokenDao;
  * @author Jayaram
  */
 //TODO write test cases and create user dao, client Dao and their respective services
-public class UimAccessTokenServiceImpl implements AccessTokenService {
+public class AccessTokenServiceImpl implements AccessTokenService {
 
-	protected static final Logger LOG = LoggerFactory.getLogger(UimAccessTokenServiceImpl.class);
+	protected static final Logger LOG = LoggerFactory.getLogger(AccessTokenServiceImpl.class);
 	private final AccessTokenDao accessTokenDao;
 	private ClientService clientService;
 	
-	public UimAccessTokenServiceImpl(AccessTokenDao accessTokenDao) throws IllegalStateException{
+	public AccessTokenServiceImpl(AccessTokenDao accessTokenDao) throws IllegalStateException{
 		if(accessTokenDao == null)
 			throw new IllegalStateException("Dao instance can't be empty to avail the service.");
 		this.accessTokenDao = accessTokenDao;
