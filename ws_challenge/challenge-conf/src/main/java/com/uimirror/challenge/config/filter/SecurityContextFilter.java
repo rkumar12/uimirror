@@ -53,7 +53,7 @@ public class SecurityContextFilter implements ContainerRequestFilter{
 		// Get the session details from the data base or cache
 		//session = userAuthenticationService.getUserSessionByAPIKey(apiKey);
 		request.setProperty("authScheme", UIMSecurityContext.BEARER);
-		request.setSecurityContext(new UIMirrorSecurity(new AccessToken(null, null, null, null, null, null), request.getUriInfo()));
+		//request.setSecurityContext(new UIMirrorSecurity(new AccessToken(null, null, null, null, null, null), request.getUriInfo()));
 
 	}
 

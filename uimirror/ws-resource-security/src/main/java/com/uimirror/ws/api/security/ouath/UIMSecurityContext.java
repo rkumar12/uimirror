@@ -29,6 +29,11 @@ public interface UIMSecurityContext extends SecurityContext {
 	public static final String BEARER = "Bearer";
 	
 	/**
+	 * The access token issued by the authorization server. This value is REQUIRED.
+	 */
+	public static String ACCESS_TOKEN = "access_token";
+	
+	/**
 	 * Returns a boolean indicating whether the authenticated user is included
      * in the specified logical "license". If the user has not been authenticated,
      * the method returns <code>false</code>.

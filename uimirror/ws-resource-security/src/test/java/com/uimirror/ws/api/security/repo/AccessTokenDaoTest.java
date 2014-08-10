@@ -67,7 +67,7 @@ public class AccessTokenDaoTest {
 	public void findAccessTokenByIdtest() {
 		LOG.info("[VERIFY-START]- Finding all the access token details by token id instaniating by collection");
 		String tokenId = "123";
-		AccessToken token = new AccessToken("123", ZonedDateTime.now(Clock.systemUTC()), ZonedDateTime.now(Clock.systemUTC()), new Scope(1, ReadWriteScope.READ), "12345", "678");
+		AccessToken token = new AccessToken("123", ZonedDateTime.now(Clock.systemUTC()), 456, new Scope(1, ReadWriteScope.READ), "12345", "678");
 		Mockito.when(dbCollection.findOne(new BasicDBObject(SecurityFieldConstants._ID,tokenId))).thenReturn(token);
 		AccessTokenDao accessTokenDao = new AccessTokenDaoImpl(dbCollection);
 		Assert.assertEquals(token, accessTokenDao.findByToken("123"));

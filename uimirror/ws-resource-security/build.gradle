@@ -16,7 +16,7 @@ dependencies {
 	compile 'com.fasterxml.jackson.core:jackson-annotations:2.3.3'
 	//Spring Depedancy
 	compile (//[group: 'org.springframework', name: 'spring-context', version: springVersion],
-			 //[group: 'org.springframework', name: 'spring-beans', version: springVersion],
+			 [group: 'org.springframework', name: 'spring-beans', version: springVersion],
 			 [group: 'org.springframework', name: 'spring-core', version: springVersion],
 			 )
 	//Spring ENd
@@ -36,7 +36,7 @@ dependencies {
 		exclude module: 'jersey-container-servlet-core'
 		exclude module: 'jersey-container-servlet'
 		exclude module: 'jersey-common'
-		exclude module: 'jersey-server'
+		//exclude module: 'jersey-server'
 		
 	}
 	compile group: 'com.uimirror.mongo', name: 'mongo-factory', version: 1.0

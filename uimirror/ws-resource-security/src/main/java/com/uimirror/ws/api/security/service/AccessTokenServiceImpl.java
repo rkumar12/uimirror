@@ -166,12 +166,13 @@ public class AccessTokenServiceImpl implements AccessTokenService {
 	
 	/**
 	 * <p>This will validate the token by comparing expires on with now</p>
+	 * <p>Adds the expires on seconds with token creation time and check if it after now then invalid token</p>
 	 * <p>Please note the time zone {@link Clock#systemUTC()} will be used to get current time stamp</p>
 	 * @param token
 	 * @throws AccessTokenException
 	 */
 	private void validateToken(AccessToken token) throws AccessTokenException{
-		if(token.getExpiresOn().isBefore(ZonedDateTime.now(Clock.systemUTC()))){
+		if(token.getTokenCreationDate().plusSeconds(token.getExpiresOn()).isBefore(ZonedDateTime.now(Clock.systemUTC()))){
 			LOG.info("[INTERIM]- Access Token for the token: {} has been expired", token);
 			throw new AccessTokenException(ErrorConstant.TOKEN_EXPIRED, String.format("Token Id: %s has been expired", token.getName()));
 		}

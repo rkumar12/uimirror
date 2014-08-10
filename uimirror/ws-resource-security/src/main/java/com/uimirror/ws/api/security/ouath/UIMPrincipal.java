@@ -76,8 +76,9 @@ public interface UIMPrincipal extends Principal {
 	/**
 	 * <p>This will return the expiresOn of the current access-token, if client and user is authenticated, 
 	 * else {@link IllegalArgumentException}</p>
+	 * <p>The number of seconds left in the lifetime of the token</p>
 	 * @return
 	 */
-	public ZonedDateTime getExpiresOn();
+	public long getExpiresOn();
 	
 }

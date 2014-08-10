@@ -19,10 +19,10 @@ import javax.ws.rs.container.ContainerRequestFilter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import com.uimirror.ws.api.security.bean.base.AccessToken;
-import com.uimirror.ws.api.security.common.SecurityFieldConstants;
-import com.uimirror.ws.api.security.ouath.UIMSecurityContext;
+import com.uimirror.ws.api.security.ouath.BearerTokenExtractor;
+import com.uimirror.ws.api.security.ouath.TokenExtractor;
 import com.uimirror.ws.api.security.ouath.UIMirrorSecurity;
 import com.uimirror.ws.api.security.service.AccessTokenService;
 
@@ -36,19 +36,8 @@ import com.uimirror.ws.api.security.service.AccessTokenService;
 public class SecurityContextFilter implements ContainerRequestFilter{
 	
 	protected static final Logger LOG = LoggerFactory.getLogger(SecurityContextFilter.class);
-	
-	private final AccessTokenService accessTokenService;
-	
-	/**
-	 *<p>This will initialize the access token service, which will help to populate the token details to validate details</p>
-	 *@param accessTokenService
-	 *@throws IllegalStateException in case accessTokenService is null 
-	 */
-	public SecurityContextFilter(AccessTokenService accessTokenService) {
-		if(accessTokenService == null)
-			throw new IllegalStateException("Access Token Service should have been initialized before.");
-		this.accessTokenService = accessTokenService;
-	}
+	@Autowired
+	private AccessTokenService accessTokenService;
 
 	/* (non-Javadoc)
 	 * @see javax.ws.rs.container.ContainerRequestFilter#filter(javax.ws.rs.container.ContainerRequestContext)
@@ -56,16 +45,9 @@ public class SecurityContextFilter implements ContainerRequestFilter{
 	@Override
 	public void filter(ContainerRequestContext request) throws IOException {
 		LOG.debug("[AUTH-START]-Request Getting Intercepted");
-		// Get session id from request header
-		final String token = request.getHeaderString(SecurityFieldConstants.AUTHORIZATION);
-		//TODO get the token details
-		//TODO handle exception here
-		AccessToken accessToken = accessTokenService.getActiveAccessTokenDetailsByTokenId(token);
-		request.setProperty(SecurityFieldConstants._AUTH_SCHEME, UIMSecurityContext.BEARER);
-		//TODO work on the URI info
-		request.setSecurityContext(new UIMirrorSecurity(accessToken, request.getUriInfo()));
+		TokenExtractor extractor = new BearerTokenExtractor();
+		request.setSecurityContext(new UIMirrorSecurity(extractor.extract(request)));
 		LOG.debug("[AUTH-END]-Request Getting Intercepted");
-		
 	}
 
 }

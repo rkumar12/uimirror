@@ -32,13 +32,28 @@ public final class AccessToken extends BeanBasedDocument implements Serializable
 	private static final long serialVersionUID = 1920019552923852689L;
 	private final String token;
 	private final ZonedDateTime grantedOn;
-	private final ZonedDateTime expiresOn;
+	private final long expiresOn;
 	private final Scope scope;
 	private Client client;
 	private User user;
 	private final String clientId;
 	private final String userId;
 
+	/**
+	 * <p>This will populate the AccessToken with token as principal only</p>
+	 * <p>Note***Don't treat Access Token object has token means its authorized</p>
+	 * <p>This has been added to avoid data base call to each and every request, rather when required it will populate the principal</p>
+	 */
+	public AccessToken(String token) {
+		this.token = token;
+		this.grantedOn = null;
+		this.expiresOn = 0l;
+		this.scope = null;
+		this.client = null;
+		this.user = null;
+		this.clientId = null;
+		this.userId = null;
+	}
 	/**
 	 * @param token
 	 * @param grantedOn
@@ -47,7 +62,7 @@ public final class AccessToken extends BeanBasedDocument implements Serializable
 	 * @param client
 	 * @param user
 	 */
-	public AccessToken(String token, ZonedDateTime grantedOn, ZonedDateTime expiresOn, Scope scope, Client client, User user) {
+	public AccessToken(String token, ZonedDateTime grantedOn, long expiresOn, Scope scope, Client client, User user) {
 		super(8);
 		this.token = token;
 		this.grantedOn = grantedOn;
@@ -68,7 +83,7 @@ public final class AccessToken extends BeanBasedDocument implements Serializable
 	 * @param clientId
 	 * @param userId
 	 */
-	public AccessToken(String token, ZonedDateTime grantedOn, ZonedDateTime expiresOn, Scope scope, String clientId, String userId) {
+	public AccessToken(String token, ZonedDateTime grantedOn, long expiresOn, Scope scope, String clientId, String userId) {
 		super(8);
 		this.token = token;
 		this.grantedOn = grantedOn;
@@ -96,7 +111,7 @@ public final class AccessToken extends BeanBasedDocument implements Serializable
 		String grantedAuthority = (String)scope.get(SecurityFieldConstants._CLIENT_ACCESS_READ_WRITE);
 		this.token = token;
 		this.grantedOn = (ZonedDateTime)m.get(SecurityFieldConstants._CLIENT_ACCESS_GRANTED_ON);
-		this.expiresOn = (ZonedDateTime)m.get(SecurityFieldConstants._CLIENT_ACCESS_EXPIRIES_ON);
+		this.expiresOn = (long)m.get(SecurityFieldConstants._CLIENT_ACCESS_EXPIRIES_ON);
 		this.scope = new Scope(appCode, ReadWriteScope.getEnum(grantedAuthority));
 		this.clientId = (String)m.get(SecurityFieldConstants._CLIENT_ACCESS_CLIENT_ID);
 		this.userId = (String)m.get(SecurityFieldConstants._CLIENT_ACCESS_USER_ID);
@@ -173,7 +188,7 @@ public final class AccessToken extends BeanBasedDocument implements Serializable
 	 * @see com.uimirror.ws.api.security.ouath.UIMPrincipal#getExpiresOn()
 	 */
 	@Override
-	public ZonedDateTime getExpiresOn() {
+	public long getExpiresOn() {
 		return this.expiresOn;
 	}
 	

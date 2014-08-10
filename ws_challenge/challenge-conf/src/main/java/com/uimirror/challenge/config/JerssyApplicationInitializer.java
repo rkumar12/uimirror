@@ -13,14 +13,14 @@ package com.uimirror.challenge.config;
 import org.glassfish.jersey.filter.LoggingFilter;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.ServerProperties;
-import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 import org.glassfish.jersey.server.filter.UriConnegFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 
 import com.uimirror.challenge.config.filter.PoweredByResponseFilter;
-import com.uimirror.challenge.config.filter.SecurityContextFilter;
+import com.uimirror.ws.api.security.filter.SecurityContextFilter;
+import com.uimirror.ws.api.security.filter.feature.RolesAllowedDynamicFeature;
 
 public class JerssyApplicationInitializer extends ResourceConfig{
 	protected static final Logger LOG = LoggerFactory.getLogger(JerssyApplicationInitializer.class);

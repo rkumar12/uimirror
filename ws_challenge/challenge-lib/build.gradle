@@ -7,6 +7,7 @@ ext {
     qosLogBackVersion = "1.1.1"
     javaeeApiVersion = "7.0"
 	springSecurityOuthVersion = "2.0.1.RELEASE"
+	//gensonVersion = "0.99"
 }
 
 dependencies {
@@ -24,6 +25,8 @@ dependencies {
     compile group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet', version: jerseyVersion
     compile group: 'org.glassfish.jersey.ext', name: 'jersey-spring3', version: jerseyVersion
 	compile group: 'org.glassfish.jersey.media', name: 'jersey-media-json-processing', version: jerseyVersion
+	//Jersey genson mapping
+	//compile group: 'com.owlike', name: 'genson', version: gensonVersion
 	
     //Logging
 //    compile ([group: 'org.slf4j', name: 'slf4j-api', version: slf4jVersion],
@@ -39,7 +42,7 @@ dependencies {
     compile group: 'javax.validation', name: 'validation-api', version: '1.1.0.Final'
 	
 	//Security Jars
-	compile group: 'com.uimirror.ws.api', name: 'ws-security', version: '1.0'
+	compile group: 'com.uimirror.ws.api', name: 'ws-resource-security', version: '1.0'
 
 	//Test jars
     testCompile 'junit:junit:4.10'

@@ -12,13 +12,9 @@ package com.uimirror.ws.api.security.ouath;
 
 import java.security.Principal;
 
-import javax.ws.rs.core.UriInfo;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
-
-import com.uimirror.ws.api.security.bean.base.AccessToken;
 
 /**
  * @author Jayaram
@@ -27,19 +23,29 @@ import com.uimirror.ws.api.security.bean.base.AccessToken;
 public class UIMirrorSecurity implements UIMSecurityContext{
 
 	protected static final Logger LOG = LoggerFactory.getLogger(UIMirrorSecurity.class);
-	private final AccessToken token;
-	private final UriInfo uriInfo;
+	private final Principal preAuthToken;
+	private final UIMPrincipal ouathToken;
 	
 	
 	/**
-	 * @param session
+	 * <p>When Client is pre authenticated populate this</p>
+	 * @param token
 	 */
-	public UIMirrorSecurity(AccessToken token, UriInfo uriInfo) {
+	public UIMirrorSecurity(Principal token) {
 		super();
-		Assert.notNull(token, "Access Token can't be Empty, user/client should have authenticated eariller.");
-		System.out.println(uriInfo);
-		this.token = token;
-		this.uriInfo = uriInfo;
+		Assert.notNull(token, "Principal can't be Empty, user/client should have authenticated eariller.");
+		this.preAuthToken = token;
+		this.ouathToken = null;
+	}
+
+	/**
+	 * <p>When Client will be authenticated and authorized populate this</p>
+	 * @param preOuathToken
+	 * @param accessToken
+	 */
+	public UIMirrorSecurity(Principal preOuathToken, UIMPrincipal accessToken) {
+		this.ouathToken = accessToken;
+		this.preAuthToken = preOuathToken;
 	}
 
 	/* (non-Javadoc)
@@ -47,7 +53,7 @@ public class UIMirrorSecurity implements UIMSecurityContext{
 	 */
 	@Override
 	public Principal getUserPrincipal() {
-		return token;
+		return ouathToken != null ? ouathToken : preAuthToken;
 	}
 
 	/* (non-Javadoc)

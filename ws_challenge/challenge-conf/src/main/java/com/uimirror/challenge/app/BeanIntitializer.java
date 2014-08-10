@@ -27,5 +27,4 @@ public class BeanIntitializer {
 	public ClientSecurityService clientSecurityService(){
 		return new UimClientSecurityServiceImpl();
 	}
-
 }
