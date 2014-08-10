@@ -48,6 +48,20 @@ public interface UIMSecurityContext extends SecurityContext {
 	public boolean isUserHasLicense(String license);
 	
 	/**
+	 * Returns a boolean indicating whether the authenticated client is included
+     * in the specified logical "license". If the client has not been authenticated,
+     * the method returns <code>false</code>.
+     *
+     * @param license a <code>String</code> specifying the name of the license
+     * @return a <code>boolean</code> indicating whether the user making
+     *         the request belongs to a assigned license; <code>false</code> if the client
+     *         has not been authenticated or don't have license
+     * @throws java.lang.IllegalStateException
+     *          if called outside the scope of a request
+	 */
+	public boolean isClientHasLicense(String license);
+	
+	/**
      * Returns a <code>com.uimirror.ws.api.security.ouath.License</code> object containing the
      * license of the current authenticated user. If the user
      * has not been authenticated, the method returns null.
@@ -59,6 +73,19 @@ public interface UIMSecurityContext extends SecurityContext {
      *          if called outside the scope of a request
      */
 	public License getUserLicense();
+	
+	/**
+     * Returns a <code>com.uimirror.ws.api.security.ouath.License</code> object containing the
+     * license of the current authenticated client. If the client
+     * has not been authenticated, the method returns null.
+     *
+     * @return a <code>com.uimirror.ws.api.security.ouath.License</code> containing the license
+     *         of the user making this request; null if the client has not been
+     *         authenticated
+     * @throws java.lang.IllegalStateException
+     *          if called outside the scope of a request
+     */
+	public License getClientLicense();
 	
 	
 

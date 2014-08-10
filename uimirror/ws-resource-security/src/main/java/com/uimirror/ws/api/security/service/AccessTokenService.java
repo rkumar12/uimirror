@@ -64,6 +64,18 @@ public interface AccessTokenService {
 	public AccessToken getActiveAccessTokenByTokenId(final String token) throws AccessTokenException, IllegalArgumentException;
 	
 	/**
+	 * <p>This will populate the client details to the available token</p>
+	 * @param token
+	 * @return
+	 * @throws IllegalArgumentException
+	 * @throws ClientException
+	 */
+	public AccessToken populateClient(AccessToken token) throws IllegalArgumentException, ClientException;
+	
+	//TODO complete this next
+	public AccessToken populateUser(AccessToken token);
+	
+	/**
 	 * <p>This will mark the token as expired for the given token id</p>
 	 * @param token
 	 * @throws IllegalArgumentException if input_parameter is not correct

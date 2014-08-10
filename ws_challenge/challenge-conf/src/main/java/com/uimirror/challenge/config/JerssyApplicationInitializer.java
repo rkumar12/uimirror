@@ -19,8 +19,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 
 import com.uimirror.challenge.config.filter.PoweredByResponseFilter;
-import com.uimirror.ws.api.security.filter.SecurityContextFilter;
+import com.uimirror.ws.api.security.filter.AccessTokenExtractorFilter;
+import com.uimirror.ws.api.security.filter.AccessTokenValidationFilter;
+import com.uimirror.ws.api.security.filter.feature.ClientLicenseAllowedDynamicFeature;
 import com.uimirror.ws.api.security.filter.feature.RolesAllowedDynamicFeature;
+import com.uimirror.ws.api.security.filter.feature.UserLicenseAllowedDynamicFeature;
 
 public class JerssyApplicationInitializer extends ResourceConfig{
 	protected static final Logger LOG = LoggerFactory.getLogger(JerssyApplicationInitializer.class);
@@ -33,9 +36,12 @@ public class JerssyApplicationInitializer extends ResourceConfig{
 		packages(true, "com.uimirror.challenge.controller");
 		packages(true, "com.uimirror.challenge.config");
 		// Register my custom provider - not needed if it's in my.package.
-        register(SecurityContextFilter.class);
+        register(AccessTokenExtractorFilter.class);
+        register(AccessTokenValidationFilter.class);
         register(PoweredByResponseFilter.class);
         register(RolesAllowedDynamicFeature.class);
+        register(UserLicenseAllowedDynamicFeature.class);
+        register(ClientLicenseAllowedDynamicFeature.class);
         register(UriConnegFilter.class);
         property(ServerProperties.LANGUAGE_MAPPINGS, "english : en");
         property(ServerProperties.APPLICATION_NAME, appName);

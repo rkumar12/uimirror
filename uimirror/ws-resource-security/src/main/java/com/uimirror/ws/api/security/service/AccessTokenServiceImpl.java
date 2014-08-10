@@ -22,6 +22,7 @@ import com.uimirror.ws.api.security.bean.base.AccessToken;
 import com.uimirror.ws.api.security.bean.base.Client;
 import com.uimirror.ws.api.security.bean.base.User;
 import com.uimirror.ws.api.security.exception.AccessTokenException;
+import com.uimirror.ws.api.security.exception.ClientException;
 import com.uimirror.ws.api.security.exception.ErrorConstant;
 import com.uimirror.ws.api.security.repo.AccessTokenDao;
 
@@ -162,6 +163,25 @@ public class AccessTokenServiceImpl implements AccessTokenService {
 			throw new AccessTokenException(ErrorConstant.MONGO_ERROR, "Mongo Connection issue", me);
 		}
 		LOG.info("[END]- Expiring a token details by user id");
+	}
+	
+
+	/* (non-Javadoc)
+	 * @see com.uimirror.ws.api.security.service.AccessTokenService#populateClient(com.uimirror.ws.api.security.bean.base.AccessToken)
+	 */
+	@Override
+	public AccessToken populateClient(AccessToken token)
+			throws IllegalArgumentException, ClientException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	/* (non-Javadoc)
+	 * @see com.uimirror.ws.api.security.service.AccessTokenService#populateUser(com.uimirror.ws.api.security.bean.base.AccessToken)
+	 */
+	@Override
+	public AccessToken populateUser(AccessToken token) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	/**

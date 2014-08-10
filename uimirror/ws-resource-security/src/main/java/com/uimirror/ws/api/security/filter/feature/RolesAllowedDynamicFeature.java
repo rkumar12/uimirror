@@ -11,37 +11,26 @@
 package com.uimirror.ws.api.security.filter.feature;
 
 import java.io.IOException;
-import java.security.Principal;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 import javax.annotation.Priority;
 import javax.annotation.security.DenyAll;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.ForbiddenException;
-import javax.ws.rs.Priorities;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.container.DynamicFeature;
 import javax.ws.rs.container.ResourceInfo;
 import javax.ws.rs.core.FeatureContext;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.ResponseBuilder;
 
 import org.glassfish.jersey.server.model.AnnotatedMethod;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.google.gson.Gson;
-import com.uimirror.ws.api.security.bean.base.AccessToken;
-import com.uimirror.ws.api.security.exception.AccessTokenException;
-import com.uimirror.ws.api.security.ouath.UIMPrincipal;
+import com.uimirror.ws.api.security.Priorities;
 import com.uimirror.ws.api.security.ouath.UIMSecurityContext;
-import com.uimirror.ws.api.security.ouath.UIMirrorSecurity;
-import com.uimirror.ws.api.security.service.AccessTokenService;
+import com.uimirror.ws.api.security.service.PrincipalService;
+import com.uimirror.ws.api.security.util.SecurityResponseUtil;
 
 /**
  * A {@link DynamicFeature} supporting the {@code javax.annotation.security.RolesAllowed},
@@ -64,23 +53,23 @@ import com.uimirror.ws.api.security.service.AccessTokenService;
  * @author Jay
  */
 public class RolesAllowedDynamicFeature implements DynamicFeature{
-	//Doing Autowering as there was no other options to replicate this
+	//Doing Autowering as there was no other options to bind this
 	@Autowired
-	private AccessTokenService accessTokenService;
+	private PrincipalService principalService;
 	@Override
     public void configure(final ResourceInfo resourceInfo, final FeatureContext configuration) {
         AnnotatedMethod am = new AnnotatedMethod(resourceInfo.getResourceMethod());
 
         // DenyAll on the method take precedence over RolesAllowed and PermitAll
         if (am.isAnnotationPresent(DenyAll.class)) {
-            configuration.register(new RolesAllowedRequestFilter(accessTokenService));
+            configuration.register(new RolesAllowedRequestFilter(principalService));
             return;
         }
 
         // RolesAllowed on the method takes precedence over PermitAll
         RolesAllowed ra = am.getAnnotation(RolesAllowed.class);
         if (ra != null) {
-            configuration.register(new RolesAllowedRequestFilter(ra.value(), accessTokenService));
+            configuration.register(new RolesAllowedRequestFilter(ra.value(), principalService));
             return;
         }
 
@@ -95,7 +84,7 @@ public class RolesAllowedDynamicFeature implements DynamicFeature{
         // RolesAllowed on the class takes precedence over PermitAll
         ra = resourceInfo.getResourceClass().getAnnotation(RolesAllowed.class);
         if (ra != null) {
-            configuration.register(new RolesAllowedRequestFilter(ra.value(), accessTokenService));
+            configuration.register(new RolesAllowedRequestFilter(ra.value(), principalService));
         }
     }
 	
@@ -103,19 +92,18 @@ public class RolesAllowedDynamicFeature implements DynamicFeature{
     private static class RolesAllowedRequestFilter implements ContainerRequestFilter {
         private final boolean denyAll;
         private final String[] rolesAllowed;
-        private final AccessTokenService accessTokenService;
-        protected static final Logger LOG = LoggerFactory.getLogger(RolesAllowedRequestFilter.class);
+        private final PrincipalService principalService;
 
-        RolesAllowedRequestFilter(AccessTokenService accessTokenService) {
+        RolesAllowedRequestFilter(PrincipalService principalService) {
             this.denyAll = true;
             this.rolesAllowed = null;
-            this.accessTokenService = accessTokenService;
+            this.principalService = principalService;
         }
 
-        RolesAllowedRequestFilter(String[] rolesAllowed, AccessTokenService accessTokenService) {
+        RolesAllowedRequestFilter(String[] rolesAllowed, PrincipalService principalService) {
             this.denyAll = false;
             this.rolesAllowed = (rolesAllowed != null) ? rolesAllowed : new String[] {};
-            this.accessTokenService = accessTokenService;
+            this.principalService = principalService;
         }
 
         @Override
@@ -123,33 +111,15 @@ public class RolesAllowedDynamicFeature implements DynamicFeature{
         	if(denyAll){
         		throw new ForbiddenException();
         	}
-        	//Check if the security context is a pre-authenticated
-        	Principal principal = requestContext.getSecurityContext().getUserPrincipal();
-        	UIMSecurityContext uimSecurityContext = null;
-        	if(principal instanceof UIMPrincipal){
-        		//User is already populated so no need to do population
-        		LOG.info("Wrong Check");
-        	}else{
-        		try{
-        			AccessToken token = accessTokenService.getAccessTokenByTokenId(principal.getName());
-        			uimSecurityContext = new UIMirrorSecurity(principal, token);
-        			requestContext.setSecurityContext(uimSecurityContext);
-        			
-        		}catch(AccessTokenException ae){
-        			LOG.error("[SECURITY-ERROR]- No Tokean Found!!!!");
-        			ResponseBuilder builder = null;
-        	        Map<String, String> res = new LinkedHashMap<String, String>(2);
-        	        res.put("error", "invalid_token");
-        	        builder = Response.status(Response.Status.BAD_REQUEST).entity(new Gson().toJson(res));
-        	        throw new WebApplicationException(builder.build());
-        			//throw new ForbiddenException();
-        		}
-        	}
+        	principalService.updateUserInSecurityConext(requestContext);
+        	UIMSecurityContext uimSecurityContext = (UIMSecurityContext)requestContext.getSecurityContext();
         	for (String role : rolesAllowed) {
         		if (uimSecurityContext.isUserInRole(role)) {
         			return;
         		}
         	}
+        	//if no role matches then throw this
+        	throw new WebApplicationException(SecurityResponseUtil.buildUserNotInRoleResponse());
         }
     }
 

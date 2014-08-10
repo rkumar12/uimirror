@@ -13,18 +13,16 @@ package com.uimirror.ws.api.security.filter;
 import java.io.IOException;
 
 import javax.annotation.Priority;
-import javax.ws.rs.Priorities;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
+import com.uimirror.ws.api.security.Priorities;
 import com.uimirror.ws.api.security.ouath.BearerTokenExtractor;
 import com.uimirror.ws.api.security.ouath.TokenExtractor;
 import com.uimirror.ws.api.security.ouath.UIMirrorSecurity;
-import com.uimirror.ws.api.security.service.AccessTokenService;
 
 /**
  * <p>This is the common resource filter to populate the access token details.</p>
@@ -32,12 +30,10 @@ import com.uimirror.ws.api.security.service.AccessTokenService;
  * <p>if token details are not valid then it will send invalid response directly from here.</p>
  * @author Jay
  */
-@Priority(Priorities.AUTHORIZATION)
-public class SecurityContextFilter implements ContainerRequestFilter{
+@Priority(Priorities.TOKENEXTRACTOR)
+public class AccessTokenExtractorFilter implements ContainerRequestFilter{
 	
-	protected static final Logger LOG = LoggerFactory.getLogger(SecurityContextFilter.class);
-	@Autowired
-	private AccessTokenService accessTokenService;
+	protected static final Logger LOG = LoggerFactory.getLogger(AccessTokenExtractorFilter.class);
 
 	/* (non-Javadoc)
 	 * @see javax.ws.rs.container.ContainerRequestFilter#filter(javax.ws.rs.container.ContainerRequestContext)

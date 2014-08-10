@@ -20,7 +20,7 @@ import java.lang.annotation.Target;
 
 /**
  * Specifies the list of licenses permitted to access method(s) in an application.
- * The value of the LicensesAllowed annotation is a list of security license names. 
+ * The value of the UserLicensesAllowed annotation is a list of security license names. 
  * This annotation can be specified on a class or on method(s). Specifying it 
  * at a class level means that it applies to all the methods in the class. 
  * Specifying it on a method means that it is applicable to that method only. 
@@ -32,6 +32,6 @@ import java.lang.annotation.Target;
 @Documented
 @Retention (RUNTIME)
 @Target({TYPE, METHOD})
-public @interface LicensesAllowed {
+public @interface UserLicensesAllowed {
 	String[] value();
 }

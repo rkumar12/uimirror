@@ -19,6 +19,8 @@ import com.uimirror.ws.api.security.repo.AccessTokenDao;
 import com.uimirror.ws.api.security.repo.AccessTokenDaoImpl;
 import com.uimirror.ws.api.security.service.AccessTokenService;
 import com.uimirror.ws.api.security.service.AccessTokenServiceImpl;
+import com.uimirror.ws.api.security.service.PrincipalService;
+import com.uimirror.ws.api.security.service.PrincipalServiceImpl;
 
 /**
  * <p>Initialize all the security beans</p>
@@ -37,6 +39,11 @@ public class SecurityBeanIntitializer {
 	@Bean
 	public AccessTokenService accessTokenService(){
 		return new AccessTokenServiceImpl(accessTokenDao());
+	}
+	
+	@Bean
+	public PrincipalService principalService(){
+		return new PrincipalServiceImpl(accessTokenService());
 	}
 
 }

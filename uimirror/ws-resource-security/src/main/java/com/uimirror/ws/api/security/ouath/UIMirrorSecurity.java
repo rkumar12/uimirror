@@ -33,9 +33,20 @@ public class UIMirrorSecurity implements UIMSecurityContext{
 	 */
 	public UIMirrorSecurity(Principal token) {
 		super();
-		Assert.notNull(token, "Principal can't be Empty, user/client should have authenticated eariller.");
+		Assert.notNull(token, "Principal can't be Empty, client should have a access token.");
 		this.preAuthToken = token;
 		this.ouathToken = null;
+	}
+	
+	/**
+	 * <p>When Client is authenticated populate this</p>
+	 * @param token
+	 */
+	public UIMirrorSecurity(UIMPrincipal accessToken) {
+		super();
+		Assert.notNull(accessToken, "Principal can't be Empty, user/client should have authenticated eariller.");
+		this.preAuthToken = null;
+		this.ouathToken = accessToken;
 	}
 
 	/**
@@ -89,6 +100,24 @@ public class UIMirrorSecurity implements UIMSecurityContext{
 
 	@Override
 	public License getUserLicense() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.uimirror.ws.api.security.ouath.UIMSecurityContext#isClientHasLicense(java.lang.String)
+	 */
+	@Override
+	public boolean isClientHasLicense(String license) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.uimirror.ws.api.security.ouath.UIMSecurityContext#getClientLicense()
+	 */
+	@Override
+	public License getClientLicense() {
 		// TODO Auto-generated method stub
 		return null;
 	}
