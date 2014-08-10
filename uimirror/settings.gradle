@@ -1,2 +1,2 @@
 
-include "uim-shared-lib", "ws-resource-security", "commonutil", "mongo-factory"
+include "uim-shared-lib", "ws-resource-security", "commonutil", "mongo-factory", "ws-resource-auditing"

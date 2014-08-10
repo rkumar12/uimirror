@@ -39,6 +39,10 @@
 						<id>org.eclipse.ui.ide.multiFilter</id>
 						<arguments>1.0-projectRelativePath-equals-true-false-mongo-factory</arguments>
 					</matcher>
+					<matcher>
+						<id>org.eclipse.ui.ide.multiFilter</id>
+						<arguments>1.0-projectRelativePath-equals-true-false-ws-resource-auditing</arguments>
+					</matcher>
 				</arguments>
 			</matcher>
 		</filter>
