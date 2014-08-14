@@ -11,14 +11,13 @@
 package com.uimirror.ws.api.audit.impl;
 
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.Signature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.util.StopWatch;
 
-import com.uimirror.util.StopWatchUtil;
+import com.uimirror.ws.api.audit.annotations.ClientAudit;
 import com.uimirror.ws.api.audit.annotations.ProfileExecution;
 
 /**
@@ -26,21 +25,16 @@ import com.uimirror.ws.api.audit.annotations.ProfileExecution;
  * @author Jay
  */
 @Aspect
-public class ProfilingMethodAspect {
-	protected static final Logger LOG = LoggerFactory.getLogger(ProfilingMethodAspect.class);
+public class ClientAuditAspect {
+	protected static final Logger LOG = LoggerFactory.getLogger(ClientAuditAspect.class);
 
-	@Around("execution(* *(..)) && @annotation(profileExecution)")
-	public Object applyStopWatch(ProceedingJoinPoint joinPoint, ProfileExecution profileExecution) throws Throwable {
+	@Around("execution(* *(..)) && @annotation(clientAudit)")
+	public Object applyStopWatch(ProceedingJoinPoint joinPoint, ClientAudit clientAudit) throws Throwable {
 		Signature signature = joinPoint.getSignature();
-		String methodName = signature.getName();
-		final StopWatch stopWatch = new StopWatch(methodName);
-        stopWatch.start(methodName);
-
+		//Do auditing
         try {
             return joinPoint.proceed();
         } finally {
-            stopWatch.stop();
-            LOG.debug(StopWatchUtil.formatStopSwatchSummery(methodName, stopWatch));
         }
 	}
 

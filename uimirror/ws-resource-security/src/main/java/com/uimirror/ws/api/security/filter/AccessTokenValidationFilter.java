@@ -18,7 +18,6 @@ import javax.ws.rs.container.ContainerRequestFilter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.uimirror.ws.api.security.Priorities;
 import com.uimirror.ws.api.security.service.PrincipalService;
@@ -30,9 +29,12 @@ import com.uimirror.ws.api.security.service.PrincipalService;
 @Priority(Priorities.TOKENVALIDATION)
 public class AccessTokenValidationFilter implements ContainerRequestFilter{
 
-	//Doing Autowering as there was no other options to bind this
-	@Autowired
-	private PrincipalService principalService;
+	//TODO Fix this if constructor way its not working
+	private final PrincipalService principalService;
+	
+	public AccessTokenValidationFilter(PrincipalService principalService) {
+		this.principalService = principalService;
+	}
 	
 	protected static final Logger LOG = LoggerFactory.getLogger(AccessTokenValidationFilter.class);
 	/* (non-Javadoc)

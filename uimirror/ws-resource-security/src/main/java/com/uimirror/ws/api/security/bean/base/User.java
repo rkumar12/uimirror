@@ -10,16 +10,31 @@
  *******************************************************************************/
 package com.uimirror.ws.api.security.bean.base;
 
+import java.util.Set;
+
+import com.uimirror.ws.api.security.Scope;
+import com.uimirror.ws.api.security.ouath.License;
+
 /**
+ * <p>This holds the basic information about the user</p>
+ * <p>This will be used for the normal user basic details as principal</p>
+ * <p>Password will be auto erased once this field required by other modules but not by this</p>
  * @author Jay
  *
  */
-//TODO work on this once registration completes
 public class User {
 	
+	//This is also known as profile id for the user, which will be unique per user
 	private String id;
 	private String firstName;
 	private String lastName;
+	private String email;
+	private Set<String> userId;
+	private License license;
+	private String password;
+	//User may have multiple scope for a single application
+	private Set<Scope> scopes;
+	
 
 	public String getId() {
 		return id;
@@ -45,4 +60,45 @@ public class User {
 		this.id = id;
 	}
 
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public Set<String> getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Set<String> userId) {
+		this.userId = userId;
+	}
+
+	public License getLicense() {
+		return license;
+	}
+
+	public void setLicense(License license) {
+		this.license = license;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public Set<Scope> getScopes() {
+		return scopes;
+	}
+
+	public void setScopes(Set<Scope> scopes) {
+		this.scopes = scopes;
+	}
+
+	
 }
