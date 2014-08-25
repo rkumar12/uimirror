@@ -22,7 +22,7 @@ public enum ReadWriteScope {
 	
 	private final String scope;
 	
-	ReadWriteScope(String scope){
+	private ReadWriteScope(String scope){
 		this.scope = scope;
 	}
 	

@@ -23,7 +23,6 @@ import org.springframework.context.annotation.ImportResource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.FileCopyUtils;
 
-import com.uimirror.challenge.app.BeanIntitializer;
 import com.uimirror.challenge.app.SecurityBeanIntitializer;
 import com.uimirror.challenge.app.WebAppInitializer;
 import com.uimirror.challenge.dao.conf.DaoBeanIntitializer;
@@ -33,7 +32,7 @@ import com.uimirror.challenge.dao.conf.DaoBeanIntitializer;
 @EnableAutoConfiguration
 @ComponentScan(basePackages= {"com.uimirror.challenge", "com.uimirror.ws.api.security"})
 @Import({
-	WebAppInitializer.class, BeanIntitializer.class, DaoBeanIntitializer.class, SecurityBeanIntitializer.class
+	WebAppInitializer.class, DaoBeanIntitializer.class, SecurityBeanIntitializer.class
 })
 public class StartApp{
 

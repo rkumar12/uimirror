@@ -5,6 +5,7 @@ ext {
 	aspectjVersion = "1.8.1"
 	slf4jVersion = "1.7.2"
 	qosLogBackVersion = "1.1.1"
+	jerseyVersion = "2.11"
 }
 group = "com.uimirror.ws.api.audit"
 version = 1.0
@@ -20,6 +21,24 @@ dependencies {
 		 [group: 'org.aspectj', name: 'aspectjweaver', version: aspectjVersion],
 		 )
 	//Spring AOP ENd
+	compile (group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet', version: jerseyVersion){
+		exclude module: 'jersey-client'
+		//exclude module: 'javax.annotation-api'
+		exclude module: 'validation-api'
+		exclude module: 'aopalliance-repackaged'
+		exclude module: 'javax.inject'
+		exclude module: 'hk2-api'
+		exclude module: 'hk2-locator'
+		exclude module: 'hk2-utils'
+		exclude module: 'tiger-types'
+		exclude module: 'osgi-resource-locator'
+		exclude module: 'jersey-guava'
+		exclude module: 'jersey-container-servlet-core'
+		exclude module: 'jersey-container-servlet'
+		exclude module: 'jersey-common'
+		//exclude module: 'jersey-server'
+		
+	}
 	//Logging
 	compile ([group: 'org.slf4j', name: 'slf4j-api', version: slf4jVersion],
 			)
@@ -27,6 +46,7 @@ dependencies {
 			 [group: 'ch.qos.logback', name: 'logback-core', version: qosLogBackVersion],
 			)
 	//Logging End
+	compile group: 'com.uimirror.mongo', name: 'mongo-factory', version: 1.0
 
 }
 
