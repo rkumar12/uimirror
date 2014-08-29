@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.ws.api.security.exception;
+package com.uimirror.ws.api.audit.exception;
 
 import com.uimirror.core.ErrorCodes;
 
@@ -18,13 +18,12 @@ import com.uimirror.core.ErrorCodes;
  */
 public interface ErrorConstant {
 
-	//Token Details not found
-	public static final int TOKEN_NOT_FOUND = ErrorCodes._404;
-	//Token has been expired
-	public static final int TOKEN_EXPIRED = ErrorCodes._419;
+	//Audit details not found
+	public static final int AUDIT_NOT_FOUND = ErrorCodes._404;
+	//Audit Save Failed
+	public static final int AUDIT_INPUT_ERROR = ErrorCodes._204;
+	
 	//MONGO data base error
 	public static final int MONGO_ERROR = ErrorCodes._500;
 	
-	//Client Not found
-	public static final int CLIENT_NOT_FOUND = ErrorCodes._404;
 }

@@ -12,6 +12,7 @@ version = 1.0
 
 dependencies {
 	compile project(':commonutil')
+	compile project(':threadutil')
     //Spring AOP Depedancy
 	compile (//[group: 'org.springframework', name: 'spring-context', version: springVersion],
 		 [group: 'org.springframework', name: 'spring-beans', version: springVersion],

@@ -12,6 +12,7 @@ package com.uimirror.ws.api.audit;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.Map;
 import java.util.UUID;
 
@@ -40,8 +41,8 @@ public final class Audit  extends BeanBasedDocument implements Serializable{
 	protected static final Logger LOG = LoggerFactory.getLogger(Audit.class);
 	
 	private final String id;
-	private final LocalDateTime requestTime;
-	private final LocalDateTime responseTime;
+	private final long requestTime;
+	private final long responseTime;
 	private final String resource;
 	private final String clientId;
 	private final Status status;
@@ -50,15 +51,15 @@ public final class Audit  extends BeanBasedDocument implements Serializable{
 	@SuppressWarnings("unused")
 	private Audit() {
 		this.id = null;
-		this.requestTime = null;
-		this.responseTime = null;
+		this.requestTime = 0l;
+		this.responseTime = 0l;
 		this.resource = null;
 		this.clientId = null;
 		this.status = null;
 	}
 
 	//Constructor with all the value needs to be populate
-	public Audit(String id, LocalDateTime requestTime, LocalDateTime responseTime, String resource, String clientId, Status status) {
+	public Audit(String id, long requestTime, long responseTime, String resource, String clientId, Status status) {
 		super(10);
 		this.id = id;
 		this.requestTime = requestTime;
@@ -77,8 +78,8 @@ public final class Audit  extends BeanBasedDocument implements Serializable{
 	public Audit(Map<String, Object> m){
 		super(m);
 		this.id = (String)m.get(AuditFieldConstants._ID);
-		this.requestTime = (LocalDateTime)m.get(AuditFieldConstants._RQ_TIME);
-		this.responseTime = (LocalDateTime)m.get(AuditFieldConstants._RS_TIME);
+		this.requestTime = (long)m.get(AuditFieldConstants._RQ_TIME);
+		this.responseTime = (long)m.get(AuditFieldConstants._RS_TIME);
 		this.resource = (String)m.get(AuditFieldConstants._RESOURCE);
 		this.clientId = (String)m.get(AuditFieldConstants._CLIENT_ID);
 		this.status = Status.getEnum((String) m.get(AuditFieldConstants._STATUS));
@@ -86,43 +87,65 @@ public final class Audit  extends BeanBasedDocument implements Serializable{
 	
 	/**
 	 * <p>This will start the audit process, allocates a unique id for keeping track of the request</p>
+	 * <p>This will mark the audit as success by default, assuming job has been completed</p>
+	 * <p>This will mark the response time as the current time in UTC format</p>
 	 * @param clientId a valid String representing the client ID
 	 * @param resource a valid resource identifier
+	 * @param requestTime A time specifying the requested source time in EPOCH format
 	 * @return a new Instance of {@code Audit}
 	 */
-	public static Audit initateAudit(String clientId, String resource){
+	public static Audit success(String clientId, String resource, long requestTime){
+		validate(clientId, resource, requestTime);
+		//Creating a new object with UUID as id and marking the status as complete
+		return new Audit(UUID.randomUUID().toString(), requestTime, LocalDateTime.now().toEpochSecond(ZoneOffset.UTC), resource, clientId, Status.COMPLETE);
+	}
+	
+	/**
+	 * <p>This will start the audit process, allocates a unique id for keeping track of the request</p>
+	 * <p>This will mark the audit as success by default, assuming job has been completed with error</p>
+	 * @return a new Instance of {@code Audit}
+	 */
+	public static Audit failed(String clientId, String resource, long requestTime){
+		//Creating a new object with UUID as id and marking the status as failed
+		return new Audit(UUID.randomUUID().toString(), requestTime, LocalDateTime.now().toEpochSecond(ZoneOffset.UTC), resource, clientId, Status.FAILED);
+	}
+	
+	/**
+	 * <p>Helper to the utility methods to help the validation process in a single space</p>
+	 * @param clientId
+	 * @param resource
+	 * @param requestTime
+	 */
+	private static void validate(String clientId, String resource, long requestTime){
 		Assert.hasText(clientId, "Audit requires a valid clientId");
 		Assert.hasText(resource, "Audit requires to know the resource which will be used by client");
-		
-		//Creating a new object with UUID as id and marking the status as progress
-		return new Audit(UUID.randomUUID().toString(), LocalDateTime.now(), null, resource, clientId, Status.PROGRESS);
+		if(requestTime <= 0l)
+			throw new IllegalArgumentException("Audit requires a Resource request time.");
 	}
-	
+
 	/**
-	 * <p>Will update the audit status to complete along with update the response time</p>
-	 * @return a new Instance of {@code Audit}
+	 * <p>This will initialize the document map for Mongo</p>
 	 */
-	public Audit markAsComplete(){
-		return new Audit(this.id, this.requestTime, LocalDateTime.now(), this.resource, this.clientId, Status.COMPLETE);
-	}
-	
-	/**
-	 * <p>Will update the audit status to failed along with update the response time</p>
-	 * @return a new Instance of {@code Audit}
-	 */
-	public Audit markAsFailed(){
-		return new Audit(this.id, this.requestTime, LocalDateTime.now(), this.resource, this.clientId, Status.FAILED);
+	private void initialize(){
+		super.put(AuditFieldConstants._ID, this.id);
+		super.put(AuditFieldConstants._CLIENT_ID, this.clientId);
+		super.put(AuditFieldConstants._RESOURCE, this.resource);
+		super.put(AuditFieldConstants._STATUS, this.status);
+		if(this.requestTime > 0l)
+			super.put(AuditFieldConstants._RQ_TIME, this.requestTime);
+		if(this.responseTime > 0l)
+			super.put(AuditFieldConstants._RS_TIME, this.responseTime);
 	}
 
 	public String getId() {
 		return id;
 	}
 
-	public LocalDateTime getRequestTime() {
+	public long getRequestTime() {
 		return requestTime;
 	}
 
-	public LocalDateTime getResponseTime() {
+	public long getResponseTime() {
 		return responseTime;
 	}
 
@@ -138,19 +161,46 @@ public final class Audit  extends BeanBasedDocument implements Serializable{
 		return status;
 	}
 
-	/**
-	 * <p>This will initialize the document map for Mongo</p>
-	 */
-	private void initialize(){
-		super.put(AuditFieldConstants._ID, this.id);
-		super.put(AuditFieldConstants._CLIENT_ID, this.clientId);
-		super.put(AuditFieldConstants._RESOURCE, this.resource);
-		super.put(AuditFieldConstants._STATUS, this.status);
-		if(this.requestTime != null)
-			super.put(AuditFieldConstants._RQ_TIME, this.requestTime);
-		if(this.responseTime != null)
-			super.put(AuditFieldConstants._RS_TIME, this.responseTime);
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result
+				+ ((clientId == null) ? 0 : clientId.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + (int) (requestTime ^ (requestTime >>> 32));
+		return result;
 	}
-	
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Audit other = (Audit) obj;
+		if (clientId == null) {
+			if (other.clientId != null)
+				return false;
+		} else if (!clientId.equals(other.clientId))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (requestTime != other.requestTime)
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Audit [id=" + id + ", requestTime=" + requestTime
+				+ ", responseTime=" + responseTime + ", resource=" + resource
+				+ ", clientId=" + clientId + ", status=" + status + "]";
+	}
 	
 }

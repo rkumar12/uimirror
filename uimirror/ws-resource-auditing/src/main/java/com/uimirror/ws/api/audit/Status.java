@@ -11,16 +11,12 @@
 package com.uimirror.ws.api.audit;
 
 /**
- * <p>status enum which will be coresponding to the reqest call</p>
- * <p>One request will be {@code Status#PROGRESS} when initial request enters</p>
- * <p>While sending the response a request can be marked as {@code Status#COMPLETE} 
- * or {@code Status#INCOMPLETE} or {@code Status#FAILED}</p>
+ * <p>status enum which will be corresponding to the request call</p>
+ * <p>One request can be complete or failed</p>
  * @author Jayaram
  */
 public enum Status {
 
-	PROGRESS("P"),
-	INCOMPLETE("IC"),
 	COMPLETE("C"),
 	FAILED("F");
 	
