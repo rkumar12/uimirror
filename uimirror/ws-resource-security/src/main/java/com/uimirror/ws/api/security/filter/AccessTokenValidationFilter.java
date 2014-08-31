@@ -19,7 +19,7 @@ import javax.ws.rs.container.ContainerRequestFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.uimirror.ws.api.security.Priorities;
+import com.uimirror.core.Priorities;
 import com.uimirror.ws.api.security.service.PrincipalService;
 
 /**

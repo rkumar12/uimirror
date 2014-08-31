@@ -28,8 +28,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.uimirror.api.threadutil.SubmitAndForgetAdapter;
+import com.uimirror.core.Priorities;
 import com.uimirror.ws.api.audit.Audit;
-import com.uimirror.ws.api.audit.Priorities;
 import com.uimirror.ws.api.audit.annotations.ClientAudit;
 import com.uimirror.ws.api.audit.callable.AuditItCallable;
 import com.uimirror.ws.api.audit.service.AuditService;

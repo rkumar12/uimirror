@@ -27,7 +27,7 @@ import javax.ws.rs.core.FeatureContext;
 import org.glassfish.jersey.server.model.AnnotatedMethod;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.uimirror.ws.api.security.Priorities;
+import com.uimirror.core.Priorities;
 import com.uimirror.ws.api.security.ouath.UIMSecurityContext;
 import com.uimirror.ws.api.security.service.PrincipalService;
 import com.uimirror.ws.api.security.util.SecurityResponseUtil;

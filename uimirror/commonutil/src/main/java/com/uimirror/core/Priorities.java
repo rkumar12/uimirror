@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.ws.api.security;
+package com.uimirror.core;
 
 /**
  * A collection of built-in priority constants for the JAX-RS components that are supposed to be
@@ -37,12 +37,14 @@ public final class Priorities {
 	private Priorities() {
 		// prevents construction
 	}
-	
 	/**
      * Security authentication filter/interceptor priority.
      */
     public static final int AUTHENTICATION = 1000;
-    
+    /**
+     * Security authorization filter/interceptor priority.
+     */
+    public static final int AUTHORIZATION = 2000;
     /**
      * Security authentication filter/interceptor priority.
      */
@@ -52,17 +54,20 @@ public final class Priorities {
      * Security authentication filter/interceptor priority.
      */
     public static final int TOKENEXTRACTOR = 999;
-    /**
-     * Security authorization filter/interceptor priority.
-     */
-    public static final int AUTHORIZATION = 2000;
     
     public static final int USER_LICENSE_AUTHORIZATION = 1999;
     public static final int CLIENT_LICENSE_AUTHORIZATION = 1998;
+
+    /**
+     * Client Audit response commit, for any response to be get completed
+     */
+    public static final int  CLIENT_AUDIT_RESPONSE = 2999; 
+
     /**
      * Header decorator filter/interceptor priority.
      */
     public static final int HEADER_DECORATOR = 3000;
+    
     /**
      * Message encoder or decoder filter/interceptor priority.
      */
