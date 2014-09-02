@@ -18,6 +18,8 @@ import com.uimirror.core.CredentialType;
 /**
  * <p>This will be the common principal contract
  * every uimirror application are supposed to follow the mail rules from this</p>
+ * This holds the user authentication details prior to the authentication,
+ * once user has been authenticated he will be granted with the {@link AccessToken}
  * @author Jay
  */
 public interface Authentication extends Principal, Serializable {
