@@ -282,10 +282,238 @@ public interface ErrorCodes {
 	 */
    	public static final int _420 = 420;
 	
+   	/**
+   	 * Unprocessable Entity (WebDAV; RFC 4918)
+   	 * The request was well-formed but was unable to be followed due to semantic errors.[3]
+   	 */
+   	public static final int _422 = 422;
+   	
+   	/**
+   	 * Locked (WebDAV; RFC 4918)
+   	 * The resource that is being accessed is locked.[
+   	 */
+   	public static final int _423 = 423;
+   	
+   	/**
+   	 * Failed Dependency (WebDAV; RFC 4918)
+   	 * The request failed due to failure of a previous request (e.g., a PROPPATCH).
+   	 */
+   	public static final int _424 = 424;
+   	
+   	/**
+   	 * Upgrade Required
+   	 * The client should switch to a different protocol such as TLS/1.0.
+   	 */
+   	public static final int _426 = 426;
+   	
+   	/**
+   	 * Precondition Required (RFC 6585)
+   	 * The origin server requires the request to be conditional. Intended to prevent "the 'lost update' problem, where a client GETs a resource's state, modifies it, and PUTs 
+   	 * it back to the server, when meanwhile a third party has modified the state on the server, leading to a conflict.
+   	 */
+   	public static final int _428 = 428;
+   	
+   	/**
+   	 * Too Many Requests (RFC 6585)
+   	 * The user has sent too many requests in a given amount of time. Intended for use with rate limiting schemes.
+   	 */
+   	public static final int _429 = 429;
+   	
+   	/**
+   	 * Request Header Fields Too Large (RFC 6585)
+   	 * The server is unwilling to process the request because either an individual header field, or all the header fields collectively, are too large.
+   	 */
+   	public static final int _431 = 431;
+   	
+   	/**
+   	 * Login Timeout (Microsoft)
+   	 * A Microsoft extension. Indicates that your session has expired.
+   	 */
+   	public static final int _440 = 440;
+   	
+   	/**
+   	 * No Response (Nginx)
+   	 * Used in Nginx logs to indicate that the server has returned no information to the client and closed the connection (useful as a deterrent for malware).
+   	 */
+   	public static final int _444 = 444;
+   	
+   	/**
+   	 * Retry With (Microsoft)
+   	 * A Microsoft extension. The request should be retried after performing the appropriate action.
+   	 */
+   	public static final int _449 = 449;
+   	
+   	/**
+   	 * Blocked by Windows Parental Controls (Microsoft)
+   	 * A Microsoft extension. This error is given when Windows Parental Controls are turned on and are blocking access to the given webpage.
+   	 */
+   	public static final int _450 = 450;
+   	
+   	/**
+   	 * Unavailable For Legal Reasons (Internet draft)
+   	 * Defined in the internet draft "A New HTTP Status Code for Legally-restricted Resources".[17] Intended to be used when resource access is denied for legal reasons,
+   	 *             &
+   	 * Redirect (Microsoft)
+   	 * Used in Exchange ActiveSync if there either is a more efficient server to use or the server cannot access the users' mailbox.            
+   	 * 
+   	 */
+   	public static final int _451 = 451;
+   	
+   	
+   	/**
+   	 * Request Header Too Large (Nginx)
+   	 * Nginx internal code similar to 431 but it was introduced earlier in version 0.9.4 (on January 21, 2011).
+   	 */
+   	public static final int _494 = 494;
+   	
+   	/**
+   	 * Cert Error (Nginx)
+   	 * Nginx internal code used when SSL client certificate error occurred to distinguish it from 4XX in a log and an error page redirection.
+   	 */
+   	public static final int _495 = 495;
+   	
+   	/**
+   	 * No Cert (Nginx)
+   	 * Nginx internal code used when client didn't provide certificate to distinguish it from 4XX in a log and an error page redirection.
+   	 */
+   	public static final int _496 = 496;
+   	
+   	/**
+   	 * HTTP to HTTPS (Nginx)
+   	 * Nginx internal code used for the plain HTTP requests that are sent to HTTPS port to distinguish it from 4XX in a log and an error page redirection.
+   	 */
+   	public static final int _497 = 497;
+   	
+   	/**
+   	 * Token expired/invalid (Esri)
+   	 * Returned by ArcGIS for Server. A code of 498 indicates an expired or otherwise invalid token.
+   	 */
+   	public static final int _498 = 498;
+   	
+   	/**
+   	 * Client Closed Request (Nginx)
+   	 * Used in Nginx logs to indicate when the connection has been closed by client while the server is still processing its request, making server unable to send a status code back.
+   	 * &
+   	 * Token required (Esri)
+   	 * Returned by ArcGIS for Server. A code of 499 indicates that a token is required (if no token was submitted).
+   	 */
+   	public static final int _499 = 499;
+   	
+   	
 	//5xx series
 	
 	/**
 	 * Internal Server Error
 	 */
 	public static final int _500 = 500;
+	
+	/**
+	 * Not Implemented
+	 * The server either does not recognize the request method, or it lacks the ability to fulfil the request. Usually this implies future availability 
+	 */
+	public static final int _501 = 501;
+	
+	/**
+	 * Bad Gateway
+	 * The server was acting as a gateway or proxy and received an invalid response from the upstream server.
+	 */
+	public static final int _502 = 502;
+	
+	/**
+	 * Service Unavailable
+	 * The server is currently unavailable (because it is overloaded or down for maintenance). Generally, this is a temporary state.
+	 */
+	public static final int _503 = 503;
+	
+	/**
+	 * Gateway Timeout
+	 * The server was acting as a gateway or proxy and did not receive a timely response from the upstream server.
+	 */
+	public static final int _504 = 504;
+	
+	/**
+	 * HTTP Version Not Supported
+	 * The server does not support the HTTP protocol version used in the request.
+	 */
+	public static final int _505 = 505;
+	
+	/**
+	 * Variant Also Negotiates (RFC 2295)
+	 * Transparent content negotiation for the request results in a circular reference.[
+	 */
+	public static final int _506 = 506;
+	
+	/**
+	 * Insufficient Storage (WebDAV; RFC 4918)
+	 * The server is unable to store the representation needed to complete the request.
+	 */
+	public static final int _507 = 507;
+	
+	/**
+	 * Loop Detected (WebDAV; RFC 5842)
+	 * The server detected an infinite loop while processing the request (sent in lieu of 208 Already Reported).
+	 */
+	public static final int _508 = 508;
+	
+	/**
+	 * Bandwidth Limit Exceeded (Apache bw/limited extension)
+	 * This status code is not specified in any RFCs. Its use is unknown.
+	 */
+	public static final int _509 = 509;
+	
+	/**
+	 * Not Extended (RFC 2774)
+	 * Further extensions to the request are required for the server to fulfil it.
+	 */
+	public static final int _510 = 510;
+	
+	/**
+	 * Network Authentication Required (RFC 6585)
+	 * The client needs to authenticate to gain network access. Intended for use by intercepting proxies used to control access to the network 
+	 */
+	public static final int _511 = 511;
+	
+	/**
+	 * Origin Error (CloudFlare)
+	 * This status code is not specified in any RFCs, but is used by CloudFlare's reverse proxies to signal an "unknown connection issue between CloudFlare and the origin
+	 *  web server" to a client in front of the proxy.
+	 */
+	public static final int _520 = 520;
+	
+	/**
+	 * Web server is down (CloudFlare)
+	 * This status code is not specified in any RFCs, but is used by CloudFlare's reverse proxies to indicate that the origin webserver refused the connection.
+	 */
+	public static final int _521 = 521;
+	
+	/**
+	 * Connection timed out (CloudFlare)
+	 * This status code is not specified in any RFCs, but is used by CloudFlare's reverse proxies to signal that a server connection timed out.
+	 */
+	public static final int _522 = 522;
+	
+	/**
+	 *  Proxy Declined Request (CloudFlare)
+	 *  This status code is not specified in any RFCs, but is used by CloudFlare's reverse proxies to signal a resource that has been blocked by the administrator of the website 
+	 *  or proxy itself.
+	 */
+	public static final int _523 = 523;
+	
+	/**
+	 * A timeout occurred (CloudFlare)
+	 * This status code is not specified in any RFCs, but is used by CloudFlare's reverse proxies to signal a network read timeout behind the proxy to a client in front of the proxy.
+	 */
+	public static final int _524 = 524;
+	
+	/**
+	 * Network read timeout error (Unknown)
+	 * This status code is not specified in any RFCs, but is used by Microsoft HTTP proxies to signal a network read timeout behind the proxy to a client in front of the proxy.
+	 */
+	public static final int _598 = 598;
+	
+	/**
+	 * Network connect timeout error (Unknown)
+	 * This status code is not specified in any RFCs, but is used by Microsoft HTTP proxies to signal a network connect timeout behind the proxy to a client in front of the proxy.
+	 */
+	public static final int _599 = 599;
 }
