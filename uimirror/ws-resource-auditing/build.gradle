@@ -11,8 +11,7 @@ group = "com.uimirror.ws.api.audit"
 version = 1.0
 
 dependencies {
-	compile project(':commonutil')
-	compile project(':threadutil')
+	compile project(':uim-core')
     //Spring AOP Depedancy
 	compile (//[group: 'org.springframework', name: 'spring-context', version: springVersion],
 		 [group: 'org.springframework', name: 'spring-beans', version: springVersion],
@@ -47,7 +46,6 @@ dependencies {
 			 [group: 'ch.qos.logback', name: 'logback-core', version: qosLogBackVersion],
 			)
 	//Logging End
-	compile group: 'com.uimirror.mongo', name: 'mongo-factory', version: 1.0
 
 }
 

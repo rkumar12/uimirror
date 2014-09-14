@@ -10,7 +10,7 @@
  *******************************************************************************/
 package com.uimirror.ws.api.security;
 
-import com.uimirror.util.Constants;
+import com.uimirror.core.Constants;
 
 /**
  * <p>It holds all the possible role available for the API </p>

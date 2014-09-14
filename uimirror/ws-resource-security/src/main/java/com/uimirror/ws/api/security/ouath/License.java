@@ -10,7 +10,7 @@
  *******************************************************************************/
 package com.uimirror.ws.api.security.ouath;
 
-import com.uimirror.util.Constants;
+import com.uimirror.core.Constants;
 
 /**
  * <p>This has license for the user services</p>

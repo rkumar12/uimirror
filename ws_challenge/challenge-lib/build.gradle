@@ -1,7 +1,7 @@
 import java.lang.invoke.LambdaForm.Compiled;
 
 ext {
-    springVersion = "4.0.5.RELEASE"
+    springVersion = "4.1.0.RELEASE"
     jerseyVersion = "2.11"
     slf4jVersion = "1.7.2"
     qosLogBackVersion = "1.1.1"

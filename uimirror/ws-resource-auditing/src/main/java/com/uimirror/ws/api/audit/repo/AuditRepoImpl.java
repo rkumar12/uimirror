@@ -27,8 +27,8 @@ import com.mongodb.DBObject;
 import com.mongodb.Mongo;
 import com.mongodb.MongoException;
 import com.mongodb.QueryBuilder;
-import com.uimirror.mongo.DBCollectionUtil;
-import com.uimirror.mongo.MongoDbFactory;
+import com.uimirror.core.mongo.DBCollectionUtil;
+import com.uimirror.core.mongo.MongoDbFactory;
 import com.uimirror.ws.api.audit.Audit;
 import com.uimirror.ws.api.audit.common.AuditFieldConstants;
 

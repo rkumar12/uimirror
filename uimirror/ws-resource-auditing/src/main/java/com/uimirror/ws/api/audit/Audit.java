@@ -20,7 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 
-import com.uimirror.mongo.feature.BeanBasedDocument;
+import com.uimirror.core.mongo.feature.BeanBasedDocument;
 import com.uimirror.ws.api.audit.common.AuditFieldConstants;
 
 /**

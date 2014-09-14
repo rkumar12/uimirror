@@ -10,7 +10,7 @@
  *******************************************************************************/
 package com.uimirror.core.auth;
 
-import com.uimirror.util.Constants;
+import com.uimirror.core.Constants;
 
 /**
  * <p>This will hold the principal type suggesting type of login details</p>

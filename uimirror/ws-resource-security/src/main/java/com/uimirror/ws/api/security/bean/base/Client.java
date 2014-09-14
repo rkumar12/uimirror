@@ -13,11 +13,13 @@ package com.uimirror.ws.api.security.bean.base;
 import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.Map;
+
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
+
+import com.uimirror.core.util.web.WebUtil;
 import com.uimirror.mongo.feature.BeanBasedDocument;
-import com.uimirror.util.web.WebUtil;
 import com.uimirror.ws.api.security.common.SecurityFieldConstants;
 import com.uimirror.ws.api.security.ouath.License;
 

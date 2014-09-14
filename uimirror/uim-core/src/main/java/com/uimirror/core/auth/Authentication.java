@@ -31,6 +31,13 @@ public interface Authentication extends Principal, Serializable {
 	public CredentialType getCredentialType();
 	
 	/**
+	 * The credentials that prove the principal is correct, this usually a user id/ api key
+	 * 
+	 * @return
+	 */
+	public Object getId();
+	
+	/**
      * The credentials that prove the principal is correct. This is usually a password, but could be anything
      * relevant to the <code>AuthenticationManager</code>. Callers are expected to populate the credentials.
      *

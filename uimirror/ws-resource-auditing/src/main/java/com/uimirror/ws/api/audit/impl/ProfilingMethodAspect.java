@@ -18,7 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StopWatch;
 
-import com.uimirror.util.StopWatchUtil;
+import com.uimirror.core.util.StopWatchUtil;
 import com.uimirror.ws.api.audit.annotations.ProfileExecution;
 
 /**

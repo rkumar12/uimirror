@@ -9,7 +9,7 @@ group = "com.uimirror.ws.api"
 version = 1.0
 
 dependencies {
-	compile project(':commonutil')
+	compile project(':uim-core')
     compile 'commons-codec:commons-codec:1.5'
 	compile 'commons-lang:commons-lang:2.6'
 	//Jackson fasterxml
