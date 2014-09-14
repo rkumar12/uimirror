@@ -1,8 +1,14 @@
 import java.lang.invoke.LambdaForm.Compiled;
 
+//apply plugin: 'distribution'
+apply plugin:'application'
+
 ext {
 	slf4jVersion = "1.7.2"
 	qosLogBackVersion = "1.1.1"
+	jerseyVersion = "2.11"
+	javaeeApiVersion = "7.0"
+	springVersion = "4.1.0.RELEASE"
 }
 group = "com.uimirror"
 version = 1.0
@@ -16,25 +22,40 @@ dependencies {
 			 [group: 'ch.qos.logback', name: 'logback-core', version: qosLogBackVersion],
 			)
 	//Logging End
+	//Spring Start
+	compile ([group: 'org.springframework', name: 'spring-context', version: springVersion],
+		//[group: 'org.springframework', name: 'spring-web', version: springVersion],
+		[group: 'org.springframework', name: 'spring-beans', version: springVersion],
+		)
+	//Spring End
+	compile group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet', version: jerseyVersion
+	compile group: 'org.glassfish.jersey.ext', name: 'jersey-spring3', version: jerseyVersion
+	compile group: 'org.glassfish.jersey.media', name: 'jersey-media-json-processing', version: jerseyVersion
+	compile group: 'javax', name: 'javaee-api', version: javaeeApiVersion
+	
+	//Test jars
+	testCompile 'junit:junit:4.10'
+	testCompile group: 'org.springframework', name: 'spring-test', version: springVersion
+}
+dependencies {
+	// tag::jetty[]
+	   compile("org.springframework.boot:spring-boot-starter-web:1.1.6.RELEASE")
+	//compile("org.springframework.boot:spring-boot-starter-jetty")
+	// end::jetty[]
+	// tag::actuator[]
+	compile("org.springframework.boot:spring-boot-starter-actuator:1.1.6.RELEASE")
+	// end::actuator[]
+	
+	testCompile("org.springframework.boot:spring-boot-starter-test:1.1.6.RELEASE")
 }
 
-
-
-task sourceJar(type: Jar) {
-	classifier "source"
+jar {
+	manifest.attributes provider: 'Uimirror Authentication Module'
 }
 
-publishing {
-	  publications {
-		  mavenJava(MavenPublication) {
-			  groupId project.group
-			  artifactId project.name
-			  version project.version
-			  from components.java
-			  artifact sourceJar {
-				  classifier "sources"
-			  }
-		  }
-	  }
-}
-defaultTasks 'clean', 'build', 'intsall', 'publishToMavenLocal'
+description = "An Authentication Module By Uimirror Team."
+
+mainClassName = "com.uimirror.auth.StartApp"
+applicationDefaultJvmArgs = ["-Dgreeting.language=en"]
+
+defaultTasks 'clean', 'build', 'intsall'

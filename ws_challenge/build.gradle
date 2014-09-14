@@ -30,7 +30,6 @@ subprojects {
 	targetCompatibility = "1.8"
 	sourceCompatibility = "1.8"
 	
-	// mainClass =  'com.uimirror.ws.challenge.StartApp'
 	dependencies {
     	// tag::jetty[]
    		compile("org.springframework.boot:spring-boot-starter-web:1.1.4.BUILD-SNAPSHOT")
