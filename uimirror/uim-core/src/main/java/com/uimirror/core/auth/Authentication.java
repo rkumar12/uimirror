@@ -13,8 +13,6 @@ package com.uimirror.core.auth;
 import java.io.Serializable;
 import java.security.Principal;
 
-import com.uimirror.core.CredentialType;
-
 /**
  * <p>This will be the common principal contract
  * every uimirror application are supposed to follow the mail rules from this</p>

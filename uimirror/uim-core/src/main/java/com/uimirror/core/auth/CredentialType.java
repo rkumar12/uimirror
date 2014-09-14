@@ -8,34 +8,38 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.core;
+package com.uimirror.core.auth;
 
 import com.uimirror.util.Constants;
 
 /**
  * <p>This will hold the principal type suggesting type of login details</p>
+ * <p>A credential can be user credential, or a client such as other application
+ * who is trying to authenticate</p>
  * @author Jay
  */
-public enum AccessTokenType {
+public enum CredentialType {
 
-	USER("U"),
-	CLIENT("C");
+	COOKIE("C"),
+	LOGINFORM("F"),
+	SCREENLOCK("S"),
+	APIKEY("API");
 	
-	private final String accessTokenType;
+	private final String principalType;
     private final String description;
  
-    AccessTokenType(String principalType) {
-    	this.accessTokenType = principalType;
+    CredentialType(String principalType) {
+    	this.principalType = principalType;
     	this.description = Constants.EMPTY;
     }
     
-    AccessTokenType(String principalType, String description) {
-    	this.accessTokenType = principalType;
+    CredentialType(String principalType, String description) {
+    	this.principalType = principalType;
     	this.description = description;
     }
     
-    public String getAccessTokenType() {
-		return accessTokenType;
+    public String getPrincipalType() {
+		return principalType;
 	}
 
     public String getDescription() {
@@ -44,15 +48,15 @@ public enum AccessTokenType {
 
 	@Override
     public String toString() {
-    	return this.getAccessTokenType();
+    	return this.getPrincipalType();
     } 
 
-    public static AccessTokenType getEnum(String role) {
+    public static CredentialType getEnum(String role) {
     	if(role == null)
-    		throw new IllegalArgumentException("Access Token type Can't be empty");
-    	for(AccessTokenType v : values())
-    		if(role.equalsIgnoreCase(v.getAccessTokenType())) return v;
-    	throw new IllegalArgumentException("No AccessToken type Found");
+    		throw new IllegalArgumentException("Prinicipal type Can't be empty");
+    	for(CredentialType v : values())
+    		if(role.equalsIgnoreCase(v.getPrincipalType())) return v;
+    	throw new IllegalArgumentException("No Principal type Found");
     }
 	
 }

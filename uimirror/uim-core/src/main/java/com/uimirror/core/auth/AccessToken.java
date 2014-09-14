@@ -13,8 +13,6 @@ package com.uimirror.core.auth;
 import java.io.Serializable;
 import java.security.Principal;
 
-import com.uimirror.core.AccessTokenType;
-
 /**
  * This holds the principal details after user has been logged in
  * 

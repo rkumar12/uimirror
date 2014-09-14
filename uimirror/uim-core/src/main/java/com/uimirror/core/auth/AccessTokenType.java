@@ -8,35 +8,37 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.core;
+package com.uimirror.core.auth;
 
 import com.uimirror.util.Constants;
 
 /**
  * <p>This will hold the principal type suggesting type of login details</p>
+ * <p>Access token will be issued to client as well user, so here to identify which 
+ * token was for him this enum is mandatory</p>
+ * 
  * @author Jay
  */
-public enum CredentialType {
+public enum AccessTokenType {
 
-	COOKIE("C"),
-	LOGINFORM("F"),
-	SCREENLOCK("S");
+	USER("U"),
+	CLIENT("C");
 	
-	private final String principalType;
+	private final String accessTokenType;
     private final String description;
  
-    CredentialType(String principalType) {
-    	this.principalType = principalType;
+    AccessTokenType(String principalType) {
+    	this.accessTokenType = principalType;
     	this.description = Constants.EMPTY;
     }
     
-    CredentialType(String principalType, String description) {
-    	this.principalType = principalType;
+    AccessTokenType(String principalType, String description) {
+    	this.accessTokenType = principalType;
     	this.description = description;
     }
     
-    public String getPrincipalType() {
-		return principalType;
+    public String getAccessTokenType() {
+		return accessTokenType;
 	}
 
     public String getDescription() {
@@ -45,15 +47,15 @@ public enum CredentialType {
 
 	@Override
     public String toString() {
-    	return this.getPrincipalType();
+    	return this.getAccessTokenType();
     } 
 
-    public static CredentialType getEnum(String role) {
+    public static AccessTokenType getEnum(String role) {
     	if(role == null)
-    		throw new IllegalArgumentException("Prinicipal type Can't be empty");
-    	for(CredentialType v : values())
-    		if(role.equalsIgnoreCase(v.getPrincipalType())) return v;
-    	throw new IllegalArgumentException("No Principal type Found");
+    		throw new IllegalArgumentException("Access Token type Can't be empty");
+    	for(AccessTokenType v : values())
+    		if(role.equalsIgnoreCase(v.getAccessTokenType())) return v;
+    	throw new IllegalArgumentException("No AccessToken type Found");
     }
 	
 }
