@@ -4,15 +4,6 @@ subprojects {
 	//apply plugin: 'distribution'
 	apply plugin:'application'
 	
-	buildscript {
-    	repositories {
-        	mavenCentral()
-	        maven { url "http://repo.spring.io/snapshot" }
-    	}
- 	   dependencies {
-    	    classpath("org.springframework.boot:spring-boot-gradle-plugin:1.1.4.BUILD-SNAPSHOT")
-    	}
-	}
     repositories {
        mavenCentral()
        mavenLocal()
@@ -29,18 +20,6 @@ subprojects {
 
 	targetCompatibility = "1.8"
 	sourceCompatibility = "1.8"
-	
-	dependencies {
-    	// tag::jetty[]
-   		compile("org.springframework.boot:spring-boot-starter-web:1.1.4.BUILD-SNAPSHOT")
-    	//compile("org.springframework.boot:spring-boot-starter-jetty")
-    	// end::jetty[]
-    	// tag::actuator[]
-    	compile("org.springframework.boot:spring-boot-starter-actuator:1.1.4.BUILD-SNAPSHOT")
-    	// end::actuator[]
-    	
-    	testCompile("org.springframework.boot:spring-boot-starter-test:1.1.4.BUILD-SNAPSHOT")    
-    }
 	
 	mainClassName = "com.uimirror.challenge.StartApp"
 	applicationDefaultJvmArgs = ["-Dgreeting.language=en"]
