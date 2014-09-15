@@ -22,6 +22,8 @@ import java.security.Principal;
  */
 public interface Authentication extends Principal, Serializable {
 	
+	public static final String BEARER = "Bearer";
+	
 	/**
 	 * The credential Type that suggest the authentication is of which type like.
 	 * This usually a enum containing one of type {@link CredentialType#LOGINFORM} etc
@@ -29,13 +31,6 @@ public interface Authentication extends Principal, Serializable {
 	 * @return
 	 */
 	public CredentialType getCredentialType();
-	
-	/**
-	 * The credentials that prove the principal is correct, this usually a user id/ api key
-	 * 
-	 * @return
-	 */
-	public Object getId();
 	
 	/**
      * The credentials that prove the principal is correct. This is usually a password, but could be anything
@@ -52,5 +47,11 @@ public interface Authentication extends Principal, Serializable {
      * @return additional details about the authentication request, or <code>null</code> if not used
      */
     Object getDetails();
+    
+    /**
+     * <p>This specifies the authentication schema getting supported</p>
+     * @return
+     */
+    public Object getAuthenticationScheme();
 
 }
