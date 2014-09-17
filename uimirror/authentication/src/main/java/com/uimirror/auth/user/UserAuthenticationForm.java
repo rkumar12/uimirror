@@ -53,6 +53,9 @@ public final class UserAuthenticationForm implements Serializable{
 	
 	@FormParam(AuthParamExtractor.ACCESS_TOKEN)
 	private String accessToken;
+	
+	public UserAuthenticationForm() {
+	}
 
 	public String getCredentialType() {
 		return credentialType;

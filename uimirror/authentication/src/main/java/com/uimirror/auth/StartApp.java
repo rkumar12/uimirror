@@ -125,6 +125,7 @@ public class StartApp {
 					StartApp.class 
 			});
 			sa.run(args);
+			
 	    } 
 	    catch (Exception e) {
 	    	LOG.error("Unexpected error", e);

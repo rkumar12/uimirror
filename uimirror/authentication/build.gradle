@@ -28,6 +28,7 @@ dependencies {
 	compile ([group: 'org.springframework', name: 'spring-context', version: springVersion],
 		//[group: 'org.springframework', name: 'spring-web', version: springVersion],
 		[group: 'org.springframework', name: 'spring-beans', version: springVersion],
+		[group: 'org.springframework', name: 'spring-expression', version: springVersion],
 		)
 	//Spring End
 	compile group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet', version: jerseyVersion

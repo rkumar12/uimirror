@@ -40,17 +40,26 @@ public class UserAuthenticationController extends CommonAuthenticationController
 	 */
 	@Override
 	public Object getAccessToken(Object param) {
-		//STOP User if he didn't give any credentials
-		if(param == null || !(param instanceof UserAuthenticationForm)){
-			throw new WebApplicationException(unAuthorizedResponse());
-		}
 		LOG.debug("[START]- Getting the accesstoken based on the credentials");
 		//Step 1- Extract authentication details
-		Authentication auth = userAuthParamExtractor.extractAuthParam((UserAuthenticationForm)param);
+		Authentication auth = getAuthentication((UserAuthenticationForm)param);
+		
 		//Let GC take this ASAP
 		param = null;
 		LOG.debug("[END]- Getting the accesstoken based on the credentials {}", auth);
 		return auth;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.uimirror.auth.controller.AuthenticationController#getAuthentication(java.lang.Object)
+	 */
+	@Override
+	public Authentication getAuthentication(Object param) throws WebApplicationException {
+		try{
+			return userAuthParamExtractor.extractAuthParam((UserAuthenticationForm)param);
+		}catch(IllegalArgumentException e){
+			throw new WebApplicationException(unAuthorizedResponse());
+		}
 	}
 
 }

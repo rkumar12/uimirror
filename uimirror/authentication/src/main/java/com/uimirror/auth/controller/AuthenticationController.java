@@ -12,6 +12,8 @@ package com.uimirror.auth.controller;
 
 import javax.ws.rs.WebApplicationException;
 
+import com.uimirror.core.auth.Authentication;
+
 /**
  * Contract which defines, by taking the parameter it should give a valid response
  * @author Jay
@@ -25,6 +27,14 @@ public interface AuthenticationController {
 	 * @throws WebApplicationException
 	 */
 	Object getAccessToken(Object param) throws WebApplicationException;
+	
+	/**
+	 * Extracts the {@link Authentication} from the parameters
+	 * @param param
+	 * @return
+	 * @throws WebApplicationException
+	 */
+	Authentication getAuthentication(Object param) throws WebApplicationException;
 	
 	/**
 	 * Builds forbidden response, when something wrong happens with the login process
