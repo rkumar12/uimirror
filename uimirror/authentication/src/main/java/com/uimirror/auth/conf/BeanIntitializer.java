@@ -8,18 +8,16 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.core;
+package com.uimirror.auth.conf;
+
+import org.springframework.context.annotation.Configuration;
 
 /**
- * @author Jayaram
- *
+ * Initialize or configures the service bean getting used for this application
+ * @author Jay
  */
-public interface Constants {
+@Configuration
+public class BeanIntitializer {
 
-	public static final String UTF_8 = "utf-8";
-	public static final String EMPTY = "";
-	String USER_AGENT = "ua";
-	String IP = "ip";
-	String ERROR = "error";
-	
+
 }

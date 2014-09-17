@@ -26,9 +26,16 @@ import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
 import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.ImportResource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.FileCopyUtils;
+
+import com.uimirror.auth.conf.AppConfig;
+import com.uimirror.auth.conf.BeanIntitializer;
+import com.uimirror.auth.conf.WebAppInitializer;
 
 /**
  * <p>Main Class Where authentication end point will be deployed</p>
@@ -36,7 +43,12 @@ import org.springframework.util.FileCopyUtils;
  * @author Jay
  */
 @Configuration
+@ImportResource("classpath*:applicationContext.xml")
 @EnableAutoConfiguration
+@ComponentScan(basePackages= {"com.uimirror.auth", "com.uimirror.core"})
+@Import({
+	AppConfig.class, BeanIntitializer.class, WebAppInitializer.class
+})
 public class StartApp {
 
 	private static Logger LOG = LoggerFactory.getLogger(StartApp.class);

@@ -20,11 +20,10 @@ import com.uimirror.core.Constants;
  */
 public enum CredentialType {
 
-	COOKIE("C"),
-	LOGINFORM("F"),
-	SCREENLOCK("S"),
-	APIKEY("API");
-	
+	COOKIE("C", "Cookie"),
+	LOGINFORM("F", "Login Form"),
+	SCREENLOCK("S", "Screen Lock"),
+	APIKEY("API", "API key");
 	private final String principalType;
     private final String description;
  
@@ -51,12 +50,19 @@ public enum CredentialType {
     	return this.getPrincipalType();
     } 
 
-    public static CredentialType getEnum(String role) {
-    	if(role == null)
+    public static CredentialType getEnum(String type) {
+    	if(type == null)
     		throw new IllegalArgumentException("Prinicipal type Can't be empty");
     	for(CredentialType v : values())
-    		if(role.equalsIgnoreCase(v.getPrincipalType())) return v;
+    		if(type.equalsIgnoreCase(v.getPrincipalType())) return v;
     	throw new IllegalArgumentException("No Principal type Found");
     }
-	
+    
+    public static CredentialType getEnumByDesc(String description) {
+    	if(description == null)
+    		throw new IllegalArgumentException("Prinicipal type Can't be empty");
+    	for(CredentialType v : values())
+    		if(description.equalsIgnoreCase(v.getDescription())) return v;
+    	throw new IllegalArgumentException("No Principal type Found");
+    }
 }

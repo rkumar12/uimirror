@@ -8,18 +8,20 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.core;
+package com.uimirror.core.transformer;
 
 /**
- * @author Jayaram
- *
+ * Common contract which defines way from which response needs to be convert and send back to the caller.
+ * @author Jay
  */
-public interface Constants {
-
-	public static final String UTF_8 = "utf-8";
-	public static final String EMPTY = "";
-	String USER_AGENT = "ua";
-	String IP = "ip";
-	String ERROR = "error";
+public interface EndPointResponseTransformer<R, P> {
 	
+	/**
+	 * <p>This transforms the given type into the desired type</p>
+	 * If this operation ends up with any exception should return the default exception message  
+	 * @param result
+	 * @return
+	 */
+	R doTransform(P result);
+
 }

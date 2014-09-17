@@ -5,6 +5,10 @@ ext {
 	qosLogBackVersion = "1.1.1"
 	springVersion = "4.1.0.RELEASE"
 	mongoVersion = "2.12.2"
+	//jerseyVersion = "2.12"
+	aspectVersion = "1.8.2"
+	//fasterXmlJsonVersion = "2.4.2"
+	
 }
 group = "com.uimirror.core"
 version = 1.0
@@ -24,8 +28,19 @@ dependencies {
 	//Spring Depedancy
 	compile (//[group: 'org.springframework', name: 'spring-context', version: springVersion],
 			 [group: 'org.springframework', name: 'spring-core', version: springVersion],
+			 [group: 'org.springframework', name: 'spring-aop', version: springVersion],
 			 )
 	//Spring ENd
+	//Aspect
+	compile group: 'org.aspectj', name: 'aspectjrt', version: aspectVersion
+	compile group: 'org.aspectj', name: 'aspectjweaver', version: aspectVersion
+	//Aspect End
+	
+	//Faster XML Json
+//	compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: fasterXmlJsonVersion
+//	compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: fasterXmlJsonVersion
+//	compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: fasterXmlJsonVersion
+	//Faster XML Json End
 }
 
 

@@ -69,11 +69,15 @@
 
 	<logger name="org.springframework.integration" level="debug" />
 	
-	<logger name="${app.package}" level="DEBUG" additivity="false">
+	<logger name="com.uimirror.auth" level="DEBUG" additivity="false">
+		<appender-ref ref="CONSOLE" />
+	</logger>
+	
+	<logger name="com.uimirror.core" level="DEBUG" additivity="false">
 		<appender-ref ref="CONSOLE" />
 	</logger>
 
-	<root level="OFF">
+	<root level="debug">
 		<appender-ref ref="CONSOLE" />
 		<appender-ref ref="ASYNCAPPLICATION" />
 	</root>

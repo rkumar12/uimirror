@@ -8,18 +8,16 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.core;
+package com.uimirror.auth.conf;
+
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 /**
- * @author Jayaram
- *
+ * @author Jay
  */
-public interface Constants {
+@Configuration
+@EnableAspectJAutoProxy
+public class AppConfig {
 
-	public static final String UTF_8 = "utf-8";
-	public static final String EMPTY = "";
-	String USER_AGENT = "ua";
-	String IP = "ip";
-	String ERROR = "error";
-	
 }

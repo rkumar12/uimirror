@@ -8,18 +8,13 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.core;
+package com.uimirror.core.auth;
 
 /**
- * @author Jayaram
- *
+ * The generated access token will be stored and retrieved.
+ *  
+ * @author Jay
  */
-public interface Constants {
+public interface AccessTokenStore {
 
-	public static final String UTF_8 = "utf-8";
-	public static final String EMPTY = "";
-	String USER_AGENT = "ua";
-	String IP = "ip";
-	String ERROR = "error";
-	
 }

@@ -53,5 +53,20 @@ public interface Authentication extends Principal, Serializable {
      * @return
      */
     public Object getAuthenticationScheme();
+    
+    /**
+     * Specifies if user has been opted for the keep me login service.
+     * if user has been opted for this, then token validity will be like that
+     * @return
+     */
+    public boolean keepMeLogin();
+    
+    /**
+     * <p>This monitors the user trying to login from the {@link DeviceType}</p>
+     * if user logging in from mobile then device will be {@link DeviceType#MOBILE}, if user logging
+     * in from browser will be {@link DeviceType#BROWSER}
+     * @return
+     */
+    public DeviceType loggingFrom();
 
 }
