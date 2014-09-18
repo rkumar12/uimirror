@@ -8,20 +8,21 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.core.dao;
-
-import java.util.Map;
+package com.uimirror.auth;
 
 /**
- * Mongo Serialization helper
+ * Contains all the DB fields required for application
  * @author Jay
  */
-public interface MongoSerializer<P> {
+public interface DBFileds {
 
-	/**
-	 * <p>Defines contract how a object class while saving will be serialized</p>
-	 * @param src
-	 * @return
-	 */
-	Map<String, Object> toMap(P src);
+	String ID = "_id";
+	
+	//User Credentials
+	String UC_USER_ID = "uid";
+	String PASSWORD = "pwd";
+	String UC_ACCOUNT_STATE = "state";
+	String UC_ACCOUNT_STATUS = "status";
+	String UC_ENCRYPTION_PWD = "salt";
+	String UC_ACCOUNT_INSTRUCTION = "sti";
 }

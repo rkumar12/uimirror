@@ -12,24 +12,30 @@ package com.uimirror.auth.user.dao;
 
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
+import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
+import com.mongodb.DBObject;
 import com.mongodb.Mongo;
+import com.uimirror.auth.DBFileds;
 import com.uimirror.core.auth.dao.CredentialsStore;
 import com.uimirror.core.dao.DBException;
 import com.uimirror.core.dao.MongoInitializer;
 import com.uimirror.core.dao.MongoSerializer;
+import com.uimirror.core.dao.RecordNotFoundException;
 
 /**
  * Retrieves the credential store for the user.
  * 
  * @author Jay
  */
-//@Repository
-public class UserCredentialStore extends MongoInitializer implements CredentialsStore, MongoSerializer {
+@Repository
+public class UserCredentialStore extends MongoInitializer implements CredentialsStore, MongoSerializer<Object> {
 	
 	private @Value("${auth.db.name}")String dbName;
 	private @Value("${auth.usr.col.name}")String collectionName;
@@ -54,27 +60,41 @@ public class UserCredentialStore extends MongoInitializer implements Credentials
 	}
 	
 	/**
-	 * 
+	 * Assign/ Create collection from the given {@link DBCollection}
 	 * @param collection
 	 */
-	public UserCredentialStore(DBCollection collection){
+	@Autowired
+	public UserCredentialStore(@Qualifier("usrAuthCol") DBCollection collection){
 		super(collection);
 	}
-
-	/* (non-Javadoc)
-	 * @see com.uimirror.core.dao.MongoSerializer#toMap(java.lang.Object)
-	 */
-	@Override
-	public Map<String, Object> toMap(Object src) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 
 	/* (non-Javadoc)
 	 * @see com.uimirror.core.auth.dao.CredentialsStore#getCredentials(java.lang.Object)
 	 */
 	@Override
 	public Object getCredentials(Object identifier) throws DBException {
+		DBObject res = getCollection().findOne(buildUserCredentialSerachQuery(identifier));
+		if(res == null){
+			throw new RecordNotFoundException();
+		}
+		return res.toMap();
+	}
+	
+	/**
+	 * Builds the query to search from the userid array of user credential document
+	 * @param identifier
+	 * @return
+	 */
+	private DBObject buildUserCredentialSerachQuery(Object identifier){
+		return new BasicDBObject(DBFileds.UC_USER_ID, identifier.toString());
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.uimirror.core.dao.MongoSerializer#toMap(java.lang.Object)
+	 */
+	@Override
+	public Map<String, Object> toMap(Object src) {
 		// TODO Auto-generated method stub
 		return null;
 	}

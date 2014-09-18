@@ -2,7 +2,7 @@ ext {
 	mongoVersion = "2.12.2"
 }
 dependencies {
-	//compile project(':challenge-lib')
+	compile project(':challenge-lib')
 	//Mongo Jar
 	//compile group: 'org.mongodb', name: 'mongo-java-driver', version: mongoVersion
 }
