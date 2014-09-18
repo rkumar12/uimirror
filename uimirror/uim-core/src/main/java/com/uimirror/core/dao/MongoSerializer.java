@@ -12,16 +12,51 @@ package com.uimirror.core.dao;
 
 import java.util.Map;
 
+import com.mongodb.DB;
+import com.mongodb.DBCollection;
+import com.mongodb.Mongo;
+import com.uimirror.core.util.BeanToMap;
+
 /**
  * Mongo Serialization helper
+ * 
  * @author Jay
  */
-public interface MongoSerializer<P> {
+public abstract class MongoSerializer<P> extends MongoInitializer{
 
 	/**
+	 * Assign/ Create collection from the given {@link DB}
+	 * @param db
+	 * @param collectionName
+	 */
+	public MongoSerializer(DB db, String collectionName) {
+		super(db, collectionName);
+	}
+
+	/**
+	 * Assign/ Create collection from the given {@link Mongo}
+	 * @param mongo
+	 * @param dbName
+	 * @param collectionName
+	 */
+	public MongoSerializer(Mongo mongo, String dbName, String collectionName){
+		super(mongo, dbName, collectionName);
+	}
+	
+	/**
+	 * Assign/ Create collection from the given {@link DBCollection}
+	 * @param collection
+	 */
+	public MongoSerializer(DBCollection collection){
+		super(collection);
+	}
+	/**
 	 * <p>Defines contract how a object class while saving will be serialized</p>
+	 * This gives a default implementation of object getting converted to {@link Map}
 	 * @param src
 	 * @return
 	 */
-	Map<String, Object> toMap(P src);
+	public Map<String, Object> toMap(P src){
+		return BeanToMap.toMap(src);
+	}
 }

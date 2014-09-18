@@ -10,8 +10,6 @@
  *******************************************************************************/
 package com.uimirror.auth.user.dao;
 
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,7 +23,6 @@ import com.mongodb.Mongo;
 import com.uimirror.auth.DBFileds;
 import com.uimirror.core.auth.dao.CredentialsStore;
 import com.uimirror.core.dao.DBException;
-import com.uimirror.core.dao.MongoInitializer;
 import com.uimirror.core.dao.MongoSerializer;
 import com.uimirror.core.dao.RecordNotFoundException;
 
@@ -35,7 +32,7 @@ import com.uimirror.core.dao.RecordNotFoundException;
  * @author Jay
  */
 @Repository
-public class UserCredentialStore extends MongoInitializer implements CredentialsStore, MongoSerializer<Object> {
+public class UserCredentialStore extends MongoSerializer<Object> implements CredentialsStore {
 	
 	private @Value("${auth.db.name}")String dbName;
 	private @Value("${auth.usr.col.name}")String collectionName;
@@ -88,15 +85,6 @@ public class UserCredentialStore extends MongoInitializer implements Credentials
 	 */
 	private DBObject buildUserCredentialSerachQuery(Object identifier){
 		return new BasicDBObject(DBFileds.UC_USER_ID, identifier.toString());
-	}
-	
-	/* (non-Javadoc)
-	 * @see com.uimirror.core.dao.MongoSerializer#toMap(java.lang.Object)
-	 */
-	@Override
-	public Map<String, Object> toMap(Object src) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

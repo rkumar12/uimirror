@@ -35,11 +35,5 @@ public interface AuthenticationController {
 	 * @throws WebApplicationException
 	 */
 	Authentication getAuthentication(Object param) throws WebApplicationException;
-	
-	/**
-	 * Builds forbidden response, when something wrong happens with the login process
-	 * @return
-	 */
-	Object unAuthorizedResponse();
 
 }

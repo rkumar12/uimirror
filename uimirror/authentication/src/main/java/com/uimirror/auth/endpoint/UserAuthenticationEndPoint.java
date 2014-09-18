@@ -25,7 +25,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.uimirror.auth.controller.AuthenticationController;
 import com.uimirror.auth.user.UserAuthenticationForm;
 import com.uimirror.core.auth.AccessToken;
-import com.uimirror.core.transformer.GsonResponseTransformer;
 
 /**
  * Controller which will be for the common path, any user will try to be get authenticated.
@@ -36,7 +35,7 @@ import com.uimirror.core.transformer.GsonResponseTransformer;
  */
 @Path("/")
 //@Component
-public class UserAuthenticationEndPoint extends GsonResponseTransformer{
+public class UserAuthenticationEndPoint{
 
 	private static Logger LOG = LoggerFactory.getLogger(UserAuthenticationEndPoint.class);
 	@Autowired
@@ -58,7 +57,7 @@ public class UserAuthenticationEndPoint extends GsonResponseTransformer{
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	public Object doAuthenticate(@BeanParam UserAuthenticationForm loginForm){
 		LOG.info("[ENTRY]- Received requst for authentication");
-		String response = doTransform(userAuthenticationController.getAccessToken(loginForm));
+		Object response = userAuthenticationController.getAccessToken(loginForm);
 		LOG.info("[EXIT]- Received requst for authentication");
 		return response;
 	}

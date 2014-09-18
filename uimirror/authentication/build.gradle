@@ -11,6 +11,8 @@ ext {
 	springVersion = "4.1.0.RELEASE"
 	springBootVersion = '1.1.6.RELEASE'
 	junitVersion = '4.11'
+	gensonVersion = '1.1-RC2'
+	janinoVersion = '2.7.6'
 }
 group = "com.uimirror"
 version = 1.0
@@ -22,6 +24,7 @@ dependencies {
 			)
 	compile ([group: 'ch.qos.logback', name: 'logback-classic', version: qosLogBackVersion],
 			 [group: 'ch.qos.logback', name: 'logback-core', version: qosLogBackVersion],
+			 [group: 'org.codehaus.janino', name: 'janino', version: janinoVersion],
 			)
 	//Logging End
 	//Spring Start
@@ -34,7 +37,19 @@ dependencies {
 	compile group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet', version: jerseyVersion
 	compile group: 'org.glassfish.jersey.ext', name: 'jersey-spring3', version: jerseyVersion
 	compile group: 'org.glassfish.jersey.media', name: 'jersey-media-json-processing', version: jerseyVersion
-	compile group: 'javax', name: 'javaee-api', version: javaeeApiVersion
+	compile (group: 'javax', name: 'javaee-api', version: javaeeApiVersion){
+		exclude module: 'jul-over-slf4j'
+		exclude module: 'jcl-over-slf4j'
+		exclude module: 'jul-to-slf4j'
+		exclude module: 'log4j-over-slf4j'
+	}
+	
+	//Genson
+	compile (group: 'com.owlike', name: 'genson', version: gensonVersion){
+		exclude module: 'jul-over-slf4j'
+		exclude module: 'jcl-over-slf4j'
+		exclude module: 'log4j-over-slf4j'
+	}
 	
 	//Test jars
 	testCompile group: 'junit', name: 'junit', version: junitVersion

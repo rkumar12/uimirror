@@ -5,9 +5,11 @@ ext {
 	qosLogBackVersion = "1.1.1"
 	springVersion = "4.1.0.RELEASE"
 	mongoVersion = "2.12.2"
-	//jerseyVersion = "2.12"
+	jerseyVersion = "2.12"
 	aspectVersion = "1.8.2"
 	//fasterXmlJsonVersion = "2.4.2"
+	gensonVersion = '1.1-RC2'
+	beanUtilVersion = '1.9.2'
 	
 }
 group = "com.uimirror.core"
@@ -21,8 +23,9 @@ dependencies {
 			 [group: 'ch.qos.logback', name: 'logback-core', version: qosLogBackVersion],
 			)
 	//Logging End
-	compile 'com.google.code.gson:gson:2.2.4'
+	//compile 'com.google.code.gson:gson:2.2.4'
 	compile 'org.apache.commons:commons-io:1.3.2'
+	compile group: 'commons-beanutils', name:'commons-beanutils', version: beanUtilVersion
 	compile 'commons-codec:commons-codec:1.9'
 	compile group: 'org.mongodb', name: 'mongo-java-driver', version: mongoVersion
 	//Spring Depedancy
@@ -36,11 +39,30 @@ dependencies {
 	compile group: 'org.aspectj', name: 'aspectjweaver', version: aspectVersion
 	//Aspect End
 	
-	//Faster XML Json
-//	compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: fasterXmlJsonVersion
-//	compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: fasterXmlJsonVersion
-//	compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: fasterXmlJsonVersion
-	//Faster XML Json End
+	//Genson
+	compile group: 'com.owlike', name: 'genson', version: gensonVersion
+	//Genson Json End
+	
+	//Jersey Start
+	compile (group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet', version: jerseyVersion){
+		exclude module: 'javax.annotation-api'
+		exclude module: 'aopalliance-repackaged'
+		exclude module: 'javax.inject'
+		exclude module: 'hk2-api'
+		exclude module: 'hk2-locator'
+		exclude module: 'hk2-utils'
+		exclude module: 'tiger-types'
+		exclude module: 'osgi-resource-locator'
+		exclude module: 'jersey-guava'
+		exclude module: 'jersey-container-servlet-core'
+		exclude module: 'jersey-container-servlet'
+		exclude module: 'jersey-common'
+		exclude module: 'jersey-server'
+		exclude module: 'jersey-client'
+		exclude module: 'jersey-container-servlet'
+		
+	}
+	//Jersey END
 }
 
 

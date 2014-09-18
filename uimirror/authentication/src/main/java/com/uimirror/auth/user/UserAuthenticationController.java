@@ -17,10 +17,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.owlike.genson.Genson;
 import com.uimirror.auth.AuthParamExtractor;
-import com.uimirror.auth.controller.CommonAuthenticationController;
+import com.uimirror.auth.controller.AuthenticationController;
 import com.uimirror.core.auth.Authentication;
 import com.uimirror.core.auth.AuthenticationManager;
+import com.uimirror.core.rest.extra.UnAuthorizedException;
 
 /**
  * Extracts the field, interact with the {@link AuthenticationManager}
@@ -28,7 +30,7 @@ import com.uimirror.core.auth.AuthenticationManager;
  * @author Jay
  */
 @Service
-public class UserAuthenticationController extends CommonAuthenticationController{
+public class UserAuthenticationController implements AuthenticationController{
 
 	protected static final Logger LOG = LoggerFactory.getLogger(UserAuthenticationController.class);
 	
@@ -47,7 +49,7 @@ public class UserAuthenticationController extends CommonAuthenticationController
 		//Let GC take this ASAP
 		param = null;
 		LOG.debug("[END]- Getting the accesstoken based on the credentials {}", auth);
-		return auth;
+		return new Genson().serialize(auth);
 	}
 
 	/* (non-Javadoc)
@@ -58,7 +60,7 @@ public class UserAuthenticationController extends CommonAuthenticationController
 		try{
 			return userAuthParamExtractor.extractAuthParam((UserAuthenticationForm)param);
 		}catch(IllegalArgumentException e){
-			throw new WebApplicationException(unAuthorizedResponse());
+			throw new UnAuthorizedException();
 		}
 	}
 

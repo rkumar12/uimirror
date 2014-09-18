@@ -16,7 +16,7 @@ import java.util.Map;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.uimirror.core.util.LoadExternalGson;
+import com.uimirror.core.util.LoadExternalJson;
 import com.uimirror.core.util.web.WebUtil;
 
 /**
@@ -35,7 +35,7 @@ public class WebUtilTest {
 		final String ISVALID = "isValid";
 		
 		@SuppressWarnings("unchecked")
-		List<Map<String, Object>> dataSets = (List<Map<String, Object>>)LoadExternalGson.loadData("com/uimirror/core/util/web/web_util_test_data_set_1.json", List.class);
+		List<Map<String, Object>> dataSets = (List<Map<String, Object>>)LoadExternalJson.loadData("com/uimirror/core/util/web/web_util_test_data_set_1.json", List.class);
 		for(Map<String, Object> data : dataSets){
 			if((boolean)data.getOrDefault(ISVALID, Boolean.FALSE)){
 				Assert.assertEquals(data.get(OUTPUT).toString(), WebUtil.getUrl(data.get(INPUT) != null ? data.get(INPUT).toString() : null).toString());
@@ -52,7 +52,7 @@ public class WebUtilTest {
 	@Test
 	public void testIsValidUrl() {
 		@SuppressWarnings("unchecked")
-		List<Map<String, Object>> dataSets = (List<Map<String, Object>>)LoadExternalGson.loadData("com/uimirror/core/util/web/web_util_test_data_set_2.json", List.class);
+		List<Map<String, Object>> dataSets = (List<Map<String, Object>>)LoadExternalJson.loadData("com/uimirror/core/util/web/web_util_test_data_set_2.json", List.class);
 		for(Map<String, Object> data : dataSets){
 			Assert.assertEquals((boolean)data.get(OUTPUT), WebUtil.isValidUrl(data.get(INPUT) != null ? data.get(INPUT).toString() : null));
 		}

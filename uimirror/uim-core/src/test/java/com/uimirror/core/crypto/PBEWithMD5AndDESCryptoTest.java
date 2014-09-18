@@ -19,7 +19,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.uimirror.core.util.LoadExternalGson;
+import com.uimirror.core.util.LoadExternalJson;
 
 /**
  * @author Jay
@@ -43,7 +43,7 @@ public class PBEWithMD5AndDESCryptoTest {
 	@Test
 	public void testEncrypt() throws GeneralSecurityException, IOException {
 		@SuppressWarnings("unchecked")
-		List<Map<String, Object>> dataSets = (List<Map<String, Object>>)LoadExternalGson.loadData("com/uimirror/core/crypto/pbe_with_md5_encryption_data_set_1.json", List.class);
+		List<Map<String, Object>> dataSets = (List<Map<String, Object>>)LoadExternalJson.loadData("com/uimirror/core/crypto/pbe_with_md5_encryption_data_set_1.json", List.class);
 		for(Map<String, Object> data : dataSets){
 			if((boolean)data.getOrDefault(ISVALID, Boolean.FALSE)){
 				Assert.assertEquals(data.get(OUTPUT).toString(), pbeWithMD5AndDESCrypto.encrypt(data.get(INPUT) != null ? data.get(INPUT).toString() : null));
@@ -59,7 +59,7 @@ public class PBEWithMD5AndDESCryptoTest {
 	@Test
 	public void testDecrypt() throws GeneralSecurityException, IOException {
 		@SuppressWarnings("unchecked")
-		List<Map<String, Object>> dataSets = (List<Map<String, Object>>)LoadExternalGson.loadData("com/uimirror/core/crypto/pbe_with_md5_encryption_data_set_1.json", List.class);
+		List<Map<String, Object>> dataSets = (List<Map<String, Object>>)LoadExternalJson.loadData("com/uimirror/core/crypto/pbe_with_md5_encryption_data_set_1.json", List.class);
 		for(Map<String, Object> data : dataSets){
 			if((boolean)data.getOrDefault(ISVALID, Boolean.FALSE)){
 				Assert.assertEquals(data.get(INPUT).toString(), pbeWithMD5AndDESCrypto.decrypt(data.get(OUTPUT) != null ? data.get(OUTPUT).toString() : null));

@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <configuration>
-	<property resource="application.properties" />
+	<if condition='isNull("env")'>
+		<then>
+			<property resource="application-p{'env'}.properties" />
+		</then>
+		<else>
+			<property resource="application-dev.properties" />
+		</else>
+	</if>
 	
 	<conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter" />
 	<conversionRule conversionWord="wex" converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter" />
@@ -14,7 +21,7 @@
 	</appender>
 	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder>
-			<Pattern>%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(%5p) %clr(${PID:- }){magenta} %clr(-){faint} %clr([%15.15t{14}]){faint} %clr(%logger){cyan} %clr(:){faint} %m%n%wex</Pattern>
+			<Pattern>%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(%5p) %clr(${PID:- }){magenta} %clr(-){faint} %clr([%15.15t{14}]){faint} %clr(%logger){cyan} %clr(-){faint} %clr(%M){faint} %clr(-){faint} %clr(%L){faint} %clr(:){faint} %m%n%wex</Pattern>
 		</encoder>
 	</appender>
 

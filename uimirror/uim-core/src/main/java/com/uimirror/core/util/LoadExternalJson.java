@@ -14,8 +14,10 @@ import java.io.IOException;
 import java.io.StringWriter;
 
 import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import com.google.gson.Gson;
+import com.owlike.genson.Genson;
 import com.uimirror.core.Constants;
 
 /**
@@ -24,8 +26,9 @@ import com.uimirror.core.Constants;
  * @author Jayaram
  *
  */
-public class LoadExternalGson{
+public class LoadExternalJson{
 
+	private static final Logger LOG = LoggerFactory.getLogger(LoadExternalJson.class);
 	/**
 	 * <p>Load test data for unit testing.
 	 * @param fullPath
@@ -33,8 +36,7 @@ public class LoadExternalGson{
 	 * @return
 	 */
 	public static Object loadData(String fullPath, Class<? extends Object> clazz){
-    	Gson gson = new Gson();
-		return gson.fromJson(loadFileFromClassPath(fullPath), clazz);
+		return new Genson().deserialize(loadFileFromClassPath(fullPath), clazz);
 	}
 
 	/**
@@ -45,8 +47,9 @@ public class LoadExternalGson{
 	public static String loadFileFromClassPath(String fullPath){
 		StringWriter wrtr = new StringWriter();
     	try {
-			IOUtils.copy(LoadExternalGson.class.getClassLoader().getResourceAsStream(fullPath), wrtr, Constants.UTF_8);
+			IOUtils.copy(LoadExternalJson.class.getClassLoader().getResourceAsStream(fullPath), wrtr, Constants.UTF_8);
 		} catch (IOException e) {
+			LOG.error("[ERROR]- File Not found {}", e);
 			throw new IllegalArgumentException("File Not Found");
 		}
     	return wrtr.toString();
