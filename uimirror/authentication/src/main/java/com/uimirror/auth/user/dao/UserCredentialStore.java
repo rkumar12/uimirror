@@ -20,12 +20,13 @@ import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.mongodb.Mongo;
-import com.mongodb.MongoException;
 import com.uimirror.auth.DBFileds;
 import com.uimirror.core.auth.dao.CredentialsStore;
 import com.uimirror.core.dao.DBException;
+import com.uimirror.core.dao.MongoExceptionMapper;
 import com.uimirror.core.dao.MongoSerializer;
 import com.uimirror.core.dao.RecordNotFoundException;
+import com.uimirror.core.extra.MapException;
 
 /**
  * Retrieves the credential store for the user.
@@ -71,16 +72,11 @@ public class UserCredentialStore extends MongoSerializer<Object> implements Cred
 	 * @see com.uimirror.core.auth.dao.CredentialsStore#getCredentials(java.lang.Object)
 	 */
 	@Override
+	@MapException(by=MongoExceptionMapper.class)
 	public Object getCredentials(Object identifier) throws DBException {
-		DBObject res = null;
-		try{
-			res = getCollection().findOne(buildUserCredentialSerachQuery(identifier));
-			if(res == null){
-				throw new RecordNotFoundException();
-			}
-			
-		}catch(MongoException e){
-			
+		DBObject res = getCollection().findOne(buildUserCredentialSerachQuery(identifier));
+		if(res == null){
+			throw new RecordNotFoundException();
 		}
 		//Make sure no other thing setting as null to response
 		return res.toMap();

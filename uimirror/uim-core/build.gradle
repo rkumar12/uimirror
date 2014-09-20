@@ -35,6 +35,7 @@ dependencies {
 	//Aspect
 	compile group: 'org.aspectj', name: 'aspectjrt', version: aspectVersion
 	compile group: 'org.aspectj', name: 'aspectjweaver', version: aspectVersion
+	compile group: 'org.aspectj', name: 'aspectjtools', version: aspectVersion
 	//Aspect End
 	
 	//Genson

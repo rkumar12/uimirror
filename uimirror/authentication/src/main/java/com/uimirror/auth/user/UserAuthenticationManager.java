@@ -27,8 +27,9 @@ import com.uimirror.core.auth.Authentication;
 import com.uimirror.core.auth.AuthenticationException;
 import com.uimirror.core.auth.AuthenticationManager;
 import com.uimirror.core.auth.BadCredentialsException;
+import com.uimirror.core.auth.DisabledException;
 import com.uimirror.core.auth.dao.CredentialsStore;
-import com.uimirror.core.dao.RecordNotFoundException;
+import com.uimirror.core.dao.DBException;
 
 /**
  * Implementation of {@link AuthenticationManager#authenticate(Authentication)}
@@ -51,6 +52,7 @@ public class UserAuthenticationManager implements AuthenticationManager{
 	public AccessToken authenticate(Authentication authentication) throws AuthenticationException {
 		LOG.info("[START]- validating user credentials");
 		Map<String, Object> userCredential = getAuthenticationDetails(authentication.getName());
+		
 		UserCredentials usr = new UserCredentials(userCredential);
 		LOG.info("[END]- validating user credentials");
 		return null;
@@ -66,9 +68,16 @@ public class UserAuthenticationManager implements AuthenticationManager{
 	private Map<String, Object> getAuthenticationDetails(String userId){
 		try{
 			return (Map<String, Object>)userCredentialStore.getCredentials(userId);
-		}catch(RecordNotFoundException e){
-			throw new BadCredentialsException();
+		}catch(DBException e){
+			throw translate(e);
 		}
+	}
+	
+	private AuthenticationException translate(DBException e){
+		if(e.getErrorCode() == 404)
+			return new BadCredentialsException();
+		
+		return new DisabledException();
 	}
 	
 	

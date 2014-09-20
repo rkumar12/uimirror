@@ -20,21 +20,22 @@ import com.uimirror.core.ExceptionMapper;
  * This translate Mongo exception to application specific
  * @author Jay
  */
-public class MongoExceptionMapper implements ExceptionMapper<MongoException, DBException>{
+public class MongoExceptionMapper implements ExceptionMapper{
 
 	/* (non-Javadoc)
 	 * @see com.uimirror.core.ExceptionMapper#mapIt(java.lang.Object)
 	 */
 	@Override
-	public DBException mapIt(MongoException exceptionToMap) {
+	public Throwable mapIt(Throwable exceptionToMap) {
 		if(isBulkWrite(exceptionToMap))
 			return translateBulkWrite();
 		if(isCommandFailure(exceptionToMap))
 			return translateCommandFailure();
 		if(isCursorNotFound(exceptionToMap))
 			return translateNotFound();
-		
-		return translateInternal();
+		if(exceptionToMap instanceof MongoException)
+			return translateInternal();
+		return exceptionToMap;
 	}
 	
 	/**
@@ -43,7 +44,7 @@ public class MongoExceptionMapper implements ExceptionMapper<MongoException, DBE
 	 * @param e
 	 * @return
 	 */
-	private boolean isBulkWrite(MongoException e){
+	private boolean isBulkWrite(Throwable e){
 		return e instanceof BulkWriteException;
 	}
 	
@@ -51,7 +52,7 @@ public class MongoExceptionMapper implements ExceptionMapper<MongoException, DBE
 		return new BatchWriteException();
 	}
 	
-	private boolean isCommandFailure(MongoException e){
+	private boolean isCommandFailure(Throwable e){
 		return e instanceof CommandFailureException;
 	}
 	
@@ -59,7 +60,7 @@ public class MongoExceptionMapper implements ExceptionMapper<MongoException, DBE
 		return new SyntaxException();
 	}
 	
-	private boolean isCursorNotFound(MongoException e){
+	private boolean isCursorNotFound(Throwable e){
 		return e instanceof MongoCursorNotFoundException;
 	}
 	

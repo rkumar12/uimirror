@@ -12,6 +12,8 @@ package com.uimirror.auth.conf;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import com.uimirror.core.extra.MapExceptionAspect;
 import com.uimirror.core.rest.extra.JsonResponseTransFormer;
 import com.uimirror.core.rest.extra.ResponseTransFormer;
 
@@ -25,6 +27,11 @@ public class BeanIntitializer {
 	@Bean
 	public ResponseTransFormer<String> jsonResponseTransFormer(){
 		return new JsonResponseTransFormer();
+	}
+	
+	@Bean
+	public MapExceptionAspect mapExceptionAspect(){
+		return new MapExceptionAspect();
 	}
 
 }

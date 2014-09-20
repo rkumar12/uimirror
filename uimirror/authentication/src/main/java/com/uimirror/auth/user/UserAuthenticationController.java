@@ -21,6 +21,7 @@ import com.uimirror.auth.AuthParamExtractor;
 import com.uimirror.auth.controller.AuthenticationController;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.Authentication;
+import com.uimirror.core.auth.AuthenticationException;
 import com.uimirror.core.auth.AuthenticationManager;
 import com.uimirror.core.rest.extra.ResponseTransFormer;
 import com.uimirror.core.rest.extra.UnAuthorizedException;
@@ -50,7 +51,12 @@ public class UserAuthenticationController implements AuthenticationController{
 		
 		//Let GC take this ASAP
 		param = null;
-		AccessToken token = userAuthenticationManager.authenticate(auth);
+		AccessToken token = null;
+		try{
+			token = userAuthenticationManager.authenticate(auth);
+		}catch(AuthenticationException e){
+			throw new UnAuthorizedException();
+		}
 		LOG.debug("[END]- Getting the accesstoken based on the credentials {}", auth);
 		return jsonResponseTransFormer.doTransForm(token);
 	}

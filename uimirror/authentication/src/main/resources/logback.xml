@@ -69,7 +69,8 @@
 		<appender-ref ref="APPLICATION" />
 	</appender>
 
-	<logger name="org.springframework" level="warn" />
+	<logger name="org.springframework" level="debug" />
+	<logger name="org.springframework.aop" level="debug" />
 	<logger name="org.springframework.web" level="warn" />
 	<logger name="org.springframework.boot" level="warn" />
 	<logger name="org.apache.catalina" level="debug" />

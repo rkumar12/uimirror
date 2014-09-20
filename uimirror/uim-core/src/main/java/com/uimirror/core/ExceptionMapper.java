@@ -11,13 +11,14 @@
 package com.uimirror.core;
 
 /**
- * General exception strategy which descibes the {@link Exception} into 
+ * General exception strategy which descibes the {@link Throwable} into 
  * to application logic specific.
- * {@link P} specifies the Exception which needs to be translated
- * {@link R} Specifies the base exception to be returned. 
+ * Note, the class which is not handling or not falling into the specific exception category should
+ * throw the exception as it is
+ * 
  * @author Jay
  */
-public interface ExceptionMapper<P, R> {
+public interface ExceptionMapper {
 
 	/**
 	 * Contracts define the exception to which it needs to be translated.
@@ -25,5 +26,5 @@ public interface ExceptionMapper<P, R> {
 	 * @param exceptionToMap
 	 * @return
 	 */
-	R mapIt(P exceptionToMap);
+	Throwable mapIt(Throwable exceptionToMap);
 }
