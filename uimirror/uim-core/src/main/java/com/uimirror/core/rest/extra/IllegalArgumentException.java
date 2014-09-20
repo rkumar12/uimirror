@@ -19,7 +19,7 @@ import javax.ws.rs.core.Response.Status;
  * of message and error code 
  * @author Jay
  */
-public class IllegalArgumentException extends ApplicationException{
+public class IllegalArgumentException extends ExceptionInJson{
 
 	private static final long serialVersionUID = 2893053632116181333L;
 	

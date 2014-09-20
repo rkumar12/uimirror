@@ -15,7 +15,7 @@ import java.util.Map;
 
 import javax.ws.rs.core.Response;
 
-import com.google.gson.Gson;
+import com.owlike.genson.Genson;
 
 /**
  * @author Jay
@@ -101,7 +101,7 @@ public final class SecurityResponseUtil {
 	 * @return
 	 */
 	private static Response buildBadResponse(Map<String, ? extends Object> res){
-		return Response.status(Response.Status.BAD_REQUEST).entity(new Gson().toJson(res)).build();
+		return Response.status(Response.Status.BAD_REQUEST).entity(new Genson().serialize(res)).build();
 	}
 	
 	/**
@@ -110,7 +110,7 @@ public final class SecurityResponseUtil {
 	 * @return
 	 */
 	private static Response buildUnauthorizedResponse(Map<String, ? extends Object> res){
-		return Response.status(Response.Status.UNAUTHORIZED).entity(new Gson().toJson(res)).build();
+		return Response.status(Response.Status.UNAUTHORIZED).entity(new Genson().serialize(res)).build();
 	}
 
 }

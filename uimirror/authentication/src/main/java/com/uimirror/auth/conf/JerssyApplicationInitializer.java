@@ -35,14 +35,14 @@ public class JerssyApplicationInitializer extends ResourceConfig{
 //        register(RolesAllowedDynamicFeature.class);
 //        register(UserLicenseAllowedDynamicFeature.class);
 //        register(ClientLicenseAllowedDynamicFeature.class);
-        //register(UriConnegFilter.class);
+        register(UriConnegFilter.class);
         property(ServerProperties.LANGUAGE_MAPPINGS, "english : en");
         property(ServerProperties.APPLICATION_NAME, appName);
 		// Register an instance of LoggingFilter.
-        //register(new LoggingFilter());
+        register(new LoggingFilter());
  
         // Enable Tracing support.
-        //property(ServerProperties.TRACING, "ALL");
+        property(ServerProperties.TRACING, "ALL");
 	}
 	
 }

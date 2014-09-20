@@ -13,7 +13,7 @@ dependencies {
     compile 'commons-codec:commons-codec:1.5'
 	compile 'commons-lang:commons-lang:2.6'
 	//Jackson fasterxml
-	compile 'com.fasterxml.jackson.core:jackson-annotations:2.3.3'
+	//compile 'com.fasterxml.jackson.core:jackson-annotations:2.3.3'
 	//Spring Depedancy
 	compile (//[group: 'org.springframework', name: 'spring-context', version: springVersion],
 			 [group: 'org.springframework', name: 'spring-beans', version: springVersion],
@@ -47,6 +47,7 @@ dependencies {
 			 [group: 'ch.qos.logback', name: 'logback-core', version: qosLogBackVersion],
 			)
 	//Logging End
+	
 
 }
 

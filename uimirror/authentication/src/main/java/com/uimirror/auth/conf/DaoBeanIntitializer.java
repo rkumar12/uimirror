@@ -12,6 +12,7 @@ package com.uimirror.auth.conf;
 
 import java.net.UnknownHostException;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,20 +36,22 @@ public class DaoBeanIntitializer {
 	protected @Value("${auth.usr.col.name:usr_auth}") String userAuthCollection;
 	
 	@Bean
-	public Mongo createConnection() throws UnknownHostException{
+	public Mongo mongo() throws UnknownHostException{
 		ConnectionFactory cf = new ConnectionFactory();
 		cf.setHost(host);
 		return cf.getMongoClient();
 	}
 	
 	@Bean
-	public DB getAuthDB() throws UnknownHostException{
-		return MongoDbFactory.getDB(createConnection(), this.authDb);
+	@Autowired
+	public DB authDB(Mongo mongo) throws UnknownHostException{
+		return MongoDbFactory.getDB(mongo, this.authDb);
 	}
 	
-	@Bean(name="usrAuthCol")
-	public DBCollection getUserAuthCollection() throws UnknownHostException{
-		return DBCollectionUtil.getCollection(getAuthDB(), this.userAuthCollection);
+	@Bean
+	@Autowired
+	public DBCollection usrAuthCol(DB authDB) throws UnknownHostException{
+		return DBCollectionUtil.getCollection(authDB, this.userAuthCollection);
 	}
 
 }

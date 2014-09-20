@@ -17,11 +17,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.owlike.genson.Genson;
 import com.uimirror.auth.AuthParamExtractor;
 import com.uimirror.auth.controller.AuthenticationController;
+import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.Authentication;
 import com.uimirror.core.auth.AuthenticationManager;
+import com.uimirror.core.rest.extra.ResponseTransFormer;
 import com.uimirror.core.rest.extra.UnAuthorizedException;
 
 /**
@@ -34,8 +35,9 @@ public class UserAuthenticationController implements AuthenticationController{
 
 	protected static final Logger LOG = LoggerFactory.getLogger(UserAuthenticationController.class);
 	
-	@Autowired
-	private AuthParamExtractor<UserAuthenticationForm> userAuthParamExtractor;
+	private @Autowired AuthParamExtractor<UserAuthenticationForm> userAuthParamExtractor;
+	private @Autowired ResponseTransFormer<String> jsonResponseTransFormer;
+	private @Autowired AuthenticationManager userAuthenticationManager;
 	
 	/* (non-Javadoc)
 	 * @see com.uimirror.auth.controller.AuthenticationController#getAccessToken(javax.ws.rs.core.MultivaluedMap)
@@ -48,8 +50,9 @@ public class UserAuthenticationController implements AuthenticationController{
 		
 		//Let GC take this ASAP
 		param = null;
+		AccessToken token = userAuthenticationManager.authenticate(auth);
 		LOG.debug("[END]- Getting the accesstoken based on the credentials {}", auth);
-		return new Genson().serialize(auth);
+		return jsonResponseTransFormer.doTransForm(token);
 	}
 
 	/* (non-Javadoc)

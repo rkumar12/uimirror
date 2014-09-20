@@ -20,6 +20,7 @@ import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.mongodb.Mongo;
+import com.mongodb.MongoException;
 import com.uimirror.auth.DBFileds;
 import com.uimirror.core.auth.dao.CredentialsStore;
 import com.uimirror.core.dao.DBException;
@@ -71,10 +72,17 @@ public class UserCredentialStore extends MongoSerializer<Object> implements Cred
 	 */
 	@Override
 	public Object getCredentials(Object identifier) throws DBException {
-		DBObject res = getCollection().findOne(buildUserCredentialSerachQuery(identifier));
-		if(res == null){
-			throw new RecordNotFoundException();
+		DBObject res = null;
+		try{
+			res = getCollection().findOne(buildUserCredentialSerachQuery(identifier));
+			if(res == null){
+				throw new RecordNotFoundException();
+			}
+			
+		}catch(MongoException e){
+			
 		}
+		//Make sure no other thing setting as null to response
 		return res.toMap();
 	}
 	

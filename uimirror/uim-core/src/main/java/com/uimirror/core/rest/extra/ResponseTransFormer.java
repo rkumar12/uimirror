@@ -10,27 +10,20 @@
  *******************************************************************************/
 package com.uimirror.core.rest.extra;
 
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.Response;
+import javax.ws.rs.Produces;
 
 /**
- * Constructs the response with appropriate response code for the application exception
- * that needs to be transmitted to the user.
+ * Common utility which does response transformer for the response entity
  * 
  * @author Jay
  */
-public abstract class ApplicationException extends WebApplicationException{
-
-	private static final long serialVersionUID = 7633918125632783005L;
+public interface ResponseTransFormer<R> {
 
 	/**
-	 * <p>Initialize the exception response to be part of the response</p>
-	 * @param status
-	 * @param msg
+	 * <p>According to the {@link Produces} type, implementing class should return
+	 * value accordingly</p>
+	 * @param src
+	 * @return
 	 */
-	public ApplicationException(Response res) {
-		super(res);
-	}
-	
-
+	R doTransForm(Object src);
 }

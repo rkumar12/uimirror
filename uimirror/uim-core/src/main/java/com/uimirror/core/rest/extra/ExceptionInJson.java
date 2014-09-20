@@ -10,8 +10,14 @@
  *******************************************************************************/
 package com.uimirror.core.rest.extra;
 
-import javax.ws.rs.WebApplicationException;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+
+import com.owlike.genson.Genson;
+import com.uimirror.core.Constants;
 
 /**
  * Constructs the response with appropriate response code for the application exception
@@ -19,7 +25,7 @@ import javax.ws.rs.core.Response;
  * 
  * @author Jay
  */
-public abstract class ApplicationException extends WebApplicationException{
+public abstract class ExceptionInJson extends ApplicationException{
 
 	private static final long serialVersionUID = 7633918125632783005L;
 
@@ -28,9 +34,26 @@ public abstract class ApplicationException extends WebApplicationException{
 	 * @param status
 	 * @param msg
 	 */
-	public ApplicationException(Response res) {
-		super(res);
+	public ExceptionInJson(Status status, String msg) {
+		super(responseBuilder(status, msg));
+	}
+	/**
+	 * <p>Builds invalid Response message</p>
+	 * @return
+	 */
+	private static Response responseBuilder(Status status, String msg) {
+		Map<String, String> rs = new LinkedHashMap<String, String>();
+		rs.put(Constants.ERROR, msg);
+		return buildResponse(status, rs);
 	}
 	
+	/**
+	 * <p>Helper to build the final response with status code</p>
+	 * @param res
+	 * @return
+	 */
+	private static Response buildResponse(Status status, Map<String, ? extends Object> res){
+		return Response.status(status).entity(new Genson().serialize(res)).build();
+	}
 
 }

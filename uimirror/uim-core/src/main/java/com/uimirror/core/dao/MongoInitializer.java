@@ -15,6 +15,7 @@ import org.springframework.util.StringUtils;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.Mongo;
+import com.mongodb.MongoException;
 
 /**
  * Common Mongo Collection Initializer
@@ -57,6 +58,13 @@ public abstract class MongoInitializer {
 				throw new IllegalStateException("Connection can't be established, check the parameters");
 			}
 		}
+	}
+	/**
+	 * <p>This checks the {@link MongoException} and interprets the message and translate to the appropriate message</p>
+	 * @param e
+	 */
+	public void mapException(MongoException e){
+		
 	}
 
 }
