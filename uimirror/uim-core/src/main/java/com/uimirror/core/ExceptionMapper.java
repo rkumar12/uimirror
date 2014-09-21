@@ -14,7 +14,7 @@ package com.uimirror.core;
  * General exception strategy which descibes the {@link Throwable} into 
  * to application logic specific.
  * Note, the class which is not handling or not falling into the specific exception category should
- * throw the exception as it is
+ * throw the exception as it is.
  * 
  * @author Jay
  */

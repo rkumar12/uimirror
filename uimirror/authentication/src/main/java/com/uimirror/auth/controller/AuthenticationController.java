@@ -10,9 +10,8 @@
  *******************************************************************************/
 package com.uimirror.auth.controller;
 
-import javax.ws.rs.WebApplicationException;
-
 import com.uimirror.core.auth.Authentication;
+import com.uimirror.core.rest.extra.ApplicationException;
 
 /**
  * Contract which defines, by taking the parameter it should give a valid response
@@ -24,16 +23,16 @@ public interface AuthenticationController {
 	 * <p>Validate the provided arguments and generate a access token</p>
 	 * @param param
 	 * @return
-	 * @throws WebApplicationException
+	 * @throws ApplicationException
 	 */
-	Object getAccessToken(Object param) throws WebApplicationException;
+	Object getAccessToken(Object param) throws ApplicationException;
 	
 	/**
 	 * Extracts the {@link Authentication} from the parameters
 	 * @param param
 	 * @return
-	 * @throws WebApplicationException
+	 * @throws ApplicationException
 	 */
-	Authentication getAuthentication(Object param) throws WebApplicationException;
+	Authentication getAuthentication(Object param) throws ApplicationException;
 
 }

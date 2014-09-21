@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import com.uimirror.auth.AuthExceptionMapper;
 import com.uimirror.auth.DBFileds;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.AccountState;
@@ -27,9 +28,8 @@ import com.uimirror.core.auth.Authentication;
 import com.uimirror.core.auth.AuthenticationException;
 import com.uimirror.core.auth.AuthenticationManager;
 import com.uimirror.core.auth.BadCredentialsException;
-import com.uimirror.core.auth.DisabledException;
 import com.uimirror.core.auth.dao.CredentialsStore;
-import com.uimirror.core.dao.DBException;
+import com.uimirror.core.extra.MapException;
 
 /**
  * Implementation of {@link AuthenticationManager#authenticate(Authentication)}
@@ -49,6 +49,7 @@ public class UserAuthenticationManager implements AuthenticationManager{
 	 * @see com.uimirror.core.auth.AuthenticationManager#authenticate(com.uimirror.core.auth.Authentication)
 	 */
 	@Override
+	@MapException(by=AuthExceptionMapper.class)
 	public AccessToken authenticate(Authentication authentication) throws AuthenticationException {
 		LOG.info("[START]- validating user credentials");
 		Map<String, Object> userCredential = getAuthenticationDetails(authentication.getName());
@@ -66,20 +67,8 @@ public class UserAuthenticationManager implements AuthenticationManager{
 	 */
 	@SuppressWarnings("unchecked")
 	private Map<String, Object> getAuthenticationDetails(String userId){
-		try{
-			return (Map<String, Object>)userCredentialStore.getCredentials(userId);
-		}catch(DBException e){
-			throw translate(e);
-		}
+		return (Map<String, Object>)userCredentialStore.getCredentials(userId);
 	}
-	
-	private AuthenticationException translate(DBException e){
-		if(e.getErrorCode() == 404)
-			return new BadCredentialsException();
-		
-		return new DisabledException();
-	}
-	
 	
 	private final class UserCredentials{
 		
