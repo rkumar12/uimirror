@@ -28,6 +28,7 @@ import com.uimirror.core.auth.Authentication;
 import com.uimirror.core.auth.AuthenticationException;
 import com.uimirror.core.auth.AuthenticationManager;
 import com.uimirror.core.auth.BadCredentialsException;
+import com.uimirror.core.auth.CredentialType;
 import com.uimirror.core.auth.dao.CredentialsStore;
 import com.uimirror.core.extra.MapException;
 
@@ -52,11 +53,49 @@ public class UserAuthenticationManager implements AuthenticationManager{
 	@MapException(by=AuthExceptionMapper.class)
 	public AccessToken authenticate(Authentication authentication) throws AuthenticationException {
 		LOG.info("[START]- validating user credentials");
-		Map<String, Object> userCredential = getAuthenticationDetails(authentication.getName());
-		
-		UserCredentials usr = new UserCredentials(userCredential);
+		UserCredentials usr = getUserCredentialDetails(authentication);
+		if(isValidateAccount(authentication, usr))
+			System.out.println("Done");
+			//TODO generate the new access token and persist
 		LOG.info("[END]- validating user credentials");
 		return null;
+	}
+	
+	/**
+	 * Gets the {@link UserCredentials} object from the {@link Authentication}
+	 * @param authentication
+	 * @return
+	 */
+	private UserCredentials getUserCredentialDetails(Authentication authentication){
+		LOG.debug("[START]- Reteriving User ");
+		UserCredentials userCredentials = null;  
+		switch (authentication.getCredentialType()) {
+				case LOGINFORM:
+					userCredentials = handleLoginForm(authentication.getName());
+					break;
+				case COOKIE:
+					//TODO Handle It separate and later
+					break;
+				case SCREENLOCK:
+					//TODO handle it separate and later
+					break;
+		}
+		LOG.debug("[END]- Reteriving User ");
+		return userCredentials;
+	}
+	
+	/**
+	 * Handles the {@link CredentialType#LOGINFORM} request
+	 * @param userId
+	 * @return
+	 */
+	private UserCredentials handleLoginForm(String userId){
+		return new UserCredentials(getAuthenticationDetails(userId));
+	}
+	
+	private boolean isValidateAccount(Authentication auth, UserCredentials userCredentials){
+		
+		return false;
 	}
 	
 	/**

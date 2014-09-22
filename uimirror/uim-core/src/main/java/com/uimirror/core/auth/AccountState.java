@@ -13,11 +13,14 @@ package com.uimirror.core.auth;
 /**
  * This identifier for the possible state of an account
  * such as {@link AccountState#DISABLED} or {@link AccountState#ENABLED}
- *  
+ * If account is created newly and not yet verified then it will have {@link AccountState#NEW}
+ * remember, new account will have maximum of 24 hrs validity.
+ *   
  * @author Jay
  */
 public enum AccountState {
-
+	
+	NEW("N"),
 	DISABLED("D"),
 	ENABLED("E");
 	
