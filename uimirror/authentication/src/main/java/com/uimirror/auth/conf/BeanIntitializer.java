@@ -10,10 +10,12 @@
  *******************************************************************************/
 package com.uimirror.auth.conf;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.uimirror.core.crypto.MatcherService;
+import com.uimirror.core.auth.PasswordMatcher;
+import com.uimirror.core.crypto.CryptoMatcherService;
 import com.uimirror.core.crypto.MatcherServiceImpl;
 import com.uimirror.core.extra.MapExceptionAspect;
 import com.uimirror.core.rest.extra.JsonResponseTransFormer;
@@ -37,8 +39,14 @@ public class BeanIntitializer {
 	}
 	
 	@Bean
-	public MatcherService matcherService(){
+	public CryptoMatcherService cryptoMatcherService(){
 		return new MatcherServiceImpl();
+	}
+	
+	@Bean
+	@Autowired
+	public PasswordMatcher passwordMatcher(CryptoMatcherService cryptoMatcherService){
+		return new PasswordMatcher(cryptoMatcherService);
 	}
 
 }

@@ -8,17 +8,18 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.core.auth;
+package com.uimirror.core;
 
 /**
+ * Common Validation Service which client needs to give implementation for its need
  * @author Jay
  */
-//TODO
-public interface AuthenticationValidatorService {
+public interface ValidatorService {
 
-	void validateState() throws DisabledException;
-	
-	void validateStatus() throws LockedException;
-	
-	void validateCredential() throws BadCredentialsException;
+	/**
+	 * Specifies the contract that a implementer needs to validate the current context 
+	 * by initializing the source via its constructor.
+	 * @return
+	 */
+	boolean validate();
 }

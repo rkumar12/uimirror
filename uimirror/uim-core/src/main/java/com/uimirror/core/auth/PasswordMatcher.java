@@ -12,7 +12,7 @@ package com.uimirror.core.auth;
 
 import org.springframework.util.Assert;
 
-import com.uimirror.core.crypto.MatcherService;
+import com.uimirror.core.crypto.CryptoMatcherService;
 
 /**
  * <p>This will take the user entered password and user's original password </p>
@@ -22,11 +22,11 @@ import com.uimirror.core.crypto.MatcherService;
  */
 public class PasswordMatcher {
 	
-	private final MatcherService matcherService;
+	private final CryptoMatcherService cryptoMatcherService;
 	
-	public PasswordMatcher(MatcherService matcherService) {
+	public PasswordMatcher(CryptoMatcherService matcherService) {
 		Assert.notNull(matcherService, "Matcher Service Can't be Empty");
-		this.matcherService = matcherService;
+		this.cryptoMatcherService = matcherService;
 	}
 
 	/**
@@ -41,6 +41,6 @@ public class PasswordMatcher {
 	public boolean match(final String rawPassword, final String originalPassword, final String encryptionStartegy){
 		Assert.hasText(rawPassword, "Password to match is invalid");
 		Assert.hasText(originalPassword, "Password with match is invalid");
-		return matcherService.match(rawPassword, originalPassword, encryptionStartegy);
+		return cryptoMatcherService.matchByEncrypting(rawPassword, originalPassword, encryptionStartegy);
 	}
 }

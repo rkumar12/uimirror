@@ -17,7 +17,7 @@ package com.uimirror.core.crypto;
  * 
  * @author Jay
  */
-public interface MatcherService {
+public interface CryptoMatcherService {
 
 	/**
 	 * Matches the provided parameters using the crypto definition mentioned in the strategy.
@@ -27,5 +27,5 @@ public interface MatcherService {
 	 * @param startegy
 	 * @return
 	 */
-	public boolean match(final String raw, final String encrypted, final String startegy);
+	public boolean matchByEncrypting(final String raw, final String encrypted, final String startegy);
 }

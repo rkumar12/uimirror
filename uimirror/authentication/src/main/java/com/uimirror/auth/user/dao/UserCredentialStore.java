@@ -34,7 +34,7 @@ import com.uimirror.core.extra.MapException;
  * @author Jay
  */
 @Repository
-public class UserCredentialStore extends MongoSerializer<Object> implements CredentialsStore {
+public class UserCredentialStore extends MongoSerializer implements CredentialsStore {
 	
 	private @Value("${auth.db.name}")String dbName;
 	private @Value("${auth.usr.col.name}")String collectionName;

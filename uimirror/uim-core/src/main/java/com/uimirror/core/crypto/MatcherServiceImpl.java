@@ -22,7 +22,7 @@ import org.springframework.util.StringUtils;
  * 
  * @author Jay
  */
-public class MatcherServiceImpl implements MatcherService{
+public class MatcherServiceImpl implements CryptoMatcherService{
 	
 	private static final Logger LOG = LoggerFactory.getLogger(MatcherServiceImpl.class);
 
@@ -30,7 +30,7 @@ public class MatcherServiceImpl implements MatcherService{
 	 * @see com.uimirror.core.crypto.MatcherService#match(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
-	public boolean match(String raw, String encrypted, String startegy) {
+	public boolean matchByEncrypting(String raw, String encrypted, String startegy) {
 		CryptoDefination cryptoDefination = getCryptoDefination(startegy);
 		return match(cryptoDefination, raw, encrypted);
 	}

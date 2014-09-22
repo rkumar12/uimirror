@@ -21,6 +21,7 @@ import com.uimirror.auth.controller.AuthenticationController;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.Authentication;
 import com.uimirror.core.auth.AuthenticationManager;
+import com.uimirror.core.auth.CredentialType;
 import com.uimirror.core.extra.MapException;
 import com.uimirror.core.rest.extra.ApplicationException;
 import com.uimirror.core.rest.extra.ResponseTransFormer;
@@ -48,13 +49,10 @@ public class UserAuthenticationController implements AuthenticationController{
 		LOG.debug("[START]- Getting the accesstoken based on the credentials");
 		//Step 1- Extract authentication details
 		Authentication auth = getAuthentication((UserAuthenticationForm)param);
-		
 		//Let GC take this ASAP
 		param = null;
-		AccessToken token = null;
-		token = userAuthenticationManager.authenticate(auth);
 		LOG.debug("[END]- Getting the accesstoken based on the credentials {}", auth);
-		return jsonResponseTransFormer.doTransForm(token);
+		return jsonResponseTransFormer.doTransForm(validateOrGenerateToken(auth));
 	}
 
 	/* (non-Javadoc)
@@ -63,6 +61,31 @@ public class UserAuthenticationController implements AuthenticationController{
 	@Override
 	public Authentication getAuthentication(Object param) throws ApplicationException {
 		return userAuthParamExtractor.extractAuthParam((UserAuthenticationForm)param);
+	}
+	
+	/**
+	 * On basics of {@link CredentialType}, it will simply validate or generate 
+	 * the access token {@link AccessToken}
+	 * @param auth
+	 * @return
+	 */
+	private AccessToken validateOrGenerateToken(Authentication auth){
+		AccessToken token = null;
+		switch (auth.getCredentialType()) {
+			case LOGINFORM:
+				token = userAuthenticationManager.authenticate(auth);
+				break;
+			case COOKIE:
+				//TODO Handle It separate and later
+				break;
+			case SCREENLOCK:
+				//TODO handle it separate and later
+				break;
+			case APIKEY:
+				//TODO handle it separate and later
+				break;
+		}
+		return token;
 	}
 
 }

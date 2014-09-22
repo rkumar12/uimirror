@@ -11,42 +11,23 @@
 package com.uimirror.core.mongo.feature;
 
 import java.io.Serializable;
-import java.util.Map;
-
-import org.bson.BasicBSONObject;
-
-import com.mongodb.DBObject;
 
 /**
  * <p>Common Class for the bean based Document Mapping</p>
  * <p>Each class needs to extend this class to obtain the flexibility.</p>
  * @author Jay
  */
-public class BeanBasedDocument extends BasicBSONObject implements Serializable, DBObject{
+public abstract class BeanBasedDocument extends MongoDocumentSerializer implements Serializable{
 	
 	private static final long serialVersionUID = 1661966237018687368L;
 	
-	public BeanBasedDocument(int size){
-		super(size);
+	private String id;
+	
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
 	}
 	
-	public BeanBasedDocument(){
-	}
-	
-	public BeanBasedDocument(Map<String, Object> m){
-		super(m);
-	}
-
-	@Override
-	public void markAsPartialObject() {
-		_isPartialObject = Boolean.TRUE;
-	}
-
-	@Override
-	public boolean isPartialObject() {
-		return _isPartialObject;
-	}
-
-	protected boolean _isPartialObject;
-
 }

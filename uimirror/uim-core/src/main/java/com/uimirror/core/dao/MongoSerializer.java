@@ -22,7 +22,7 @@ import com.uimirror.core.util.BeanToMap;
  * 
  * @author Jay
  */
-public abstract class MongoSerializer<P> extends MongoInitializer{
+public abstract class MongoSerializer extends MongoInitializer{
 
 	/**
 	 * Assign/ Create collection from the given {@link DB}
@@ -56,7 +56,7 @@ public abstract class MongoSerializer<P> extends MongoInitializer{
 	 * @param src
 	 * @return
 	 */
-	public Map<String, Object> toMap(P src){
+	public Map<String, Object> toMap(Object src){
 		return BeanToMap.toMap(src);
 	}
 }
