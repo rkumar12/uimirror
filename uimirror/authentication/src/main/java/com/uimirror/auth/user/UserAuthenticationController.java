@@ -76,7 +76,7 @@ public class UserAuthenticationController implements AuthenticationController{
 				token = userAuthenticationManager.authenticate(auth);
 				break;
 			case COOKIE:
-				//TODO Handle It separate and later
+				token = userAuthenticationManager.authenticate(auth);
 				break;
 			case SCREENLOCK:
 				//TODO handle it separate and later

@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import com.uimirror.auth.AuthExceptionMapper;
 import com.uimirror.core.auth.AccessToken;
@@ -49,6 +50,7 @@ public class UserAuthenticationManager implements AuthenticationManager{
 	@Override
 	@MapException(by=AuthExceptionMapper.class)
 	public AccessToken authenticate(Authentication authentication) throws AuthenticationException {
+		Assert.notNull(authentication, "Authention Request Object can't be empty");
 		LOG.info("[START]- validating user credentials");
 		BasicUserCredentials usr = getUserCredentialDetails(authentication);
 		doValidate(authentication, usr);

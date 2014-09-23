@@ -13,6 +13,8 @@ package com.uimirror.auth;
 import com.uimirror.core.ExceptionMapper;
 import com.uimirror.core.auth.AuthenticationException;
 import com.uimirror.core.auth.BadCredentialsException;
+import com.uimirror.core.auth.DisabledException;
+import com.uimirror.core.auth.LockedException;
 import com.uimirror.core.rest.extra.ApplicationException;
 import com.uimirror.core.rest.extra.IllegalArgumentException;
 import com.uimirror.core.rest.extra.InternalException;
@@ -23,7 +25,6 @@ import com.uimirror.core.rest.extra.UnAuthorizedException;
  * application specific exception {@link AuthenticationException}
  * @author Jay
  */
-//TODO map all the exception level
 public class AuthToApplicationExceptionMapper implements ExceptionMapper{
 
 	/* (non-Javadoc)
@@ -36,6 +37,12 @@ public class AuthToApplicationExceptionMapper implements ExceptionMapper{
 		
 		if(isInvalidCredential(exceptionToMap))
 			return translateToInvalidCredential();
+		
+		if(isDisabled(exceptionToMap))
+			return translateToDisabled();
+		
+		if(isBlocked(exceptionToMap))
+			return translateToBlocked();
 		
 		if(isInternal(exceptionToMap))
 			return translateToInternal();
@@ -57,6 +64,22 @@ public class AuthToApplicationExceptionMapper implements ExceptionMapper{
 	
 	private ApplicationException translateToInvalidCredential(){
 		return new UnAuthorizedException();
+	}
+	
+	public boolean isDisabled(Throwable e){
+		return e instanceof DisabledException;
+	}
+	
+	private ApplicationException translateToDisabled(){
+		return new UnAuthorizedException("Account Disabled");
+	}
+	
+	public boolean isBlocked(Throwable e){
+		return e instanceof LockedException;
+	}
+	
+	private ApplicationException translateToBlocked(){
+		return new UnAuthorizedException("Account Blocked");
 	}
 	
 	private boolean isInternal(Throwable e){
