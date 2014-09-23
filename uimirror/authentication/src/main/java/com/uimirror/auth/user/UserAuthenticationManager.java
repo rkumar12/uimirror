@@ -22,9 +22,9 @@ import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.Authentication;
 import com.uimirror.core.auth.AuthenticationException;
 import com.uimirror.core.auth.AuthenticationManager;
+import com.uimirror.core.auth.AuthenticationValidationService;
 import com.uimirror.core.auth.BadCredentialsException;
 import com.uimirror.core.auth.CredentialType;
-import com.uimirror.core.auth.PasswordMatcher;
 import com.uimirror.core.auth.dao.CredentialsStore;
 import com.uimirror.core.extra.MapException;
 
@@ -41,7 +41,7 @@ public class UserAuthenticationManager implements AuthenticationManager{
 	protected static final Logger LOG = LoggerFactory.getLogger(UserAuthenticationManager.class);
 	
 	private @Autowired CredentialsStore userCredentialStore;
-	private @Autowired PasswordMatcher passwordMatcher;
+	private @Autowired AuthenticationValidationService userAuthenticationValidationService;
 
 	/* (non-Javadoc)
 	 * @see com.uimirror.core.auth.AuthenticationManager#authenticate(com.uimirror.core.auth.Authentication)
@@ -85,7 +85,7 @@ public class UserAuthenticationManager implements AuthenticationManager{
 	 * @param userCredentials
 	 */
 	private void doValidate(Authentication auth, BasicUserCredentials userCredentials){
-		new UserAuthenticationValidationService(userCredentials, auth, passwordMatcher);
+		userAuthenticationValidationService.doMatch(userCredentials, auth);
 	}
 	
 	/**

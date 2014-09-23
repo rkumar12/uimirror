@@ -16,6 +16,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
+import com.uimirror.auth.user.UserAuthenticationValidationService;
+import com.uimirror.core.auth.AuthenticationValidationService;
 import com.uimirror.core.auth.PasswordMatcher;
 import com.uimirror.core.crypto.CryptoMatcherService;
 import com.uimirror.core.crypto.MatcherServiceImpl;
@@ -49,6 +51,13 @@ public class BeanIntitializer {
 	}
 	
 	@Bean
+	public ServiceLocatorFactoryBean responseTransFormerFactory(){
+		ServiceLocatorFactoryBean sb = new ServiceLocatorFactoryBean();
+		sb.setServiceLocatorInterface(ResponseTransFormerFactory.class);
+		return sb;
+	}
+	
+	@Bean
 	public CryptoMatcherService cryptoMatcherService(){
 		return new MatcherServiceImpl();
 	}
@@ -60,10 +69,9 @@ public class BeanIntitializer {
 	}
 	
 	@Bean
-	public ServiceLocatorFactoryBean responseTransFormerFactory(){
-		ServiceLocatorFactoryBean sb = new ServiceLocatorFactoryBean();
-		sb.setServiceLocatorInterface(ResponseTransFormerFactory.class);
-		return sb;
+	@Autowired
+	public AuthenticationValidationService userAuthenticationValidationService(PasswordMatcher passwordMatcher){
+		return new UserAuthenticationValidationService(passwordMatcher);
 	}
 
 }

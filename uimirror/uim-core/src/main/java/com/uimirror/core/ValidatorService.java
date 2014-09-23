@@ -19,7 +19,16 @@ public interface ValidatorService {
 	/**
 	 * Specifies the contract that a implementer needs to validate the current context 
 	 * by initializing the source via its constructor.
+	 * @param src
 	 * @return
 	 */
-	boolean validate();
+	boolean validate(Object src);
+	
+	/**
+	 * <p>This will validate and match with source and destination</p>
+	 * @param src
+	 * @param des
+	 * @return
+	 */
+	boolean doMatch(Object src, Object des);
 }
