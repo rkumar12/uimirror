@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.core.extra;
+package com.uimirror.core.rest.extra;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -17,24 +17,17 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import com.uimirror.core.ExceptionMapper;
-
 /**
- * Specifies in the method level
- * when there will be any exception happened, this will translate 
- * those into business specific logic
- * 
+ * Method who are annotated with this  
+ * will locate for the particular bean once found 
+ * it will be transformed
  * @author Jay
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD})
 @Inherited
 @Documented
-public @interface MapException {
+public @interface TransformResponse {
 
-	/**
-	 * An instance alias name of {@link ExceptionMapper} which will be used to map the exception
-	 * @return
-	 */
-	String use();
+	String by() default "json";
 }

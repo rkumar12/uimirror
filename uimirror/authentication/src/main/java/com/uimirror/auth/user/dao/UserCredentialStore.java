@@ -23,7 +23,6 @@ import com.mongodb.Mongo;
 import com.uimirror.auth.DBFileds;
 import com.uimirror.core.auth.dao.CredentialsStore;
 import com.uimirror.core.dao.DBException;
-import com.uimirror.core.dao.MongoExceptionMapper;
 import com.uimirror.core.dao.MongoSerializer;
 import com.uimirror.core.dao.RecordNotFoundException;
 import com.uimirror.core.extra.MapException;
@@ -72,7 +71,7 @@ public class UserCredentialStore extends MongoSerializer implements CredentialsS
 	 * @see com.uimirror.core.auth.dao.CredentialsStore#getCredentials(java.lang.Object)
 	 */
 	@Override
-	@MapException(by=MongoExceptionMapper.class)
+	@MapException(use="MONGOEM")
 	public Object getCredentials(Object identifier) throws DBException {
 		DBObject res = getCollection().findOne(buildUserCredentialSerachQuery(identifier));
 		if(res == null){

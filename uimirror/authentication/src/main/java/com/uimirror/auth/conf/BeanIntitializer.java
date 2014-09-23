@@ -11,8 +11,10 @@
 package com.uimirror.auth.conf;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ServiceLocatorFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
 import com.uimirror.core.auth.PasswordMatcher;
 import com.uimirror.core.crypto.CryptoMatcherService;
@@ -20,15 +22,18 @@ import com.uimirror.core.crypto.MatcherServiceImpl;
 import com.uimirror.core.extra.MapExceptionAspect;
 import com.uimirror.core.rest.extra.JsonResponseTransFormer;
 import com.uimirror.core.rest.extra.ResponseTransFormer;
+import com.uimirror.core.rest.extra.ResponseTransFormerFactory;
+import com.uimirror.core.rest.extra.TransformResponseAspect;
 
 /**
  * Initialize or configures the service bean getting used for this application
  * @author Jay
  */
 @Configuration
+@Import({BeanOfExceptionIntitializer.class,})
 public class BeanIntitializer {
 
-	@Bean
+	@Bean(name="json")
 	public ResponseTransFormer<String> jsonResponseTransFormer(){
 		return new JsonResponseTransFormer();
 	}
@@ -36,6 +41,11 @@ public class BeanIntitializer {
 	@Bean
 	public MapExceptionAspect mapExceptionAspect(){
 		return new MapExceptionAspect();
+	}
+	
+	@Bean
+	public TransformResponseAspect transformResponseAspect(){
+		return new TransformResponseAspect();
 	}
 	
 	@Bean
@@ -47,6 +57,13 @@ public class BeanIntitializer {
 	@Autowired
 	public PasswordMatcher passwordMatcher(CryptoMatcherService cryptoMatcherService){
 		return new PasswordMatcher(cryptoMatcherService);
+	}
+	
+	@Bean
+	public ServiceLocatorFactoryBean responseTransFormerFactory(){
+		ServiceLocatorFactoryBean sb = new ServiceLocatorFactoryBean();
+		sb.setServiceLocatorInterface(ResponseTransFormerFactory.class);
+		return sb;
 	}
 
 }

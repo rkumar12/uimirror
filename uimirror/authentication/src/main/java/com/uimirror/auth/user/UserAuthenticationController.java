@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.uimirror.auth.AuthParamExtractor;
-import com.uimirror.auth.AuthToApplicationExceptionMapper;
 import com.uimirror.auth.controller.AuthenticationController;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.Authentication;
@@ -44,7 +43,8 @@ public class UserAuthenticationController implements AuthenticationController{
 	 * @see com.uimirror.auth.controller.AuthenticationController#getAccessToken(javax.ws.rs.core.MultivaluedMap)
 	 */
 	@Override
-	@MapException(by=AuthToApplicationExceptionMapper.class)
+	@MapException(use="AUTHTOAPPEM")
+	//@TransformResponse
 	public Object getAccessToken(Object param) throws ApplicationException{
 		LOG.debug("[START]- Getting the accesstoken based on the credentials");
 		//Step 1- Extract authentication details
