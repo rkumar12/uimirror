@@ -23,6 +23,10 @@ public abstract class BeanBasedDocument extends MongoDocumentSerializer implemen
 	
 	private String id;
 	
+	public BeanBasedDocument(String id) {
+		this.id = id;
+	}
+	
 	public String getId() {
 		return id;
 	}

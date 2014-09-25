@@ -34,6 +34,9 @@ public interface AuthenticationManager {
      * Exceptions should be tested for and if applicable thrown in the order expressed above (i.e. if an
      * account is disabled or locked, the authentication request is immediately rejected and the credentials testing
      * process is not performed). This prevents credentials being tested against  disabled or locked accounts.
+     * 
+     * After successful  authentication, check if user has 2 factor authentication enabled,
+     * if so, populate a interim {@link AccessToken} and send back to the user for 2FA screen. 
      *
      * @param authentication the authentication request object
      *

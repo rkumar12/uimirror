@@ -68,5 +68,17 @@ public interface Authentication extends Principal, Serializable {
      * @return
      */
     public DeviceType loggingFrom();
+    
+    /**
+     * Gives the user agent of the device trying to connect
+     * @return
+     */
+    public String getUserAgent();
+    
+    /**
+     * Gives the source IP, from where user tries to get connect 
+     * @return
+     */
+    public String getIp();
 
 }

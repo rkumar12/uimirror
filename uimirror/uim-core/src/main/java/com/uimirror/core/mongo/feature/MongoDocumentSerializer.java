@@ -32,7 +32,8 @@ public abstract class MongoDocumentSerializer {
 	/**
 	 * Defines contract, from the source object , value needs to be initialized.
 	 * @param src
+	 * @return the object which can be de-serialized
 	 */
-	public abstract void initFromMap(Map<String, Object> src); 
+	public abstract Object initFromMap(Map<String, Object> src); 
 
 }

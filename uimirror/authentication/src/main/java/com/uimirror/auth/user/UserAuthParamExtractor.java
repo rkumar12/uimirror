@@ -20,6 +20,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 import com.uimirror.auth.AuthParamExtractor;
+import com.uimirror.core.BooleanUtil;
 import com.uimirror.core.Constants;
 import com.uimirror.core.auth.Authentication;
 import com.uimirror.core.auth.CredentialType;
@@ -80,9 +81,7 @@ public class UserAuthParamExtractor implements AuthParamExtractor<UserAuthentica
 	 * @return
 	 */
 	private Authentication getLoginFormDetails(final UserAuthenticationForm param, ExtractOtherDetails extractOtherDetails){
-		boolean keepMeLogin = Boolean.parseBoolean(param.getKeepMeLogedIn());
-		keepMeLogin = (keepMeLogin == Boolean.FALSE && 
-				("y".equalsIgnoreCase(param.getKeepMeLogedIn()) || "yes".equalsIgnoreCase(param.getKeepMeLogedIn()))) ?  Boolean.TRUE : Boolean.FALSE;
+		boolean keepMeLogin = BooleanUtil.parseBoolean(param.getKeepMeLogedIn());
 		//Get the additional info such as ip, user agent
 		String ip = param.getIp();
 		Assert.hasText(ip, "IP can't be empty");

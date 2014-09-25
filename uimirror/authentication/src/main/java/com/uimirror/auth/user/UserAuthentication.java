@@ -132,4 +132,22 @@ public final class UserAuthentication implements Authentication{
 				+ ", keepMeLogin=" + keepMeLogin + ", device=" + device + "]";
 	}
 
+	/* (non-Javadoc)
+	 * @see com.uimirror.core.auth.Authentication#getUserAgent()
+	 */
+	@Override
+	public String getUserAgent() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.uimirror.core.auth.Authentication#getIp()
+	 */
+	@Override
+	public String getIp() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

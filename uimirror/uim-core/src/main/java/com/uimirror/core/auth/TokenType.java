@@ -13,49 +13,50 @@ package com.uimirror.core.auth;
 import com.uimirror.core.Constants;
 
 /**
- * <p>This will hold the principal type suggesting type of login details</p>
+ * <p>This will hold the principal type suggesting type of Token</p>
  * <p>Access token will be issued to client as well user, so here to identify which 
- * token was for him this enum is mandatory</p>
+ * type token is like its a secret key or access key</p>
  * 
  * @author Jay
  */
-public enum AccessTokenType {
+public enum TokenType {
 
-	USER("U"),
-	CLIENT("C");
+	ACCESS("A"),
+	SECRET("S"),
+	TEMPORAL("T");
 	
-	private final String accessTokenType;
+	private final String tokenType;
     private final String description;
  
-    AccessTokenType(String principalType) {
-    	this.accessTokenType = principalType;
+    TokenType(String type) {
+    	this.tokenType = type;
     	this.description = Constants.EMPTY;
     }
     
-    AccessTokenType(String principalType, String description) {
-    	this.accessTokenType = principalType;
+    TokenType(String type, String description) {
+    	this.tokenType = type;
     	this.description = description;
     }
-    
-    public String getAccessTokenType() {
-		return accessTokenType;
-	}
-
-    public String getDescription() {
-		return description;
-	}
 
 	@Override
     public String toString() {
-    	return this.getAccessTokenType();
+    	return this.getTokenType();
     } 
 
-    public static AccessTokenType getEnum(String role) {
+    public static TokenType getEnum(String role) {
     	if(role == null)
     		throw new IllegalArgumentException("Access Token type Can't be empty");
-    	for(AccessTokenType v : values())
-    		if(role.equalsIgnoreCase(v.getAccessTokenType())) return v;
+    	for(TokenType v : values())
+    		if(role.equalsIgnoreCase(v.getTokenType())) return v;
     	throw new IllegalArgumentException("No AccessToken type Found");
     }
+
+	public String getTokenType() {
+		return tokenType;
+	}
+
+	public String getDescription() {
+		return description;
+	}
 	
 }

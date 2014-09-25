@@ -23,7 +23,8 @@ public enum CredentialType {
 	COOKIE("C", "Cookie"),
 	LOGINFORM("F", "Login Form"),
 	SCREENLOCK("S", "Screen Lock"),
-	APIKEY("API", "API key");
+	APIKEY("API", "API key"),
+	CLIENTSECRECTKEY("CLISECRET", "Client Secret Key");
 	private final String principalType;
     private final String description;
  

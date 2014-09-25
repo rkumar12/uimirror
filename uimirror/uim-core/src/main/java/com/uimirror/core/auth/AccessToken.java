@@ -20,13 +20,34 @@ import java.security.Principal;
  */
 public interface AccessToken extends Principal, Serializable{
 
-	AccessTokenType getTokenType();
+	/**
+	 * Specifies the type of token
+	 * {@link TokenType#ACCESS} if it is a access token,
+	 * {@link TokenType#SECRET} if it is a token issued to the client
+	 * {@link TokenType#TEMPORAL} if this token is issued for temproal purpose only
+	 *  
+	 * @return
+	 */
+	TokenType getTokenType();
 	
+	/**
+	 * Represents the issued token and its paraphrase
+	 * @return
+	 */
+	Token getToken();
 	
+	/**
+	 * Specifies the time in mills, the token will expire on
+	 * @return
+	 */
+	String getExpiresOn();
 	
-	String getClientId();
-	
-	
-	
-	
+	/**
+	 * Defines the scope for this token
+	 * @see AccessTokenScope
+	 * @return
+	 * 
+	 */
+	AccessTokenScope getScope();
+
 }

@@ -50,14 +50,16 @@ public class UserAuthenticationManager implements AuthenticationManager{
 	@MapException(use="AUTHEM")
 	public AccessToken authenticate(Authentication authentication) throws AuthenticationException {
 		Assert.notNull(authentication, "Authention Request Object can't be empty");
-		LOG.info("[START]- validating user credentials");
+		LOG.info("[START]- Authenticating User");
 		BasicUserCredentials usr = getUserCredentialDetails(authentication);
-		doValidate(authentication, usr);
-		LOG.info("[END]- validating user credentials");
+		doAuthenticate(authentication, usr);
+		//Step 2- Generate Access Token 
+		AccessToken token = doGenerateToken(authentication, usr);
+		LOG.info("[END]- Authenticating User");
 		//TODO access token generation logic for latter
 		return null;
 	}
-	
+
 	/**
 	 * Gets the {@link UserCredentials} object from the {@link Authentication}
 	 * @param authentication
@@ -83,9 +85,11 @@ public class UserAuthenticationManager implements AuthenticationManager{
 	 * <p>This will validate the credentials in the order, authentication should happen</p>
 	 * @param auth
 	 * @param userCredentials
+	 * @return <code>true</code> if successfully authenticated else <code>false</code>
+	 * or appropriate {@link AuthenticationException}
 	 */
-	private void doValidate(Authentication auth, BasicUserCredentials userCredentials){
-		userAuthenticationValidationService.doMatch(userCredentials, auth);
+	private boolean doAuthenticate(Authentication auth, BasicUserCredentials userCredentials){
+		return userAuthenticationValidationService.doMatch(userCredentials, auth);
 	}
 	
 	/**
@@ -98,5 +102,47 @@ public class UserAuthenticationManager implements AuthenticationManager{
 	private Map<String, Object> getAuthenticationDetails(String userId){
 		return (Map<String, Object>)userCredentialStore.getCredentials(userId);
 	}
+	
+	/**
+	 * Checks for any remaining step, if user has opted for the 2FA, returns the interim
+	 * {@link AccessToken} else generate a fully phased token.
+	 * 
+	 * @param auth
+	 * @param usr
+	 * @return
+	 */
+	private AccessToken doGenerateToken(Authentication auth, BasicUserCredentials usr) {
+		LOG.debug("Checking If User has 2FA enabled");
+		if(isOptedFor2FA(usr, auth)){
+			LOG.debug("User has 2 Factor Authentication enabled");
+		}
+		return null;
+	}
+	
+	/**
+	 * Checks if user has opted for the 2FA authentication or not,
+	 * if 2FA, return <code>true</code> else <code>false</code>
+	 * if login type is form and user opted for 2FA then return true else false
+	 * @param userCredentials
+	 * @return
+	 */
+	//TODO do the implementation latter
+	private boolean isOptedFor2FA(BasicUserCredentials userCredentials, Authentication auth){
+		//TODO if login type is form and user opted for 2FA then return true else false
+		return Boolean.FALSE;
+	}
+	
+	/**
+	 * will generate a new token and send back to the client.
+	 * 
+	 * @param auth
+	 * @param usr
+	 * @param partial
+	 * @return
+	 */
+	private AccessToken generateToken(Authentication auth, BasicUserCredentials usr, boolean partial){
+		return null;
+	}
+	
 
 }

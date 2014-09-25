@@ -44,7 +44,6 @@ public class UserAuthenticationController implements AuthenticationController{
 	 */
 	@Override
 	@MapException(use="AUTHTOAPPEM")
-	//@TransformResponse
 	public Object getAccessToken(Object param) throws ApplicationException{
 		LOG.debug("[START]- Getting the accesstoken based on the credentials");
 		//Step 1- Extract authentication details
