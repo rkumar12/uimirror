@@ -23,11 +23,10 @@ public abstract class MongoDocumentSerializer {
 	/**
 	 * <p>Defines contract how a object class while saving will be serialized</p>
 	 * This gives a default implementation of object getting converted to {@link Map}
-	 * @param src
 	 * @return
 	 */
-	public Map<String, Object> toMap(Object src){
-		return BeanToMap.toMap(src);
+	public Map<String, Object> toMap(){
+		return BeanToMap.toMap(this);
 	}
 	/**
 	 * Defines contract, from the source object , value needs to be initialized.

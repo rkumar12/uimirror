@@ -20,6 +20,8 @@ import java.security.Principal;
  */
 public interface AccessToken extends Principal, Serializable{
 
+	String ERR_MSG = "Not a valid AccessToken";
+	
 	/**
 	 * Specifies the type of token
 	 * {@link TokenType#ACCESS} if it is a access token,

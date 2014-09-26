@@ -41,26 +41,26 @@ public class Token {
 	 * Tries to encrypt the token, if in case of any issues, returns the original
 	 * @return
 	 */
-	public String getEncrypted(){
+	public Token getEncrypted(){
 		try {
-			return getCryptoDefination().encrypt(token);
+			return new Token(getCryptoDefination().encrypt(this.token), this.paraphrase);
 		} catch (UnsupportedEncodingException | GeneralSecurityException e) {
 			LOG.error("[LOW-TOKEN]- Encrypting token has some issues {}", e);
 		}
-		return token;
+		return this;
 	}
 	
 	/**
 	 * Tries to decrypt the token, if in case of any issues, return the original
 	 * @return
 	 */
-	public String getDecrypted(){
+	public Token getDecrypted(){
 		try {
-			return getCryptoDefination().decrypt(token);
+			return new Token(getCryptoDefination().decrypt(token), this.paraphrase);
 		} catch (GeneralSecurityException | IOException e) {
 			LOG.error("[LOW-TOKEN]- Decrypting token has some issues {}", e);
 		}
-		return token;
+		return this;
 	}
 	
 	/**

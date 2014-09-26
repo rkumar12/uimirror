@@ -10,6 +10,7 @@
  *******************************************************************************/
 package com.uimirror.core.auth;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.springframework.util.Assert;
@@ -28,9 +29,11 @@ public class BasicAccessToken extends MongoDocumentSerializer implements AccessT
 	private final String expireOn;
 	private final TokenType type;
 	private final AccessTokenScope scope;
-	private final String ERR_MSG = "Not a valid AccessToken";
-			
 
+	/**
+	 * Make sure, if trying to create the object, then initialize from the map
+	 * else any operation on this will give exceptions
+	 */
 	public BasicAccessToken(){
 		this.token = null;
 		this.id = null;
@@ -42,6 +45,15 @@ public class BasicAccessToken extends MongoDocumentSerializer implements AccessT
 	public BasicAccessToken(Token token, String id, String expireOn, TokenType type, AccessTokenScope scope) {
 		super();
 		this.token = token;
+		this.id = id;
+		this.expireOn = expireOn;
+		this.type = type;
+		this.scope = scope;
+	}
+	
+	public BasicAccessToken(String id, String expireOn, TokenType type, AccessTokenScope scope) {
+		super();
+		this.token = AccessTokenGenerator.getNewOne();
 		this.id = id;
 		this.expireOn = expireOn;
 		this.type = type;
@@ -102,6 +114,22 @@ public class BasicAccessToken extends MongoDocumentSerializer implements AccessT
 		validate(token, id, timeout, type, scope);
 		return new BasicAccessToken(new Token(token, pharse), id, timeout, TokenType.getEnum(type), AccessTokenScope.getEnum(scope));
 		
+	}
+	
+	/**
+	 * This map the document should have which fields
+	 * always it will have _id, parapharse, id, expire, type and scope
+	 */
+	@Override
+	public Map<String, Object> toMap(){
+		Map<String, Object> map = new LinkedHashMap<String, Object>(10);
+		map.put(AccessTokenFields.ID, this.token.getToken());
+		map.put(AccessTokenFields.ENCRYPT_STARTEGY, this.token.getParaphrase());
+		map.put(AccessTokenFields.IDENTIFIER, this.id);
+		map.put(AccessTokenFields.EXPIRE_ON, this.expireOn);
+		map.put(AccessTokenFields.TYPE, this.type.getTokenType());
+		map.put(AccessTokenFields.SCOPE, this.scope.getScope());
+		return map;
 	}
 
 	/**
