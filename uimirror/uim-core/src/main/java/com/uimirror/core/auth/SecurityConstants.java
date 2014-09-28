@@ -8,18 +8,16 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.core;
+package com.uimirror.core.auth;
 
 /**
- * @author Jayaram
- *
+ * Defines the constant that are for security related
+ * @author Jay
  */
-public interface Constants {
+public interface SecurityConstants {
 
-	public static final String UTF_8 = "utf-8";
-	public static final String EMPTY = "";
-	String ERROR = "error";
-	String USER_AGENT = "ua";
-	String IP = "ip";
-	
+	/**
+	 * <p>String identifier for the Ouath2 authorization header.
+	 */
+	String BEARER = "Bearer";
 }

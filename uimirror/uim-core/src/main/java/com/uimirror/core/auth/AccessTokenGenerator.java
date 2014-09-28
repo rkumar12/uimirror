@@ -13,6 +13,7 @@ package com.uimirror.core.auth;
 import java.util.UUID;
 
 import com.uimirror.core.RandomKeyGenerator;
+import com.uimirror.core.auth.bean.Token;
 
 /**
  * Generates a token using {@link UUID}

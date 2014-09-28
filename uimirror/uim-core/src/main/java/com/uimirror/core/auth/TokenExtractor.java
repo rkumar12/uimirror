@@ -8,18 +8,20 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.core;
+package com.uimirror.core.auth;
+
 
 /**
- * @author Jayaram
- *
+ * This extracts the ouath token from the header value
+ * @author Jay
  */
-public interface Constants {
+public interface TokenExtractor {
 
-	public static final String UTF_8 = "utf-8";
-	public static final String EMPTY = "";
-	String ERROR = "error";
-	String USER_AGENT = "ua";
-	String IP = "ip";
-	
+	/**
+	 * Extract a token value from an incoming request without authentication.
+	 * 
+	 * @param from the current token from header
+	 * @return an authentication token whose principal is an access token (or null if there is none)
+	 */
+	public String extract(String from); 
 }

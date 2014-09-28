@@ -8,18 +8,23 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.core;
+package com.uimirror.core.auth.dao;
+
+import com.uimirror.core.auth.bean.AccessToken;
 
 /**
- * @author Jayaram
- *
+ * A Factory for the AccessTokenStore to get the exact database which needs 
+ * to be used for the {@link AccessToken}
+ * @author Jay
  */
-public interface Constants {
+public interface AccessTokenStoreFactory {
 
-	public static final String UTF_8 = "utf-8";
-	public static final String EMPTY = "";
-	String ERROR = "error";
-	String USER_AGENT = "ua";
-	String IP = "ip";
-	
+	/**
+	 * This will give which {@link AccessTokenStore} to be used
+	 * based on the parameter.
+	 * 
+	 * @param name
+	 * @return
+	 */
+	AccessTokenStore getStore(String name);
 }

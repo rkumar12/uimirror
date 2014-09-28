@@ -18,13 +18,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import com.uimirror.core.auth.AccessToken;
-import com.uimirror.core.auth.Authentication;
 import com.uimirror.core.auth.AuthenticationException;
 import com.uimirror.core.auth.AuthenticationManager;
 import com.uimirror.core.auth.AuthenticationValidationService;
 import com.uimirror.core.auth.BadCredentialsException;
-import com.uimirror.core.auth.CredentialType;
+import com.uimirror.core.auth.bean.AccessToken;
+import com.uimirror.core.auth.bean.Authentication;
+import com.uimirror.core.auth.bean.CredentialType;
 import com.uimirror.core.auth.dao.CredentialsStore;
 import com.uimirror.core.extra.MapException;
 

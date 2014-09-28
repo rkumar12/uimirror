@@ -10,7 +10,7 @@
  *******************************************************************************/
 package com.uimirror.auth.controller;
 
-import com.uimirror.core.auth.Authentication;
+import com.uimirror.core.auth.bean.Authentication;
 import com.uimirror.core.rest.extra.ApplicationException;
 
 /**

@@ -14,10 +14,11 @@ import java.util.Map;
 
 import org.springframework.util.Assert;
 
-import com.uimirror.core.auth.Authentication;
 import com.uimirror.core.auth.AuthenticationManager;
-import com.uimirror.core.auth.CredentialType;
-import com.uimirror.core.auth.DeviceType;
+import com.uimirror.core.auth.bean.Authentication;
+import com.uimirror.core.auth.bean.CredentialType;
+import com.uimirror.core.auth.bean.DeviceType;
+import com.uimirror.core.auth.bean.Scope;
 
 /**
  * <p>Contains the user authentication details which will be the principal details of the user</p>
@@ -35,6 +36,7 @@ public final class UserAuthentication implements Authentication{
 	private final Map<String, String> details;
 	private final boolean keepMeLogin;
 	private final DeviceType device;
+	private final Scope scope;
 
 	/**
 	 * <p>Populate the Authentication object with the provided information,
@@ -42,11 +44,12 @@ public final class UserAuthentication implements Authentication{
 	 * @param userId
 	 * @param password
 	 * @param keepMeLogin
+	 * @param scope
 	 * @param credentialType
 	 * @param details
 	 * @param device
 	 */
-	public UserAuthentication(String userId, String password, boolean keepMeLogin, CredentialType credentialType, Map<String, String> details, DeviceType device) {
+	public UserAuthentication(String userId, String password, boolean keepMeLogin, Scope scope, CredentialType credentialType, Map<String, String> details, DeviceType device) {
 		Assert.notNull(credentialType, "Credential Type Can't be empty");
 		Assert.hasText(userId, "User Identifier can't be empty");
 		if(CredentialType.LOGINFORM.equals(credentialType) || CredentialType.SCREENLOCK.equals(credentialType)){
@@ -57,6 +60,7 @@ public final class UserAuthentication implements Authentication{
 		this.credentialType = credentialType;
 		this.details = details;
 		this.keepMeLogin = keepMeLogin;
+		this.scope = scope;
 		this.device = device;
 	}
 
@@ -71,9 +75,9 @@ public final class UserAuthentication implements Authentication{
 	}
 
 	/** 
-	 * <p>Specifies the type of the authentication being provided such as {@link CredentialType#LOGINFORM}, {@link CredentialType#COOKIE} etc</p>
+	 * <p>Specifies the type of the authentication being provided such as {@link CredentialType#LOGINFORM}, {@link CredentialType#ACCESSKEY} etc</p>
 	 * (non-Javadoc)
-	 * @see com.uimirror.core.auth.Authentication#getCredentialType()
+	 * @see com.uimirror.core.auth.bean.Authentication#getCredentialType()
 	 */
 	@Override
 	public CredentialType getCredentialType() {
@@ -83,7 +87,7 @@ public final class UserAuthentication implements Authentication{
 	/** 
 	 * <p>This always be a password might be a screen lock password or login password of the user</p>
 	 * (non-Javadoc)
-	 * @see com.uimirror.core.auth.Authentication#getCredentials()
+	 * @see com.uimirror.core.auth.bean.Authentication#getCredentials()
 	 */
 	@Override
 	public Object getCredentials() {
@@ -102,7 +106,7 @@ public final class UserAuthentication implements Authentication{
 	/** 
 	 * Specifies the authentication schema supported
 	 * (non-Javadoc)
-	 * @see com.uimirror.core.auth.Authentication#getAuthenticationScheme()
+	 * @see com.uimirror.core.auth.bean.Authentication#getAuthenticationScheme()
 	 */
 	@Override
 	public Object getAuthenticationScheme() {
@@ -148,6 +152,14 @@ public final class UserAuthentication implements Authentication{
 	public String getIp() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.uimirror.core.auth.Authentication#getAuthenticationScope()
+	 */
+	@Override
+	public Scope getAuthenticationScope() {
+		return this.scope;
 	}
 
 }

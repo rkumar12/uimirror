@@ -11,15 +11,12 @@
 package com.uimirror.core;
 
 /**
- * @author Jayaram
- *
+ * Defines the contract of the input parameters
+ * that a form will will be submited with the specified key
+ * @author Jay
  */
-public interface Constants {
+public interface Parameters {
 
-	public static final String UTF_8 = "utf-8";
-	public static final String EMPTY = "";
-	String ERROR = "error";
-	String USER_AGENT = "ua";
-	String IP = "ip";
-	
+	String USER_AGENT = "user-agent";
+	String IP = "host";
 }

@@ -10,6 +10,9 @@
  *******************************************************************************/
 package com.uimirror.core.auth;
 
+import com.uimirror.core.auth.bean.AccessToken;
+import com.uimirror.core.auth.bean.Authentication;
+
 /**
  * Provides a common solution for all the token  
  * generation strategy.
@@ -24,20 +27,40 @@ public interface AccessTokenManager {
 	 * @param auth
 	 * @param id profileid/clientid of the user/client
 	 * @param details
+	 * @param temporal
 	 * @return
 	 */
-	AccessToken generateToken(Authentication auth, String id);
+	AccessToken generateToken(Authentication auth, String id, boolean temporal);
 	
 	/**
 	 * Checks if the token supplied is not yet expired.
 	 * @param token
 	 * @return
 	 */
-	boolean isValidToken(AccessToken token);
+	boolean isValidToken(Authentication auth);
+	
+	/**
+	 * This will expire the given token by de-crypting.
+	 * @param token
+	 * @param async specifies if this task needs to in a async manner or regular way
+	 */
+	void markAsExpired(Authentication auth, boolean async);
 	
 	/**
 	 * This will expire the given token.
 	 * @param token
+	 * @param async specifies if this task needs to in a async manner or regular way
 	 */
-	void markAsExpired(Token token);
+	void markAsExpired(String token, boolean async);
+	
+	/**
+	 * Will validate the given token and refresh the token if required, i.e refresh period is approaching or 
+	 * token expires below 5 mins.
+	 * This will store the generated token for the further reference.
+	 * 
+	 * @param token
+	 * @return <code>null</code> if no valid token else a new Token
+	 */
+	AccessToken validateAndRefreshToken(Authentication auth);
+	
 }

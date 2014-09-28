@@ -10,6 +10,9 @@
  *******************************************************************************/
 package com.uimirror.core.auth;
 
+import com.uimirror.core.auth.bean.AccessToken;
+import com.uimirror.core.auth.bean.Authentication;
+
 
 /**
  * Processes an {@link Authentication} request.

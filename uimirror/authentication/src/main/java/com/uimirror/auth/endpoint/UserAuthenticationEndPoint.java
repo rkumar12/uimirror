@@ -23,8 +23,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.uimirror.auth.controller.AuthenticationController;
-import com.uimirror.auth.user.UserAuthenticationForm;
-import com.uimirror.core.auth.AccessToken;
+import com.uimirror.auth.user.UserLoginFormAuthenticationForm;
+import com.uimirror.core.auth.bean.AccessToken;
 
 /**
  * Controller which will be for the common path, any user will try to be get authenticated.
@@ -55,7 +55,7 @@ public class UserAuthenticationEndPoint{
 	@Produces({ "application/x-javascript", MediaType.APPLICATION_JSON })
 	@JSONP(queryParam="cb", callback="callback")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public Object doAuthenticate(@BeanParam UserAuthenticationForm loginForm){
+	public Object doAuthenticate(@BeanParam UserLoginFormAuthenticationForm loginForm){
 		LOG.info("[ENTRY]- Received requst for authentication");
 		Object response = userAuthenticationController.getAccessToken(loginForm);
 		LOG.info("[EXIT]- Received requst for authentication");

@@ -11,6 +11,7 @@
 package com.uimirror.core.auth;
 
 import com.uimirror.core.BaseRunTimeException;
+import com.uimirror.core.auth.bean.Authentication;
 
 
 /**

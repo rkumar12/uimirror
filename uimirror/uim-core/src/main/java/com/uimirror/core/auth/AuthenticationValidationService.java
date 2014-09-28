@@ -11,6 +11,9 @@
 package com.uimirror.core.auth;
 
 import com.uimirror.core.ValidatorService;
+import com.uimirror.core.auth.bean.AccountState;
+import com.uimirror.core.auth.bean.AccountStatus;
+import com.uimirror.core.auth.bean.BasicCredentials;
 
 /**
  * Comon validation logic that applies for a account i.e user /client
