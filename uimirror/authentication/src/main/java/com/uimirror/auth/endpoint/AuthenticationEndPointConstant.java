@@ -19,5 +19,11 @@ public interface AuthenticationEndPointConstant {
 	String UNLOCK_PATH = "unlock";
 	
 	String TWO_FACTO_PATH = "2fa";
+	
+	String OUATH_2_AUTH_PATH = "auth";
+	String OUATH_2_TOEKEN_PATH = "token";
+	
+	String ACCESS_HOME_PATH = "/access";
+	String ACCESS_TOKEN_VALIDATION_PATH = "/validate";
 
 }

@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.uimirror.auth.controller.AuthenticationController;
 import com.uimirror.auth.user.bean.form.ScreenLockAuthenticationForm;
+import com.uimirror.auth.user.bean.form.TwoFactorUserLoginAuthenticationForm;
 import com.uimirror.auth.user.bean.form.UserLoginFormAuthenticationForm;
 import com.uimirror.core.auth.bean.AccessToken;
 
@@ -88,7 +89,7 @@ public class UserAuthenticationEndPoint{
 	@JSONP(queryParam="cb", callback="callback")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Path(AuthenticationEndPointConstant.TWO_FACTO_PATH)
-	public Object dp2FA(ScreenLockAuthenticationForm form){
+	public Object dp2FA(TwoFactorUserLoginAuthenticationForm form){
 		LOG.info("[ENTRY]- Received request for 2 Factor Authentication");
 		LOG.info("[EXIT]- Received request for 2 Factor Authentication");
 		return null;
