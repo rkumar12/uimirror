@@ -12,7 +12,7 @@ package com.uimirror.core.bean.form;
 
 import javax.ws.rs.HeaderParam;
 
-import com.uimirror.core.auth.AuthParamExtractor;
+import com.uimirror.core.auth.controller.AuthParamExtractor;
 
 /**
  * Stores the basic information about the client such as 

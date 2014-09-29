@@ -14,9 +14,9 @@ import java.io.Serializable;
 
 import javax.ws.rs.HeaderParam;
 
-import com.uimirror.core.auth.AuthParamExtractor;
 import com.uimirror.core.auth.BearerTokenExtractor;
 import com.uimirror.core.auth.bean.CredentialType;
+import com.uimirror.core.auth.controller.AuthParamExtractor;
 import com.uimirror.core.bean.form.ClientMetaForm;
 
 /**

@@ -17,13 +17,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 import com.uimirror.auth.user.UserAuthenticationValidationService;
-import com.uimirror.core.auth.AuthParamExtractor;
 import com.uimirror.core.auth.AuthenticationValidationService;
 import com.uimirror.core.auth.DefaultAuthParamExtractor;
 import com.uimirror.core.auth.PasswordMatcher;
+import com.uimirror.core.auth.controller.AuthParamExtractor;
 import com.uimirror.core.crypto.CryptoMatcherService;
 import com.uimirror.core.crypto.MatcherServiceImpl;
-import com.uimirror.core.extra.MapExceptionAspect;
 import com.uimirror.core.rest.extra.JsonResponseTransFormer;
 import com.uimirror.core.rest.extra.ResponseTransFormer;
 import com.uimirror.core.rest.extra.ResponseTransFormerFactory;
@@ -34,17 +33,12 @@ import com.uimirror.core.rest.extra.TransformResponseAspect;
  * @author Jay
  */
 @Configuration
-@Import({BeanOfExceptionIntitializer.class,})
+@Import({BeanOfExceptionIntitializer.class, BeanOfAuthController.class})
 public class BeanIntitializer {
 
 	@Bean(name="json")
 	public ResponseTransFormer<String> jsonResponseTransFormer(){
 		return new JsonResponseTransFormer();
-	}
-	
-	@Bean
-	public MapExceptionAspect mapExceptionAspect(){
-		return new MapExceptionAspect();
 	}
 	
 	@Bean

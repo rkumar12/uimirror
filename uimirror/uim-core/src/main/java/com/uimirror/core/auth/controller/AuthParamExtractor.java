@@ -8,9 +8,10 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.core.auth;
+package com.uimirror.core.auth.controller;
 
 import com.uimirror.core.Parameters;
+import com.uimirror.core.ValidatorService;
 import com.uimirror.core.auth.bean.Authentication;
 import com.uimirror.core.auth.bean.form.BasicAuthenticationForm;
 
@@ -22,7 +23,7 @@ import com.uimirror.core.auth.bean.form.BasicAuthenticationForm;
  * 
  * @author Jay
  */
-public interface AuthParamExtractor extends Parameters{
+public interface AuthParamExtractor extends Parameters, ValidatorService{
 
 	String USER_ID = "uid";
 	//This is also known as the parapharse that will be used for decrypting

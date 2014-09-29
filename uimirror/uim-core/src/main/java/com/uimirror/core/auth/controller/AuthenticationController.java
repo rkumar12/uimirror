@@ -8,9 +8,11 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.auth.controller;
+package com.uimirror.core.auth.controller;
 
+import com.uimirror.core.auth.bean.AccessToken;
 import com.uimirror.core.auth.bean.Authentication;
+import com.uimirror.core.auth.bean.form.BasicAuthenticationForm;
 import com.uimirror.core.rest.extra.ApplicationException;
 
 /**
@@ -20,19 +22,19 @@ import com.uimirror.core.rest.extra.ApplicationException;
 public interface AuthenticationController {
 
 	/**
-	 * <p>Validate the provided arguments and generate a access token</p>
+	 * <p>Validate the provided arguments and generate a access token {@link AccessToken}</p>
 	 * @param param
-	 * @return
+	 * @return {@link AccessToken} if successful authenticated
 	 * @throws ApplicationException
 	 */
-	Object getAccessToken(Object param) throws ApplicationException;
+	Object doAuthenticate(BasicAuthenticationForm param) throws ApplicationException;
 	
 	/**
 	 * Extracts the {@link Authentication} from the parameters
 	 * @param param
-	 * @return
+	 * @return {@link Authentication} principal coresponds to the request
 	 * @throws ApplicationException
 	 */
-	Authentication getAuthentication(Object param) throws ApplicationException;
+	Authentication extractAuthentication(BasicAuthenticationForm param) throws ApplicationException;
 
 }

@@ -22,11 +22,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.uimirror.auth.controller.AuthenticationController;
 import com.uimirror.auth.user.bean.form.ScreenLockAuthenticationForm;
 import com.uimirror.auth.user.bean.form.TwoFactorUserLoginAuthenticationForm;
 import com.uimirror.auth.user.bean.form.UserLoginFormAuthenticationForm;
 import com.uimirror.core.auth.bean.AccessToken;
+import com.uimirror.core.auth.controller.AuthenticationController;
 
 /**
  * Controller which will be for the common path, any user will try to be get authenticated.
@@ -57,7 +57,7 @@ public class UserAuthenticationEndPoint{
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	public Object doAuthenticate(@BeanParam UserLoginFormAuthenticationForm loginForm){
 		LOG.info("[ENTRY]- Received requst for authentication");
-		Object response = userAuthenticationController.getAccessToken(loginForm);
+		Object response = userAuthenticationController.doAuthenticate(loginForm);
 		LOG.info("[EXIT]- Received requst for authentication");
 		return response;
 	}

@@ -26,6 +26,7 @@ import com.uimirror.core.auth.bean.CredentialType;
 import com.uimirror.core.auth.bean.DefaultToken;
 import com.uimirror.core.auth.bean.Scope;
 import com.uimirror.core.auth.bean.TokenType;
+import com.uimirror.core.auth.controller.AuthParamExtractor;
 import com.uimirror.core.auth.dao.AccessTokenStoreFactory;
 
 /**

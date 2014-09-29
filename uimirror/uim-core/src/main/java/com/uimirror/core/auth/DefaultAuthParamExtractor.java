@@ -25,6 +25,7 @@ import com.uimirror.core.auth.bean.CredentialType;
 import com.uimirror.core.auth.bean.DeviceType;
 import com.uimirror.core.auth.bean.form.AuthenticationForm;
 import com.uimirror.core.auth.bean.form.BasicAuthenticationForm;
+import com.uimirror.core.auth.controller.AuthParamExtractor;
 
 /**
  * Extracts the user id/ token and password related to the user authentication details.

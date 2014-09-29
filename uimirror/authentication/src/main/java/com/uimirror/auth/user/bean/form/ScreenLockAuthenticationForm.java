@@ -12,9 +12,9 @@ package com.uimirror.auth.user.bean.form;
 
 import javax.ws.rs.FormParam;
 
-import com.uimirror.core.auth.AuthParamExtractor;
 import com.uimirror.core.auth.bean.CredentialType;
 import com.uimirror.core.auth.bean.form.HeaderAuthenticationForm;
+import com.uimirror.core.auth.controller.AuthParamExtractor;
 
 /**
  * Converts the {@link FormParam} provided in the POST request for the
