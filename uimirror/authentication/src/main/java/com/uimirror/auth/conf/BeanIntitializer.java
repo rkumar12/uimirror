@@ -18,9 +18,7 @@ import org.springframework.context.annotation.Import;
 
 import com.uimirror.auth.user.UserAuthenticationValidationService;
 import com.uimirror.core.auth.AuthenticationValidationService;
-import com.uimirror.core.auth.DefaultAuthParamExtractor;
 import com.uimirror.core.auth.PasswordMatcher;
-import com.uimirror.core.auth.controller.AuthParamExtractor;
 import com.uimirror.core.crypto.CryptoMatcherService;
 import com.uimirror.core.crypto.MatcherServiceImpl;
 import com.uimirror.core.rest.extra.JsonResponseTransFormer;
@@ -68,11 +66,6 @@ public class BeanIntitializer {
 	@Autowired
 	public AuthenticationValidationService userAuthenticationValidationService(PasswordMatcher passwordMatcher){
 		return new UserAuthenticationValidationService(passwordMatcher);
-	}
-	
-	@Bean
-	public AuthParamExtractor userAuthParamExtractor(){
-		return new DefaultAuthParamExtractor();
 	}
 
 }

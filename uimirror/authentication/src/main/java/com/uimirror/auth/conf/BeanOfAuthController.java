@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Configuration;
 
 import com.uimirror.auth.user.LoginFormBasedAuthController;
 import com.uimirror.auth.user.controller.LoginFormAuthParamExtractor;
+import com.uimirror.auth.user.controller.ScreenLockAuthParamExtractor;
 import com.uimirror.core.auth.controller.AuthParamExtractor;
 import com.uimirror.core.auth.controller.AuthenticationController;
 
@@ -35,6 +36,11 @@ public class BeanOfAuthController {
 	@Bean
 	public AuthParamExtractor loginFormAuthParamExtractor(){
 		return new LoginFormAuthParamExtractor();
+	}
+	
+	@Bean
+	public AuthParamExtractor screenLockAuthParamExtractor(){
+		return new ScreenLockAuthParamExtractor();
 	}
 	
 

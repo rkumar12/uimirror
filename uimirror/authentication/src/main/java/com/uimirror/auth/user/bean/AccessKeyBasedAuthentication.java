@@ -15,6 +15,7 @@ import java.util.Map;
 
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import com.uimirror.core.auth.AccessTokenFields;
 import com.uimirror.core.auth.AuthenticationManager;
@@ -35,7 +36,6 @@ public class AccessKeyBasedAuthentication extends CommonAuthentication{
 	private static final long serialVersionUID = 3795112886906141341L;
 
 	private String accessToken;
-	private String paraPharse;
 	private Map<String, Object> details;
 
 	/**
@@ -46,14 +46,96 @@ public class AccessKeyBasedAuthentication extends CommonAuthentication{
 	private AccessKeyBasedAuthentication(CredentialType type, String ip, String uAgent) {
 		super(type, ip, uAgent);
 	}
+
+	/**
+	 * @param type
+	 * @param details
+	 * @param ip
+	 * @param uAgent
+	 */
+	private AccessKeyBasedAuthentication(CredentialType type, Map<String, Object> details, String ip, String uAgent) {
+		super(type, details, ip, uAgent);
+	}
+
+	/**
+	 * @param type
+	 * @param details
+	 */
+	private AccessKeyBasedAuthentication(CredentialType type, Map<String, Object> details) {
+		super(type, details);
+	}
 	
-	public AccessKeyBasedAuthentication(String accessToken, String paraPharse, Map<String, Object> details, String ip, String uAgent) {
-		this(CredentialType.ACCESSKEY, ip, uAgent);
+	/**
+	 * @param type
+	 * @param accessToken
+	 * @param paraPharse
+	 * @param details
+	 * @param ip
+	 * @param uAgent
+	 */
+	public AccessKeyBasedAuthentication(CredentialType type, String accessToken, String paraPharse, Map<String, Object> details, String ip, String uAgent) {
+		this(type, details, ip, uAgent);
 		Assert.hasText(accessToken, "User Identifier can't be empty");
 		this.details = details;
+		initialize(accessToken, paraPharse, details);
+	}
+
+	/**
+	 * @param type
+	 * @param accessToken
+	 * @param paraPharse
+	 * @param details
+	 */
+	public AccessKeyBasedAuthentication(CredentialType type, String accessToken, String paraPharse, Map<String, Object> details) {
+		this(type, details);
+		Assert.hasText(accessToken, "User Identifier can't be empty");
+		this.details = details;
+		initialize(accessToken, paraPharse, details);
+	}
+	
+	/**
+	 * @param type
+	 * @param accessToken
+	 * @param paraPharse
+	 * @param ip
+	 * @param uAgent
+	 */
+	public AccessKeyBasedAuthentication(CredentialType type, String accessToken, String paraPharse, String ip, String uAgent) {
+		this(type, ip, uAgent);
+		initialize(accessToken, paraPharse, null);
+	}
+
+	/**
+	 * @param type
+	 * @param accessToken
+	 * @param ip
+	 * @param uAgent
+	 */
+	public AccessKeyBasedAuthentication(CredentialType type, String accessToken, String ip, String uAgent) {
+		this(type, ip, uAgent);
+		initialize(accessToken, null, null);
+	}
+
+	/**
+	 * @param type
+	 * @param accessToken
+	 * @param details
+	 */
+	public AccessKeyBasedAuthentication(CredentialType type, String accessToken, Map<String, Object> details) {
+		this(type, details);
+		initialize(accessToken, null, details);
+	}
+	/**
+	 * Initialize the current state of the objects
+	 * @param accessToken
+	 * @param paraPharse
+	 * @param details
+	 */
+	private void initialize(String accessToken, String paraPharse, Map<String, Object> details){
+		Assert.hasText(accessToken, "User Identifier can't be empty");
 		this.accessToken = accessToken;
-		this.paraPharse = paraPharse;
-		addParaPharse();
+		this.details = details;
+		addParaPharse(paraPharse);
 	}
 
 	/* (non-Javadoc)
@@ -99,11 +181,13 @@ public class AccessKeyBasedAuthentication extends CommonAuthentication{
 	/**
 	 * Updates Paraphrase to the map
 	 */
-	private void addParaPharse(){
-		if(CollectionUtils.isEmpty(details)){
-			details = new LinkedHashMap<String, Object>(2);
+	private void addParaPharse(String paraPharse){
+		if(CollectionUtils.isEmpty(this.details)){
+			this.details = new LinkedHashMap<String, Object>(5);
 		}
-		details.put(AccessTokenFields.ENCRYPT_STARTEGY, paraPharse);
+		if(!StringUtils.hasText(paraPharse))
+			return;
+		this.details.put(AccessTokenFields.ENCRYPT_STARTEGY, paraPharse);
 	}
 
 }

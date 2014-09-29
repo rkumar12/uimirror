@@ -17,8 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
-import com.uimirror.auth.user.bean.LoginFormAuthentication;
-import com.uimirror.core.BooleanUtil;
+import com.uimirror.auth.user.bean.ScreenLockAuthentication;
 import com.uimirror.core.Constants;
 import com.uimirror.core.ValidatorService;
 import com.uimirror.core.auth.bean.Authentication;
@@ -28,27 +27,27 @@ import com.uimirror.core.auth.controller.DefaultAuthParamextractor;
 
 /**
  * Extracts the required details and form the {@link Authentication} object 
- * using {@link LoginFormAuthentication}
+ * using {@link ScreenLockAuthentication}
  * 
- * {@link LoginFormAuthParamExtractor#extractAuthParam(BasicAuthenticationForm)} will extract the
+ * {@link ScreenLockAuthParamExtractor#extractAuthParam(BasicAuthenticationForm)} will extract the
  * {@link Authentication} object performing {@link ValidatorService#validate(Object)}
  * 
  * @author Jay
  */
-public class LoginFormAuthParamExtractor extends DefaultAuthParamextractor{
+public class ScreenLockAuthParamExtractor extends DefaultAuthParamextractor{
 	
-	private static final Logger LOG = LoggerFactory.getLogger(LoginFormAuthParamExtractor.class);
+	private static final Logger LOG = LoggerFactory.getLogger(ScreenLockAuthParamExtractor.class);
 
 	/* (non-Javadoc)
 	 * @see com.uimirror.core.auth.controller.AuthParamExtractor#extractAuthParam(com.uimirror.core.auth.bean.form.BasicAuthenticationForm)
 	 */
 	@Override
 	public Authentication extractAuthParam(BasicAuthenticationForm param) {
-		LOG.info("[START]- Extracting the login form authentication parameter");
+		LOG.info("[START]- Extracting the Screen lock form authentication parameter");
 		Authentication auth = null;
 		if(isValid(param))
-			auth = getLoginFormDetails(param);
-		LOG.info("[END]- Extracting the login form authentication parameter");
+			auth = getScreenLockFormDetails(param);
+		LOG.info("[END]- Extracting the Screen lock form authentication parameter");
 		return auth;
 	}
 
@@ -65,10 +64,7 @@ public class LoginFormAuthParamExtractor extends DefaultAuthParamextractor{
 		//If Header's are valid
 		valid = headerValidator(param);
 		//Should have proper credential type
-		if(!valid && !CredentialType.LOGINFORM.equals(param.getCredentialType()))
-			valid =  Boolean.FALSE;
-		//User Id must present
-		if(!valid && !StringUtils.hasText(param.getUserId()))
+		if(!valid && !CredentialType.SCREENLOCK.equals(param.getCredentialType()))
 			valid =  Boolean.FALSE;
 		//password must present
 		if(!valid && !StringUtils.hasText(param.getPassword()))
@@ -78,22 +74,21 @@ public class LoginFormAuthParamExtractor extends DefaultAuthParamextractor{
 	}
 	
 	/**
-	 * This extracts the user login information for the form parameters.
-	 * {@link BasicAuthenticationForm#getUserId()} will be the user id and
+	 * This extracts the user screen unlock login information for the form parameters.
 	 * {@link BasicAuthenticationForm#getPassword()} will be the password.
 	 * It requires IP and userAgnet for the keeping track purpose.
 	 * @param param
 	 * @return populated {@linkplain Authentication} principal
 	 */
-	private Authentication getLoginFormDetails(final BasicAuthenticationForm param){
-		boolean keepMeLogin = BooleanUtil.parseBoolean(param.getKeepMeLogedIn());
+	private Authentication getScreenLockFormDetails(final BasicAuthenticationForm param){
 		//Get the additional info such as ip, user agent
 		String ip = param.getIp();
 		String userAgent = param.getUserAgent();
 		Map<String, Object> details = new LinkedHashMap<String, Object>(4);
 		details.put(Constants.IP, ip);
 		details.put(Constants.USER_AGENT, userAgent);
-		return new LoginFormAuthentication(param.getUserId(), param.getPassword(), keepMeLogin,details, ip, userAgent);
+		return new ScreenLockAuthentication(param.getAccessToken(), param.getTokenEncryptStartegy(), 
+				param.getPassword(), details, ip, userAgent);
 	}
 
 }

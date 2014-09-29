@@ -25,6 +25,11 @@ public class ClientMeta {
 		this.ip = ip;
 		this.userAgent = userAgent;
 	}
+	
+	public ClientMeta(){
+		this.ip = null;
+		this.userAgent = null;
+	}
 
 	public String getIp() {
 		return ip;
