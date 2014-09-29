@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.auth.user;
+package com.uimirror.auth.user.bean.form;
 
 import javax.ws.rs.FormParam;
 
@@ -18,37 +18,43 @@ import com.uimirror.core.auth.bean.form.HeaderAuthenticationForm;
 
 /**
  * Converts the {@link FormParam} provided in the POST request for the
- * authentication purpose from the two factor authentication form.
- * 
- * Screen will be directly pushed to the client from the uimirror or 
- * supportive applications or from the client
+ * authentication purpose from the screen locked login screen.
  * 
  * @author Jay
  */
-public final class TwoFactorUserLoginAuthenticationForm extends HeaderAuthenticationForm {
+public class ScreenLockAuthenticationForm extends HeaderAuthenticationForm{
 
-	private static final long serialVersionUID = -1215523730014366150L;
-	
+	private static final long serialVersionUID = -1268777827570961853L;
+
 	@FormParam(AuthParamExtractor.PASSWORD)
 	private String password;
-
+	
+	/* (non-Javadoc)
+	 * @see com.uimirror.core.auth.bean.form.BasicAuthenticationForm#getUserId()
+	 */
 	@Override
 	public String getUserId() {
 		return null;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.uimirror.core.auth.bean.form.BasicAuthenticationForm#getPassword()
+	 */
 	@Override
 	public String getPassword() {
-		return password;
+		return this.password;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.uimirror.core.auth.bean.form.BasicAuthenticationForm#getKeepMeLogedIn()
+	 */
 	@Override
 	public String getKeepMeLogedIn() {
 		return null;
 	}
 
 	/* (non-Javadoc)
-	 * @see com.uimirror.core.auth.bean.BasicAuthenticationForm#getRedirectUri()
+	 * @see com.uimirror.core.auth.bean.form.BasicAuthenticationForm#getRedirectUri()
 	 */
 	@Override
 	public String getRedirectUri() {
@@ -56,15 +62,15 @@ public final class TwoFactorUserLoginAuthenticationForm extends HeaderAuthentica
 	}
 
 	/* (non-Javadoc)
-	 * @see com.uimirror.core.auth.bean.BasicAuthenticationForm#getScope()
+	 * @see com.uimirror.core.auth.bean.form.BasicAuthenticationForm#getScope()
 	 */
 	@Override
 	public String getScope() {
 		return null;
 	}
-	
+
 	/* (non-Javadoc)
-	 * @see com.uimirror.core.auth.bean.BasicAuthenticationForm#getClientId()
+	 * @see com.uimirror.core.auth.bean.form.BasicAuthenticationForm#getClientId()
 	 */
 	@Override
 	public String getClientId() {
@@ -72,22 +78,20 @@ public final class TwoFactorUserLoginAuthenticationForm extends HeaderAuthentica
 	}
 
 	/* (non-Javadoc)
-	 * @see com.uimirror.core.auth.bean.BasicAuthenticationForm#getClientSecret()
+	 * @see com.uimirror.core.auth.bean.form.BasicAuthenticationForm#getClientSecret()
 	 */
 	@Override
 	public String getClientSecret() {
 		return null;
 	}
-
-	@Override
+	
 	public CredentialType getCredentialType() {
-		return CredentialType._2FA;
+		return CredentialType.SCREENLOCK;
 	}
 
 	@Override
 	public String toString() {
-		return "TwoFactorUserLoginAuthenticationForm [password=" + password
-				+ "]";
+		return "ScreenLockAuthenticationForm [password=" + password + "]";
 	}
-
+	
 }

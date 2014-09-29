@@ -8,61 +8,42 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.auth.user;
+package com.uimirror.auth.user.bean.form;
 
 import javax.ws.rs.FormParam;
 
 import com.uimirror.core.auth.AuthParamExtractor;
 import com.uimirror.core.auth.bean.CredentialType;
-import com.uimirror.core.bean.form.DefaultHeaderForm;
+import com.uimirror.core.auth.bean.form.HeaderAuthenticationForm;
 
 /**
  * Converts the {@link FormParam} provided in the POST request for the
- * authentication purpose from the login screen.
+ * authentication purpose from the two factor authentication form.
  * 
  * Screen will be directly pushed to the client from the uimirror or 
- * supportive applications
+ * supportive applications or from the client
  * 
  * @author Jay
  */
-public final class UserLoginFormAuthenticationForm extends DefaultHeaderForm {
+public final class TwoFactorUserLoginAuthenticationForm extends HeaderAuthenticationForm {
 
 	private static final long serialVersionUID = -1215523730014366150L;
-
-	@FormParam(AuthParamExtractor.USER_ID)
-	private String userId;
 	
 	@FormParam(AuthParamExtractor.PASSWORD)
 	private String password;
-	
-	@FormParam(AuthParamExtractor.KEEP_ME_LOGIN)
-	private String keepMeLogedIn;
 
 	@Override
 	public String getUserId() {
-		return userId;
+		return null;
 	}
 
 	@Override
 	public String getPassword() {
 		return password;
 	}
-	
-	/* (non-Javadoc)
-	 * @see com.uimirror.core.auth.bean.BasicAuthenticationForm#getTokenEncryptStartegy()
-	 */
-	@Override
-	public String getTokenEncryptStartegy() {
-		return null;
-	}
 
 	@Override
 	public String getKeepMeLogedIn() {
-		return keepMeLogedIn;
-	}
-
-	@Override
-	public String getAccessToken() {
 		return null;
 	}
 
@@ -97,17 +78,15 @@ public final class UserLoginFormAuthenticationForm extends DefaultHeaderForm {
 	public String getClientSecret() {
 		return null;
 	}
-	
-	//######Below are the common authentication details########//
+
 	@Override
 	public CredentialType getCredentialType() {
-		return CredentialType.LOGINFORM;
+		return CredentialType._2FA;
 	}
 
 	@Override
 	public String toString() {
-		return "UserLoginFormAuthenticationForm [userId=" + userId
-				+ ", password=" + password + ", keepMeLogedIn=" + keepMeLogedIn
+		return "TwoFactorUserLoginAuthenticationForm [password=" + password
 				+ "]";
 	}
 

@@ -23,7 +23,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.uimirror.auth.controller.AuthenticationController;
-import com.uimirror.auth.user.UserLoginFormAuthenticationForm;
+import com.uimirror.auth.user.bean.form.ScreenLockAuthenticationForm;
+import com.uimirror.auth.user.bean.form.UserLoginFormAuthenticationForm;
 import com.uimirror.core.auth.bean.AccessToken;
 
 /**
@@ -34,14 +35,12 @@ import com.uimirror.core.auth.bean.AccessToken;
  * @author Jay
  */
 @Path("/")
-//@Component
 public class UserAuthenticationEndPoint{
 
 	private static Logger LOG = LoggerFactory.getLogger(UserAuthenticationEndPoint.class);
 	@Autowired
 	private AuthenticationController userAuthenticationController;
 	public UserAuthenticationEndPoint() {
-		// TODO Auto-generated constructor stub
 	}
 	
 	/**
@@ -60,6 +59,39 @@ public class UserAuthenticationEndPoint{
 		Object response = userAuthenticationController.getAccessToken(loginForm);
 		LOG.info("[EXIT]- Received requst for authentication");
 		return response;
+	}
+	
+	/**
+	 * Unlock the screen by validating the accesstoken provided,
+	 * if necessary, it will renew the token and send back. 
+	 * @param form
+	 * @return
+	 */
+	@POST
+	@Produces({ "application/x-javascript", MediaType.APPLICATION_JSON })
+	@JSONP(queryParam="cb", callback="callback")
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	@Path(AuthenticationEndPointConstant.UNLOCK_PATH)
+	public Object unlockScreen(ScreenLockAuthenticationForm form){
+		LOG.info("[ENTRY]- Received request for unlocking screen");
+		LOG.info("[EXIT]- Received request for unlocking screen");
+		return null;
+	}
+	
+	/**
+	 * Will perform the 2FA for the user.
+	 * @param form
+	 * @return
+	 */
+	@POST
+	@Produces({ "application/x-javascript", MediaType.APPLICATION_JSON })
+	@JSONP(queryParam="cb", callback="callback")
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	@Path(AuthenticationEndPointConstant.TWO_FACTO_PATH)
+	public Object dp2FA(ScreenLockAuthenticationForm form){
+		LOG.info("[ENTRY]- Received request for 2 Factor Authentication");
+		LOG.info("[EXIT]- Received request for 2 Factor Authentication");
+		return null;
 	}
 
 }

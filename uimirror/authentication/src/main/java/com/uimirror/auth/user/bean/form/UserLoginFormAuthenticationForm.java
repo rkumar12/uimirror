@@ -8,53 +8,66 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.auth.user;
+package com.uimirror.auth.user.bean.form;
 
 import javax.ws.rs.FormParam;
 
 import com.uimirror.core.auth.AuthParamExtractor;
 import com.uimirror.core.auth.bean.CredentialType;
-import com.uimirror.core.auth.bean.form.HeaderAuthenticationForm;
+import com.uimirror.core.bean.form.DefaultHeaderForm;
 
 /**
  * Converts the {@link FormParam} provided in the POST request for the
- * authentication purpose from the screen locked login screen.
+ * authentication purpose from the login screen.
+ * 
+ * Screen will be directly pushed to the client from the uimirror or 
+ * supportive applications
  * 
  * @author Jay
  */
-public class ScreenLockAuthenticationForm extends HeaderAuthenticationForm{
+public final class UserLoginFormAuthenticationForm extends DefaultHeaderForm {
 
-	private static final long serialVersionUID = -1268777827570961853L;
+	private static final long serialVersionUID = -1215523730014366150L;
 
+	@FormParam(AuthParamExtractor.USER_ID)
+	private String userId;
+	
 	@FormParam(AuthParamExtractor.PASSWORD)
 	private String password;
 	
-	/* (non-Javadoc)
-	 * @see com.uimirror.core.auth.bean.form.BasicAuthenticationForm#getUserId()
-	 */
+	@FormParam(AuthParamExtractor.KEEP_ME_LOGIN)
+	private String keepMeLogedIn;
+
 	@Override
 	public String getUserId() {
-		return null;
+		return userId;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.uimirror.core.auth.bean.form.BasicAuthenticationForm#getPassword()
-	 */
 	@Override
 	public String getPassword() {
-		return this.password;
+		return password;
 	}
-
+	
 	/* (non-Javadoc)
-	 * @see com.uimirror.core.auth.bean.form.BasicAuthenticationForm#getKeepMeLogedIn()
+	 * @see com.uimirror.core.auth.bean.BasicAuthenticationForm#getTokenEncryptStartegy()
 	 */
 	@Override
+	public String getTokenEncryptStartegy() {
+		return null;
+	}
+
+	@Override
 	public String getKeepMeLogedIn() {
+		return keepMeLogedIn;
+	}
+
+	@Override
+	public String getAccessToken() {
 		return null;
 	}
 
 	/* (non-Javadoc)
-	 * @see com.uimirror.core.auth.bean.form.BasicAuthenticationForm#getRedirectUri()
+	 * @see com.uimirror.core.auth.bean.BasicAuthenticationForm#getRedirectUri()
 	 */
 	@Override
 	public String getRedirectUri() {
@@ -62,15 +75,15 @@ public class ScreenLockAuthenticationForm extends HeaderAuthenticationForm{
 	}
 
 	/* (non-Javadoc)
-	 * @see com.uimirror.core.auth.bean.form.BasicAuthenticationForm#getScope()
+	 * @see com.uimirror.core.auth.bean.BasicAuthenticationForm#getScope()
 	 */
 	@Override
 	public String getScope() {
 		return null;
 	}
-
+	
 	/* (non-Javadoc)
-	 * @see com.uimirror.core.auth.bean.form.BasicAuthenticationForm#getClientId()
+	 * @see com.uimirror.core.auth.bean.BasicAuthenticationForm#getClientId()
 	 */
 	@Override
 	public String getClientId() {
@@ -78,20 +91,24 @@ public class ScreenLockAuthenticationForm extends HeaderAuthenticationForm{
 	}
 
 	/* (non-Javadoc)
-	 * @see com.uimirror.core.auth.bean.form.BasicAuthenticationForm#getClientSecret()
+	 * @see com.uimirror.core.auth.bean.BasicAuthenticationForm#getClientSecret()
 	 */
 	@Override
 	public String getClientSecret() {
 		return null;
 	}
 	
+	//######Below are the common authentication details########//
+	@Override
 	public CredentialType getCredentialType() {
-		return CredentialType.SCREENLOCK;
+		return CredentialType.LOGINFORM;
 	}
 
 	@Override
 	public String toString() {
-		return "ScreenLockAuthenticationForm [password=" + password + "]";
+		return "UserLoginFormAuthenticationForm [userId=" + userId
+				+ ", password=" + password + ", keepMeLogedIn=" + keepMeLogedIn
+				+ "]";
 	}
-	
+
 }

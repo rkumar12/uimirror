@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.uimirror.auth.controller.AuthenticationController;
+import com.uimirror.auth.user.bean.form.UserLoginFormAuthenticationForm;
 import com.uimirror.core.auth.AuthParamExtractor;
 import com.uimirror.core.auth.AuthenticationManager;
 import com.uimirror.core.auth.bean.AccessToken;

@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.auth.user;
+package com.uimirror.auth.user.bean.form;
 
 import javax.ws.rs.FormParam;
 
