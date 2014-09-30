@@ -8,23 +8,20 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.auth;
+package com.uimirror.auth.user;
+
+import com.uimirror.auth.AuthStoreProvider;
+import com.uimirror.core.auth.bean.AccessToken;
 
 /**
- * Contains all the DB fields required for application
+ * provides a common interface for all the user genereated token to be stored in 
+ * one store.
  * @author Jay
  */
-public interface DBFileds {
+public abstract class UserCommonAuthProvider implements AuthStoreProvider{
 
-	String ID = "_id";
-	
-	//User Credentials
-	String UC_USER_ID = "uid";
-	String PASSWORD = "pwd";
-	String UC_ACCOUNT_STATE = "state";
-	String UC_ACCOUNT_STATUS = "status";
-	String UC_ENCRYPTION_PWD = "salt";
-	String UC_ACCOUNT_INSTRUCTION = "sti";
-	//User Account Instructions for 2FA
-	String UC_ACC_INS_2FA = "2fa";
+	public void storeToken(AccessToken token){
+		//TODO Implement this latter
+	}
+
 }

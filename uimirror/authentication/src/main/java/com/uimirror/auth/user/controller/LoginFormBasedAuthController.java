@@ -8,12 +8,13 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.auth.user;
+package com.uimirror.auth.user.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.uimirror.auth.user.LoginFormAuthProvider;
 import com.uimirror.core.auth.AuthenticationManager;
 import com.uimirror.core.auth.bean.AccessToken;
 import com.uimirror.core.auth.bean.Authentication;
@@ -37,7 +38,7 @@ public class LoginFormBasedAuthController implements AuthenticationController{
 	
 	private @Autowired AuthParamExtractor loginFormAuthParamExtractor;
 	private @Autowired ResponseTransFormer<String> jsonResponseTransFormer;
-	private @Autowired AuthenticationManager userAuthenticationManager;
+	private @Autowired LoginFormAuthProvider loginFormAuthProvider;
 	
 	/* (non-Javadoc)
 	 * @see com.uimirror.auth.controller.AuthenticationController#getAccessToken(javax.ws.rs.core.MultivaluedMap)
@@ -51,7 +52,7 @@ public class LoginFormBasedAuthController implements AuthenticationController{
 		//Let GC take this ASAP
 		param = null;
 		LOG.debug("[END]- Getting the accesstoken based on the credentials {}", auth);
-		return jsonResponseTransFormer.doTransForm(validateOrGenerateToken(auth));
+		return jsonResponseTransFormer.doTransForm(generateToken(auth));
 	}
 
 	/* (non-Javadoc)
@@ -68,24 +69,9 @@ public class LoginFormBasedAuthController implements AuthenticationController{
 	 * @param auth
 	 * @return
 	 */
-	private AccessToken validateOrGenerateToken(Authentication auth){
+	private AccessToken generateToken(Authentication auth){
 		AccessToken token = null;
-		switch (auth.getCredentialType()) {
-			case LOGINFORM:
-				token = userAuthenticationManager.authenticate(auth);
-				break;
-			case ACCESSKEY:
-				token = userAuthenticationManager.authenticate(auth);
-				break;
-			case SCREENLOCK:
-				//TODO handle it separate and later
-				break;
-			case APIKEY:
-				//TODO handle it separate and later
-				break;
-		default:
-			break;
-		}
+		token = loginFormAuthProvider.getAuthenticateToken(auth);
 		return token;
 	}
 

@@ -10,7 +10,7 @@
  *******************************************************************************/
 package com.uimirror.core.auth;
 
-import com.uimirror.core.auth.bean.AccessToken;
+import com.uimirror.core.auth.bean.AuthenticatedDetails;
 import com.uimirror.core.auth.bean.Authentication;
 
 
@@ -23,9 +23,9 @@ public interface AuthenticationManager {
 
 	/**
      * Attempts to authenticate the passed {@link Authentication} object, returning a fully populated
-     * <code>AccessToken</code> object (including granted authorities) if successful.
+     * <code>AuthenticatedDetails</code> object (including granted authorities) if successful.
      * <p>
-     * An <code>AuthenticationManager</code> must honour the following contract concerning exceptions:
+     * An <code>AuthenticationManager</code> must honor the following contract concerning exceptions:
      * <ul>
      * <li>A {@link DisabledException} must be thrown if an account is disabled and the
      * <code>AuthenticationManager</code> can test for this state.</li>
@@ -37,9 +37,6 @@ public interface AuthenticationManager {
      * Exceptions should be tested for and if applicable thrown in the order expressed above (i.e. if an
      * account is disabled or locked, the authentication request is immediately rejected and the credentials testing
      * process is not performed). This prevents credentials being tested against  disabled or locked accounts.
-     * 
-     * After successful  authentication, check if user has 2 factor authentication enabled,
-     * if so, populate a interim {@link AccessToken} and send back to the user for 2FA screen. 
      *
      * @param authentication the authentication request object
      *
@@ -47,5 +44,5 @@ public interface AuthenticationManager {
      *
      * @throws AuthenticationException if authentication fails
      */
-	AccessToken authenticate(Authentication authentication) throws AuthenticationException;
+	AuthenticatedDetails authenticate(Authentication authentication) throws AuthenticationException;
 }

@@ -15,15 +15,19 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
 
+import com.uimirror.auth.DBFileds;
+import com.uimirror.core.BooleanUtil;
 import com.uimirror.core.auth.AuthenticationException;
 import com.uimirror.core.auth.AuthenticationManager;
 import com.uimirror.core.auth.AuthenticationValidationService;
 import com.uimirror.core.auth.BadCredentialsException;
 import com.uimirror.core.auth.bean.AccessToken;
+import com.uimirror.core.auth.bean.AuthenticatedDetails;
 import com.uimirror.core.auth.bean.Authentication;
+import com.uimirror.core.auth.bean.BasicCredentials;
 import com.uimirror.core.auth.bean.CredentialType;
 import com.uimirror.core.auth.dao.CredentialsStore;
 import com.uimirror.core.extra.MapException;
@@ -31,14 +35,13 @@ import com.uimirror.core.extra.MapException;
 /**
  * Implementation of {@link AuthenticationManager#authenticate(Authentication)}
  * to validate the user provided details are valid or not.
- * if valid details, it will issue or re issue the {@link AccessToken}
+ * if valid details, it will issue a new {@link AccessToken}
  * 
  * @author Jay
  */
-@Service
-public class UserAuthenticationManager implements AuthenticationManager{
+public class LoginFormAuthenticationManager implements AuthenticationManager{
 	
-	protected static final Logger LOG = LoggerFactory.getLogger(UserAuthenticationManager.class);
+	protected static final Logger LOG = LoggerFactory.getLogger(LoginFormAuthenticationManager.class);
 	
 	private @Autowired CredentialsStore userCredentialStore;
 	private @Autowired AuthenticationValidationService userAuthenticationValidationService;
@@ -48,12 +51,12 @@ public class UserAuthenticationManager implements AuthenticationManager{
 	 */
 	@Override
 	@MapException(use="AUTHEM")
-	public AccessToken authenticate(Authentication authentication) throws AuthenticationException {
+	public AuthenticatedDetails authenticate(Authentication authentication) throws AuthenticationException {
 		Assert.notNull(authentication, "Authention Request Object can't be empty");
 		LOG.info("[START]- Authenticating User");
-		BasicUserCredentials usr = getUserCredentialDetails(authentication);
+		BasicCredentials usr = getUserCredentialDetails(authentication);
 		doAuthenticate(authentication, usr);
-		//Step 2- Generate Access Token 
+		//Step 2- Generate Access Token, if opted for the 2FA, generate a temporarily token and return back 
 		AccessToken token = doGenerateToken(authentication, usr);
 		LOG.info("[END]- Authenticating User");
 		//TODO access token generation logic for latter
@@ -65,9 +68,9 @@ public class UserAuthenticationManager implements AuthenticationManager{
 	 * @param authentication
 	 * @return
 	 */
-	private BasicUserCredentials getUserCredentialDetails(Authentication authentication){
+	private BasicCredentials getUserCredentialDetails(Authentication authentication){
 		LOG.debug("[START]- Reteriving User Credentials on basics of the user id");
-		BasicUserCredentials userCredentials = handleLoginForm(authentication.getName());
+		BasicCredentials userCredentials = handleLoginForm(authentication.getName());
 		LOG.debug("[END]- Reteriving User Credentials on basics of the user id");
 		return userCredentials;
 	}
@@ -77,7 +80,7 @@ public class UserAuthenticationManager implements AuthenticationManager{
 	 * @param userId
 	 * @return
 	 */
-	private BasicUserCredentials handleLoginForm(String userId){
+	private BasicCredentials handleLoginForm(String userId){
 		return new BasicUserCredentials(getAuthenticationDetails(userId));
 	}
 	
@@ -88,7 +91,7 @@ public class UserAuthenticationManager implements AuthenticationManager{
 	 * @return <code>true</code> if successfully authenticated else <code>false</code>
 	 * or appropriate {@link AuthenticationException}
 	 */
-	private boolean doAuthenticate(Authentication auth, BasicUserCredentials userCredentials){
+	private boolean doAuthenticate(Authentication auth, BasicCredentials userCredentials){
 		return userAuthenticationValidationService.doMatch(userCredentials, auth);
 	}
 	
@@ -111,11 +114,12 @@ public class UserAuthenticationManager implements AuthenticationManager{
 	 * @param usr
 	 * @return
 	 */
-	private AccessToken doGenerateToken(Authentication auth, BasicUserCredentials usr) {
+	private AccessToken doGenerateToken(Authentication auth, BasicCredentials usr) {
 		LOG.debug("Checking If User has 2FA enabled");
-		if(isOptedFor2FA(usr, auth)){
-			LOG.debug("User has 2 Factor Authentication enabled");
+		if(isOptedFor2FA(usr)){
+			//as user has opted for 2FA, process email and token generation in parallel
 		}
+		//Else process in single thread for processing of token
 		return null;
 	}
 	
@@ -126,9 +130,13 @@ public class UserAuthenticationManager implements AuthenticationManager{
 	 * @param userCredentials
 	 * @return
 	 */
-	//TODO do the implementation latter
-	private boolean isOptedFor2FA(BasicUserCredentials userCredentials, Authentication auth){
-		//TODO if login type is form and user opted for 2FA then return true else false
+	private boolean isOptedFor2FA(BasicCredentials userCredentials){
+		Map<String, Object> instructions = userCredentials.getInstructions();
+		if(!CollectionUtils.isEmpty(instructions)){
+			String twoFactorFlag =  (String)instructions.get(DBFileds.UC_ACC_INS_2FA);
+			if(BooleanUtil.parseBoolean(twoFactorFlag))
+				return Boolean.TRUE;
+		}
 		return Boolean.FALSE;
 	}
 	

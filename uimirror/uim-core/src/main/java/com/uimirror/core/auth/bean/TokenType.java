@@ -23,7 +23,8 @@ public enum TokenType {
 
 	ACCESS("A"),
 	SECRET("S"),
-	TEMPORAL("T");
+	TEMPORAL("T"),
+	_2FA("2F");
 	
 	private final String tokenType;
     private final String description;

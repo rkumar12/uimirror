@@ -16,7 +16,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
+import com.uimirror.auth.user.LoginFormAuthenticationManager;
 import com.uimirror.auth.user.UserAuthenticationValidationService;
+import com.uimirror.core.auth.AuthenticationManager;
 import com.uimirror.core.auth.AuthenticationValidationService;
 import com.uimirror.core.auth.PasswordMatcher;
 import com.uimirror.core.crypto.CryptoMatcherService;
@@ -66,6 +68,11 @@ public class BeanIntitializer {
 	@Autowired
 	public AuthenticationValidationService userAuthenticationValidationService(PasswordMatcher passwordMatcher){
 		return new UserAuthenticationValidationService(passwordMatcher);
+	}
+	
+	@Bean
+	public AuthenticationManager loginFormAuthenticationManager(){
+		return new LoginFormAuthenticationManager();
 	}
 
 }
