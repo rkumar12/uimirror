@@ -10,24 +10,22 @@
  *******************************************************************************/
 package com.uimirror.auth;
 
+import com.uimirror.core.auth.bean.AuthenticatedDetails;
+import com.uimirror.core.auth.bean.Authentication;
+
 /**
- * Contains all the DB fields required for application
+ * This helps to generate the authentication token 
+ * refresh period calcluation.
  * @author Jay
  */
-public interface DBFileds {
+public interface AuthRefreshPeriodProvider {
 
-	String ID = "_id";
-	
-	//User Credentials
-	String UC_USER_ID = "uid";
-	String PASSWORD = "pwd";
-	String UC_ACCOUNT_STATE = "state";
-	String UC_ACCOUNT_STATUS = "status";
-	String UC_ENCRYPTION_PWD = "salt";
-	String UC_ACCOUNT_INSTRUCTION = "sti";
-	//User Account Instructions for 2FA
-	String UC_ACC_INS_2FA = "2fa";
-	
-	//Refresh Token Interval
-	String REFRESH_TOKEN_INTERVAL = "rftknint";
+	/**
+	 * Common Interface for the Authentication provider
+	 * which needs to calculate the refresh period for the authentication
+	 * @param auth
+	 * @param details
+	 * @return
+	 */
+	public int decideRefreshPeriod(Authentication auth, AuthenticatedDetails details);
 }

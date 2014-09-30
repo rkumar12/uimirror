@@ -13,6 +13,7 @@ package com.uimirror.auth.user.bean;
 import java.util.Map;
 
 import com.uimirror.core.ActorType;
+import com.uimirror.core.auth.bean.AuthenticatedDetails;
 
 /**
  * This will hold the authenticated details for the user only.
@@ -27,6 +28,10 @@ public class UserAuthenticatedDetails extends CommonAuthenticatedDetails{
 	public UserAuthenticatedDetails(String id, long refreshTokenInterval, Map<String, Object> instructions) {
 		super(id, refreshTokenInterval, instructions);
 	}
+	
+	public UserAuthenticatedDetails(String id, Map<String, Object> instructions) {
+		super(id, instructions);
+	}
 
 	/* (non-Javadoc)
 	 * @see com.uimirror.core.auth.bean.AuthenticatedDetails#getType()
@@ -34,6 +39,15 @@ public class UserAuthenticatedDetails extends CommonAuthenticatedDetails{
 	@Override
 	public ActorType getType() {
 		return ActorType.USER;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.uimirror.auth.user.bean.CommonAuthenticatedDetails#setRefreshTokenInterval(long)
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public AuthenticatedDetails updateRefreshTokenInterval(long refreshTokenInterval) {
+		return new UserAuthenticatedDetails((String)this.getId(), refreshTokenInterval, (Map<String, Object>)this.getInstructions());
 	}
 
 }

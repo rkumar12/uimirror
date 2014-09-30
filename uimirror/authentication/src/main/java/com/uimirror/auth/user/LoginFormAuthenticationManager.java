@@ -16,10 +16,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
-import org.springframework.util.CollectionUtils;
 
-import com.uimirror.auth.DBFileds;
-import com.uimirror.core.BooleanUtil;
+import com.uimirror.auth.user.bean.UserAuthenticatedDetails;
 import com.uimirror.core.auth.AuthenticationException;
 import com.uimirror.core.auth.AuthenticationManager;
 import com.uimirror.core.auth.AuthenticationValidationService;
@@ -57,10 +55,9 @@ public class LoginFormAuthenticationManager implements AuthenticationManager{
 		BasicCredentials usr = getUserCredentialDetails(authentication);
 		doAuthenticate(authentication, usr);
 		//Step 2- Generate Access Token, if opted for the 2FA, generate a temporarily token and return back 
-		AccessToken token = doGenerateToken(authentication, usr);
+		AuthenticatedDetails authDetails = getAuthenticatedDetails(authentication, usr);
 		LOG.info("[END]- Authenticating User");
-		//TODO access token generation logic for latter
-		return null;
+		return authDetails;
 	}
 
 	/**
@@ -85,17 +82,6 @@ public class LoginFormAuthenticationManager implements AuthenticationManager{
 	}
 	
 	/**
-	 * <p>This will validate the credentials in the order, authentication should happen</p>
-	 * @param auth
-	 * @param userCredentials
-	 * @return <code>true</code> if successfully authenticated else <code>false</code>
-	 * or appropriate {@link AuthenticationException}
-	 */
-	private boolean doAuthenticate(Authentication auth, BasicCredentials userCredentials){
-		return userAuthenticationValidationService.doMatch(userCredentials, auth);
-	}
-	
-	/**
 	 * Will try to find the user based on the user ID, if no record then throw
 	 * an {@link BadCredentialsException}
 	 * @param userId
@@ -107,50 +93,28 @@ public class LoginFormAuthenticationManager implements AuthenticationManager{
 	}
 	
 	/**
-	 * Checks for any remaining step, if user has opted for the 2FA, returns the interim
+	 * <p>This will validate the credentials in the order, authentication should happen</p>
+	 * @param auth
+	 * @param userCredentials
+	 * @return <code>true</code> if successfully authenticated else <code>false</code>
+	 * or appropriate {@link AuthenticationException}
+	 */
+	private boolean doAuthenticate(Authentication auth, BasicCredentials userCredentials){
+		return userAuthenticationValidationService.doMatch(userCredentials, auth);
+	}
+	
+	/**
+	 * convert the user details into {@linkplain AuthenticatedDetails} that will be used latter
+	 * for the {@linkplain AccessToken} generation logic
+	 * Accommodate the user basic information into the authenticated details.
 	 * {@link AccessToken} else generate a fully phased token.
 	 * 
 	 * @param auth
 	 * @param usr
 	 * @return
 	 */
-	private AccessToken doGenerateToken(Authentication auth, BasicCredentials usr) {
-		LOG.debug("Checking If User has 2FA enabled");
-		if(isOptedFor2FA(usr)){
-			//as user has opted for 2FA, process email and token generation in parallel
-		}
-		//Else process in single thread for processing of token
-		return null;
+	private AuthenticatedDetails getAuthenticatedDetails(Authentication auth, BasicCredentials usr) {
+		return new UserAuthenticatedDetails((String)usr.getUserId(), usr.getInstructions());
 	}
-	
-	/**
-	 * Checks if user has opted for the 2FA authentication or not,
-	 * if 2FA, return <code>true</code> else <code>false</code>
-	 * if login type is form and user opted for 2FA then return true else false
-	 * @param userCredentials
-	 * @return
-	 */
-	private boolean isOptedFor2FA(BasicCredentials userCredentials){
-		Map<String, Object> instructions = userCredentials.getInstructions();
-		if(!CollectionUtils.isEmpty(instructions)){
-			String twoFactorFlag =  (String)instructions.get(DBFileds.UC_ACC_INS_2FA);
-			if(BooleanUtil.parseBoolean(twoFactorFlag))
-				return Boolean.TRUE;
-		}
-		return Boolean.FALSE;
-	}
-	
-	/**
-	 * will generate a new token and send back to the client.
-	 * 
-	 * @param auth
-	 * @param usr
-	 * @param partial
-	 * @return
-	 */
-	private AccessToken generateToken(Authentication auth, BasicUserCredentials usr, boolean partial){
-		return null;
-	}
-	
 
 }

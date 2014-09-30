@@ -29,6 +29,14 @@ public abstract class CommonAuthenticatedDetails implements AuthenticatedDetails
 	private Map<String, Object> instructions;
 	
 	public CommonAuthenticatedDetails(String id, long refreshTokenInterval, Map<String, Object> instructions) {
+		initialize(id, refreshTokenInterval, instructions);
+	}
+	
+	public CommonAuthenticatedDetails(String id, Map<String, Object> instructions) {
+		this(id, 0l, instructions);
+	}
+	
+	private void initialize(String id, long refreshTokenInterval, Map<String, Object> instructions){
 		Assert.hasText(id, "Principal Id can't be invalid");
 		this.id = id;
 		this.refreshTokenInterval = refreshTokenInterval;

@@ -52,5 +52,12 @@ public interface AuthenticatedDetails extends Serializable{
 	 * @return
 	 */
 	Object getInstructions();
+	
+	/**
+	 * Tries to update the refresh token interval if necessary
+	 * @param refreshTokenInterval
+	 * @return
+	 */
+	AuthenticatedDetails updateRefreshTokenInterval(long refreshTokenInterval);
 
 }

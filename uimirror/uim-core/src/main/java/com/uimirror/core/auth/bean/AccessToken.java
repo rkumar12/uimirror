@@ -27,6 +27,7 @@ public interface AccessToken extends Principal, Serializable{
 	 * {@link TokenType#ACCESS} if it is a access token,
 	 * {@link TokenType#SECRET} if it is a token issued to the client
 	 * {@link TokenType#TEMPORAL} if this token is issued for temproal purpose only
+	 * {@linkplain TokenType#_2FA} if this token is issued where user wants to perform 2FA
 	 *  
 	 * @return
 	 */
@@ -51,5 +52,7 @@ public interface AccessToken extends Principal, Serializable{
 	 * 
 	 */
 	Scope getScope();
+	
+	
 
 }
