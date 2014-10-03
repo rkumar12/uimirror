@@ -19,7 +19,7 @@ import com.uimirror.core.auth.bean.Token;
  * Generates a token using {@link UUID}
  * @author Jay
  */
-public class AccessTokenGenerator {
+public class TokenGenerator {
 
 	/**
 	 * Generates a new {@link Token} using new random paraphrase and {@link UUID}
@@ -27,8 +27,24 @@ public class AccessTokenGenerator {
 	 */
 	public static Token getNewOne(){
 		String paraphrase = RandomKeyGenerator.randomString(6);
-		String token = UUID.randomUUID().toString();
-		return new Token(token, paraphrase);
+		return new Token(getUUId(), paraphrase);
 	}
+	
+	/**
+	 * Generates a token without parapharse
+	 * @return
+	 */
+	public static Token getNewOneWithOutPharse(){
+		return new Token(getUUId(), null);
+	}
+	
+	/**
+	 * Generates the {@linkplain UUID}
+	 * @return
+	 */
+	private static String getUUId(){
+		return UUID.randomUUID().toString();
+	}
+	
 
 }

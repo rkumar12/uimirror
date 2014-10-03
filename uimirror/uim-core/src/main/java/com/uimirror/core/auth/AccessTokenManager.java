@@ -32,13 +32,6 @@ public interface AccessTokenManager {
 	AccessToken generateToken(Authentication auth, AuthenticatedDetails authDetails);
 	
 	/**
-	 * Checks if the token supplied is not yet expired.
-	 * @param token
-	 * @return
-	 */
-	boolean isValidToken(Authentication auth);
-	
-	/**
 	 * This will expire the given token by de-crypting.
 	 * @param token
 	 * @param async specifies if this task needs to in a async manner or regular way
@@ -61,5 +54,13 @@ public interface AccessTokenManager {
 	 * @return <code>null</code> if no valid token else a new Token
 	 */
 	AccessToken validateAndRefreshToken(Authentication auth);
+	
+	/**
+	 * This will check the authentication and if valid it will return the associated {@linkplain AccessToken} 
+	 * to it
+	 * @param auth
+	 * @return
+	 */
+	AccessToken getValidToken(Authentication auth);
 	
 }
