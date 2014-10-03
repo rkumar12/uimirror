@@ -8,23 +8,12 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.core.auth.dao;
-
-import com.uimirror.core.auth.bean.AccessToken;
+package com.uimirror.core;
 
 /**
- * A Factory for the AccessTokenStore to get the exact database which needs 
- * to be used for the {@link AccessToken}
  * @author Jay
  */
-public interface AccessTokenStoreFactory {
-
-	/**
-	 * This will give which {@link AccessTokenStore} to be used
-	 * based on the parameter.
-	 * 
-	 * @param name
-	 * @return
-	 */
-	AccessTokenStore getStore(String name);
+public interface BasicMongoOperators {
+	String SET = "$set";
+	String LESSTHANEQUEAL = "$lte";
 }

@@ -120,6 +120,7 @@ public class ClientDaoImpl implements ClientDao {
 		result.batchSize(20);
 		List<Client> clients = new ArrayList<Client>(20);
 		result.forEach((client) -> clients.add((Client)client));
+		result.close();
 		LOG.info("[END]- Searching zero or more client by some creteria");
 		return clients;
 	}
@@ -135,6 +136,7 @@ public class ClientDaoImpl implements ClientDao {
 		result.batchSize(20);
 		List<Client> clients = new ArrayList<Client>(20);
 		result.forEach((client) -> clients.add((Client)client));
+		result.close();
 		LOG.info("[END]- Searching all available client");
 		return clients;
 	}
@@ -152,6 +154,7 @@ public class ClientDaoImpl implements ClientDao {
 		List<Client> clients = new ArrayList<Client>(20);
 		result.forEach((client) -> clients.add((Client)client));
 		LOG.info("[END]- Searching all available active client");
+		result.close();
 		return clients;
 	}
 
@@ -167,6 +170,7 @@ public class ClientDaoImpl implements ClientDao {
 		result.batchSize(20);
 		List<Client> clients = new ArrayList<Client>(20);
 		result.forEach((client) -> clients.add((Client)client));
+		result.close();
 		LOG.info("[END]- Searching all available in-active client");
 		return clients;
 	}

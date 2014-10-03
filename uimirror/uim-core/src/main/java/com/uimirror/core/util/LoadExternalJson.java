@@ -47,7 +47,7 @@ public class LoadExternalJson{
 	public static String loadFileFromClassPath(String fullPath){
 		StringWriter wrtr = new StringWriter();
     	try {
-			IOUtils.copy(LoadExternalJson.class.getClassLoader().getResourceAsStream(fullPath), wrtr, Constants.UTF_8);
+			IOUtils.copy(LoadExternalJson.class.getClassLoader().getResourceAsStream(fullPath)	, wrtr, Constants.UTF_8);
 		} catch (IOException e) {
 			LOG.error("[ERROR]- File Not found {}", e);
 			throw new IllegalArgumentException("File Not Found");

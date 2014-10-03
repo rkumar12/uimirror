@@ -17,6 +17,7 @@ import com.uimirror.core.dao.DBException;
  * 
  * @author Jay
  */
+//TODO complete this implementation as like AccessTokenStore
 public interface CredentialsStore {
 
 	/**

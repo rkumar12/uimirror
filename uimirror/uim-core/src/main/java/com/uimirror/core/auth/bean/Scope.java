@@ -41,11 +41,11 @@ public enum Scope {
     	return this.getScope();
     } 
 	
-	public static Scope getEnum(String status) {
-    	if(status == null)
+	public static Scope getEnum(String scope) {
+    	if(scope == null)
     		throw new IllegalArgumentException("Access Token Scope can't be empty");
     	for(Scope v : values())
-    		if(status.equalsIgnoreCase(v.getScope())) return v;
+    		if(scope.equalsIgnoreCase(v.getScope())) return v;
     	return null;
     }
 	

@@ -44,11 +44,11 @@ public enum TokenType {
     	return this.getTokenType();
     } 
 
-    public static TokenType getEnum(String role) {
-    	if(role == null)
+    public static TokenType getEnum(String type) {
+    	if(type == null)
     		throw new IllegalArgumentException("Access Token type Can't be empty");
     	for(TokenType v : values())
-    		if(role.equalsIgnoreCase(v.getTokenType())) return v;
+    		if(type.equalsIgnoreCase(v.getTokenType())) return v;
     	throw new IllegalArgumentException("No AccessToken type Found");
     }
 

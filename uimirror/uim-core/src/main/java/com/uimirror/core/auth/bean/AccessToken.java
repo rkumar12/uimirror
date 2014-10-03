@@ -12,6 +12,7 @@ package com.uimirror.core.auth.bean;
 
 import java.io.Serializable;
 import java.security.Principal;
+import java.util.Map;
 
 /**
  * This holds the principal details after user has been logged in
@@ -31,7 +32,7 @@ public interface AccessToken extends Principal, Serializable{
 	 *  
 	 * @return
 	 */
-	TokenType getTokenType();
+	TokenType getType();
 	
 	/**
 	 * Represents the issued token and its paraphrase
@@ -43,7 +44,7 @@ public interface AccessToken extends Principal, Serializable{
 	 * Specifies the time in mills, the token will expire on
 	 * @return
 	 */
-	String getExpiresOn();
+	long getExpire();
 	
 	/**
 	 * Defines the scope for this token
@@ -53,6 +54,36 @@ public interface AccessToken extends Principal, Serializable{
 	 */
 	Scope getScope();
 	
+	/**
+	 * Specifies the owner for this token
+	 * @return
+	 */
+	String getOwner();
 	
+	/**
+	 * Specifies the client from which request generated
+	 * @return
+	 */
+	String getClient();
+	
+	/**
+	 * If this token as some additional Notes such as UserAgent and Host name
+	 * @return
+	 */
+	Map<String, Object> getNotes();
+	
+	/**
+	 * If this token has any instructions that needs to be taken care
+	 * @return
+	 */
+	Map<String, Object> getInstructions();
+	
+	/**
+	 * Converts to the response Map, which in-terms will be transformed to the json
+	 * Necessary to remove unnecessary info while serializing such as it might have user agent
+	 * host name, extra authentication parameters etc
+	 * @return
+	 */
+	Map<String, Object> toResponseMap();
 
 }

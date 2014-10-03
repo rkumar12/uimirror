@@ -111,9 +111,8 @@ public class BasicUserCredentials extends BeanBasedDocument implements BasicCred
 	 * @see com.uimirror.core.mongo.feature.MongoDocumentSerializer#initFromMap(java.util.Map)
 	 */
 	@Override
-	public Object initFromMap(Map<String, Object> src) {
+	public void initFromMap(Map<String, Object> src) {
 		//This Implementation not required as value is already de-serialized
-		return null;
 	}
 
 	public List<String> getUserNames() {

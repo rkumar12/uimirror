@@ -22,6 +22,7 @@ import com.uimirror.core.ExceptionMapper;
  */
 public class MongoExceptionMapper implements ExceptionMapper{
 
+	public static final String NAME = "MONGOEM";
 	/* (non-Javadoc)
 	 * @see com.uimirror.core.ExceptionMapper#mapIt(java.lang.Object)
 	 */

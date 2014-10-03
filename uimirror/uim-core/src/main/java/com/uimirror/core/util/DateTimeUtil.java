@@ -8,24 +8,23 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.core.auth.bean;
+package com.uimirror.core.util;
 
-
+import java.time.Clock;
+import java.time.ZonedDateTime;
 
 /**
- * Initialize a token for the given scope and token type
+ * An Utility class that helps to get and manupulate the date time objects
  * @author Jay
  */
-public class DefaultToken extends BasicAccessToken{
+public class DateTimeUtil {
 
-	private static final long serialVersionUID = -1202938196660387547L;
-
-	public DefaultToken(String id, String expireOn, TokenType type, Scope scope) {
-		super(id, expireOn, type, scope);
-	}
-	
-	public DefaultToken(Token token, String id, String expireOn, TokenType type, Scope scope) {
-		super(token, id, expireOn, type, scope);
+	/**
+	 * Gets the system time w.r.t to UTC in EPOCH
+	 * @return
+	 */
+	public static final long getCurrentSystemUTCEpoch(){
+		return ZonedDateTime.now(Clock.systemUTC()).toEpochSecond();
 	}
 
 }

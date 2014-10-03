@@ -18,10 +18,15 @@ import com.uimirror.core.BasicDBFields;
  */
 public interface AccessTokenFields extends BasicDBFields{
 	
-	String ENCRYPT_STARTEGY = "parapharse";
-	String EXPIRE_ON = "expireon";
+	//Auth Token Fields
+	String ENCRYPT_STARTEGY = "algo";
 	String TYPE = "type";
 	String SCOPE = "scope";
-	String IDENTIFIER = "id";
+	String AUTH_TKN_OWNER = "owner";
+	String AUTH_TKN_CLIENT = "client";
+	String AUTH_TKN_EXPIRES = "expire";
+	String AUTH_TKN_NOTES = "note";
+	String AUTH_TKN_INSTRUCTIONS = "instructions";
+	String TOKEN = "token";
 
 }

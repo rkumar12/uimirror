@@ -11,11 +11,12 @@
 package com.uimirror.core.auth;
 
 import com.uimirror.core.auth.bean.AccessToken;
+import com.uimirror.core.auth.bean.AuthenticatedDetails;
 import com.uimirror.core.auth.bean.Authentication;
 
 /**
- * Provides a common solution for all the token  
- * generation strategy.
+ * Provides a common solution for granting a new {@link AccessToken}.
+ * This may authenticate the details before granting a new token.
  *  
  * @author Jay
  */
@@ -25,12 +26,10 @@ public interface AccessTokenManager {
 	 * Will generate a new {@link AccessToken} for the requested client/user.
 	 * This will store the generated token for the further reference.
 	 * @param auth
-	 * @param id profileid/clientid of the user/client
-	 * @param details
-	 * @param temporal
+	 * @param authDetails
 	 * @return
 	 */
-	AccessToken generateToken(Authentication auth, String id, boolean temporal);
+	AccessToken generateToken(Authentication auth, AuthenticatedDetails authDetails);
 	
 	/**
 	 * Checks if the token supplied is not yet expired.

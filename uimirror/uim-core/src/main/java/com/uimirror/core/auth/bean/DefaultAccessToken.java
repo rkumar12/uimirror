@@ -10,23 +10,49 @@
  *******************************************************************************/
 package com.uimirror.core.auth.bean;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
 
+import org.springframework.util.StringUtils;
+
+import com.uimirror.core.auth.AccessTokenFields;
 
 /**
- * Default token of type {@link TokenType#ACCESS}
- * 
+ * An {@linkplain AccessToken} issued to the user
  * @author Jay
  */
-public class DefaultAccessToken extends DefaultToken{
+public class DefaultAccessToken extends AbstractAccessToken{
 
-	private static final long serialVersionUID = -9008753259161873541L;
-
-	public DefaultAccessToken(Token token, String id, String expireOn, Scope scope) {
-		super(token, id, expireOn, TokenType.ACCESS, scope);
+	private static final long serialVersionUID = -6156839027050013727L;
+	
+	/**
+	 *This call should be avoided until, there is no existing map from which this state
+	 *needs to de-seralize. the next immediate call should be {@linkplain AbstractAccessToken#initFromMap(Map)} 
+	 */
+	public DefaultAccessToken() {
+		super();
+		//DON't use this until you have a map to initialize the state
 	}
 	
-	public DefaultAccessToken(String id, String expireOn, Scope scope) {
-		super(id, expireOn, TokenType.ACCESS, scope);
+	public DefaultAccessToken(Token token, String owner, String client, long expire, TokenType type, Scope scope, Map<String, Object> notes, Map<String, Object> instructions) {
+		super(token, owner, client, expire, type, scope, notes, instructions);
+	}
+	
+	public DefaultAccessToken(Token token, String owner, String client, long expire, TokenType type, Scope scope) {
+		super(token, owner, client, expire, type, scope);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.uimirror.core.auth.bean.AccessToken#toResponseMap()
+	 */
+	@Override
+	public Map<String, Object> toResponseMap() {
+		Map<String, Object> rs = new LinkedHashMap<String, Object>(15);
+		Token token = super.getToken().getEncrypted();
+		rs.put(AccessTokenFields.TOKEN, token.getToken());
+		if(StringUtils.hasText(token.getParaphrase()))
+			rs.put(AccessTokenFields.ENCRYPT_STARTEGY, token.getParaphrase());
+		return rs;
 	}
 
 }

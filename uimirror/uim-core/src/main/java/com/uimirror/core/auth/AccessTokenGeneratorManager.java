@@ -65,47 +65,12 @@ public abstract class AccessTokenGeneratorManager extends AccessTokenExpirerMana
 	 * @return
 	 */
 	private long getExpiresOn(Authentication auth){
-		long minuteToAdd = getExpiresInt(auth);
+		//long minuteToAdd = getExpiresInt(auth);
+		long minuteToAdd = 0l;
 		Instant ldt = LocalDateTime.now(Clock.systemUTC()).plusMinutes(minuteToAdd).toInstant(ZoneOffset.UTC);
 		return ldt.getEpochSecond();
 	}
 	
-	/**
-	 * gets the expires interval for the token to be issued.
-	 * If user has opted for the keep me loged in then token validity will be 30 mins
-	 * else it will try to find from the refresh token interval else default to 10 mins.
-	 * 
-	 * @param auth
-	 * @return
-	 */
-	private int getExpiresInt(Authentication auth){
-		int minuteToAdd = 0;
-		if(auth.keepMeLogin()){
-			minuteToAdd += 30;
-		}else{
-			Map<String, Object> details = (Map<String, Object>)auth.getDetails();
-			minuteToAdd += getRefreshPeriod(details);
-		}
-		return minuteToAdd;
-	}
-	/**
-	 * Gets the refresh period from the passed arguments
-	 * @param details
-	 * @return
-	 */
-	private int getRefreshPeriod(Map<String, Object> details){
-		int rfp = 0;
-		if(!CollectionUtils.isEmpty(details)){
-			String refreshInt = (String)details.get(AuthParamExtractor.REFRESH_TOKEN_INTERVAL);
-			try{
-				rfp = Integer.parseInt(refreshInt);
-			}catch(NumberFormatException e){
-				LOG.debug("No Refresh Token Interval found default to 10 mins");
-			}
-		}
-		rfp = (rfp == 0) ? 10 : rfp; 
-		return rfp;
-	}
 	/**
 	 * Determines whether this token will be used as access key or secret key
 	 * @param cType
