@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 
+import com.uimirror.auth.AuthExceptionMapper;
 import com.uimirror.auth.user.bean.UserAuthenticatedDetails;
 import com.uimirror.core.auth.AuthenticationException;
 import com.uimirror.core.auth.AuthenticationManager;
@@ -33,7 +34,7 @@ import com.uimirror.core.extra.MapException;
 /**
  * Implementation of {@link AuthenticationManager#authenticate(Authentication)}
  * to validate the user provided details are valid or not.
- * if valid details, it will issue a new {@link AccessToken}
+ * if valid details, it will return the Authenticated Details {@linkplain AuthenticatedDetails}
  * 
  * @author Jay
  */
@@ -48,13 +49,12 @@ public class LoginFormAuthenticationManager implements AuthenticationManager{
 	 * @see com.uimirror.core.auth.AuthenticationManager#authenticate(com.uimirror.core.auth.Authentication)
 	 */
 	@Override
-	@MapException(use="AUTHEM")
+	@MapException(use=AuthExceptionMapper.NAME)
 	public AuthenticatedDetails authenticate(Authentication authentication) throws AuthenticationException {
 		Assert.notNull(authentication, "Authention Request Object can't be empty");
 		LOG.info("[START]- Authenticating User");
 		BasicCredentials usr = getUserCredentialDetails(authentication);
 		doAuthenticate(authentication, usr);
-		//Step 2- Generate Access Token, if opted for the 2FA, generate a temporarily token and return back 
 		AuthenticatedDetails authDetails = getAuthenticatedDetails(authentication, usr);
 		LOG.info("[END]- Authenticating User");
 		return authDetails;

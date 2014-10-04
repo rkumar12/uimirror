@@ -35,8 +35,7 @@ public class UserAccessTokenManager extends AbstractAccessTokenValidateManager{
 	 * @see com.uimirror.core.auth.AccessTokenManager#generateToken(com.uimirror.core.auth.bean.Authentication, com.uimirror.core.auth.bean.AuthenticatedDetails)
 	 */
 	@Override
-	public AccessToken generateToken(Authentication auth,
-			AuthenticatedDetails authDetails) {
+	public AccessToken generateToken(Authentication auth, AuthenticatedDetails authDetails) {
 		// TODO Auto-generated method stub
 		return null;
 	}

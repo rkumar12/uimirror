@@ -24,6 +24,7 @@ import com.uimirror.core.dao.RecordNotFoundException;
  */
 public class AuthExceptionMapper implements ExceptionMapper{
 
+	public static final String NAME = "AUTHEM";
 	/* (non-Javadoc)
 	 * @see com.uimirror.core.ExceptionMapper#mapIt(java.lang.Object)
 	 */

@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.auth;
+package com.uimirror.auth.extra;
 
 import java.util.Map;
 
@@ -16,18 +16,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
-import com.uimirror.core.auth.bean.AccessToken;
+import com.uimirror.auth.DBFileds;
 import com.uimirror.core.auth.bean.AuthenticatedDetails;
 import com.uimirror.core.auth.bean.Authentication;
 import com.uimirror.core.auth.bean.CredentialType;
-import com.uimirror.core.auth.controller.AuthenticationProvider;
 
 /**
+ * An utility that helps to update the refresh token to the authenticated details
+ * 
  * @author Jay
  */
-public abstract class AbstractAuthProvider implements AuthRefreshPeriodProvider, AuthenticationProvider{
+public class AuthenticationUpdaterUtil{
 
-	protected static final Logger LOG = LoggerFactory.getLogger(AbstractAuthProvider.class);
+	protected static final Logger LOG = LoggerFactory.getLogger(AuthenticationUpdaterUtil.class);
 	
 	/**
 	 * Tries to update the refresh period if authenticated details don't have any 
@@ -35,7 +36,7 @@ public abstract class AbstractAuthProvider implements AuthRefreshPeriodProvider,
 	 * @param authDetails
 	 * @return
 	 */
-	public AuthenticatedDetails updateRefreshPeriodIfNecessary(Authentication authentication, AuthenticatedDetails authDetails){
+	public static AuthenticatedDetails updateRefreshPeriodIfNecessary(Authentication authentication, AuthenticatedDetails authDetails){
 		
 		if(authDetails.getRefreshTokenInterval() > 0l)
 			return authDetails;
@@ -43,20 +44,11 @@ public abstract class AbstractAuthProvider implements AuthRefreshPeriodProvider,
 		int refPeriod = decideRefreshPeriod(authentication, authDetails);
 		return authDetails.updateRefreshTokenInterval(refPeriod);
 	}
-	
-	/**
-	 * Generates the Access Token based on the authentication and Authenticated details 
-	 * @param authentication
-	 * @param authDetails
-	 * @return
-	 */
-	public abstract AccessToken generateAccessToken(Authentication authentication, AuthenticatedDetails authDetails);
 
 	/* (non-Javadoc)
 	 * @see com.uimirror.auth.AuthRefreshPeriodProvider#decideRefreshPeriod(com.uimirror.core.auth.bean.Authentication, com.uimirror.core.auth.bean.AuthenticatedDetails)
 	 */
-	@Override
-	public int decideRefreshPeriod(Authentication auth, AuthenticatedDetails details) {
+	private static int decideRefreshPeriod(Authentication auth, AuthenticatedDetails details) {
 		return getExpiresInt(auth, details);
 	}
 	
@@ -69,7 +61,7 @@ public abstract class AbstractAuthProvider implements AuthRefreshPeriodProvider,
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	private int getExpiresInt(Authentication auth, AuthenticatedDetails details){
+	private static int getExpiresInt(Authentication auth, AuthenticatedDetails details){
 		int minuteToAdd = 0;
 		minuteToAdd = findPeriodFromInstructions((Map<String, Object>)details.getInstructions());
 		if(minuteToAdd == 0){
@@ -85,7 +77,7 @@ public abstract class AbstractAuthProvider implements AuthRefreshPeriodProvider,
 	 * @param instructions
 	 * @return
 	 */
-	private int findPeriodFromInstructions(Map<String, Object> instructions){
+	private static int findPeriodFromInstructions(Map<String, Object> instructions){
 		int intv = 0;
 		try{
 			String intreval = (String)instructions.get(DBFileds.REFRESH_TOKEN_INTERVAL);
@@ -101,7 +93,7 @@ public abstract class AbstractAuthProvider implements AuthRefreshPeriodProvider,
 	 * @param details
 	 * @return
 	 */
-	private int decideByCredentialType(Authentication auth){
+	private static int decideByCredentialType(Authentication auth){
 		CredentialType type = auth.getCredentialType();
 		int rfp = 0;
 		if( type != null){

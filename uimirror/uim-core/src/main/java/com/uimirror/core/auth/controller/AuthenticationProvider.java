@@ -10,6 +10,7 @@
  *******************************************************************************/
 package com.uimirror.core.auth.controller;
 
+import com.uimirror.core.auth.AccessTokenManager;
 import com.uimirror.core.auth.AuthenticationManager;
 import com.uimirror.core.auth.bean.AccessToken;
 import com.uimirror.core.auth.bean.Authentication;
@@ -17,6 +18,7 @@ import com.uimirror.core.auth.bean.Authentication;
 /**
  * Handles the authentication request, and process the authentication
  * using {@linkplain AuthenticationManager#authenticate(Authentication)}
+ * or using {@linkplain AccessTokenManager}
  * on successful authentication a {@linkplain AccessToken} get issued to the 
  * client/user
  *   
@@ -26,12 +28,12 @@ public interface AuthenticationProvider {
 
 	/**
 	 * Should process the Authentication first, then do the necessary 
-	 * steps like storing the token and finally returns the {@linkplain Authentication}
+	 * steps like storing the token and finally returns the {@linkplain AccessToken}
 	 * This should honor the process of {@linkplain AuthenticationManager#authenticate(Authentication)}
 	 * rules.
 	 * 
 	 * @param authentication
 	 * @return
 	 */
-	AccessToken getAuthenticateToken(Authentication authentication);
+	AccessToken getAuthenticationToken(Authentication authentication);
 }

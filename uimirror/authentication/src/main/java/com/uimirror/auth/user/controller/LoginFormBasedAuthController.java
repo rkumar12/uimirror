@@ -14,7 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.uimirror.auth.user.LoginFormAuthProvider;
 import com.uimirror.core.auth.AuthenticationManager;
 import com.uimirror.core.auth.bean.AccessToken;
 import com.uimirror.core.auth.bean.Authentication;
@@ -22,6 +21,7 @@ import com.uimirror.core.auth.bean.CredentialType;
 import com.uimirror.core.auth.bean.form.BasicAuthenticationForm;
 import com.uimirror.core.auth.controller.AuthParamExtractor;
 import com.uimirror.core.auth.controller.AuthenticationController;
+import com.uimirror.core.auth.controller.AuthenticationProvider;
 import com.uimirror.core.extra.MapException;
 import com.uimirror.core.rest.extra.ApplicationException;
 import com.uimirror.core.rest.extra.ResponseTransFormer;
@@ -38,7 +38,7 @@ public class LoginFormBasedAuthController implements AuthenticationController{
 	
 	private @Autowired AuthParamExtractor loginFormAuthParamExtractor;
 	private @Autowired ResponseTransFormer<String> jsonResponseTransFormer;
-	private @Autowired LoginFormAuthProvider loginFormAuthProvider;
+	private @Autowired AuthenticationProvider loginFormAuthProvider;
 	
 	/* (non-Javadoc)
 	 * @see com.uimirror.auth.controller.AuthenticationController#getAccessToken(javax.ws.rs.core.MultivaluedMap)
@@ -52,7 +52,8 @@ public class LoginFormBasedAuthController implements AuthenticationController{
 		//Let GC take this ASAP
 		param = null;
 		LOG.debug("[END]- Getting the accesstoken based on the credentials {}", auth);
-		return jsonResponseTransFormer.doTransForm(generateToken(auth));
+		//Remove Unnecessary information from the accessToken Before Sending to the user
+		return jsonResponseTransFormer.doTransForm(generateToken(auth).toResponseMap());
 	}
 
 	/* (non-Javadoc)
@@ -70,9 +71,7 @@ public class LoginFormBasedAuthController implements AuthenticationController{
 	 * @return
 	 */
 	private AccessToken generateToken(Authentication auth){
-		AccessToken token = null;
-		token = loginFormAuthProvider.getAuthenticateToken(auth);
-		return token;
+		return loginFormAuthProvider.getAuthenticationToken(auth);
 	}
 
 }
