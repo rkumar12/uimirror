@@ -27,6 +27,8 @@ import com.uimirror.core.rest.extra.UnAuthorizedException;
  */
 public class AuthToApplicationExceptionMapper implements ExceptionMapper{
 
+	public static final String NAME = "AUTHTOAPPEM";
+	
 	/* (non-Javadoc)
 	 * @see com.uimirror.core.ExceptionMapper#mapIt(java.lang.Object)
 	 */

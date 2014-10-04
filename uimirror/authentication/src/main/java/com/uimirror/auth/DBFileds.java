@@ -27,7 +27,4 @@ public interface DBFileds {
 	String UC_ACCOUNT_INSTRUCTION = "sti";
 	//User Account Instructions for 2FA
 	String UC_ACC_INS_2FA = "2fa";
-	
-	//Refresh Token Interval
-	String REFRESH_TOKEN_INTERVAL = "rftknint";
 }

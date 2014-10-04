@@ -16,7 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
-import com.uimirror.auth.DBFileds;
+import com.uimirror.core.auth.AccessTokenFields;
 import com.uimirror.core.auth.bean.AuthenticatedDetails;
 import com.uimirror.core.auth.bean.Authentication;
 import com.uimirror.core.auth.bean.CredentialType;
@@ -80,7 +80,7 @@ public class AuthenticationUpdaterUtil{
 	private static int findPeriodFromInstructions(Map<String, Object> instructions){
 		int intv = 0;
 		try{
-			String intreval = (String)instructions.get(DBFileds.REFRESH_TOKEN_INTERVAL);
+			String intreval = (String)instructions.get(AccessTokenFields.REFRESH_TOKEN_INTERVAL);
 			intv =  StringUtils.hasText(intreval) ? Integer.parseInt(intreval) : 0;
 		}catch(NumberFormatException | NullPointerException ne){
 			LOG.error("[IGNORE]- Not able to get the refresh token period");

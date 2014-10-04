@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.uimirror.auth.AuthToApplicationExceptionMapper;
 import com.uimirror.core.auth.AuthenticationManager;
 import com.uimirror.core.auth.bean.AccessToken;
 import com.uimirror.core.auth.bean.Authentication;
@@ -44,7 +45,7 @@ public class LoginFormBasedAuthController implements AuthenticationController{
 	 * @see com.uimirror.auth.controller.AuthenticationController#getAccessToken(javax.ws.rs.core.MultivaluedMap)
 	 */
 	@Override
-	@MapException(use="AUTHTOAPPEM")
+	@MapException(use=AuthToApplicationExceptionMapper.NAME)
 	public Object doAuthenticate(BasicAuthenticationForm param) throws ApplicationException{
 		LOG.debug("[START]- Getting the accesstoken based on the credentials");
 		//Step 1- Extract authentication details
