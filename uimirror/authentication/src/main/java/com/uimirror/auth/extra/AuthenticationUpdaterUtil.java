@@ -108,7 +108,6 @@ public class AuthenticationUpdaterUtil{
 			case APIKEY:
 			case CLIENTSECRECTKEY:
 			case SCREENLOCK:
-			case USERLOGINFORMFROMCLIENT:
 			case _2FA:
 				rfp += 15;
 				break;

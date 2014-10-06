@@ -10,8 +10,6 @@
  *******************************************************************************/
 package com.uimirror.auth.endpoint;
 
-import javax.ws.rs.BeanParam;
-import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -21,8 +19,7 @@ import org.glassfish.jersey.server.JSONP;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.uimirror.auth.client.ClientLoginAuthenticationForm;
-import com.uimirror.auth.client.ClientSecretAuthenticationForm;
+import com.uimirror.auth.client.bean.form.ClientTokenAuthenticationForm;
 
 /**
  * Controller which will handle all the client releated request such as 
@@ -38,27 +35,17 @@ public class ClientAuthenticationEndPoint{
 	}
 	
 	/**
-	 * Handle the client API Key validation and issue a temporarl code
-	 * using that Client should request for access token
-	 * This will be initial entry point for the client API to get validated
-	 * 
-	 * @param loginForm
-	 * @return
-	 */
-	@POST
-	@Produces({ "application/x-javascript", MediaType.APPLICATION_JSON })
-	@JSONP(queryParam="cb", callback="callback")
-	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	@Path(AuthenticationEndPointConstant.OUATH_2_AUTH_PATH)
-	public Object doAuthenticate(@BeanParam ClientLoginAuthenticationForm loginForm){
-		LOG.info("[ENTRY]- Received requst for client authentication");
-		LOG.info("[EXIT]- Received requst for client authentication");
-		return null;
-	}
-	
-	/**
 	 * handles the client secret token and responsible for the user login screen page 
 	 * redirect.
+	 * POST https://api.oauth2server.com/token
+     *	grant_type=authorization_code&
+     *	code=AUTH_CODE_HERE&
+     *	redirect_uri=REDIRECT_URI&
+     *	client_id=CLIENT_ID&
+     *	client_secret=CLIENT_SECRET
+     * response {
+     *	"access_token":"RsT5OjbzRn430zqMLgV3Ia"
+	 *	}
 	 * 
 	 * @param form
 	 * @return
@@ -66,9 +53,8 @@ public class ClientAuthenticationEndPoint{
 	@POST
 	@Produces({ "application/x-javascript", MediaType.APPLICATION_JSON })
 	@JSONP(queryParam="cb", callback="callback")
-	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Path(AuthenticationEndPointConstant.OUATH_2_TOEKEN_PATH)
-	public Object requestAccessToken(ClientSecretAuthenticationForm form){
+	public Object requestAccessToken(ClientTokenAuthenticationForm form){
 		LOG.info("[ENTRY]- Received request for client access toekn");
 		LOG.info("[EXIT]- Received request for client access toekn");
 		return null;

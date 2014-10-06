@@ -29,8 +29,8 @@ public final class TwoFactorUserLoginAuthenticationForm extends HeaderAuthentica
 
 	private static final long serialVersionUID = -1215523730014366150L;
 	
-	@FormParam(AuthParamExtractor.PASSWORD)
-	private String password;
+	@FormParam(AuthParamExtractor.OTP)
+	private String otp;
 
 	@Override
 	public String getUserId() {
@@ -39,7 +39,7 @@ public final class TwoFactorUserLoginAuthenticationForm extends HeaderAuthentica
 
 	@Override
 	public String getPassword() {
-		return password;
+		return otp;
 	}
 
 	@Override
@@ -86,7 +86,7 @@ public final class TwoFactorUserLoginAuthenticationForm extends HeaderAuthentica
 
 	@Override
 	public String toString() {
-		return "TwoFactorUserLoginAuthenticationForm [password=" + password
+		return "TwoFactorUserLoginAuthenticationForm [otp=" + otp
 				+ "]";
 	}
 

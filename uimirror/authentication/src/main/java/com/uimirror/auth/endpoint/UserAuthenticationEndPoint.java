@@ -39,8 +39,9 @@ import com.uimirror.core.auth.controller.AuthenticationController;
 public class UserAuthenticationEndPoint{
 
 	private static Logger LOG = LoggerFactory.getLogger(UserAuthenticationEndPoint.class);
-	@Autowired
-	private AuthenticationController userAuthenticationController;
+	private @Autowired AuthenticationController userAuthenticationController;
+	private @Autowired AuthenticationController screenLockAuthenticationController;
+	private @Autowired AuthenticationController twoFactorAuthController;
 	public UserAuthenticationEndPoint() {
 	}
 	
@@ -63,7 +64,7 @@ public class UserAuthenticationEndPoint{
 	}
 	
 	/**
-	 * Unlock the screen by validating the accesstoken provided,
+	 * Unlock the screen by validating the access-token provided,
 	 * if necessary, it will renew the token and send back. 
 	 * @param form
 	 * @return
@@ -75,12 +76,14 @@ public class UserAuthenticationEndPoint{
 	@Path(AuthenticationEndPointConstant.UNLOCK_PATH)
 	public Object unlockScreen(ScreenLockAuthenticationForm form){
 		LOG.info("[ENTRY]- Received request for unlocking screen");
+		Object response = screenLockAuthenticationController.doAuthenticate(form);
 		LOG.info("[EXIT]- Received request for unlocking screen");
-		return null;
+		return response;
 	}
 	
 	/**
-	 * Will perform the 2FA for the user.
+	 * Will perform the 2FA for the user, based on the key and access token provided
+	 * if the details provided are valid, will return a new {@linkplain AccessToken}
 	 * @param form
 	 * @return
 	 */
@@ -91,8 +94,9 @@ public class UserAuthenticationEndPoint{
 	@Path(AuthenticationEndPointConstant.TWO_FACTO_PATH)
 	public Object dp2FA(TwoFactorUserLoginAuthenticationForm form){
 		LOG.info("[ENTRY]- Received request for 2 Factor Authentication");
+		Object response = twoFactorAuthController.doAuthenticate(form);
 		LOG.info("[EXIT]- Received request for 2 Factor Authentication");
-		return null;
+		return response;
 	}
 
 }

@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.auth.client;
+package com.uimirror.auth.client.bean.form;
 
 import javax.ws.rs.FormParam;
 
@@ -22,18 +22,29 @@ import com.uimirror.core.bean.form.DefaultHeaderForm;
  * 
  * @author Jay
  */
-public class ClientLoginAuthenticationForm extends DefaultHeaderForm{
+//TODO don't forget to change the formparam to appropriate
+//TODO also do consider for authorization_code
+//POST https://api.oauth2server.com/token
+//grant_type=authorization_code&
+//code=AUTH_CODE_HERE&
+//redirect_uri=REDIRECT_URI&
+//client_id=CLIENT_ID&
+//client_secret=CLIENT_SECRET
+public class ClientTokenAuthenticationForm extends DefaultHeaderForm{
 
 	private static final long serialVersionUID = -6338697684103708792L;
 
 	@FormParam(AuthParamExtractor.CLIENT_ID)
 	private String clientId;
 	
+	@FormParam(AuthParamExtractor.CLIENT_SECRET)
+	private String clientSecret;
+	
 	@FormParam(AuthParamExtractor.REDIRECT_URI)
 	private String redirectURI;
 	
-	@FormParam(AuthParamExtractor.SCOPE)
-	private String scope;
+	@FormParam(AuthParamExtractor.CLIENT_CODE)
+	private String token;
 
 	/* (non-Javadoc)
 	 * @see com.uimirror.core.auth.bean.form.BasicAuthenticationForm#getUserId()
@@ -80,7 +91,7 @@ public class ClientLoginAuthenticationForm extends DefaultHeaderForm{
 	 */
 	@Override
 	public String getScope() {
-		return this.scope;
+		return null;
 	}
 
 	/* (non-Javadoc)
@@ -88,7 +99,7 @@ public class ClientLoginAuthenticationForm extends DefaultHeaderForm{
 	 */
 	@Override
 	public String getAccessToken() {
-		return null;
+		return this.token;
 	}
 
 	/* (non-Javadoc)
@@ -104,7 +115,7 @@ public class ClientLoginAuthenticationForm extends DefaultHeaderForm{
 	 */
 	@Override
 	public String getClientSecret() {
-		return null;
+		return this.clientSecret;
 	}
 
 	/* (non-Javadoc)
@@ -112,13 +123,14 @@ public class ClientLoginAuthenticationForm extends DefaultHeaderForm{
 	 */
 	@Override
 	public CredentialType getCredentialType() {
-		return CredentialType.APIKEY;
+		return CredentialType.CLIENTSECRECTKEY;
 	}
 
 	@Override
 	public String toString() {
-		return "ClientLoginAuthenticationForm [clientId=" + clientId
-				+ ", redirectURI=" + redirectURI + ", scope=" + scope + "]";
+		return "ClientSecretAuthenticationForm [clientId=" + clientId
+				+ ", clientSecret=" + clientSecret + ", redirectURI="
+				+ redirectURI + ", token=" + token + "]";
 	}
 
 }

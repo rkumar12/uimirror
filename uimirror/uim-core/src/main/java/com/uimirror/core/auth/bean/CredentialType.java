@@ -25,7 +25,6 @@ public enum CredentialType {
 	SCREENLOCK("S", "Screen Lock"),
 	APIKEY("API", "API key"),
 	CLIENTSECRECTKEY("CLISECRET", "Client Secret Key"),
-	USERLOGINFORMFROMCLIENT("CF", "Login Form from the client"),
 	_2FA("2FA", "Two factor authentication form");
 	
 	private final String principalType;

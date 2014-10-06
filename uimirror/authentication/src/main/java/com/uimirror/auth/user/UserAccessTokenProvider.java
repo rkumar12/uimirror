@@ -47,5 +47,16 @@ public class UserAccessTokenProvider{
 		return userAccessTokenManager.generateToken(auth, authDetails);
 	}
 	
+	/**
+	 * Will return the valid {@link AccessToken} based on the {@link Authentication}
+	 * if the provided details are valid will return the {@linkplain AccessToken} else <code>null</code>
+	 * @param auth
+	 * @return
+	 */
+	public AccessToken getValidToken(Authentication auth){
+		LOG.debug("[SINGLE]- Validating the details provided for the accesstoken");
+		return userAccessTokenManager.getValidToken(auth);
+	}
+	
 
 }

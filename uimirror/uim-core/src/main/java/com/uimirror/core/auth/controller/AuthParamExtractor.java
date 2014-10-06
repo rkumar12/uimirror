@@ -29,6 +29,7 @@ public interface AuthParamExtractor extends Parameters, ValidatorService{
 	//This is also known as the parapharse that will be used for decrypting
 	String TOKEN_ENCRYPTION_STARTEGY = "pp";
 	String PASSWORD = "pwd";
+	String OTP = "otp";
 	String KEEP_ME_LOGIN = "keepmelogin";
 	String REDIRECT_URI = "redirect_uri";
 	String SCOPE = "scope";

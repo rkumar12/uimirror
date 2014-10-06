@@ -57,7 +57,7 @@ public interface AccessTokenManager {
 	
 	/**
 	 * This will check the authentication and if valid it will return the associated {@linkplain AccessToken} 
-	 * to it
+	 * to it else <code>null</code>
 	 * @param auth
 	 * @return
 	 */

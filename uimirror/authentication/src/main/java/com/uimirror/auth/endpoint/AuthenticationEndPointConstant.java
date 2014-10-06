@@ -20,7 +20,7 @@ public interface AuthenticationEndPointConstant {
 	
 	String TWO_FACTO_PATH = "2fa";
 	
-	String OUATH_2_AUTH_PATH = "auth";
+	String OUATH_2_AUTH_PATH = "auth";//TODO move this to MVC really
 	String OUATH_2_TOEKEN_PATH = "token";
 	
 	String ACCESS_HOME_PATH = "/access";
