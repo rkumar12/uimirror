@@ -46,9 +46,11 @@ public class UserAuthenticationEndPoint{
 	}
 	
 	/**
-	 * <p>This will deseralize the loginform map and try to authenticate,
-	 * on successful authentication issue a token object i.e {@link AccessToken} to the client </p>
-	 * This also audit the login process.
+	 * De-serialize the authentication form submitted
+	 * and try to authenticate the eariller token issued, to validate if the request is from a valid source
+	 * if request is from a valid source it tries to authenticate the user provided details and 
+	 * in case user doesn't have any _2FA enabled, it will generate a security token and return back to the user.
+	 * 
 	 * @param loginForm
 	 * @return
 	 */
@@ -56,7 +58,8 @@ public class UserAuthenticationEndPoint{
 	@Produces({ "application/x-javascript", MediaType.APPLICATION_JSON })
 	@JSONP(queryParam="cb", callback="callback")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public Object doAuthenticate(@BeanParam UserLoginFormAuthenticationForm loginForm){
+	@Path(AuthenticationEndPointConstant.LOGIN_PATH)
+	public Object login(@BeanParam UserLoginFormAuthenticationForm loginForm){
 		LOG.info("[ENTRY]- Received requst for authentication");
 		Object response = userAuthenticationController.doAuthenticate(loginForm);
 		LOG.info("[EXIT]- Received requst for authentication");
@@ -82,8 +85,10 @@ public class UserAuthenticationEndPoint{
 	}
 	
 	/**
-	 * Will perform the 2FA for the user, based on the key and access token provided
-	 * if the details provided are valid, will return a new {@linkplain AccessToken}
+	 * De-serialize the form, tries to validate the earlier token issued to process this request,
+	 * if everything is correct, it will process for OTP validation, if OTP matched, it will generate a new security code
+	 * and send back to the caller
+	 * 
 	 * @param form
 	 * @return
 	 */
@@ -92,11 +97,11 @@ public class UserAuthenticationEndPoint{
 	@JSONP(queryParam="cb", callback="callback")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Path(AuthenticationEndPointConstant.TWO_FACTO_PATH)
-	public Object dp2FA(TwoFactorUserLoginAuthenticationForm form){
-		LOG.info("[ENTRY]- Received request for 2 Factor Authentication");
+	public Object otp(TwoFactorUserLoginAuthenticationForm form){
+		LOG.info("[ENTRY]- Received request for 2 Factor OTP Authentication");
 		Object response = twoFactorAuthController.doAuthenticate(form);
-		LOG.info("[EXIT]- Received request for 2 Factor Authentication");
+		LOG.info("[EXIT]- Received request for 2 Factor OTP Authentication");
 		return response;
 	}
-
+	
 }
