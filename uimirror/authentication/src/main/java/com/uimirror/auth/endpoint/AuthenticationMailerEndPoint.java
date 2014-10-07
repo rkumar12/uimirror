@@ -10,6 +10,7 @@
  *******************************************************************************/
 package com.uimirror.auth.endpoint;
 
+import javax.ws.rs.BeanParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -20,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.uimirror.core.auth.bean.AccessToken;
+import com.uimirror.core.bean.form.AuthenticatedHeaderForm;
 
 /**
  * Controller which will be for the common path, any user will try to be get authenticated.
@@ -45,9 +47,9 @@ public class AuthenticationMailerEndPoint{
 	@Produces({ "application/x-javascript", MediaType.APPLICATION_JSON })
 	@JSONP(queryParam="cb", callback="callback")
 	@Path(AuthenticationEndPointConstant.RESEND_MAIL_PATH)
-	public Object sendMail(){
-		LOG.info("[ENTRY]- Received request for 2 Factor mail token resend");
-		LOG.info("[EXIT]- Received request for 2 Factor mail token resend");
+	public Object sendMail(@BeanParam AuthenticatedHeaderForm form){
+		LOG.info("[ENTRY]- Received request for 2 Factor mail token resend {}", form);
+		LOG.info("[EXIT]- Received request for 2 Factor mail token resend {}", form);
 		return null;
 	}
 	

@@ -8,34 +8,38 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.auth.user.bean.form;
+package com.uimirror.auth.bean.form;
 
-import javax.ws.rs.FormParam;
+import javax.ws.rs.QueryParam;
 
 import com.uimirror.core.auth.controller.AuthParamExtractor;
 import com.uimirror.core.bean.form.AuthenticatedHeaderForm;
 
 /**
- * Converts the {@link FormParam} provided in the POST request for the
- * authentication purpose from the screen locked login screen.
+ * This is the {@linkplain QueryParam} details for the end point 
+ * to retrieve all the login sessions with query limit.
  * 
  * @author Jay
  */
-public class ScreenLockAuthenticationForm extends AuthenticatedHeaderForm{
+public class LoginSessionsForm extends AuthenticatedHeaderForm{
 
-	private static final long serialVersionUID = -1268777827570961853L;
+	private static final long serialVersionUID = 3625790752921721133L;
+	
+	@QueryParam(AuthParamExtractor.LIMIT)
+	private int limit;
 
-	@FormParam(AuthParamExtractor.PASSWORD)
-	private String password;
-
-	public String getPassword() {
-		return password;
+	/**
+	 * Checks if the url don't have any query limit 
+	 * default to 10
+	 * @return
+	 */
+	public int getLimit() {
+		return limit == 0 ? 10 : limit;
 	}
 
 	@Override
 	public String toString() {
-		return "ScreenLockAuthenticationForm [password=" + password + "]";
+		return "LoginSessionsForm [limit=" + limit + "]";
 	}
-	
-	
+
 }

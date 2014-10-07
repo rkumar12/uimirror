@@ -22,7 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.uimirror.core.auth.bean.AccessToken;
-import com.uimirror.core.auth.bean.form.AccessKeyHeaderAuthenticationForm;
+import com.uimirror.core.bean.form.AuthenticatedHeaderForm;
 
 /**
  * Controller which will be for the common path, any 
@@ -51,7 +51,7 @@ public class AccessTokenAuthenticationEndPoint{
 	@JSONP(queryParam="cb", callback="callback")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Path(AuthenticationEndPointConstant.ACCESS_TOKEN_VALIDATION_PATH)
-	public Object doValidate(@BeanParam AccessKeyHeaderAuthenticationForm form){
+	public Object doValidate(@BeanParam AuthenticatedHeaderForm form){
 		LOG.info("[ENTRY]- Received requst for access key validation");
 		LOG.info("[EXIT]- Received requst for access key validation");
 		return null;

@@ -17,25 +17,27 @@ import com.uimirror.core.bean.form.AuthenticatedHeaderForm;
 
 /**
  * Converts the {@link FormParam} provided in the POST request for the
- * authentication purpose from the screen locked login screen.
+ * authentication purpose from the two factor authentication form.
+ * 
+ * Screen will be directly pushed to the client from the uimirror or 
+ * supportive applications or from the client
  * 
  * @author Jay
  */
-public class ScreenLockAuthenticationForm extends AuthenticatedHeaderForm{
+public final class OTPAuthenticationForm extends AuthenticatedHeaderForm {
 
-	private static final long serialVersionUID = -1268777827570961853L;
+	private static final long serialVersionUID = -1215523730014366150L;
+	
+	@FormParam(AuthParamExtractor.OTP)
+	private String otp;
 
-	@FormParam(AuthParamExtractor.PASSWORD)
-	private String password;
-
-	public String getPassword() {
-		return password;
+	public String getOtp() {
+		return otp;
 	}
 
 	@Override
 	public String toString() {
-		return "ScreenLockAuthenticationForm [password=" + password + "]";
+		return "TwoFactorUserLoginAuthenticationForm [otp=" + otp + "]";
 	}
-	
-	
+
 }

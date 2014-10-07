@@ -10,6 +10,7 @@
  *******************************************************************************/
 package com.uimirror.auth.endpoint;
 
+import javax.ws.rs.BeanParam;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -20,6 +21,9 @@ import javax.ws.rs.core.MediaType;
 import org.glassfish.jersey.server.JSONP;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.uimirror.auth.bean.form.ForgetAClientForm;
+import com.uimirror.core.bean.form.AuthenticatedHeaderForm;
 
 /**
  * Controller which will be for the common path, Any client granting access permission
@@ -40,7 +44,7 @@ public class AuthenticationExtrasEndPoint{
 	@POST
 	@Produces({ "application/x-javascript", MediaType.APPLICATION_JSON })
 	@JSONP(queryParam="cb", callback="callback")
-	public Object grantAccessToClient(){
+	public Object grantAccessToClient(@BeanParam AuthenticatedHeaderForm form){
 		LOG.info("[ENTRY]- Received request for granting access to the client, so that it can use the user data on behalf");
 		LOG.info("[EXIT]- Received request for granting access to the client, so that it can use the user data on behalf");
 		return null;
@@ -54,7 +58,7 @@ public class AuthenticationExtrasEndPoint{
 	@DELETE
 	@Produces({ "application/x-javascript", MediaType.APPLICATION_JSON })
 	@JSONP(queryParam="cb", callback="callback")
-	public Object forgetAClient(){
+	public Object forgetAClient(@BeanParam ForgetAClientForm form){
 		LOG.info("[ENTRY]- Received request for forgtting a client, so that client can't access further data without permission again");
 		LOG.info("[EXIT]- Received request for forgtting a client, so that client can't access further data without permission again");
 		return null;
@@ -70,7 +74,7 @@ public class AuthenticationExtrasEndPoint{
 	@GET
 	@Produces({ "application/x-javascript", MediaType.APPLICATION_JSON })
 	@JSONP(queryParam="cb", callback="callback")
-	public Object isClientHasUserPermission(){
+	public Object isClientHasUserPermission(@BeanParam AuthenticatedHeaderForm form){
 		LOG.info("[ENTRY]- Received request for verifying grant access to the client, so that it can use the user data on behalf");
 		LOG.info("[EXIT]- Received request for verifying grant access to the client, so that it can use the user data on behalf");
 		return null;

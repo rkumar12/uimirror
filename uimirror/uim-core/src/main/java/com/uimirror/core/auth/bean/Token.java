@@ -16,6 +16,7 @@ import java.security.GeneralSecurityException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 import com.uimirror.core.crypto.CryptoDefination;
@@ -33,6 +34,7 @@ public class Token {
 	private static final Logger LOG = LoggerFactory.getLogger(Token.class);
 	
 	public Token(String token, String paraphrase) {
+		Assert.hasText(token, "AccessToken Can't be empty");
 		this.token = token;
 		this.paraphrase = paraphrase;
 	}

@@ -10,6 +10,7 @@
  *******************************************************************************/
 package com.uimirror.auth.endpoint;
 
+import javax.ws.rs.BeanParam;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -20,7 +21,10 @@ import org.glassfish.jersey.server.JSONP;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.uimirror.auth.bean.form.InvalidateLoginSessionsForm;
+import com.uimirror.auth.bean.form.LoginSessionsForm;
 import com.uimirror.core.auth.bean.AccessToken;
+import com.uimirror.core.bean.form.AuthenticatedHeaderForm;
 
 /**
  * Controller which will be for the common path, any user will try to be get authenticated.
@@ -33,7 +37,6 @@ import com.uimirror.core.auth.bean.AccessToken;
 public class AuthenticationSessionEndPoint{
 
 	private static Logger LOG = LoggerFactory.getLogger(AuthenticationSessionEndPoint.class);
-
 	
 	/**
 	 * This will get all the associated login sessions for a user.
@@ -45,8 +48,8 @@ public class AuthenticationSessionEndPoint{
 	@GET
 	@Produces({ "application/x-javascript", MediaType.APPLICATION_JSON })
 	@JSONP(queryParam="cb", callback="callback")
-	public Object getLastLoginSessions(){
-		LOG.info("[ENTRY]- Received request for getting list of login sessions currently associated with the user");
+	public Object getLoginSessions(@BeanParam LoginSessionsForm form){
+		LOG.info("[ENTRY]- Received request for getting list of login sessions currently associated with the user {}", form);
 		LOG.info("[EXIT]- Received request for getting list of login sessions currently associated with the user");
 		return null;
 	}
@@ -60,7 +63,7 @@ public class AuthenticationSessionEndPoint{
 	@Produces({ "application/x-javascript", MediaType.APPLICATION_JSON })
 	@JSONP(queryParam="cb", callback="callback")
 	@Path(AuthenticationEndPointConstant.LOGIN_SESSION_INVALID_PATH)
-	public Object invalidateALoginSession(){
+	public Object invalidateALoginSession(@BeanParam InvalidateLoginSessionsForm form){
 		LOG.info("[ENTRY]- Received request for invalidating a login session associated with the user");
 		LOG.info("[EXIT]- Received request for invalidating a login session associated with the user");
 		return null;
@@ -75,7 +78,7 @@ public class AuthenticationSessionEndPoint{
 	@Produces({ "application/x-javascript", MediaType.APPLICATION_JSON })
 	@JSONP(queryParam="cb", callback="callback")
 	@Path(AuthenticationEndPointConstant.LOGIN_SESSION_INVALID_ALL_PATH)
-	public Object invalidateAllLoginSession(){
+	public Object invalidateAllLoginSession(@BeanParam AuthenticatedHeaderForm form){
 		LOG.info("[ENTRY]- Received request for invalidating all actieve login session associated with the user");
 		LOG.info("[EXIT]- Received request for invalidating all actieve login session associated with the user");
 		return null;

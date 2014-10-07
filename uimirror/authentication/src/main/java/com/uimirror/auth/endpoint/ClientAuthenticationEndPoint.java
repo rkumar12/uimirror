@@ -10,6 +10,7 @@
  *******************************************************************************/
 package com.uimirror.auth.endpoint;
 
+import javax.ws.rs.BeanParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -20,7 +21,9 @@ import org.glassfish.jersey.server.JSONP;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.uimirror.auth.client.bean.form.ClientTokenAuthenticationForm;
+import com.uimirror.auth.client.bean.form.ClientAPIForm;
+import com.uimirror.auth.client.bean.form.ClientSecretKeyForm;
+import com.uimirror.core.bean.form.AuthenticatedHeaderForm;
 
 /**
  * Controller which will handle all the client releated request such as 
@@ -32,8 +35,6 @@ import com.uimirror.auth.client.bean.form.ClientTokenAuthenticationForm;
 public class ClientAuthenticationEndPoint{
 
 	private static Logger LOG = LoggerFactory.getLogger(ClientAuthenticationEndPoint.class);
-	public ClientAuthenticationEndPoint() {
-	}
 	
 	/**
 	 * handles the client secret token in the below format
@@ -56,7 +57,7 @@ public class ClientAuthenticationEndPoint{
 	@Produces({ "application/x-javascript", MediaType.APPLICATION_JSON })
 	@JSONP(queryParam="cb", callback="callback")
 	@Path(AuthenticationEndPointConstant.OUATH_2_TOEKEN_PATH)
-	public Object requestAccessToken(ClientTokenAuthenticationForm form){
+	public Object requestAccessToken(@BeanParam ClientSecretKeyForm form){
 		LOG.info("[ENTRY]- Received request for client access toekn");
 		LOG.info("[EXIT]- Received request for client access toekn");
 		return null;
@@ -75,8 +76,8 @@ public class ClientAuthenticationEndPoint{
 	@Produces({ "application/x-javascript", MediaType.APPLICATION_JSON })
 	@JSONP(queryParam="cb", callback="callback")
 	@Path(AuthenticationEndPointConstant.OUATH_2_AUTH_PATH)
-	public Object getSecretCode(){
-		LOG.info("[ENTRY]- Received request for client Secret Code");
+	public Object getSecretCode(@BeanParam ClientAPIForm form){
+		LOG.info("[ENTRY]- Received request for client Secret Code with the param {}", form);
 		LOG.info("[EXIT]- Received request for client Secret Code");
 		return null;
 	}
@@ -92,7 +93,7 @@ public class ClientAuthenticationEndPoint{
 	@Produces({ "application/x-javascript", MediaType.APPLICATION_JSON })
 	@JSONP(queryParam="cb", callback="callback")
 	@Path(AuthenticationEndPointConstant.OUATH_2_TOEKEN_VALIDATE_REFRESH_PATH)
-	public Object validateAndRefreshAccessKey(){
+	public Object validateAndRefreshAccessKey(@BeanParam AuthenticatedHeaderForm form){
 		LOG.info("[ENTRY]- Received request for client AcessToken Validation and re generation iff necessary");
 		LOG.info("[EXIT]- Received request for client AcessToken Validation and re generation iff necessary");
 		return null;

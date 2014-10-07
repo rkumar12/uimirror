@@ -23,8 +23,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.uimirror.auth.user.bean.form.ScreenLockAuthenticationForm;
-import com.uimirror.auth.user.bean.form.TwoFactorUserLoginAuthenticationForm;
-import com.uimirror.auth.user.bean.form.UserLoginFormAuthenticationForm;
+import com.uimirror.auth.user.bean.form.OTPAuthenticationForm;
+import com.uimirror.auth.user.bean.form.LoginFormAuthenticationForm;
 import com.uimirror.core.auth.bean.AccessToken;
 import com.uimirror.core.auth.controller.AuthenticationController;
 
@@ -59,11 +59,12 @@ public class UserAuthenticationEndPoint{
 	@JSONP(queryParam="cb", callback="callback")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Path(AuthenticationEndPointConstant.LOGIN_PATH)
-	public Object login(@BeanParam UserLoginFormAuthenticationForm loginForm){
+	public Object login(@BeanParam LoginFormAuthenticationForm loginForm){
 		LOG.info("[ENTRY]- Received requst for authentication");
-		Object response = userAuthenticationController.doAuthenticate(loginForm);
+		//Object response = userAuthenticationController.doAuthenticate(loginForm);
 		LOG.info("[EXIT]- Received requst for authentication");
-		return response;
+		//return response;
+		return null;
 	}
 	
 	/**
@@ -79,9 +80,10 @@ public class UserAuthenticationEndPoint{
 	@Path(AuthenticationEndPointConstant.UNLOCK_PATH)
 	public Object unlockScreen(ScreenLockAuthenticationForm form){
 		LOG.info("[ENTRY]- Received request for unlocking screen");
-		Object response = screenLockAuthenticationController.doAuthenticate(form);
+		//Object response = screenLockAuthenticationController.doAuthenticate(form);
 		LOG.info("[EXIT]- Received request for unlocking screen");
-		return response;
+		//return response;
+		return null;
 	}
 	
 	/**
@@ -97,11 +99,12 @@ public class UserAuthenticationEndPoint{
 	@JSONP(queryParam="cb", callback="callback")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Path(AuthenticationEndPointConstant.TWO_FACTO_PATH)
-	public Object otp(TwoFactorUserLoginAuthenticationForm form){
+	public Object otp(OTPAuthenticationForm form){
 		LOG.info("[ENTRY]- Received request for 2 Factor OTP Authentication");
-		Object response = twoFactorAuthController.doAuthenticate(form);
+		//Object response = twoFactorAuthController.doAuthenticate(form);
 		LOG.info("[EXIT]- Received request for 2 Factor OTP Authentication");
-		return response;
+//		return response;
+		return null;
 	}
 	
 }

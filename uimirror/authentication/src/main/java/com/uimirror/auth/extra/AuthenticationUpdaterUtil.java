@@ -104,7 +104,7 @@ public class AuthenticationUpdaterUtil{
 				else
 					rfp += 30;
 				break;
-			case ACCESSKEY:
+			case SECRETKEY:
 			case APIKEY:
 			case CLIENTSECRECTKEY:
 			case SCREENLOCK:

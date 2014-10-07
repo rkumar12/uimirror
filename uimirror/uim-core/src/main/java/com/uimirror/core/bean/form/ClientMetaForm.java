@@ -10,6 +10,8 @@
  *******************************************************************************/
 package com.uimirror.core.bean.form;
 
+import java.io.Serializable;
+
 import javax.ws.rs.HeaderParam;
 
 import com.uimirror.core.auth.controller.AuthParamExtractor;
@@ -17,10 +19,13 @@ import com.uimirror.core.auth.controller.AuthParamExtractor;
 /**
  * Stores the basic information about the client such as 
  * ip and userAgent  
+ * 
  * @author Jay
  */
-public class ClientMetaForm {
+public class ClientMetaForm implements Serializable, DefaultHeader{
 
+	private static final long serialVersionUID = -8154326668744495565L;
+	
 	@HeaderParam(AuthParamExtractor.IP)
 	private String ip;
 	@HeaderParam(AuthParamExtractor.USER_AGENT)

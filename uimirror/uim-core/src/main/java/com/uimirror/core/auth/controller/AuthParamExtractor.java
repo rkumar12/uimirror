@@ -33,14 +33,18 @@ public interface AuthParamExtractor extends Parameters, ValidatorService{
 	String KEEP_ME_LOGIN = "keepmelogin";
 	String REDIRECT_URI = "redirect_uri";
 	String SCOPE = "scope";
-	String ACCESS_TOKEN = "Authorization";
+	String APP = "app";
+	String AUTHORIZATION_TOKEN = "Authorization";
+	String ACCESS_TOKEN = "access_token";
 	//Default refresh period is 10 Mins
 	String DEFAULT_REFRESH_INTERVAL = Integer.toString(10*60);
 	
 	//For Client specific screen
 	String CLIENT_ID = "client_id";
 	String CLIENT_SECRET = "client_secret";
-	String CLIENT_CODE = "code";
+	String CLIENT_SECRET_CODE = "code";
+	String LIMIT = "limit";
+	String SESSION_ID = "session_id";
 	
 	/**
 	 * <p>This extract the authentication details such as user name, password

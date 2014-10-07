@@ -52,10 +52,10 @@ public abstract class CommonAuthentication extends ClientMeta implements Authent
 	/* (non-Javadoc)
 	 * @see com.uimirror.core.auth.bean.form.CommonAuthentication#getCredentialType()
 	 */
-	@Override
-	public CredentialType getCredentialType() {
-		return this.cType;
-	}
+//	@Override
+//	public CredentialType getCredentialType() {
+//		return this.cType;
+//	}
 
 
 	/* (non-Javadoc)

@@ -8,34 +8,33 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.auth.user.bean.form;
+package com.uimirror.auth.bean.form;
 
-import javax.ws.rs.FormParam;
+import javax.ws.rs.QueryParam;
 
 import com.uimirror.core.auth.controller.AuthParamExtractor;
 import com.uimirror.core.bean.form.AuthenticatedHeaderForm;
 
 /**
- * Converts the {@link FormParam} provided in the POST request for the
- * authentication purpose from the screen locked login screen.
+ * This is the {@linkplain QueryParam} details for the end point 
+ * to invalidate a perticualr login session.
  * 
  * @author Jay
  */
-public class ScreenLockAuthenticationForm extends AuthenticatedHeaderForm{
+public class InvalidateLoginSessionsForm extends AuthenticatedHeaderForm{
 
-	private static final long serialVersionUID = -1268777827570961853L;
+	private static final long serialVersionUID = 3625790752921721133L;
+	
+	@QueryParam(AuthParamExtractor.SESSION_ID)
+	private String sessionId;
 
-	@FormParam(AuthParamExtractor.PASSWORD)
-	private String password;
-
-	public String getPassword() {
-		return password;
+	public String getSessionId() {
+		return sessionId;
 	}
 
 	@Override
 	public String toString() {
-		return "ScreenLockAuthenticationForm [password=" + password + "]";
+		return "InvalidateLoginSessionsForm [sessionId=" + sessionId + "]";
 	}
-	
-	
+
 }

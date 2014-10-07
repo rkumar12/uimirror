@@ -28,8 +28,8 @@ public class BearerTokenExtractor implements TokenExtractor {
 	 * @see com.uimirror.ws.api.security.ouath.TokenExtractor#extract(javax.ws.rs.container.ContainerRequestContext)
 	 */
 	@Override
-	public String extract(String from) {
-		return extractToken(from);
+	public String extract(String header, String queryParam) {
+		return extractAccessToken(header, queryParam);
 	}
 	
 	/**
@@ -37,8 +37,15 @@ public class BearerTokenExtractor implements TokenExtractor {
 	 * @param from
 	 * @return
 	 */
-	public static String extractAccessToken(String from) {
-		return extractToken(from);
+	public static String extractAccessToken(String header, String queryParam) {
+		// first check the header...
+		String token = extractHeaderToken(header);
+		// bearer type allows a request parameter as well
+		token = token == null ? null : queryParam; 
+		if (token == null) {
+			LOG.debug("Token not found in request parameters.  Not an OAuth2 request.");
+		}
+		return token;
 	}
 
 	/**
@@ -47,9 +54,9 @@ public class BearerTokenExtractor implements TokenExtractor {
 	 * @param from The request.
 	 * @return The token, or null if no OAuth authorization header was supplied.
 	 */
-	protected static String extractToken(String from) {
-		if(StringUtils.hasText(from)){
-			String authHeaderValue = from.substring(SecurityConstants.BEARER.length()).trim();
+	protected static String extractHeaderToken(String header) {
+		if(StringUtils.hasText(header)){
+			String authHeaderValue = header.substring(SecurityConstants.BEARER.length()).trim();
 			int commaIndex = authHeaderValue.indexOf(',');
 			if (commaIndex > 0) {
 				authHeaderValue = authHeaderValue.substring(0, commaIndex);

@@ -8,16 +8,16 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.core.auth.bean.form;
+package com.uimirror.core.bean.form;
 
 import java.io.Serializable;
 
 import javax.ws.rs.HeaderParam;
+import javax.ws.rs.QueryParam;
 
 import com.uimirror.core.auth.BearerTokenExtractor;
-import com.uimirror.core.auth.bean.CredentialType;
+import com.uimirror.core.auth.bean.Token;
 import com.uimirror.core.auth.controller.AuthParamExtractor;
-import com.uimirror.core.bean.form.ClientMetaForm;
 
 /**
  * Converts the {@link HeaderParam} provided in the request for the
@@ -25,44 +25,41 @@ import com.uimirror.core.bean.form.ClientMetaForm;
  * 
  * @author Jay
  */
-public abstract class HeaderAuthenticationForm extends ClientMetaForm implements Serializable, BasicAuthenticationForm{
+public class AuthenticatedHeaderForm extends ClientMetaForm implements Serializable, AuthenticatedRequestParam{
 
 	private static final long serialVersionUID = -1215523730014366150L;
 	
 	@HeaderParam(AuthParamExtractor.TOKEN_ENCRYPTION_STARTEGY)
 	private String tokenEncryptionStartegy;
 	
-	@HeaderParam(AuthParamExtractor.ACCESS_TOKEN)
+	@HeaderParam(AuthParamExtractor.AUTHORIZATION_TOKEN)
 	private String accessToken;
+	
+	//OUTH2 allows accessToken can be part of the query parameter as well
+	@QueryParam(AuthParamExtractor.ACCESS_TOKEN)
+	private String accessTokenInRequestParam;
 
 	/* (non-Javadoc)
-	 * @see com.uimirror.core.auth.bean.BasicAuthenticationForm#getTokenEncryptStartegy()
+	 * @see com.uimirror.core.auth.bean.form.AuthenticatedRequestParam#getToken()
 	 */
 	@Override
-	public String getTokenEncryptStartegy() {
-		return this.tokenEncryptionStartegy;
-	}
-
-	public String getAccessToken() {
-		return BearerTokenExtractor.extractAccessToken(accessToken);
+	public Token getToken() {
+		return new Token(getAccessToken(), tokenEncryptionStartegy).getDecrypted();
 	}
 	
-	public CredentialType getCredentialType() {
-		return CredentialType.ACCESSKEY;
+	/**
+	 * This will return the Extracted token from the request.
+	 * @return
+	 */
+	private String getAccessToken(){
+		return BearerTokenExtractor.extractAccessToken(accessToken, accessTokenInRequestParam);
 	}
 	
-	public String getIp() {
-		return super.getIp();
-	}
-
-	public String getUserAgent() {
-		return super.getUserAgent();
-	}
-
 	@Override
 	public String toString() {
 		return "HeaderAuthenticationForm [tokenEncryptionStartegy="
 				+ tokenEncryptionStartegy + ", accessToken=" + accessToken
+				+ ", accessTokenInRequestParam=" + accessTokenInRequestParam
 				+ "]";
 	}
 	

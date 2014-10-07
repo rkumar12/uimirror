@@ -8,25 +8,16 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.core.auth.bean.form;
+package com.uimirror.core.bean.form;
 
-import com.uimirror.core.auth.bean.CredentialType;
 
 /**
- * Form that will be initiated during any incoming call
- * for authentication.
+ * This will define the contract that every request should have at minimum
+ * user agent and IP associated with the request.
+ * 
  * @author Jay
  */
-public interface CommonAuthentication {
-
-	/**
-	 * Should return the credential type that caller is sending
-	 * it can be anything from the below
-	 * {@link CredentialType#APIKEY}, {@link CredentialType#CLIENTSECRECTKEY}, {@link CredentialType#ACCESSKEY}
-	 * {@link CredentialType#LOGINFORM}, {@link CredentialType#SCREENLOCK}, {@link CredentialType#USERLOGINFORMFROMCLIENT}
-	 * @return
-	 */
-	CredentialType getCredentialType();
+public interface DefaultHeader {
 
 	/**
 	 * This gives the client IP, tries to connect 
@@ -41,5 +32,4 @@ public interface CommonAuthentication {
 	 * @return
 	 */
 	String getUserAgent();
-
 }

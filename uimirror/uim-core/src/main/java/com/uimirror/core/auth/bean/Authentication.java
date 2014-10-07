@@ -13,7 +13,7 @@ package com.uimirror.core.auth.bean;
 import java.io.Serializable;
 import java.security.Principal;
 
-import com.uimirror.core.auth.bean.form.CommonAuthentication;
+import com.uimirror.core.bean.form.AuthenticatedRequestParam;
 
 /**
  * <p>This will be the common principal contract
@@ -22,7 +22,7 @@ import com.uimirror.core.auth.bean.form.CommonAuthentication;
  * once user has been authenticated he will be granted with the {@link AccessToken}
  * @author Jay
  */
-public interface Authentication extends Principal, Serializable, CommonAuthentication {
+public interface Authentication extends Principal, Serializable, AuthenticatedRequestParam {
 	
 	public static final String BEARER = "Bearer";
 	

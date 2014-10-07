@@ -12,7 +12,7 @@ package com.uimirror.core.auth;
 
 
 /**
- * This extracts the ouath token from the header value
+ * This extracts the ouath token from the header value or from the query param
  * @author Jay
  */
 public interface TokenExtractor {
@@ -20,8 +20,9 @@ public interface TokenExtractor {
 	/**
 	 * Extract a token value from an incoming request without authentication.
 	 * 
-	 * @param from the current token from header
+	 * @param header the current token from header
+	 * @param queryParam accessToken in the query param
 	 * @return an authentication token whose principal is an access token (or null if there is none)
 	 */
-	public String extract(String from); 
+	public String extract(String header, String queryParam); 
 }
