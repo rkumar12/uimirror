@@ -12,7 +12,7 @@ package com.uimirror.auth.bean.form;
 
 import javax.ws.rs.QueryParam;
 
-import com.uimirror.core.auth.controller.AuthParamExtractor;
+import com.uimirror.core.auth.AuthConstants;
 import com.uimirror.core.bean.form.AuthenticatedHeaderForm;
 
 /**
@@ -25,7 +25,7 @@ public class ForgetAClientForm extends AuthenticatedHeaderForm{
 
 	private static final long serialVersionUID = 3625790752921721133L;
 	
-	@QueryParam(AuthParamExtractor.CLIENT_ID)
+	@QueryParam(AuthConstants.CLIENT_ID)
 	private String clientId;
 
 	public String getClientId() {

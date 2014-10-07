@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.core;
+package com.uimirror.core.exceptions;
 
 
 /**

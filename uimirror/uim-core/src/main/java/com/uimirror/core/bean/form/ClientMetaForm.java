@@ -14,7 +14,7 @@ import java.io.Serializable;
 
 import javax.ws.rs.HeaderParam;
 
-import com.uimirror.core.auth.controller.AuthParamExtractor;
+import com.uimirror.core.auth.AuthConstants;
 
 /**
  * Stores the basic information about the client such as 
@@ -26,9 +26,9 @@ public class ClientMetaForm implements Serializable, DefaultHeader{
 
 	private static final long serialVersionUID = -8154326668744495565L;
 	
-	@HeaderParam(AuthParamExtractor.IP)
+	@HeaderParam(AuthConstants.IP)
 	private String ip;
-	@HeaderParam(AuthParamExtractor.USER_AGENT)
+	@HeaderParam(AuthConstants.USER_AGENT)
 	private String userAgent;
 
 	public String getIp() {

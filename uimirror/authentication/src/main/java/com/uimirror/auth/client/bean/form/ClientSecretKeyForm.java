@@ -12,7 +12,7 @@ package com.uimirror.auth.client.bean.form;
 
 import javax.ws.rs.QueryParam;
 
-import com.uimirror.core.auth.controller.AuthParamExtractor;
+import com.uimirror.core.auth.AuthConstants;
 import com.uimirror.core.bean.form.ClientMetaForm;
 
 /**
@@ -28,16 +28,16 @@ public class ClientSecretKeyForm extends ClientMetaForm{
 
 	private static final long serialVersionUID = -6338697684103708792L;
 
-	@QueryParam(AuthParamExtractor.CLIENT_SECRET_CODE)
+	@QueryParam(AuthConstants.CLIENT_SECRET_CODE)
 	private String secretCode;
 
-	@QueryParam(AuthParamExtractor.REDIRECT_URI)
+	@QueryParam(AuthConstants.REDIRECT_URI)
 	private String redirectURI;
 
-	@QueryParam(AuthParamExtractor.CLIENT_ID)
+	@QueryParam(AuthConstants.CLIENT_ID)
 	private String clientId;
 	
-	@QueryParam(AuthParamExtractor.CLIENT_SECRET)
+	@QueryParam(AuthConstants.CLIENT_SECRET)
 	private String clientSecret;
 
 	public String getRedirectURI() {

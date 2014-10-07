@@ -16,8 +16,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.uimirror.core.ExceptionMapper;
-import com.uimirror.core.ExceptionMapperFactory;
+import com.uimirror.core.exceptions.ExceptionMapper;
+import com.uimirror.core.exceptions.ExceptionMapperFactory;
 
 /**
  * Any method that annote with {@link MapException} will be waved

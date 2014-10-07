@@ -8,27 +8,23 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.core;
+package com.uimirror.core.service;
 
 /**
- * Common Validation Service which client needs to give implementation for its need
+ * A common transformer contract that defines 
+ * all the bean or object needs to be transformed from 
+ * one type to other depends on the parameter specified
+ * 
  * @author Jay
  */
-public interface ValidatorService {
+public interface Transformer<P,R> {
 
 	/**
-	 * Specifies the contract that a implementer needs to validate the current context 
-	 * by initializing the source via its constructor.
+	 * While defining the implementation for the transformer,
+	 * make sure it should do the basic operation from the source type 
+	 * to destination type conversion
 	 * @param src
 	 * @return
 	 */
-	boolean validate(Object src);
-	
-	/**
-	 * <p>This will validate and match with source and destination</p>
-	 * @param src
-	 * @param des
-	 * @return
-	 */
-	boolean doMatch(Object src, Object des);
+	R transform(P src);
 }

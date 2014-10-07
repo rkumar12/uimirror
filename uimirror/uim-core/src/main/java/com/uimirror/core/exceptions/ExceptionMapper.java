@@ -8,15 +8,23 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.core;
+package com.uimirror.core.exceptions;
 
 /**
- * Factory way to initatilize the instance of the bean
- * Exception mapper may have multiple implemention but it should have 
- * some identifier to maintain in the factory 
+ * General exception strategy which descibes the {@link Throwable} into 
+ * to application logic specific.
+ * Note, the class which is not handling or not falling into the specific exception category should
+ * throw the exception as it is.
  * 
  * @author Jay
  */
-public interface ExceptionMapperFactory {
-	ExceptionMapper getMapper(String name);
+public interface ExceptionMapper {
+
+	/**
+	 * Contracts define the exception to which it needs to be translated.
+	 * 
+	 * @param exceptionToMap
+	 * @return
+	 */
+	Throwable mapIt(Throwable exceptionToMap);
 }

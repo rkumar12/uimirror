@@ -14,7 +14,7 @@ import com.mongodb.BulkWriteException;
 import com.mongodb.CommandFailureException;
 import com.mongodb.MongoCursorNotFoundException;
 import com.mongodb.MongoException;
-import com.uimirror.core.ExceptionMapper;
+import com.uimirror.core.exceptions.ExceptionMapper;
 
 /**
  * This translate Mongo exception to application specific

@@ -10,7 +10,7 @@
  *******************************************************************************/
 package com.uimirror.ws.api.security.exception;
 
-import com.uimirror.core.BaseRunTimeException;
+import com.uimirror.core.exceptions.BaseRunTimeException;
 
 /**
  * <p>RunTime Exception for User Related Information</p>

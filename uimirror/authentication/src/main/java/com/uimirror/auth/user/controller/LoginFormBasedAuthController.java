@@ -15,12 +15,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.uimirror.auth.AuthToApplicationExceptionMapper;
+import com.uimirror.core.auth.AuthConstants;
 import com.uimirror.core.auth.AuthenticationManager;
 import com.uimirror.core.auth.bean.AccessToken;
 import com.uimirror.core.auth.bean.Authentication;
 import com.uimirror.core.auth.bean.CredentialType;
 import com.uimirror.core.auth.bean.form.BasicAuthenticationForm;
-import com.uimirror.core.auth.controller.AuthParamExtractor;
 import com.uimirror.core.auth.controller.AuthenticationController;
 import com.uimirror.core.auth.controller.AuthenticationProvider;
 import com.uimirror.core.extra.MapException;
@@ -37,7 +37,7 @@ public class LoginFormBasedAuthController implements AuthenticationController{
 
 	protected static final Logger LOG = LoggerFactory.getLogger(LoginFormBasedAuthController.class);
 	
-	private @Autowired AuthParamExtractor loginFormAuthParamExtractor;
+	private @Autowired AuthConstants loginFormAuthParamExtractor;
 	private @Autowired ResponseTransFormer<String> jsonResponseTransFormer;
 	private @Autowired AuthenticationProvider loginFormAuthProvider;
 	

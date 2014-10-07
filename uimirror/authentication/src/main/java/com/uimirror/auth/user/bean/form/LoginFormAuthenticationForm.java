@@ -12,7 +12,7 @@ package com.uimirror.auth.user.bean.form;
 
 import javax.ws.rs.FormParam;
 
-import com.uimirror.core.auth.controller.AuthParamExtractor;
+import com.uimirror.core.auth.AuthConstants;
 import com.uimirror.core.bean.form.AuthenticatedHeaderForm;
 
 /**
@@ -28,13 +28,13 @@ public final class LoginFormAuthenticationForm extends AuthenticatedHeaderForm {
 
 	private static final long serialVersionUID = -1215523730014366150L;
 
-	@FormParam(AuthParamExtractor.USER_ID)
+	@FormParam(AuthConstants.USER_ID)
 	private String userId;
 	
-	@FormParam(AuthParamExtractor.PASSWORD)
+	@FormParam(AuthConstants.PASSWORD)
 	private String password;
 	
-	@FormParam(AuthParamExtractor.KEEP_ME_LOGIN)
+	@FormParam(AuthConstants.KEEP_ME_LOGIN)
 	private String keepMeLogedIn;
 
 	public String getUserId() {

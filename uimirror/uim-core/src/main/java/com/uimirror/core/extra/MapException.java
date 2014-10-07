@@ -17,7 +17,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import com.uimirror.core.ExceptionMapper;
+import com.uimirror.core.exceptions.ExceptionMapper;
 
 /**
  * Specifies in the method level

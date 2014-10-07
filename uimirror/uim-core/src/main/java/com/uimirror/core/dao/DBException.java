@@ -10,7 +10,7 @@
  *******************************************************************************/
 package com.uimirror.core.dao;
 
-import com.uimirror.core.BaseRunTimeException;
+import com.uimirror.core.exceptions.BaseRunTimeException;
 
 /**
  * Base exception for all the database related.

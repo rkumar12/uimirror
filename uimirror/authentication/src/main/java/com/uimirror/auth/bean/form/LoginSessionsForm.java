@@ -12,7 +12,7 @@ package com.uimirror.auth.bean.form;
 
 import javax.ws.rs.QueryParam;
 
-import com.uimirror.core.auth.controller.AuthParamExtractor;
+import com.uimirror.core.auth.AuthConstants;
 import com.uimirror.core.bean.form.AuthenticatedHeaderForm;
 
 /**
@@ -25,7 +25,7 @@ public class LoginSessionsForm extends AuthenticatedHeaderForm{
 
 	private static final long serialVersionUID = 3625790752921721133L;
 	
-	@QueryParam(AuthParamExtractor.LIMIT)
+	@QueryParam(AuthConstants.LIMIT)
 	private int limit;
 
 	/**

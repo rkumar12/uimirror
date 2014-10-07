@@ -8,12 +8,10 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.core.auth.controller;
+package com.uimirror.core.auth;
 
 import com.uimirror.core.Parameters;
-import com.uimirror.core.ValidatorService;
 import com.uimirror.core.auth.bean.Authentication;
-import com.uimirror.core.auth.bean.form.BasicAuthenticationForm;
 
 /**
  * Common interface that defines the contract that implementing class 
@@ -23,7 +21,7 @@ import com.uimirror.core.auth.bean.form.BasicAuthenticationForm;
  * 
  * @author Jay
  */
-public interface AuthParamExtractor extends Parameters, ValidatorService{
+public interface AuthConstants extends Parameters{
 
 	String USER_ID = "uid";
 	//This is also known as the parapharse that will be used for decrypting
@@ -46,12 +44,4 @@ public interface AuthParamExtractor extends Parameters, ValidatorService{
 	String LIMIT = "limit";
 	String SESSION_ID = "session_id";
 	
-	/**
-	 * <p>This extract the authentication details such as user name, password
-	 * and other information related to validate the request</p>
-	 * 
-	 * @param param
-	 * @return
-	 */
-	Authentication extractAuthParam(BasicAuthenticationForm param);
 }

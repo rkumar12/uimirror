@@ -16,9 +16,9 @@ import org.springframework.context.annotation.Configuration;
 
 import com.uimirror.auth.AuthExceptionMapper;
 import com.uimirror.auth.AuthToApplicationExceptionMapper;
-import com.uimirror.core.ExceptionMapper;
-import com.uimirror.core.ExceptionMapperFactory;
 import com.uimirror.core.dao.MongoExceptionMapper;
+import com.uimirror.core.exceptions.ExceptionMapper;
+import com.uimirror.core.exceptions.ExceptionMapperFactory;
 import com.uimirror.core.extra.MapExceptionAspect;
 
 /**

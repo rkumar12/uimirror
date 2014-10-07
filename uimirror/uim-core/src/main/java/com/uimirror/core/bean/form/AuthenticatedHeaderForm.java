@@ -15,9 +15,9 @@ import java.io.Serializable;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.QueryParam;
 
+import com.uimirror.core.auth.AuthConstants;
 import com.uimirror.core.auth.BearerTokenExtractor;
 import com.uimirror.core.auth.bean.Token;
-import com.uimirror.core.auth.controller.AuthParamExtractor;
 
 /**
  * Converts the {@link HeaderParam} provided in the request for the
@@ -29,14 +29,14 @@ public class AuthenticatedHeaderForm extends ClientMetaForm implements Serializa
 
 	private static final long serialVersionUID = -1215523730014366150L;
 	
-	@HeaderParam(AuthParamExtractor.TOKEN_ENCRYPTION_STARTEGY)
+	@HeaderParam(AuthConstants.TOKEN_ENCRYPTION_STARTEGY)
 	private String tokenEncryptionStartegy;
 	
-	@HeaderParam(AuthParamExtractor.AUTHORIZATION_TOKEN)
+	@HeaderParam(AuthConstants.AUTHORIZATION_TOKEN)
 	private String accessToken;
 	
 	//OUTH2 allows accessToken can be part of the query parameter as well
-	@QueryParam(AuthParamExtractor.ACCESS_TOKEN)
+	@QueryParam(AuthConstants.ACCESS_TOKEN)
 	private String accessTokenInRequestParam;
 
 	/* (non-Javadoc)

@@ -8,23 +8,19 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.core;
+package com.uimirror.core.service;
 
 /**
- * General exception strategy which descibes the {@link Throwable} into 
- * to application logic specific.
- * Note, the class which is not handling or not falling into the specific exception category should
- * throw the exception as it is.
- * 
+ * Common Matcher service which will check whether the source is === with destination or not
  * @author Jay
  */
-public interface ExceptionMapper {
-
+public interface MatcherService<S, D> {
+	
 	/**
-	 * Contracts define the exception to which it needs to be translated.
-	 * 
-	 * @param exceptionToMap
+	 * <p>This will match with source and destination</p>
+	 * @param src
+	 * @param des
 	 * @return
 	 */
-	Throwable mapIt(Throwable exceptionToMap);
+	boolean doMatch(S src, D des);
 }

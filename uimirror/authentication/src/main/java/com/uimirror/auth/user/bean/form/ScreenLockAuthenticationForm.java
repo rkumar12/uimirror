@@ -12,7 +12,7 @@ package com.uimirror.auth.user.bean.form;
 
 import javax.ws.rs.FormParam;
 
-import com.uimirror.core.auth.controller.AuthParamExtractor;
+import com.uimirror.core.auth.AuthConstants;
 import com.uimirror.core.bean.form.AuthenticatedHeaderForm;
 
 /**
@@ -25,7 +25,7 @@ public class ScreenLockAuthenticationForm extends AuthenticatedHeaderForm{
 
 	private static final long serialVersionUID = -1268777827570961853L;
 
-	@FormParam(AuthParamExtractor.PASSWORD)
+	@FormParam(AuthConstants.PASSWORD)
 	private String password;
 
 	public String getPassword() {

@@ -12,7 +12,7 @@ package com.uimirror.auth.user.bean.form;
 
 import javax.ws.rs.FormParam;
 
-import com.uimirror.core.auth.controller.AuthParamExtractor;
+import com.uimirror.core.auth.AuthConstants;
 import com.uimirror.core.bean.form.AuthenticatedHeaderForm;
 
 /**
@@ -28,7 +28,7 @@ public final class OTPAuthenticationForm extends AuthenticatedHeaderForm {
 
 	private static final long serialVersionUID = -1215523730014366150L;
 	
-	@FormParam(AuthParamExtractor.OTP)
+	@FormParam(AuthConstants.OTP)
 	private String otp;
 
 	public String getOtp() {

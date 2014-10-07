@@ -12,7 +12,7 @@ package com.uimirror.auth.client.bean.form;
 
 import javax.ws.rs.QueryParam;
 
-import com.uimirror.core.auth.controller.AuthParamExtractor;
+import com.uimirror.core.auth.AuthConstants;
 import com.uimirror.core.bean.form.ClientMetaForm;
 
 /**
@@ -26,16 +26,16 @@ public class ClientAPIForm extends ClientMetaForm{
 
 	private static final long serialVersionUID = -6338697684103708792L;
 
-	@QueryParam(AuthParamExtractor.CLIENT_ID)
+	@QueryParam(AuthConstants.CLIENT_ID)
 	private String clientId;
 	
-	@QueryParam(AuthParamExtractor.REDIRECT_URI)
+	@QueryParam(AuthConstants.REDIRECT_URI)
 	private String redirectURI;
 	
-	@QueryParam(AuthParamExtractor.SCOPE)
+	@QueryParam(AuthConstants.SCOPE)
 	private String scope;
 	
-	@QueryParam(AuthParamExtractor.APP)
+	@QueryParam(AuthConstants.APP)
 	private String app;
 	
 	public String getClientId() {

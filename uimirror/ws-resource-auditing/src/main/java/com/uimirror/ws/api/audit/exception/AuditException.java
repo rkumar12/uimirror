@@ -10,7 +10,7 @@
  *******************************************************************************/
 package com.uimirror.ws.api.audit.exception;
 
-import com.uimirror.core.BaseRunTimeException;
+import com.uimirror.core.exceptions.BaseRunTimeException;
 
 /**
  * <p>Base {@link RuntimeException} for the audit processes</p>

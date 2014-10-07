@@ -10,20 +10,21 @@
  *******************************************************************************/
 package com.uimirror.core.auth.controller;
 
-import com.uimirror.core.ValidatorService;
+import com.uimirror.core.auth.AuthConstants;
 import com.uimirror.core.auth.bean.Authentication;
 import com.uimirror.core.auth.bean.form.BasicAuthenticationForm;
+import com.uimirror.core.service.ValidatorService;
 
 /**
  * Extracts the required details and form the {@link Authentication} object 
  * using {@link FormBasedAuthentication}
  * 
- * {@link AuthParamExtractor#extractAuthParam(BasicAuthenticationForm)} will extract the
+ * {@link AuthConstants#extractAuthParam(BasicAuthenticationForm)} will extract the
  * {@link Authentication} object performing {@link ValidatorService#validate(Object)}
  * 
  * @author Jay
  */
-public abstract class DefaultAuthParamextractor extends DefaultHeaderValidator implements AuthParamExtractor{
+public abstract class DefaultAuthParamextractor extends DefaultHeaderValidator implements AuthConstants{
 
 	
 	/* (non-Javadoc)
