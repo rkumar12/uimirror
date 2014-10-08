@@ -12,9 +12,9 @@ package com.uimirror.auth.client.bean;
 
 import java.util.Map;
 
-import com.uimirror.core.auth.bean.CommonAuthentication;
-import com.uimirror.core.auth.bean.CredentialType;
-import com.uimirror.core.auth.bean.Scope;
+import com.uimirror.auth.bean.CommonAuthentication;
+import com.uimirror.auth.bean.CredentialType;
+import com.uimirror.core.auth.Scope;
 
 /**
  * When Client request for a authorization request,

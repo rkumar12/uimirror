@@ -21,7 +21,7 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.mongodb.Mongo;
 import com.uimirror.auth.DBFileds;
-import com.uimirror.core.auth.dao.CredentialsStore;
+import com.uimirror.auth.dao.CredentialsStore;
 import com.uimirror.core.dao.DBException;
 import com.uimirror.core.dao.MongoExceptionMapper;
 import com.uimirror.core.dao.MongoSerializer;

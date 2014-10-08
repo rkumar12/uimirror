@@ -16,10 +16,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
-import com.uimirror.core.auth.AccessTokenFields;
-import com.uimirror.core.auth.bean.AuthenticatedDetails;
-import com.uimirror.core.auth.bean.Authentication;
-import com.uimirror.core.auth.bean.CredentialType;
+import com.uimirror.auth.bean.AuthenticatedDetails;
+import com.uimirror.auth.bean.Authentication;
+import com.uimirror.auth.bean.CredentialType;
+import com.uimirror.auth.core.AccessTokenFields;
 
 /**
  * An utility that helps to update the refresh token to the authenticated details

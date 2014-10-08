@@ -17,7 +17,7 @@ import javax.ws.rs.QueryParam;
 
 import com.uimirror.core.auth.AuthConstants;
 import com.uimirror.core.auth.BearerTokenExtractor;
-import com.uimirror.core.auth.bean.Token;
+import com.uimirror.core.auth.Token;
 
 /**
  * Converts the {@link HeaderParam} provided in the request for the

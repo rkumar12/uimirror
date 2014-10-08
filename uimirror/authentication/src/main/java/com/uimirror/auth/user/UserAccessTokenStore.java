@@ -15,9 +15,9 @@ import java.util.List;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.Mongo;
+import com.uimirror.auth.bean.AccessToken;
 import com.uimirror.auth.dao.AbstractAccessTokenStore;
-import com.uimirror.core.auth.bean.AccessToken;
-import com.uimirror.core.auth.dao.AccessTokenStore;
+import com.uimirror.auth.dao.AccessTokenStore;
 import com.uimirror.core.dao.DBException;
 
 /**

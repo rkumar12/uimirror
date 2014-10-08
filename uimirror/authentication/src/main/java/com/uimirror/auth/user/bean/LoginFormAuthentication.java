@@ -12,7 +12,7 @@ package com.uimirror.auth.user.bean;
 
 import java.util.Map;
 
-import com.uimirror.core.auth.bean.CredentialType;
+import com.uimirror.auth.bean.CredentialType;
 
 /**
  * User Login form that server has submitted and needs to populate as part of the authentication

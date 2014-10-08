@@ -14,10 +14,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.uimirror.core.auth.AuthenticationManager;
-import com.uimirror.core.auth.bean.AccessToken;
-import com.uimirror.core.auth.bean.Authentication;
-import com.uimirror.core.auth.controller.AuthenticationProvider;
+import com.uimirror.auth.bean.AccessToken;
+import com.uimirror.auth.bean.Authentication;
+import com.uimirror.auth.controller.AuthenticationProvider;
+import com.uimirror.auth.core.AuthenticationManager;
 
 /**
  * Will be responsible to generate {@linkplain AccessToken} by validating the existing token,

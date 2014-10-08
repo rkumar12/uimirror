@@ -14,10 +14,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.uimirror.core.auth.AccessTokenManager;
-import com.uimirror.core.auth.bean.AccessToken;
-import com.uimirror.core.auth.bean.AuthenticatedDetails;
-import com.uimirror.core.auth.bean.Authentication;
+import com.uimirror.auth.bean.AccessToken;
+import com.uimirror.auth.bean.AuthenticatedDetails;
+import com.uimirror.auth.bean.Authentication;
+import com.uimirror.auth.core.AccessTokenManager;
 
 /**
  * This is the common implementation of the user authentication provider

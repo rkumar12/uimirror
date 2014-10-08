@@ -18,17 +18,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 
 import com.uimirror.auth.AuthExceptionMapper;
+import com.uimirror.auth.bean.AccessToken;
+import com.uimirror.auth.bean.AuthenticatedDetails;
+import com.uimirror.auth.bean.Authentication;
+import com.uimirror.auth.bean.BasicCredentials;
+import com.uimirror.auth.bean.CredentialType;
+import com.uimirror.auth.core.AuthenticationException;
+import com.uimirror.auth.core.AuthenticationManager;
+import com.uimirror.auth.core.AuthenticationValidationService;
+import com.uimirror.auth.core.BadCredentialsException;
+import com.uimirror.auth.dao.CredentialsStore;
 import com.uimirror.auth.user.bean.UserAuthenticatedDetails;
-import com.uimirror.core.auth.AuthenticationException;
-import com.uimirror.core.auth.AuthenticationManager;
-import com.uimirror.core.auth.AuthenticationValidationService;
-import com.uimirror.core.auth.BadCredentialsException;
-import com.uimirror.core.auth.bean.AccessToken;
-import com.uimirror.core.auth.bean.AuthenticatedDetails;
-import com.uimirror.core.auth.bean.Authentication;
-import com.uimirror.core.auth.bean.BasicCredentials;
-import com.uimirror.core.auth.bean.CredentialType;
-import com.uimirror.core.auth.dao.CredentialsStore;
 import com.uimirror.core.extra.MapException;
 
 /**

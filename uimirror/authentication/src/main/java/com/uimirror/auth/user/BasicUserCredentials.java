@@ -16,9 +16,9 @@ import java.util.Map;
 import org.springframework.util.StringUtils;
 
 import com.uimirror.auth.DBFileds;
-import com.uimirror.core.auth.bean.AccountState;
-import com.uimirror.core.auth.bean.AccountStatus;
-import com.uimirror.core.auth.bean.BasicCredentials;
+import com.uimirror.auth.bean.AccountState;
+import com.uimirror.auth.bean.AccountStatus;
+import com.uimirror.auth.bean.BasicCredentials;
 import com.uimirror.core.mongo.feature.BeanBasedDocument;
 
 /**

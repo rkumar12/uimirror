@@ -10,7 +10,7 @@
  *******************************************************************************/
 package com.uimirror.core.bean.form;
 
-import com.uimirror.core.auth.bean.Token;
+import com.uimirror.core.auth.Token;
 
 /**
  * Form that will be initiated during any incoming call

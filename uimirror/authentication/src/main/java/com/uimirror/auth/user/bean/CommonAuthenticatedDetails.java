@@ -14,7 +14,7 @@ import java.util.Map;
 
 import org.springframework.util.Assert;
 
-import com.uimirror.core.auth.bean.AuthenticatedDetails;
+import com.uimirror.auth.bean.AuthenticatedDetails;
 
 /**
  * Common Authenticated details such as id, refresh token interval and instructions

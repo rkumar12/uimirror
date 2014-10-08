@@ -22,5 +22,5 @@ public interface MatcherService<S, D> {
 	 * @param des
 	 * @return
 	 */
-	boolean doMatch(S src, D des);
+	boolean isMatching(S src, D des);
 }

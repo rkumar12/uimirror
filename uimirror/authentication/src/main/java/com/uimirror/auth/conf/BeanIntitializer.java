@@ -16,13 +16,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
+import com.uimirror.auth.controller.AuthenticationProvider;
+import com.uimirror.auth.core.AuthenticationManager;
+import com.uimirror.auth.core.AuthenticationValidationService;
+import com.uimirror.auth.core.PasswordMatcher;
 import com.uimirror.auth.user.LoginFormAuthProvider;
 import com.uimirror.auth.user.LoginFormAuthenticationManager;
 import com.uimirror.auth.user.UserAuthenticationValidationService;
-import com.uimirror.core.auth.AuthenticationManager;
-import com.uimirror.core.auth.AuthenticationValidationService;
-import com.uimirror.core.auth.PasswordMatcher;
-import com.uimirror.core.auth.controller.AuthenticationProvider;
 import com.uimirror.core.crypto.CryptoMatcherService;
 import com.uimirror.core.crypto.MatcherServiceImpl;
 import com.uimirror.core.rest.extra.JsonResponseTransFormer;

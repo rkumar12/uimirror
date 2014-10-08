@@ -22,11 +22,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.uimirror.auth.bean.AccessToken;
+import com.uimirror.auth.controller.AuthenticationController;
 import com.uimirror.auth.user.bean.form.ScreenLockAuthenticationForm;
 import com.uimirror.auth.user.bean.form.OTPAuthenticationForm;
 import com.uimirror.auth.user.bean.form.LoginFormAuthenticationForm;
-import com.uimirror.core.auth.bean.AccessToken;
-import com.uimirror.core.auth.controller.AuthenticationController;
 
 /**
  * Controller which will be for the common path, any user will try to be get authenticated.

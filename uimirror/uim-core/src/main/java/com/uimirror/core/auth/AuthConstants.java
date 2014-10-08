@@ -11,7 +11,6 @@
 package com.uimirror.core.auth;
 
 import com.uimirror.core.Parameters;
-import com.uimirror.core.auth.bean.Authentication;
 
 /**
  * Common interface that defines the contract that implementing class 

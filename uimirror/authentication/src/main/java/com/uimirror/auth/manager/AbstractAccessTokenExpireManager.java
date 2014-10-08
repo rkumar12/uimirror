@@ -14,10 +14,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 
-import com.uimirror.core.auth.AccessTokenManager;
-import com.uimirror.core.auth.bean.AccessToken;
-import com.uimirror.core.auth.bean.Authentication;
-import com.uimirror.core.auth.dao.AccessTokenStore;
+import com.uimirror.auth.bean.AccessToken;
+import com.uimirror.auth.bean.Authentication;
+import com.uimirror.auth.core.AccessTokenManager;
+import com.uimirror.auth.dao.AccessTokenStore;
 
 /**
  * An implementation for the {@linkplain AccessToken} expiry handler

@@ -17,12 +17,12 @@ import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import com.uimirror.core.auth.AccessTokenFields;
-import com.uimirror.core.auth.AuthenticationManager;
-import com.uimirror.core.auth.bean.Authentication;
-import com.uimirror.core.auth.bean.CommonAuthentication;
-import com.uimirror.core.auth.bean.CredentialType;
-import com.uimirror.core.auth.bean.Scope;
+import com.uimirror.auth.bean.Authentication;
+import com.uimirror.auth.bean.CommonAuthentication;
+import com.uimirror.auth.bean.CredentialType;
+import com.uimirror.auth.core.AccessTokenFields;
+import com.uimirror.auth.core.AuthenticationManager;
+import com.uimirror.core.auth.Scope;
 
 /** 
  * <p>Contains the user authentication details which will be the principal details of the user</p>

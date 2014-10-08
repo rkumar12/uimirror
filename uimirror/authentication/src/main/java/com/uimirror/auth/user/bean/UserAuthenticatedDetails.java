@@ -12,8 +12,8 @@ package com.uimirror.auth.user.bean;
 
 import java.util.Map;
 
+import com.uimirror.auth.bean.AuthenticatedDetails;
 import com.uimirror.core.ActorType;
-import com.uimirror.core.auth.bean.AuthenticatedDetails;
 
 /**
  * This will hold the authenticated details for the user only.

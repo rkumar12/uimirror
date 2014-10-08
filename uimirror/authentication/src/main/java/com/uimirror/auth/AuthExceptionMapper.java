@@ -10,9 +10,9 @@
  *******************************************************************************/
 package com.uimirror.auth;
 
-import com.uimirror.core.auth.AuthenticationException;
-import com.uimirror.core.auth.BadCredentialsException;
-import com.uimirror.core.auth.InternalException;
+import com.uimirror.auth.core.AuthenticationException;
+import com.uimirror.auth.core.BadCredentialsException;
+import com.uimirror.auth.core.InternalException;
 import com.uimirror.core.dao.DBException;
 import com.uimirror.core.dao.RecordNotFoundException;
 import com.uimirror.core.exceptions.ExceptionMapper;

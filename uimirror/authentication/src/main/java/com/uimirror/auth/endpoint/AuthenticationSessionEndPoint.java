@@ -21,9 +21,9 @@ import org.glassfish.jersey.server.JSONP;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.uimirror.auth.bean.AccessToken;
 import com.uimirror.auth.bean.form.InvalidateLoginSessionsForm;
 import com.uimirror.auth.bean.form.LoginSessionsForm;
-import com.uimirror.core.auth.bean.AccessToken;
 import com.uimirror.core.bean.form.AuthenticatedHeaderForm;
 
 /**
