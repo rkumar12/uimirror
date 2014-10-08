@@ -17,7 +17,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 
-import com.uimirror.auth.AuthExceptionMapper;
 import com.uimirror.auth.bean.AccessToken;
 import com.uimirror.auth.bean.AuthenticatedDetails;
 import com.uimirror.auth.bean.Authentication;
@@ -28,6 +27,7 @@ import com.uimirror.auth.core.AuthenticationManager;
 import com.uimirror.auth.core.AuthenticationValidationService;
 import com.uimirror.auth.core.BadCredentialsException;
 import com.uimirror.auth.dao.CredentialsStore;
+import com.uimirror.auth.exception.AuthExceptionMapper;
 import com.uimirror.auth.user.bean.UserAuthenticatedDetails;
 import com.uimirror.core.extra.MapException;
 

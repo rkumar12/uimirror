@@ -34,7 +34,7 @@ public class TwoFactorAuthProvider extends UserAccessTokenProvider implements Au
 	 * @see com.uimirror.core.auth.controller.AuthenticationProvider#getAuthenticateToken(com.uimirror.core.auth.bean.Authentication)
 	 */
 	@Override
-	public AccessToken getAuthenticationToken(Authentication authentication) {
+	public AccessToken authenticate(Authentication authentication) {
 		LOG.debug("[START]- Authenticating, generating or refreshing and storing token");
 		//TODO steps should be from AccessTokenManager get the AccessToken, Deserilze to Authenticated details then
 		// validate the entered otp, if everything seems ok, then generate a new token and send back to the client

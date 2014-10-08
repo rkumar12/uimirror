@@ -106,9 +106,9 @@ public class AuthenticationUpdaterUtil{
 				break;
 			case SECRETKEY:
 			case APIKEY:
-			case CLIENTSECRECTKEY:
+			//case CLIENTSECRECTKEY:
 			case SCREENLOCK:
-			case _2FA:
+			//case _2FA:
 				rfp += 15;
 				break;
 			default:

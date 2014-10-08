@@ -14,13 +14,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.uimirror.auth.AuthToApplicationExceptionMapper;
 import com.uimirror.auth.bean.AccessToken;
 import com.uimirror.auth.bean.Authentication;
 import com.uimirror.auth.bean.CredentialType;
 import com.uimirror.auth.controller.AuthenticationController;
 import com.uimirror.auth.controller.AuthenticationProvider;
 import com.uimirror.auth.core.AuthenticationManager;
+import com.uimirror.auth.exception.AuthToApplicationExceptionMapper;
 import com.uimirror.core.auth.AuthConstants;
 import com.uimirror.core.auth.bean.form.BasicAuthenticationForm;
 import com.uimirror.core.extra.MapException;
@@ -30,16 +30,19 @@ import com.uimirror.core.rest.extra.ResponseTransFormer;
 /**
  * Extracts the field, interact with the {@link AuthenticationManager}
  * and respond back to the caller with the valid response.
+ * This authentication process involves in 2FA OTP validation.
  * 
+ * Its expected user should have given the earlier accessToken along with
+ * the OTP received in the mail
  * @author Jay
  */
-public class LoginFormBasedAuthController implements AuthenticationController{
+public class OTPAuthController implements AuthenticationController{
 
-	protected static final Logger LOG = LoggerFactory.getLogger(LoginFormBasedAuthController.class);
+	protected static final Logger LOG = LoggerFactory.getLogger(OTPAuthController.class);
 	
-	private @Autowired AuthConstants loginFormAuthParamExtractor;
+	private @Autowired AuthConstants twofactorAuthParamExtractor;
 	private @Autowired ResponseTransFormer<String> jsonResponseTransFormer;
-	private @Autowired AuthenticationProvider loginFormAuthProvider;
+	private @Autowired AuthenticationProvider twoFactorAuthProvider;
 	
 	/* (non-Javadoc)
 	 * @see com.uimirror.auth.controller.AuthenticationController#getAccessToken(javax.ws.rs.core.MultivaluedMap)
@@ -47,12 +50,12 @@ public class LoginFormBasedAuthController implements AuthenticationController{
 	@Override
 	@MapException(use=AuthToApplicationExceptionMapper.NAME)
 	public Object doAuthenticate(BasicAuthenticationForm param) throws ApplicationException{
-		LOG.debug("[START]- Getting the accesstoken based on the credentials");
+		LOG.debug("[START]- Generating a new accesstoken based on the previous accesstoken and OTP for the 2FA");
 		//Step 1- Extract authentication details
 		Authentication auth = extractAuthentication(param);
 		//Let GC take this ASAP
 		param = null;
-		LOG.debug("[END]- Getting the accesstoken based on the credentials {}", auth);
+		LOG.debug("[END]- Generating a new accesstoken based on the previous accesstoken and and OTP for the 2FA {}", auth);
 		//Remove Unnecessary information from the accessToken Before Sending to the user
 		return jsonResponseTransFormer.doTransForm(generateToken(auth).toResponseMap());
 	}
@@ -62,7 +65,7 @@ public class LoginFormBasedAuthController implements AuthenticationController{
 	 */
 	@Override
 	public Authentication extractAuthentication(BasicAuthenticationForm param) throws ApplicationException {
-		return loginFormAuthParamExtractor.extractAuthParam(param);
+		return twofactorAuthParamExtractor.extractAuthParam(param);
 	}
 	
 	/**
@@ -72,7 +75,7 @@ public class LoginFormBasedAuthController implements AuthenticationController{
 	 * @return
 	 */
 	private AccessToken generateToken(Authentication auth){
-		return loginFormAuthProvider.getAuthenticationToken(auth);
+		return twoFactorAuthProvider.authenticate(auth);
 	}
 
 }

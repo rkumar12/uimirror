@@ -15,61 +15,62 @@ import java.util.Map;
 import com.uimirror.auth.client.bean.OAuth2Authentication;
 import com.uimirror.core.auth.AuthConstants;
 
-/** 
+/**
  * AccessToken <code>Authentication</code> objects.
  * <p>
  * Implementations which use this class should be immutable.
  * Should accomodate the following details
  * accessToken=code&
  * tokenEncryptionStartegy=parapharse
- * &password=password
+ * &otp=otp
+ *  
  * @author Jay
  */
-public class ScreenLockAuthentication extends OAuth2Authentication{
+public class OTPAuthentication extends OAuth2Authentication{
 	
 	private static final long serialVersionUID = 3795112886906141341L;
-
+	
 	/**
 	 * @param token
-	 * @param password
+	 * @param otp
 	 */
-	public ScreenLockAuthentication(String token, String password) {
+	public OTPAuthentication(String token, String otp) {
 		super(token);
-		init(password);
+		init(otp);
 	}
 	/**
 	 * @param token
-	 * @param password
+	 * @param otp
 	 * @param ip
 	 * @param userAgent
 	 */
-	public ScreenLockAuthentication(String token, String password, String ip, String userAgent) {
+	public OTPAuthentication(String token, String otp, String ip, String userAgent) {
 		super(token, ip, userAgent);
-		init(password);
+		init(otp);
 	}
 
 	/**
 	 * @param tokenPrincipal
 	 * @param details
 	 */
-	public ScreenLockAuthentication(Map<String, Object> tokenPrincipal, Map<String, Object> details) {
+	public OTPAuthentication(Map<String, Object> tokenPrincipal, Map<String, Object> details) {
 		super(tokenPrincipal, details);
 	}
 	
 	/**
-	 * @param password
+	 * @param otp
 	 */
-	private void init(String password){
-		addCrdentials(password);
+	private void init(String otp){
+		addCrdentials(otp);
 	}
 	
 	/**
-	 * @param password
+	 * @param otp
 	 */
 	@SuppressWarnings("unchecked")
-	private void addCrdentials(String password){
+	private void addCrdentials(String otp){
 		Map<String, String> credentials = (Map<String, String>)getCredentials();
-		credentials.put(AuthConstants.PASSWORD, password);
+		credentials.put(AuthConstants.PASSWORD, otp);
 		updateCredentials(credentials);
 	}
 	

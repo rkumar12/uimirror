@@ -10,7 +10,6 @@
  *******************************************************************************/
 package com.uimirror.core.bean.form;
 
-import com.uimirror.core.auth.Token;
 
 /**
  * Form that will be initiated during any incoming call
@@ -26,6 +25,6 @@ public interface AuthenticatedRequestParam{
 	 * It will apply de-cryption, and return the raw token 
 	 * @return
 	 */
-	public Token getToken();
+	public String getToken();
 
 }

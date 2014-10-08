@@ -22,7 +22,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.uimirror.auth.bean.AccessToken;
+import com.uimirror.auth.client.bean.OAuth2Authentication;
 import com.uimirror.core.bean.form.AuthenticatedHeaderForm;
+import com.uimirror.core.service.TransformerService;
 
 /**
  * Controller which will be for the common path, any 
@@ -33,6 +35,7 @@ import com.uimirror.core.bean.form.AuthenticatedHeaderForm;
 @Path(AuthenticationEndPointConstant.ACCESS_HOME_PATH)
 public class AccessTokenAuthenticationEndPoint{
 
+	private TransformerService<AuthenticatedHeaderForm, OAuth2Authentication> accessTokenToAuthTransformer;
 	private static Logger LOG = LoggerFactory.getLogger(AccessTokenAuthenticationEndPoint.class);
 	public AccessTokenAuthenticationEndPoint() {
 	}
@@ -53,6 +56,7 @@ public class AccessTokenAuthenticationEndPoint{
 	@Path(AuthenticationEndPointConstant.ACCESS_TOKEN_VALIDATION_PATH)
 	public Object doValidate(@BeanParam AuthenticatedHeaderForm form){
 		LOG.info("[ENTRY]- Received requst for access key validation");
+		accessTokenToAuthTransformer.transform(form);
 		LOG.info("[EXIT]- Received requst for access key validation");
 		return null;
 	}

@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.auth;
+package com.uimirror.auth.exception;
 
 import com.uimirror.auth.core.AuthenticationException;
 import com.uimirror.auth.core.BadCredentialsException;

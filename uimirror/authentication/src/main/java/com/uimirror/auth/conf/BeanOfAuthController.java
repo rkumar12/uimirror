@@ -14,10 +14,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.uimirror.auth.controller.AuthenticationController;
-import com.uimirror.auth.user.controller.LoginFormAuthParamExtractor;
-import com.uimirror.auth.user.controller.LoginFormBasedAuthController;
-import com.uimirror.auth.user.controller.ScreenLockAuthParamExtractor;
-import com.uimirror.core.auth.AuthConstants;
+import com.uimirror.auth.user.controller.LoginFormAuthController;
 
 /**
  * Contains the bean definition for all the authentication controller process
@@ -29,18 +26,7 @@ public class BeanOfAuthController {
 	
 	@Bean
 	public AuthenticationController loginFormBasedAuthController(){
-		return new LoginFormBasedAuthController();
-	}
-	
-	//######Auth Extractors#########
-	@Bean
-	public AuthConstants loginFormAuthParamExtractor(){
-		return new LoginFormAuthParamExtractor();
-	}
-	
-	@Bean
-	public AuthConstants screenLockAuthParamExtractor(){
-		return new ScreenLockAuthParamExtractor();
+		return new LoginFormAuthController();
 	}
 	
 

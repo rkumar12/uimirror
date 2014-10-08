@@ -10,6 +10,7 @@
  *******************************************************************************/
 package com.uimirror.auth.core;
 
+import com.uimirror.auth.bean.AccessToken;
 import com.uimirror.auth.bean.Authentication;
 
 
@@ -43,5 +44,5 @@ public interface AuthenticationManager {
      *
      * @throws AuthenticationException if authentication fails
      */
-	Authentication authenticate(Authentication authentication) throws AuthenticationException;
+	AccessToken authenticate(Authentication authentication) throws AuthenticationException;
 }

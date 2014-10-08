@@ -15,9 +15,13 @@ import java.io.Serializable;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.QueryParam;
 
+import org.springframework.util.StringUtils;
+
 import com.uimirror.core.auth.AuthConstants;
 import com.uimirror.core.auth.BearerTokenExtractor;
 import com.uimirror.core.auth.Token;
+import com.uimirror.core.rest.extra.IllegalArgumentException;
+import com.uimirror.core.service.BeanValidatorService;
 
 /**
  * Converts the {@link HeaderParam} provided in the request for the
@@ -25,7 +29,7 @@ import com.uimirror.core.auth.Token;
  * 
  * @author Jay
  */
-public class AuthenticatedHeaderForm extends ClientMetaForm implements Serializable, AuthenticatedRequestParam{
+public class AuthenticatedHeaderForm extends ClientMetaForm implements Serializable, AuthenticatedRequestParam, BeanValidatorService{
 
 	private static final long serialVersionUID = -1215523730014366150L;
 	
@@ -43,8 +47,8 @@ public class AuthenticatedHeaderForm extends ClientMetaForm implements Serializa
 	 * @see com.uimirror.core.auth.bean.form.AuthenticatedRequestParam#getToken()
 	 */
 	@Override
-	public Token getToken() {
-		return new Token(getAccessToken(), tokenEncryptionStartegy).getDecrypted();
+	public String getToken() {
+		return new Token(getAccessToken(), tokenEncryptionStartegy).getDecrypted().getToken();
 	}
 	
 	/**
@@ -61,6 +65,30 @@ public class AuthenticatedHeaderForm extends ClientMetaForm implements Serializa
 				+ tokenEncryptionStartegy + ", accessToken=" + accessToken
 				+ ", accessTokenInRequestParam=" + accessTokenInRequestParam
 				+ "]";
+	}
+
+	//**********************Don't forgot to call this method from all the subclass
+	
+	/* (non-Javadoc)
+	 * @see com.uimirror.core.service.BeanValidatorService#isValid()
+	 */
+	@Override
+	public boolean isValid() {
+		validate();
+		return Boolean.FALSE;
+	}
+	
+	private void validate(){
+		if(!StringUtils.hasText(getIp()))
+			informIllegalArgument("IP Address Required for any authentication request");
+		if(!StringUtils.hasText(getUserAgent()))
+			informIllegalArgument("User Agent Required for any authentication request");
+		if(!StringUtils.hasText(getToken()))
+			informIllegalArgument("Access Token Should present");
+	}
+	
+	private void informIllegalArgument(String msg){
+		throw new IllegalArgumentException(msg);
 	}
 	
 }

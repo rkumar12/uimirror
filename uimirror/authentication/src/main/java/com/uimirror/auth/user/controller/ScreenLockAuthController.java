@@ -14,13 +14,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.uimirror.auth.AuthToApplicationExceptionMapper;
 import com.uimirror.auth.bean.AccessToken;
 import com.uimirror.auth.bean.Authentication;
 import com.uimirror.auth.bean.CredentialType;
 import com.uimirror.auth.controller.AuthenticationController;
 import com.uimirror.auth.controller.AuthenticationProvider;
 import com.uimirror.auth.core.AuthenticationManager;
+import com.uimirror.auth.exception.AuthToApplicationExceptionMapper;
 import com.uimirror.core.auth.AuthConstants;
 import com.uimirror.core.auth.bean.form.BasicAuthenticationForm;
 import com.uimirror.core.extra.MapException;
@@ -75,7 +75,7 @@ public class ScreenLockAuthController implements AuthenticationController{
 	 * @return
 	 */
 	private AccessToken generateToken(Authentication auth){
-		return screenLockAuthProvider.getAuthenticationToken(auth);
+		return screenLockAuthProvider.authenticate(auth);
 	}
 
 }

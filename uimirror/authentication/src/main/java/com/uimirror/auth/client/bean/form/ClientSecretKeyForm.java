@@ -12,8 +12,12 @@ package com.uimirror.auth.client.bean.form;
 
 import javax.ws.rs.QueryParam;
 
+import org.springframework.util.StringUtils;
+
 import com.uimirror.core.auth.AuthConstants;
 import com.uimirror.core.bean.form.ClientMetaForm;
+import com.uimirror.core.rest.extra.IllegalArgumentException;
+import com.uimirror.core.service.BeanValidatorService;
 
 /**
  * Converts the {@link QueryParam} provided in the POST request to get
@@ -24,7 +28,7 @@ import com.uimirror.core.bean.form.ClientMetaForm;
  * client_secret=CLIENT_SECRET
  * @author Jay
  */
-public class ClientSecretKeyForm extends ClientMetaForm{
+public class ClientSecretKeyForm extends ClientMetaForm implements BeanValidatorService{
 
 	private static final long serialVersionUID = -6338697684103708792L;
 
@@ -61,6 +65,34 @@ public class ClientSecretKeyForm extends ClientMetaForm{
 		return "ClientAccessCodeForm [code=" + secretCode + ", redirectURI="
 				+ redirectURI + ", clientId=" + clientId + ", clientSecret="
 				+ clientSecret + "]";
+	}
+
+	/* (non-Javadoc)
+	 * @see com.uimirror.core.service.BeanValidatorService#isValid()
+	 */
+	@Override
+	public boolean isValid() {
+		validate();
+		return Boolean.TRUE;
+	}
+	
+	private void validate(){
+		if(!StringUtils.hasText(getIp()))
+			informIllegalArgument("IP Address Required for any authentication request");
+		if(!StringUtils.hasText(getUserAgent()))
+			informIllegalArgument("User Agent Required for any authentication request");
+		if(!StringUtils.hasText(getRedirectURI()))
+			informIllegalArgument("redirect URI should be present");
+		if(!StringUtils.hasText(getClientId()))
+			informIllegalArgument("Client Id Should present");
+		if(!StringUtils.hasText(getClientSecret()))
+			informIllegalArgument("Client Secret Should present");
+		if(!StringUtils.hasText(getSecretCode()))
+			informIllegalArgument("Client Secret Code Should present");
+	}
+	
+	private void informIllegalArgument(String msg){
+		throw new IllegalArgumentException(msg);
 	}
 
 }

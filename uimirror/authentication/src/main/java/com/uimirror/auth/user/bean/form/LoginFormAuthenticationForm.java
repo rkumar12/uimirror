@@ -12,8 +12,13 @@ package com.uimirror.auth.user.bean.form;
 
 import javax.ws.rs.FormParam;
 
+import org.springframework.util.StringUtils;
+
+import com.uimirror.core.BooleanUtil;
 import com.uimirror.core.auth.AuthConstants;
 import com.uimirror.core.bean.form.AuthenticatedHeaderForm;
+import com.uimirror.core.rest.extra.IllegalArgumentException;
+import com.uimirror.core.service.BeanValidatorService;
 
 /**
  * Converts the {@link FormParam} provided in the POST request for the
@@ -24,7 +29,7 @@ import com.uimirror.core.bean.form.AuthenticatedHeaderForm;
  * 
  * @author Jay
  */
-public final class LoginFormAuthenticationForm extends AuthenticatedHeaderForm {
+public final class LoginFormAuthenticationForm extends AuthenticatedHeaderForm implements BeanValidatorService{
 
 	private static final long serialVersionUID = -1215523730014366150L;
 
@@ -45,14 +50,35 @@ public final class LoginFormAuthenticationForm extends AuthenticatedHeaderForm {
 		return password;
 	}
 
-	public String getKeepMeLogedIn() {
-		return keepMeLogedIn;
+	public boolean getKeepMeLogedIn() {
+		return BooleanUtil.parseBoolean(keepMeLogedIn);
 	}
 
 	@Override
 	public String toString() {
-		return "LoginFormAuthenticationForm [userId=" + userId + ", password= <<******>>, "
+		return "LoginFormAuthenticationForm [userId=" + userId + ", password= [******], "
 				+ "keepMeLogedIn=" + keepMeLogedIn + "]";
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.uimirror.core.service.BeanValidatorService#isValid()
+	 */
+	@Override
+	public boolean isValid() {
+		super.isValid();
+		validate();
+		return Boolean.TRUE;
+	}
+	
+	private void validate(){
+		if(!StringUtils.hasText(getPassword()))
+			informIllegalArgument("Password should be present");
+		if(!StringUtils.hasText(getUserId()))
+			informIllegalArgument("User Id Should present");
+	}
+	
+	private void informIllegalArgument(String msg){
+		throw new IllegalArgumentException(msg);
 	}
 
 }

@@ -24,9 +24,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.uimirror.auth.bean.AccessToken;
 import com.uimirror.auth.controller.AuthenticationController;
-import com.uimirror.auth.user.bean.form.ScreenLockAuthenticationForm;
-import com.uimirror.auth.user.bean.form.OTPAuthenticationForm;
+import com.uimirror.auth.user.bean.LoginFormAuthentication;
+import com.uimirror.auth.user.bean.OTPAuthentication;
+import com.uimirror.auth.user.bean.ScreenLockAuthentication;
 import com.uimirror.auth.user.bean.form.LoginFormAuthenticationForm;
+import com.uimirror.auth.user.bean.form.OTPAuthenticationForm;
+import com.uimirror.auth.user.bean.form.ScreenLockAuthenticationForm;
+import com.uimirror.core.service.TransformerService;
 
 /**
  * Controller which will be for the common path, any user will try to be get authenticated.
@@ -42,6 +46,9 @@ public class UserAuthenticationEndPoint{
 	private @Autowired AuthenticationController userAuthenticationController;
 	private @Autowired AuthenticationController screenLockAuthenticationController;
 	private @Autowired AuthenticationController twoFactorAuthController;
+	private TransformerService<LoginFormAuthenticationForm, LoginFormAuthentication> loginFormToAuthTransformer;
+	private TransformerService<ScreenLockAuthenticationForm, ScreenLockAuthentication> screenLockFormToAuthTransformer;
+	private TransformerService<OTPAuthenticationForm, OTPAuthentication> otpFormToAuthTransformer;
 	public UserAuthenticationEndPoint() {
 	}
 	
@@ -62,6 +69,7 @@ public class UserAuthenticationEndPoint{
 	public Object login(@BeanParam LoginFormAuthenticationForm loginForm){
 		LOG.info("[ENTRY]- Received requst for authentication");
 		//Object response = userAuthenticationController.doAuthenticate(loginForm);
+		loginFormToAuthTransformer.transform(loginForm);
 		LOG.info("[EXIT]- Received requst for authentication");
 		//return response;
 		return null;
@@ -81,6 +89,7 @@ public class UserAuthenticationEndPoint{
 	public Object unlockScreen(ScreenLockAuthenticationForm form){
 		LOG.info("[ENTRY]- Received request for unlocking screen");
 		//Object response = screenLockAuthenticationController.doAuthenticate(form);
+		screenLockFormToAuthTransformer.transform(form);
 		LOG.info("[EXIT]- Received request for unlocking screen");
 		//return response;
 		return null;
@@ -102,6 +111,7 @@ public class UserAuthenticationEndPoint{
 	public Object otp(OTPAuthenticationForm form){
 		LOG.info("[ENTRY]- Received request for 2 Factor OTP Authentication");
 		//Object response = twoFactorAuthController.doAuthenticate(form);
+		otpFormToAuthTransformer.transform(form);
 		LOG.info("[EXIT]- Received request for 2 Factor OTP Authentication");
 //		return response;
 		return null;

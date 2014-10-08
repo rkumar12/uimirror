@@ -12,84 +12,97 @@ package com.uimirror.auth.user.bean;
 
 import java.util.Map;
 
-import com.uimirror.auth.bean.CredentialType;
+import com.uimirror.auth.client.bean.OAuth2Authentication;
+import com.uimirror.auth.core.AccessTokenFields;
+import com.uimirror.core.auth.AuthConstants;
 
 /**
- * User Login form that server has submitted and needs to populate as part of the authentication
+ * AccessToken <code>Authentication</code> objects.
+ * <p>
+ * Implementations which use this class should be immutable.
+ * Should accomodate the following details
+ * accessToken=code&
+ * tokenEncryptionStartegy=parapharse
+ * &userId=userid&password=password&keepMeLogedIn=y
  * @author Jay
  */
-public class LoginFormAuthentication extends FormBasedAuthentication{
+public class LoginFormAuthentication extends OAuth2Authentication{
 
 	private static final long serialVersionUID = -4739920105672151406L;
-	private String id;
-	private boolean keepMeLogin;
 	
-	private LoginFormAuthentication(String password, String ip, String uAgent){
-		super(CredentialType.LOGINFORM, password, ip, uAgent);
-	}
-	private LoginFormAuthentication(String password, Map<String, Object> details, String ip, String uAgent){
-		super(CredentialType.LOGINFORM, password, details, ip, uAgent);
-	}
-	private LoginFormAuthentication(String password, Map<String, Object> details) {
-		super(CredentialType.LOGINFORM, password, details);
+	/**
+	 * @param token
+	 * @param userId
+	 * @param password
+	 * @param keepMeLoggedIn
+	 */
+	public LoginFormAuthentication(String token, String userId, String password, boolean keepMeLoggedIn) {
+		super(token);
+		init(userId, password, keepMeLoggedIn);
 	}
 	/**
-	 * @param id
+	 * @param token
+	 * @param userId
 	 * @param password
-	 * @param keepmeLogedIn
-	 * @param details
+	 * @param keepMeLoggedIn
 	 * @param ip
-	 * @param uAgent
+	 * @param userAgent
 	 */
-	public LoginFormAuthentication(String id, String password, boolean keepmeLogedIn, Map<String, Object> details, String ip, String uAgent) {
-		this(password, ip, uAgent);
-		intialize(id, keepmeLogedIn);
+	public LoginFormAuthentication(String token, String userId, String password, boolean keepMeLoggedIn, String ip, String userAgent) {
+		super(token, ip, userAgent);
+		init(userId, password, keepMeLoggedIn);
 	}
 
 	/**
-	 * @param id
-	 * @param password
-	 * @param keepmeLogedIn
-	 * @param ip
-	 * @param uAgent
+	 * @param tokenPrincipal
+	 * @param details
 	 */
-	public LoginFormAuthentication(String id, String password, boolean keepmeLogedIn, String ip, String uAgent){
-		this(password, ip, uAgent);
-		intialize(id, keepmeLogedIn);
+	public LoginFormAuthentication(Map<String, Object> tokenPrincipal, Map<String, Object> details) {
+		super(tokenPrincipal, details);
 	}
 	
 	/**
-	 * @param id
+	 * @param userId
 	 * @param password
-	 * @param keepmeLogedIn
-	 * @param details
+	 * @param keepMeLoggedIn
 	 */
-	public LoginFormAuthentication(String id, String password, boolean keepmeLogedIn, Map<String, Object> details){
-		this(password, details);
-		intialize(id, keepmeLogedIn);
+	private void init(String userId, String password, boolean keepMeLoggedIn){
+		addCrdentials(password);
+		addDetails(userId, keepMeLoggedIn);
 	}
+	
 	/**
-	 * Intialize the objects
-	 * @param id
-	 * @param keepMeLogedIn
+	 * @param password
 	 */
-	private void intialize(String id, boolean keepMeLogedIn){
-		this.id = id;
-		this.keepMeLogin = keepMeLogedIn;
+	@SuppressWarnings("unchecked")
+	private void addCrdentials(String password){
+		Map<String, String> credentials = (Map<String, String>)getCredentials();
+		credentials.put(AuthConstants.PASSWORD, password);
+		updateCredentials(credentials);
 	}
-	/* (non-Javadoc)
-	 * @see com.uimirror.core.auth.bean.Authentication#keepMeLogin()
+	
+	/**
+	 * @param userId
+	 * @param keepMeLoggedIn
 	 */
-	@Override
-	public boolean keepMeLogin() {
-		return this.keepMeLogin;
+	@SuppressWarnings("unchecked")
+	private void addDetails(String userId, boolean keepMeLoggedIn){
+		Map<String, Object> details = (Map<String, Object>)getDetails();
+		details.put(AuthConstants.USER_ID, userId);
+		details.put(AuthConstants.KEEP_ME_LOGIN, keepMeLoggedIn);
+		setDetails(details);
 	}
-	/* (non-Javadoc)
-	 * @see java.security.Principal#getName()
-	 */
+	
 	@Override
-	public String getName() {
-		return this.id;
+	@SuppressWarnings("unchecked")
+	protected String computePrincipalOwner(){
+		String owner = null;
+		Map<String, Object> details = (Map<String, Object>) getDetails();
+		owner = (String) details.get(AuthConstants.USER_ID);
+		if(owner == null){
+			owner = (String)details.get(AccessTokenFields.AUTH_TKN_OWNER);
+		}
+		return owner;
 	}
 
 }

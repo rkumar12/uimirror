@@ -43,7 +43,7 @@ public enum Scope {
 	
 	public static Scope getEnum(String scope) {
     	if(scope == null)
-    		throw new IllegalArgumentException("Access Token Scope can't be empty");
+    		throw new IllegalArgumentException("Scope can't be empty");
     	for(Scope v : values())
     		if(scope.equalsIgnoreCase(v.getScope())) return v;
     	return null;

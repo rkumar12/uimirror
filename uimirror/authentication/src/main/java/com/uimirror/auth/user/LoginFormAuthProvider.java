@@ -39,7 +39,7 @@ public class LoginFormAuthProvider extends UserAccessTokenProvider implements Au
 	 * @see com.uimirror.core.auth.controller.AuthenticationProvider#getAuthenticateToken(com.uimirror.core.auth.bean.Authentication)
 	 */
 	@Override
-	public AccessToken getAuthenticationToken(Authentication authentication) {
+	public AccessToken authenticate(Authentication authentication) {
 		LOG.debug("[START]- Authenticating, generating and storing token");
 		//get the authenticated principal
 		AuthenticatedDetails authDetails = loginFormAuthenticationManager.authenticate(authentication);

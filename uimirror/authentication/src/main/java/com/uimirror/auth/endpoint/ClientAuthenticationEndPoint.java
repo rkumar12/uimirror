@@ -21,9 +21,14 @@ import org.glassfish.jersey.server.JSONP;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.uimirror.auth.bean.Authentication;
+import com.uimirror.auth.client.bean.OAuth2APIKeyAuthentication;
+import com.uimirror.auth.client.bean.OAuth2Authentication;
+import com.uimirror.auth.client.bean.OAuth2SecretKeyAuthentication;
 import com.uimirror.auth.client.bean.form.ClientAPIForm;
 import com.uimirror.auth.client.bean.form.ClientSecretKeyForm;
 import com.uimirror.core.bean.form.AuthenticatedHeaderForm;
+import com.uimirror.core.service.TransformerService;
 
 /**
  * Controller which will handle all the client releated request such as 
@@ -35,7 +40,9 @@ import com.uimirror.core.bean.form.AuthenticatedHeaderForm;
 public class ClientAuthenticationEndPoint{
 
 	private static Logger LOG = LoggerFactory.getLogger(ClientAuthenticationEndPoint.class);
-	
+	private TransformerService<ClientSecretKeyForm, OAuth2SecretKeyAuthentication> secretKeyToAuthTransformer;
+	private TransformerService<ClientAPIForm, OAuth2APIKeyAuthentication> apiKeyToAuthTransformer;
+	private TransformerService<AuthenticatedHeaderForm, OAuth2Authentication> accessTokenToAuthTransformer;
 	/**
 	 * handles the client secret token in the below format
 	 * POST https://api.oauth2server.com/token
@@ -59,6 +66,7 @@ public class ClientAuthenticationEndPoint{
 	@Path(AuthenticationEndPointConstant.OUATH_2_TOEKEN_PATH)
 	public Object requestAccessToken(@BeanParam ClientSecretKeyForm form){
 		LOG.info("[ENTRY]- Received request for client access toekn");
+		Authentication auth = secretKeyToAuthTransformer.transform(form);
 		LOG.info("[EXIT]- Received request for client access toekn");
 		return null;
 	}
@@ -69,7 +77,7 @@ public class ClientAuthenticationEndPoint{
 	 * a user authentication form will process.
 	 * 
 	 * A standard url will look like /auth?response_type=code&
-  	 *	client_id=CLIENT_ID&redirect_uri=REDIRECT_URI&scope=photos
+  	 *	client_id=CLIENT_ID&redirect_uri=REDIRECT_URI&scope=read&app=rti
 	 * @return
 	 */
 	@GET
@@ -78,6 +86,7 @@ public class ClientAuthenticationEndPoint{
 	@Path(AuthenticationEndPointConstant.OUATH_2_AUTH_PATH)
 	public Object getSecretCode(@BeanParam ClientAPIForm form){
 		LOG.info("[ENTRY]- Received request for client Secret Code with the param {}", form);
+		Authentication auth = apiKeyToAuthTransformer.transform(form);
 		LOG.info("[EXIT]- Received request for client Secret Code");
 		return null;
 	}
@@ -95,6 +104,7 @@ public class ClientAuthenticationEndPoint{
 	@Path(AuthenticationEndPointConstant.OUATH_2_TOEKEN_VALIDATE_REFRESH_PATH)
 	public Object validateAndRefreshAccessKey(@BeanParam AuthenticatedHeaderForm form){
 		LOG.info("[ENTRY]- Received request for client AcessToken Validation and re generation iff necessary");
+		accessTokenToAuthTransformer.transform(form);
 		LOG.info("[EXIT]- Received request for client AcessToken Validation and re generation iff necessary");
 		return null;
 	}
