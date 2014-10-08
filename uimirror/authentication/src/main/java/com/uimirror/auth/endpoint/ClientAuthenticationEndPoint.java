@@ -20,15 +20,12 @@ import javax.ws.rs.core.MediaType;
 import org.glassfish.jersey.server.JSONP;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import com.uimirror.auth.bean.Authentication;
-import com.uimirror.auth.client.bean.OAuth2APIKeyAuthentication;
-import com.uimirror.auth.client.bean.OAuth2Authentication;
-import com.uimirror.auth.client.bean.OAuth2SecretKeyAuthentication;
 import com.uimirror.auth.client.bean.form.ClientAPIForm;
 import com.uimirror.auth.client.bean.form.ClientSecretKeyForm;
+import com.uimirror.auth.controller.Processor;
 import com.uimirror.core.bean.form.AuthenticatedHeaderForm;
-import com.uimirror.core.service.TransformerService;
 
 /**
  * Controller which will handle all the client releated request such as 
@@ -40,9 +37,11 @@ import com.uimirror.core.service.TransformerService;
 public class ClientAuthenticationEndPoint{
 
 	private static Logger LOG = LoggerFactory.getLogger(ClientAuthenticationEndPoint.class);
-	private TransformerService<ClientSecretKeyForm, OAuth2SecretKeyAuthentication> secretKeyToAuthTransformer;
-	private TransformerService<ClientAPIForm, OAuth2APIKeyAuthentication> apiKeyToAuthTransformer;
-	private TransformerService<AuthenticatedHeaderForm, OAuth2Authentication> accessTokenToAuthTransformer;
+	
+	private @Autowired Processor<ClientSecretKeyForm> accessTokenProcessor;
+	private @Autowired Processor<ClientAPIForm> secretCodeProcessor;
+	private @Autowired Processor<AuthenticatedHeaderForm> accessTokenExtraProcessor;
+	
 	/**
 	 * handles the client secret token in the below format
 	 * POST https://api.oauth2server.com/token
@@ -66,9 +65,9 @@ public class ClientAuthenticationEndPoint{
 	@Path(AuthenticationEndPointConstant.OUATH_2_TOEKEN_PATH)
 	public Object requestAccessToken(@BeanParam ClientSecretKeyForm form){
 		LOG.info("[ENTRY]- Received request for client access toekn");
-		Authentication auth = secretKeyToAuthTransformer.transform(form);
+		Object response = accessTokenProcessor.invoke(form);
 		LOG.info("[EXIT]- Received request for client access toekn");
-		return null;
+		return response;
 	}
 	
 	/**
@@ -86,9 +85,9 @@ public class ClientAuthenticationEndPoint{
 	@Path(AuthenticationEndPointConstant.OUATH_2_AUTH_PATH)
 	public Object getSecretCode(@BeanParam ClientAPIForm form){
 		LOG.info("[ENTRY]- Received request for client Secret Code with the param {}", form);
-		Authentication auth = apiKeyToAuthTransformer.transform(form);
+		Object response = secretCodeProcessor.invoke(form);
 		LOG.info("[EXIT]- Received request for client Secret Code");
-		return null;
+		return response;
 	}
 	
 	/**
@@ -104,9 +103,9 @@ public class ClientAuthenticationEndPoint{
 	@Path(AuthenticationEndPointConstant.OUATH_2_TOEKEN_VALIDATE_REFRESH_PATH)
 	public Object validateAndRefreshAccessKey(@BeanParam AuthenticatedHeaderForm form){
 		LOG.info("[ENTRY]- Received request for client AcessToken Validation and re generation iff necessary");
-		accessTokenToAuthTransformer.transform(form);
+		Object response = accessTokenExtraProcessor.invoke(form);
 		LOG.info("[EXIT]- Received request for client AcessToken Validation and re generation iff necessary");
-		return null;
+		return response;
 	}
 
 }

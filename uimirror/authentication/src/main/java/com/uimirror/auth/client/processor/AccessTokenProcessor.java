@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.auth.user.controller;
+package com.uimirror.auth.client.processor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,15 +17,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.uimirror.auth.bean.AccessToken;
 import com.uimirror.auth.bean.Authentication;
 import com.uimirror.auth.bean.CredentialType;
-import com.uimirror.auth.controller.AuthenticationController;
+import com.uimirror.auth.client.bean.OAuth2SecretKeyAuthentication;
+import com.uimirror.auth.client.bean.form.ClientSecretKeyForm;
 import com.uimirror.auth.controller.AuthenticationProvider;
+import com.uimirror.auth.controller.Processor;
 import com.uimirror.auth.core.AuthenticationManager;
 import com.uimirror.auth.exception.AuthToApplicationExceptionMapper;
-import com.uimirror.core.auth.AuthConstants;
-import com.uimirror.core.auth.bean.form.BasicAuthenticationForm;
 import com.uimirror.core.extra.MapException;
 import com.uimirror.core.rest.extra.ApplicationException;
 import com.uimirror.core.rest.extra.ResponseTransFormer;
+import com.uimirror.core.service.TransformerService;
 
 /**
  * Extracts the field, interact with the {@link AuthenticationManager}
@@ -33,11 +34,11 @@ import com.uimirror.core.rest.extra.ResponseTransFormer;
  * 
  * @author Jay
  */
-public class LoginFormAuthController implements AuthenticationController{
+public class AccessTokenProcessor implements Processor<ClientSecretKeyForm>{
 
-	protected static final Logger LOG = LoggerFactory.getLogger(LoginFormAuthController.class);
+	protected static final Logger LOG = LoggerFactory.getLogger(AccessTokenProcessor.class);
 	
-	private @Autowired AuthConstants loginFormAuthParamExtractor;
+	private @Autowired TransformerService<ClientSecretKeyForm, OAuth2SecretKeyAuthentication> secretKeyToAuthTransformer;
 	private @Autowired ResponseTransFormer<String> jsonResponseTransFormer;
 	private @Autowired AuthenticationProvider loginFormAuthProvider;
 	
@@ -46,23 +47,26 @@ public class LoginFormAuthController implements AuthenticationController{
 	 */
 	@Override
 	@MapException(use=AuthToApplicationExceptionMapper.NAME)
-	public Object doAuthenticate(BasicAuthenticationForm param) throws ApplicationException{
-		LOG.debug("[START]- Getting the accesstoken based on the credentials");
-		//Step 1- Extract authentication details
-		Authentication auth = extractAuthentication(param);
+	public Object invoke(ClientSecretKeyForm param) throws ApplicationException{
+		LOG.debug("[START]- Authenticating the user and trying to to get the authentication details");
+		//Step 1- Transform the bean to Authentication
+		Authentication auth = getTransformedObject(param);
+		//Authentication auth = extractAuthentication(param);
 		//Let GC take this ASAP
 		param = null;
-		LOG.debug("[END]- Getting the accesstoken based on the credentials {}", auth);
+		LOG.debug("[END]- Authenticating the user and trying to to get the authentication details {}", auth);
 		//Remove Unnecessary information from the accessToken Before Sending to the user
 		return jsonResponseTransFormer.doTransForm(generateToken(auth).toResponseMap());
 	}
-
-	/* (non-Javadoc)
-	 * @see com.uimirror.auth.controller.AuthenticationController#getAuthentication(java.lang.Object)
+	
+	/**
+	 * converts the form bean object into a {@link Authentication} object
+	 * 
+	 * @param param
+	 * @return
 	 */
-	@Override
-	public Authentication extractAuthentication(BasicAuthenticationForm param) throws ApplicationException {
-		return loginFormAuthParamExtractor.extractAuthParam(param);
+	private Authentication getTransformedObject(ClientSecretKeyForm param){
+		return secretKeyToAuthTransformer.transform(param);
 	}
 	
 	/**

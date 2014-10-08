@@ -35,7 +35,7 @@ import com.uimirror.core.rest.extra.TransformResponseAspect;
  * @author Jay
  */
 @Configuration
-@Import({BeanOfExceptionIntitializer.class, BeanOfAuthController.class})
+@Import({BeanOfExceptionIntitializer.class, BeanOfAuthProcessor.class})
 public class BeanIntitializer {
 
 	@Bean(name="json")
