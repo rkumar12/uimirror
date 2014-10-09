@@ -14,7 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.uimirror.auth.bean.CredentialType;
 import com.uimirror.auth.client.bean.OAuth2APIKeyAuthentication;
 import com.uimirror.auth.client.bean.form.ClientAPIForm;
 import com.uimirror.auth.controller.AuthenticationProvider;
@@ -52,11 +51,12 @@ public class APIKeyProcessor implements Processor<ClientAPIForm>{
 		Authentication auth = getTransformedObject(param);
 		//Let GC take this ASAP
 		param = null;
-		LOG.debug("[END]- Authenticating the user and trying to to get the authentication details {}", auth);
-		//Remove Unnecessary information from the accessToken Before Sending to the user
-		Authentication authPrincipal = generateToken(auth);
+		//Step 2- Authenticate and issue a token
+		Authentication authPrincipal = authenticateAndIssueToken(auth);
 		AccessToken token = (AccessToken)authPrincipal.getPrincipal();
-		return jsonResponseTransFormer.doTransForm(token.toResponseMap());
+		//Remove Unnecessary information from the accessToken Before Sending to the user
+		LOG.debug("[END]- Authenticating the user and trying to to get the authentication details {}", auth);
+		return jsonResponseTransFormer.doTransForm(token);
 	}
 	
 	/**
@@ -70,12 +70,13 @@ public class APIKeyProcessor implements Processor<ClientAPIForm>{
 	}
 	
 	/**
-	 * On basics of {@link CredentialType}, it will simply validate or generate 
-	 * the access token {@link AccessToken}
+	 * This will validate the API key and generate a token, that will be used by
+	 * login page submit.
+	 * 
 	 * @param auth
 	 * @return
 	 */
-	private Authentication generateToken(Authentication auth){
+	private Authentication authenticateAndIssueToken(Authentication auth){
 		return apiKeyAuthProvider.authenticate(auth);
 	}
 

@@ -26,6 +26,7 @@ import com.uimirror.core.auth.Authentication;
  * 
  * @author Jay
  */
+@Deprecated
 public class AuthenticationUpdaterUtil{
 
 	protected static final Logger LOG = LoggerFactory.getLogger(AuthenticationUpdaterUtil.class);
@@ -66,7 +67,7 @@ public class AuthenticationUpdaterUtil{
 		minuteToAdd = findPeriodFromInstructions((Map<String, Object>)details.getInstructions());
 		if(minuteToAdd == 0){
 			//find the number based on the credential type
-			minuteToAdd = decideByCredentialType(auth);
+			minuteToAdd = 0;//decideByCredentialType(auth);
 		}
 		return minuteToAdd;
 	}
@@ -93,32 +94,32 @@ public class AuthenticationUpdaterUtil{
 	 * @param details
 	 * @return
 	 */
-	private static int decideByCredentialType(Authentication auth){
-		CredentialType type = auth.getCredentialType();
-		int rfp = 0;
-		if( type != null){
-			switch(type){
-			case LOGINFORM:
-				if(auth.keepMeLogin())
-					rfp += 24*60;
-				else
-					rfp += 30;
-				break;
-			case SECRETKEY:
-			case APIKEY:
-			//case CLIENTSECRECTKEY:
-			case SCREENLOCK:
-			//case _2FA:
-				rfp += 15;
-				break;
-			default:
-				rfp += 15;
-				break;
-			
-			}
-		}
-		rfp = (rfp == 0) ? 15 : rfp; 
-		return rfp;
-	}
+//	private static int decideByCredentialType(Authentication auth){
+//		CredentialType type = auth.getCredentialType();
+//		int rfp = 0;
+//		if( type != null){
+//			switch(type){
+//			case LOGINFORM:
+//				if(auth.keepMeLogin())
+//					rfp += 24*60;
+//				else
+//					rfp += 30;
+//				break;
+//			case SECRETKEY:
+//			case APIKEY:
+//			//case CLIENTSECRECTKEY:
+//			case SCREENLOCK:
+//			//case _2FA:
+//				rfp += 15;
+//				break;
+//			default:
+//				rfp += 15;
+//				break;
+//			
+//			}
+//		}
+//		rfp = (rfp == 0) ? 15 : rfp; 
+//		return rfp;
+//	}
 
 }

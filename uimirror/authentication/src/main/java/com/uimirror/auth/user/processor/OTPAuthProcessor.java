@@ -56,11 +56,11 @@ public class OTPAuthProcessor implements Processor<OTPAuthenticationForm>{
 		Authentication auth = getTransformedObject(param);
 		//Let GC take this ASAP
 		param = null;
-		LOG.debug("[END]- Generating a new accesstoken based on the previous accesstoken and and OTP for the 2FA {}", auth);
 		//Remove Unnecessary information from the accessToken Before Sending to the user
-		Authentication authToken = generateToken(auth);
+		Authentication authToken = authenticateAndIssueToken(auth);
 		AccessToken token = (AccessToken)authToken.getPrincipal();
-		return jsonResponseTransFormer.doTransForm(token.toResponseMap());
+		LOG.debug("[END]- Generating a new accesstoken based on the previous accesstoken and and OTP for the 2FA {}", auth);
+		return jsonResponseTransFormer.doTransForm(token);
 	}
 	
 	/**
@@ -78,7 +78,7 @@ public class OTPAuthProcessor implements Processor<OTPAuthenticationForm>{
 	 * @param auth
 	 * @return
 	 */
-	private Authentication generateToken(Authentication auth){
+	private Authentication authenticateAndIssueToken(Authentication auth){
 		return otpAuthProvider.authenticate(auth);
 	}
 

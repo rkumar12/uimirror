@@ -10,19 +10,24 @@
  *******************************************************************************/
 package com.uimirror.auth.user.provider;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 
 import com.uimirror.auth.controller.AccessTokenProvider;
 import com.uimirror.auth.controller.AuthenticationProvider;
 import com.uimirror.auth.core.AuthenticationManager;
+import com.uimirror.auth.user.bean.OTPAuthentication;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.Authentication;
 
 /**
- * Will be responsible to generate {@linkplain AccessToken} by validating the existing token,
- * then validate the provided OTP for the 2FA.
+ * Validates the {@link Authentication} and populate the authenticated principal
+ * with the appropriate token i.e temporal_token/secret_token.
  * 
  * it should adhere the methodology of {@linkplain AuthenticationManager#authenticate(Authentication)}
  * 
@@ -32,6 +37,7 @@ public class OTPAuthProvider implements AuthenticationProvider{
 
 	private static final Logger LOG = LoggerFactory.getLogger(OTPAuthProvider.class);
 	private @Autowired AccessTokenProvider persistedAccessTokenProvider;
+	private @Autowired AuthenticationManager otpAuthenticationManager;
 
 	/* (non-Javadoc)
 	 * @see com.uimirror.core.auth.controller.AuthenticationProvider#getAuthenticateToken(com.uimirror.core.auth.bean.Authentication)
@@ -39,18 +45,53 @@ public class OTPAuthProvider implements AuthenticationProvider{
 	@Override
 	public Authentication authenticate(Authentication authentication) {
 		LOG.debug("[START]- Authenticating, generating or refreshing and storing token");
-		//TODO steps should be from AccessTokenManager get the AccessToken, Deserilze to Authenticated details then
-		// validate the entered otp, if everything seems ok, then generate a new token and send back to the client
-		//get the authenticated principal
-		//Check how you can do validation to make use of AuthenticationValidationService
-		AccessToken accessToken = persistedAccessTokenProvider.getValidToken(authentication);
-		//After getting the valid token match those details if matching generate a new token 
-		//TODO think smartly how you can really generate a new token without changing existing architecture
-		//AuthenticatedDetails authDetails = screenLockAuthenticationManager.authenticate(authentication);
-		//Generate a Access Token
-		//AccessToken accessToken = super.generateToken(authentication, authDetails);
+		//Step 1- get the authenticated principal
+		Authentication authenticated = getAuthenticatedDetails(authentication);
+		//Step 2- generate a authentication which has a access token
 		LOG.debug("[END]- Authenticating, generating or refreshing and storing token");
-		return null;
+		return generateAuthenticatedTokenPrincipal(authenticated);
+	}
+
+	/**
+	 * Will interact with the {@link AuthenticationManager} to get the prinicpal of the caller
+	 * @param auth
+	 * @return
+	 */
+	private Authentication getAuthenticatedDetails(Authentication auth){
+		//This should check what type of token needs to generate
+		//such as user has granted access to client earlier or not etc.
+		//TODO
+		return otpAuthenticationManager.authenticate(auth);
+	}
+	
+	/**
+	 * It should generate a access token and tries to encapsulate the accesstoken to the
+	 * {@link Authentication}
+	 * 
+	 * @param auth an authenticated principal that indicate the principal clearly.
+	 * @return
+	 */
+	private Authentication generateAuthenticatedTokenPrincipal(Authentication auth){
+		//Generate a Access Token
+		AccessToken accessToken = persistedAccessTokenProvider.generateToken(auth);
+		return populateNewAuthenticatedToken(accessToken);
+	}
+	
+	/**
+	 * Generates a new {@link Authentication} object using the {@link AccessToken}
+	 * @param token
+	 * @return
+	 */
+	private Authentication populateNewAuthenticatedToken(AccessToken token){
+		Map<String, Object> details = new LinkedHashMap<String, Object>(10);
+		if(!CollectionUtils.isEmpty(token.getNotes())){
+			details.putAll(token.getNotes());
+		}
+		if(!CollectionUtils.isEmpty(token.getInstructions())){
+			details.putAll(token.getInstructions());
+		}
+		token.eraseEsential();
+		return new OTPAuthentication(token, details);
 	}
 
 	/* (non-Javadoc)
@@ -58,8 +99,7 @@ public class OTPAuthProvider implements AuthenticationProvider{
 	 */
 	@Override
 	public boolean supports(Class<?> authentication) {
-		// TODO Auto-generated method stub
-		return false;
+		return OTPAuthentication.class.isAssignableFrom(authentication);
 	}
 
 }

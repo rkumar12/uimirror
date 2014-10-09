@@ -38,7 +38,7 @@ public interface AccessToken extends Principal, Serializable{
 	 * Represents the issued token and its paraphrase
 	 * @return
 	 */
-	String getToken();
+	Token getToken();
 	
 	/**
 	 * Specifies the time in mills, the token will expire on

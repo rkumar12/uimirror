@@ -33,7 +33,7 @@ public class OAuth2SecretKeyAuthentication extends AbstractAuthentication{
 
 	private static final long serialVersionUID = 347196781678243458L;
 	private Map<String, String> credentials; 
-	private Map<String, Object> token;
+	private Object token;
 
 	public OAuth2SecretKeyAuthentication(String code, String redirectUrl, String clientId, String clientSecret) {
 		init(code, redirectUrl, clientId, clientSecret);
@@ -43,7 +43,7 @@ public class OAuth2SecretKeyAuthentication extends AbstractAuthentication{
 		init(code, redirectUrl, clientId, clientSecret);
 	}
 	
-	public OAuth2SecretKeyAuthentication(Map<String, Object> tokenPrincipal, Map<String, Object> details) {
+	public OAuth2SecretKeyAuthentication(Object tokenPrincipal, Map<String, Object> details) {
 		this.token = tokenPrincipal;
 		setDetails(details);
 	}

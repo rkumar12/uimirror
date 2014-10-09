@@ -51,14 +51,14 @@ public class AccessTokenProcessor implements Processor<AuthenticatedHeaderForm>{
 		LOG.debug("[START]- Authenticating the user and trying to to get the authentication details");
 		//Step 1- Transform the bean to Authentication
 		Authentication auth = getTransformedObject(param);
-		//Authentication auth = extractAuthentication(param);
 		//Let GC take this ASAP
 		param = null;
+		//Step 2- Authenticate and issue a token
+		Authentication authPrincipal = authenticateAndIssueToken(auth);
+		AccessToken token = (AccessToken)authPrincipal.getPrincipal();
 		LOG.debug("[END]- Authenticating the user and trying to to get the authentication details {}", auth);
 		//Remove Unnecessary information from the accessToken Before Sending to the user
-		Authentication authPrincipal = generateToken(auth);
-		AccessToken token = (AccessToken)authPrincipal.getPrincipal();
-		return jsonResponseTransFormer.doTransForm(token.toResponseMap());
+		return jsonResponseTransFormer.doTransForm(token);
 	}
 	
 	/**
@@ -77,7 +77,7 @@ public class AccessTokenProcessor implements Processor<AuthenticatedHeaderForm>{
 	 * @param auth
 	 * @return
 	 */
-	private Authentication generateToken(Authentication auth){
+	private Authentication authenticateAndIssueToken(Authentication auth){
 		return accessKeyAuthProvider.authenticate(auth);
 	}
 

@@ -53,7 +53,7 @@ public class OTPAuthentication extends OAuth2Authentication{
 	 * @param tokenPrincipal
 	 * @param details
 	 */
-	public OTPAuthentication(Map<String, Object> tokenPrincipal, Map<String, Object> details) {
+	public OTPAuthentication(Object tokenPrincipal, Map<String, Object> details) {
 		super(tokenPrincipal, details);
 	}
 	

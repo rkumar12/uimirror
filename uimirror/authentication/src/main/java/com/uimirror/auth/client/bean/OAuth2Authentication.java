@@ -30,7 +30,7 @@ import com.uimirror.core.auth.AuthConstants;
 public class OAuth2Authentication extends AbstractAuthentication{
 
 	private static final long serialVersionUID = 347196781678243458L;
-	private Map<String, Object> token;
+	private Object token;
 	private Map<String, String> credentials;
 
 	public OAuth2Authentication(String token) {
@@ -41,7 +41,7 @@ public class OAuth2Authentication extends AbstractAuthentication{
 		init(token);
 	}
 	
-	public OAuth2Authentication(Map<String, Object> tokenPrincipal, Map<String, Object> details) {
+	public OAuth2Authentication(Object tokenPrincipal, Map<String, Object> details) {
 		this.token = tokenPrincipal;
 		setDetails(details);
 	}

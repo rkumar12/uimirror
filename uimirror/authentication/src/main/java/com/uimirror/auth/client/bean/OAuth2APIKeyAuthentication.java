@@ -30,7 +30,7 @@ import com.uimirror.core.auth.Scope;
 public class OAuth2APIKeyAuthentication extends AbstractAuthentication{
 
 	private static final long serialVersionUID = 347196781678243458L;
-	private Map<String, Object> token;
+	private Object token;
 
 	public OAuth2APIKeyAuthentication(String clientId, String redirectUrl, String scope, String app) {
 		init(clientId, redirectUrl, scope, app);
@@ -40,7 +40,7 @@ public class OAuth2APIKeyAuthentication extends AbstractAuthentication{
 		init(clientId, redirectUrl, scope, app);
 	}
 	
-	public OAuth2APIKeyAuthentication(Map<String, Object> tokenPrincipal, Map<String, Object> details) {
+	public OAuth2APIKeyAuthentication(Object tokenPrincipal, Map<String, Object> details) {
 		this.token = tokenPrincipal;
 		setDetails(details);
 	}
