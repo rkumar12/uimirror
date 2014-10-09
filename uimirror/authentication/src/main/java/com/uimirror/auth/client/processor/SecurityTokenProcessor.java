@@ -17,12 +17,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.uimirror.auth.bean.AccessToken;
 import com.uimirror.auth.bean.Authentication;
 import com.uimirror.auth.bean.CredentialType;
-import com.uimirror.auth.client.bean.OAuth2Authentication;
+import com.uimirror.auth.client.bean.OAuth2SecretKeyAuthentication;
+import com.uimirror.auth.client.bean.form.ClientSecretKeyForm;
 import com.uimirror.auth.controller.AuthenticationProvider;
 import com.uimirror.auth.controller.Processor;
 import com.uimirror.auth.core.AuthenticationManager;
 import com.uimirror.auth.exception.AuthToApplicationExceptionMapper;
-import com.uimirror.core.bean.form.AuthenticatedHeaderForm;
 import com.uimirror.core.extra.MapException;
 import com.uimirror.core.rest.extra.ApplicationException;
 import com.uimirror.core.rest.extra.ResponseTransFormer;
@@ -34,11 +34,11 @@ import com.uimirror.core.service.TransformerService;
  * 
  * @author Jay
  */
-public class AccessTokenExtraProcessor implements Processor<AuthenticatedHeaderForm>{
+public class SecurityTokenProcessor implements Processor<ClientSecretKeyForm>{
 
-	protected static final Logger LOG = LoggerFactory.getLogger(AccessTokenExtraProcessor.class);
+	protected static final Logger LOG = LoggerFactory.getLogger(SecurityTokenProcessor.class);
 	
-	private @Autowired TransformerService<AuthenticatedHeaderForm, OAuth2Authentication> accessTokenToAuthTransformer;
+	private @Autowired TransformerService<ClientSecretKeyForm, OAuth2SecretKeyAuthentication> secretKeyToAuthTransformer;
 	private @Autowired ResponseTransFormer<String> jsonResponseTransFormer;
 	private @Autowired AuthenticationProvider loginFormAuthProvider;
 	
@@ -47,7 +47,7 @@ public class AccessTokenExtraProcessor implements Processor<AuthenticatedHeaderF
 	 */
 	@Override
 	@MapException(use=AuthToApplicationExceptionMapper.NAME)
-	public Object invoke(AuthenticatedHeaderForm param) throws ApplicationException{
+	public Object invoke(ClientSecretKeyForm param) throws ApplicationException{
 		LOG.debug("[START]- Authenticating the user and trying to to get the authentication details");
 		//Step 1- Transform the bean to Authentication
 		Authentication auth = getTransformedObject(param);
@@ -65,8 +65,8 @@ public class AccessTokenExtraProcessor implements Processor<AuthenticatedHeaderF
 	 * @param param
 	 * @return
 	 */
-	private Authentication getTransformedObject(AuthenticatedHeaderForm param){
-		return accessTokenToAuthTransformer.transform(param);
+	private Authentication getTransformedObject(ClientSecretKeyForm param){
+		return secretKeyToAuthTransformer.transform(param);
 	}
 	
 	/**

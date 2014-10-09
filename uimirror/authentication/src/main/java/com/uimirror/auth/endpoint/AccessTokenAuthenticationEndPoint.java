@@ -20,11 +20,11 @@ import javax.ws.rs.core.MediaType;
 import org.glassfish.jersey.server.JSONP;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.uimirror.auth.bean.AccessToken;
-import com.uimirror.auth.client.bean.OAuth2Authentication;
+import com.uimirror.auth.controller.Processor;
 import com.uimirror.core.bean.form.AuthenticatedHeaderForm;
-import com.uimirror.core.service.TransformerService;
 
 /**
  * Controller which will be for the common path, any 
@@ -35,14 +35,14 @@ import com.uimirror.core.service.TransformerService;
 @Path(AuthenticationEndPointConstant.ACCESS_HOME_PATH)
 public class AccessTokenAuthenticationEndPoint{
 
-	private TransformerService<AuthenticatedHeaderForm, OAuth2Authentication> accessTokenToAuthTransformer;
+	private @Autowired Processor<AuthenticatedHeaderForm> accessTokenExtraProcessor;
 	private static Logger LOG = LoggerFactory.getLogger(AccessTokenAuthenticationEndPoint.class);
 	public AccessTokenAuthenticationEndPoint() {
 	}
 	
 	/**
 	 * Validate the given access token and returns 
-	 * true if valid with status code as 304
+	 * populated token if valid with status code as 304
 	 * This can also generate a new token if necessary with the status code
 	 * as 200
 	 * 
@@ -56,9 +56,9 @@ public class AccessTokenAuthenticationEndPoint{
 	@Path(AuthenticationEndPointConstant.ACCESS_TOKEN_VALIDATION_PATH)
 	public Object doValidate(@BeanParam AuthenticatedHeaderForm form){
 		LOG.info("[ENTRY]- Received requst for access key validation");
-		accessTokenToAuthTransformer.transform(form);
+		Object response = accessTokenExtraProcessor.invoke(form);
 		LOG.info("[EXIT]- Received requst for access key validation");
-		return null;
+		return response;
 	}
 
 }

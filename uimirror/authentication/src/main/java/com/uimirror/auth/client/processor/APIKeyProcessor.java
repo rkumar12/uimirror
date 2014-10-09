@@ -34,9 +34,9 @@ import com.uimirror.core.service.TransformerService;
  * 
  * @author Jay
  */
-public class SecretCodeProcessor implements Processor<ClientAPIForm>{
+public class APIKeyProcessor implements Processor<ClientAPIForm>{
 
-	protected static final Logger LOG = LoggerFactory.getLogger(SecretCodeProcessor.class);
+	protected static final Logger LOG = LoggerFactory.getLogger(APIKeyProcessor.class);
 	
 	private @Autowired TransformerService<ClientAPIForm, OAuth2APIKeyAuthentication> apiKeyToAuthTransformer;
 	private @Autowired ResponseTransFormer<String> jsonResponseTransFormer;
