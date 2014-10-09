@@ -10,11 +10,11 @@
  *******************************************************************************/
 package com.uimirror.auth.user;
 
-import com.uimirror.auth.bean.AccessToken;
 import com.uimirror.auth.bean.AuthenticatedDetails;
-import com.uimirror.auth.bean.Authentication;
 import com.uimirror.auth.dao.AccessTokenStore;
 import com.uimirror.auth.manager.AbstractAccessTokenValidateManager;
+import com.uimirror.core.auth.AccessToken;
+import com.uimirror.core.auth.Authentication;
 
 /**
  * AccessTokenManager that will be responsible to generate the {@linkplain AccessToken} 

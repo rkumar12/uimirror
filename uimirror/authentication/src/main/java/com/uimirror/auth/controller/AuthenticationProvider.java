@@ -10,11 +10,11 @@
  *******************************************************************************/
 package com.uimirror.auth.controller;
 
-import com.uimirror.auth.bean.AccessToken;
-import com.uimirror.auth.bean.Authentication;
 import com.uimirror.auth.core.AccessTokenManager;
 import com.uimirror.auth.core.AuthenticationException;
 import com.uimirror.auth.core.AuthenticationManager;
+import com.uimirror.core.auth.AccessToken;
+import com.uimirror.core.auth.Authentication;
 
 /**
  * Handles the authentication request, and process the authentication
@@ -40,7 +40,7 @@ public interface AuthenticationProvider {
      *
      * @throws AuthenticationException if authentication fails.
      */
-	AccessToken authenticate(Authentication authentication) throws AuthenticationException;
+	Authentication authenticate(Authentication authentication) throws AuthenticationException;
 	
 	/**
      * Returns <code>true</code> if this <Code>AuthenticationProvider</code> supports the indicated

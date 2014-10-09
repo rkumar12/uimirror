@@ -16,6 +16,7 @@ import java.util.Map;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 
+import com.uimirror.core.auth.Authentication;
 import com.uimirror.core.bean.ClientMeta;
 
 /**

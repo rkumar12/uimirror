@@ -12,7 +12,7 @@ package com.uimirror.auth.dao;
 
 import java.util.List;
 
-import com.uimirror.auth.bean.AccessToken;
+import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.dao.DBException;
 import com.uimirror.core.mongo.feature.MongoDocumentSerializer;
 

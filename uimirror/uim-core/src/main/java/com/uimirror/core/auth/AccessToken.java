@@ -8,15 +8,11 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.auth.bean;
+package com.uimirror.core.auth;
 
 import java.io.Serializable;
 import java.security.Principal;
 import java.util.Map;
-
-import com.uimirror.core.auth.Scope;
-import com.uimirror.core.auth.Token;
-import com.uimirror.core.auth.TokenType;
 
 /**
  * This holds the principal details after user has been logged in
@@ -42,7 +38,7 @@ public interface AccessToken extends Principal, Serializable{
 	 * Represents the issued token and its paraphrase
 	 * @return
 	 */
-	Token getToken();
+	String getToken();
 	
 	/**
 	 * Specifies the time in mills, the token will expire on
@@ -52,11 +48,10 @@ public interface AccessToken extends Principal, Serializable{
 	
 	/**
 	 * Defines the scope for this token
-	 * @see Scope
 	 * @return
 	 * 
 	 */
-	Scope getScope();
+	String getScope();
 	
 	/**
 	 * Specifies the owner for this token
@@ -71,7 +66,7 @@ public interface AccessToken extends Principal, Serializable{
 	String getClient();
 	
 	/**
-	 * If this token as some additional Notes such as UserAgent and Host name
+	 * If this token as some additional Notes
 	 * @return
 	 */
 	Map<String, Object> getNotes();
@@ -89,5 +84,11 @@ public interface AccessToken extends Principal, Serializable{
 	 * @return
 	 */
 	Map<String, Object> toResponseMap();
+	
+	/**
+	 * Should remove the un-necessary info from the token details
+	 * @return
+	 */
+	AccessToken eraseEsential();
 
 }

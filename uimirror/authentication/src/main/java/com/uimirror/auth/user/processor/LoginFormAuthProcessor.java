@@ -14,8 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.uimirror.auth.bean.AccessToken;
-import com.uimirror.auth.bean.Authentication;
 import com.uimirror.auth.bean.CredentialType;
 import com.uimirror.auth.controller.AuthenticationProvider;
 import com.uimirror.auth.controller.Processor;
@@ -23,6 +21,8 @@ import com.uimirror.auth.core.AuthenticationManager;
 import com.uimirror.auth.exception.AuthToApplicationExceptionMapper;
 import com.uimirror.auth.user.bean.LoginFormAuthentication;
 import com.uimirror.auth.user.bean.form.LoginFormAuthenticationForm;
+import com.uimirror.core.auth.AccessToken;
+import com.uimirror.core.auth.Authentication;
 import com.uimirror.core.extra.MapException;
 import com.uimirror.core.rest.extra.ApplicationException;
 import com.uimirror.core.rest.extra.ResponseTransFormer;
@@ -56,7 +56,9 @@ public class LoginFormAuthProcessor implements Processor<LoginFormAuthentication
 		param = null;
 		LOG.debug("[END]- Authenticating the user and trying to to get the authentication details {}", auth);
 		//Remove Unnecessary information from the accessToken Before Sending to the user
-		return jsonResponseTransFormer.doTransForm(generateToken(auth).toResponseMap());
+		Authentication authToken = generateToken(auth);
+		AccessToken token = (AccessToken)authToken.getPrincipal();
+		return jsonResponseTransFormer.doTransForm(token.toResponseMap());
 	}
 	
 	/**
@@ -75,7 +77,7 @@ public class LoginFormAuthProcessor implements Processor<LoginFormAuthentication
 	 * @param auth
 	 * @return
 	 */
-	private AccessToken generateToken(Authentication auth){
+	private Authentication generateToken(Authentication auth){
 		return loginFormAuthProvider.authenticate(auth);
 	}
 

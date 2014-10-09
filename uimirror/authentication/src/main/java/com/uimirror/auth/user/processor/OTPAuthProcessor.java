@@ -14,8 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.uimirror.auth.bean.AccessToken;
-import com.uimirror.auth.bean.Authentication;
 import com.uimirror.auth.bean.CredentialType;
 import com.uimirror.auth.controller.AuthenticationProvider;
 import com.uimirror.auth.controller.Processor;
@@ -23,6 +21,8 @@ import com.uimirror.auth.core.AuthenticationManager;
 import com.uimirror.auth.exception.AuthToApplicationExceptionMapper;
 import com.uimirror.auth.user.bean.OTPAuthentication;
 import com.uimirror.auth.user.bean.form.OTPAuthenticationForm;
+import com.uimirror.core.auth.AccessToken;
+import com.uimirror.core.auth.Authentication;
 import com.uimirror.core.extra.MapException;
 import com.uimirror.core.rest.extra.ApplicationException;
 import com.uimirror.core.rest.extra.ResponseTransFormer;
@@ -43,7 +43,7 @@ public class OTPAuthProcessor implements Processor<OTPAuthenticationForm>{
 	
 	private @Autowired TransformerService<OTPAuthenticationForm, OTPAuthentication> otpFormToAuthTransformer;
 	private @Autowired ResponseTransFormer<String> jsonResponseTransFormer;
-	private @Autowired AuthenticationProvider twoFactorAuthProvider;
+	private @Autowired AuthenticationProvider otpAuthProvider;
 	
 	/* (non-Javadoc)
 	 * @see com.uimirror.auth.controller.AuthenticationController#getAccessToken(javax.ws.rs.core.MultivaluedMap)
@@ -58,7 +58,9 @@ public class OTPAuthProcessor implements Processor<OTPAuthenticationForm>{
 		param = null;
 		LOG.debug("[END]- Generating a new accesstoken based on the previous accesstoken and and OTP for the 2FA {}", auth);
 		//Remove Unnecessary information from the accessToken Before Sending to the user
-		return jsonResponseTransFormer.doTransForm(generateToken(auth).toResponseMap());
+		Authentication authToken = generateToken(auth);
+		AccessToken token = (AccessToken)authToken.getPrincipal();
+		return jsonResponseTransFormer.doTransForm(token.toResponseMap());
 	}
 	
 	/**
@@ -76,8 +78,8 @@ public class OTPAuthProcessor implements Processor<OTPAuthenticationForm>{
 	 * @param auth
 	 * @return
 	 */
-	private AccessToken generateToken(Authentication auth){
-		return twoFactorAuthProvider.authenticate(auth);
+	private Authentication generateToken(Authentication auth){
+		return otpAuthProvider.authenticate(auth);
 	}
 
 }

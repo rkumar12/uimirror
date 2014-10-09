@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.auth.bean;
+package com.uimirror.core.auth;
 
 import java.io.Serializable;
 import java.security.Principal;

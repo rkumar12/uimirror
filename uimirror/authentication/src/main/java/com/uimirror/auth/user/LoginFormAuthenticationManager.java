@@ -17,9 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 
-import com.uimirror.auth.bean.AccessToken;
 import com.uimirror.auth.bean.AuthenticatedDetails;
-import com.uimirror.auth.bean.Authentication;
 import com.uimirror.auth.bean.BasicCredentials;
 import com.uimirror.auth.bean.CredentialType;
 import com.uimirror.auth.core.AuthenticationException;
@@ -29,6 +27,8 @@ import com.uimirror.auth.core.BadCredentialsException;
 import com.uimirror.auth.dao.CredentialsStore;
 import com.uimirror.auth.exception.AuthExceptionMapper;
 import com.uimirror.auth.user.bean.UserAuthenticatedDetails;
+import com.uimirror.core.auth.AccessToken;
+import com.uimirror.core.auth.Authentication;
 import com.uimirror.core.extra.MapException;
 
 /**
@@ -50,14 +50,14 @@ public class LoginFormAuthenticationManager implements AuthenticationManager{
 	 */
 	@Override
 	@MapException(use=AuthExceptionMapper.NAME)
-	public AuthenticatedDetails authenticate(Authentication authentication) throws AuthenticationException {
+	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 		Assert.notNull(authentication, "Authention Request Object can't be empty");
 		LOG.info("[START]- Authenticating User");
 		BasicCredentials usr = getUserCredentialDetails(authentication);
 		doAuthenticate(authentication, usr);
 		AuthenticatedDetails authDetails = getAuthenticatedDetails(authentication, usr);
 		LOG.info("[END]- Authenticating User");
-		return authDetails;
+		return null;
 	}
 
 	/**
@@ -100,7 +100,7 @@ public class LoginFormAuthenticationManager implements AuthenticationManager{
 	 * or appropriate {@link AuthenticationException}
 	 */
 	private boolean doAuthenticate(Authentication auth, BasicCredentials userCredentials){
-		return userAuthenticationValidationService.doMatch(userCredentials, auth);
+		return userAuthenticationValidationService.isMatching(userCredentials, auth);
 	}
 	
 	/**

@@ -14,13 +14,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.uimirror.auth.bean.AccountState;
 import com.uimirror.auth.bean.AccountStatus;
-import com.uimirror.auth.bean.Authentication;
 import com.uimirror.auth.bean.BasicCredentials;
 import com.uimirror.auth.core.AuthenticationValidationService;
 import com.uimirror.auth.core.BadCredentialsException;
 import com.uimirror.auth.core.DisabledException;
 import com.uimirror.auth.core.LockedException;
 import com.uimirror.auth.core.PasswordMatcher;
+import com.uimirror.core.auth.Authentication;
 
 /**
  * Implementing the logic to validate the credentials

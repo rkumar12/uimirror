@@ -14,8 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.uimirror.auth.bean.AccessToken;
-import com.uimirror.auth.bean.Authentication;
 import com.uimirror.auth.bean.CredentialType;
 import com.uimirror.auth.client.bean.OAuth2SecretKeyAuthentication;
 import com.uimirror.auth.client.bean.form.ClientSecretKeyForm;
@@ -23,6 +21,8 @@ import com.uimirror.auth.controller.AuthenticationProvider;
 import com.uimirror.auth.controller.Processor;
 import com.uimirror.auth.core.AuthenticationManager;
 import com.uimirror.auth.exception.AuthToApplicationExceptionMapper;
+import com.uimirror.core.auth.AccessToken;
+import com.uimirror.core.auth.Authentication;
 import com.uimirror.core.extra.MapException;
 import com.uimirror.core.rest.extra.ApplicationException;
 import com.uimirror.core.rest.extra.ResponseTransFormer;
@@ -34,13 +34,13 @@ import com.uimirror.core.service.TransformerService;
  * 
  * @author Jay
  */
-public class SecurityTokenProcessor implements Processor<ClientSecretKeyForm>{
+public class SecretKeyProcessor implements Processor<ClientSecretKeyForm>{
 
-	protected static final Logger LOG = LoggerFactory.getLogger(SecurityTokenProcessor.class);
+	protected static final Logger LOG = LoggerFactory.getLogger(SecretKeyProcessor.class);
 	
 	private @Autowired TransformerService<ClientSecretKeyForm, OAuth2SecretKeyAuthentication> secretKeyToAuthTransformer;
 	private @Autowired ResponseTransFormer<String> jsonResponseTransFormer;
-	private @Autowired AuthenticationProvider loginFormAuthProvider;
+	private @Autowired AuthenticationProvider secretCodeAuthProvider;
 	
 	/* (non-Javadoc)
 	 * @see com.uimirror.auth.controller.AuthenticationController#getAccessToken(javax.ws.rs.core.MultivaluedMap)
@@ -56,7 +56,9 @@ public class SecurityTokenProcessor implements Processor<ClientSecretKeyForm>{
 		param = null;
 		LOG.debug("[END]- Authenticating the user and trying to to get the authentication details {}", auth);
 		//Remove Unnecessary information from the accessToken Before Sending to the user
-		return jsonResponseTransFormer.doTransForm(generateToken(auth).toResponseMap());
+		Authentication authPrincipal = generateToken(auth);
+		AccessToken token = (AccessToken)authPrincipal.getPrincipal();
+		return jsonResponseTransFormer.doTransForm(token.toResponseMap());
 	}
 	
 	/**
@@ -75,8 +77,8 @@ public class SecurityTokenProcessor implements Processor<ClientSecretKeyForm>{
 	 * @param auth
 	 * @return
 	 */
-	private AccessToken generateToken(Authentication auth){
-		return loginFormAuthProvider.authenticate(auth);
+	private Authentication generateToken(Authentication auth){
+		return secretCodeAuthProvider.authenticate(auth);
 	}
 
 }

@@ -38,9 +38,9 @@ public class ClientAuthenticationEndPoint{
 
 	private static Logger LOG = LoggerFactory.getLogger(ClientAuthenticationEndPoint.class);
 	
-	private @Autowired Processor<ClientSecretKeyForm> accessTokenProcessor;
-	private @Autowired Processor<ClientAPIForm> secretCodeProcessor;
-	private @Autowired Processor<AuthenticatedHeaderForm> accessTokenExtraProcessor;
+	private @Autowired Processor<ClientSecretKeyForm> secretKeyProcessor;
+	private @Autowired Processor<ClientAPIForm> apiKeyProcessor;
+	private @Autowired Processor<AuthenticatedHeaderForm> accessTokenProcessor;
 	
 	/**
 	 * handles the client secret token in the below format
@@ -65,7 +65,7 @@ public class ClientAuthenticationEndPoint{
 	@Path(AuthenticationEndPointConstant.OUATH_2_TOEKEN_PATH)
 	public Object requestAccessToken(@BeanParam ClientSecretKeyForm form){
 		LOG.info("[ENTRY]- Received request for client access toekn");
-		Object response = accessTokenProcessor.invoke(form);
+		Object response = secretKeyProcessor.invoke(form);
 		LOG.info("[EXIT]- Received request for client access toekn");
 		return response;
 	}
@@ -85,7 +85,7 @@ public class ClientAuthenticationEndPoint{
 	@Path(AuthenticationEndPointConstant.OUATH_2_AUTH_PATH)
 	public Object getSecretCode(@BeanParam ClientAPIForm form){
 		LOG.info("[ENTRY]- Received request for client Secret Code with the param {}", form);
-		Object response = secretCodeProcessor.invoke(form);
+		Object response = apiKeyProcessor.invoke(form);
 		LOG.info("[EXIT]- Received request for client Secret Code");
 		return response;
 	}
@@ -103,7 +103,7 @@ public class ClientAuthenticationEndPoint{
 	@Path(AuthenticationEndPointConstant.OUATH_2_TOEKEN_VALIDATE_REFRESH_PATH)
 	public Object validateAndRefreshAccessKey(@BeanParam AuthenticatedHeaderForm form){
 		LOG.info("[ENTRY]- Received request for client AcessToken Validation and re generation iff necessary");
-		Object response = accessTokenExtraProcessor.invoke(form);
+		Object response = accessTokenProcessor.invoke(form);
 		LOG.info("[EXIT]- Received request for client AcessToken Validation and re generation iff necessary");
 		return response;
 	}

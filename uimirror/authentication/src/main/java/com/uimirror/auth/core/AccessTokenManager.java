@@ -10,9 +10,9 @@
  *******************************************************************************/
 package com.uimirror.auth.core;
 
-import com.uimirror.auth.bean.AccessToken;
 import com.uimirror.auth.bean.AuthenticatedDetails;
-import com.uimirror.auth.bean.Authentication;
+import com.uimirror.core.auth.AccessToken;
+import com.uimirror.core.auth.Authentication;
 
 /**
  * Provides a common solution for granting a new {@link AccessToken}.

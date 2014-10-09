@@ -21,9 +21,9 @@ import org.glassfish.jersey.server.JSONP;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.uimirror.auth.bean.AccessToken;
 import com.uimirror.auth.bean.form.InvalidateLoginSessionsForm;
-import com.uimirror.auth.bean.form.LoginSessionsForm;
+import com.uimirror.auth.bean.form.LoginSessionForm;
+import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.bean.form.AuthenticatedHeaderForm;
 
 /**
@@ -33,6 +33,10 @@ import com.uimirror.core.bean.form.AuthenticatedHeaderForm;
  * 
  * @author Jay
  */
+//TODO extra architecture required to validate the authentication header
+//TODO Move to the authentication extra project which will be away of this
+//As this shouldn't do the authentication to the request, this should only perform the login
+//details and give back to the client
 @Path(AuthenticationEndPointConstant.LOGIN_SESSION_PATH)
 public class AuthenticationSessionEndPoint{
 
@@ -48,7 +52,7 @@ public class AuthenticationSessionEndPoint{
 	@GET
 	@Produces({ "application/x-javascript", MediaType.APPLICATION_JSON })
 	@JSONP(queryParam="cb", callback="callback")
-	public Object getLoginSessions(@BeanParam LoginSessionsForm form){
+	public Object getLoginSessions(@BeanParam LoginSessionForm form){
 		LOG.info("[ENTRY]- Received request for getting list of login sessions currently associated with the user {}", form);
 		LOG.info("[EXIT]- Received request for getting list of login sessions currently associated with the user");
 		return null;

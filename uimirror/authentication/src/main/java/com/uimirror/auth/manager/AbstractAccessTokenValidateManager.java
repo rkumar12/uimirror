@@ -10,9 +10,9 @@
  *******************************************************************************/
 package com.uimirror.auth.manager;
 
-import com.uimirror.auth.bean.AccessToken;
-import com.uimirror.auth.bean.Authentication;
 import com.uimirror.auth.dao.AccessTokenStore;
+import com.uimirror.core.auth.AccessToken;
+import com.uimirror.core.auth.Authentication;
 
 /**
  * @author Jay

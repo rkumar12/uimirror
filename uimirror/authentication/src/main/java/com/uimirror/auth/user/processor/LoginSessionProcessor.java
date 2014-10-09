@@ -12,7 +12,7 @@ package com.uimirror.auth.user.processor;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.uimirror.auth.bean.form.LoginSessionsForm;
+import com.uimirror.auth.bean.form.LoginSessionForm;
 import com.uimirror.auth.controller.Processor;
 import com.uimirror.core.bean.form.AuthenticatedHeaderForm;
 import com.uimirror.core.rest.extra.ApplicationException;
@@ -21,7 +21,7 @@ import com.uimirror.core.rest.extra.ApplicationException;
 /**
  * @author Jay
  */
-public class LoginSessionProcessor implements Processor<LoginSessionsForm>{
+public class LoginSessionProcessor implements Processor<LoginSessionForm>{
 
 	private @Autowired Processor<AuthenticatedHeaderForm> accessTokenExtraProcessor;
 	
@@ -36,7 +36,7 @@ public class LoginSessionProcessor implements Processor<LoginSessionsForm>{
 	 * @see com.uimirror.auth.controller.Processor#invoke(java.lang.Object)
 	 */
 	@Override
-	public Object invoke(LoginSessionsForm param) throws ApplicationException {
+	public Object invoke(LoginSessionForm param) throws ApplicationException {
 		// TODO Auto-generated method stub
 		accessTokenExtraProcessor.invoke(param);
 		return null;

@@ -8,18 +8,17 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.auth.user;
+package com.uimirror.auth.client.provider;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.uimirror.auth.bean.AccessToken;
-import com.uimirror.auth.bean.AuthenticatedDetails;
-import com.uimirror.auth.bean.Authentication;
+import com.uimirror.auth.controller.AccessTokenProvider;
 import com.uimirror.auth.controller.AuthenticationProvider;
 import com.uimirror.auth.core.AuthenticationManager;
-import com.uimirror.auth.extra.AuthenticationUpdaterUtil;
+import com.uimirror.core.auth.AccessToken;
+import com.uimirror.core.auth.Authentication;
 
 /**
  * Will be responsible to generate {@linkplain AccessToken} depends on the scenario
@@ -30,27 +29,37 @@ import com.uimirror.auth.extra.AuthenticationUpdaterUtil;
  * 
  * @author Jay
  */
-public class LoginFormAuthProvider extends UserAccessTokenProvider implements AuthenticationProvider{
+public class SecretCodeAuthProvider implements AuthenticationProvider{
 
-	private static final Logger LOG = LoggerFactory.getLogger(LoginFormAuthProvider.class);
-	private @Autowired AuthenticationManager loginFormAuthenticationManager;
+	private static final Logger LOG = LoggerFactory.getLogger(SecretCodeAuthProvider.class);
+	private @Autowired AuthenticationManager apiKeyAuthManager;
+	private @Autowired AccessTokenProvider persistedAccessTokenProvider;
 
 	/* (non-Javadoc)
 	 * @see com.uimirror.core.auth.controller.AuthenticationProvider#getAuthenticateToken(com.uimirror.core.auth.bean.Authentication)
 	 */
 	@Override
-	public AccessToken authenticate(Authentication authentication) {
+	public Authentication authenticate(Authentication authentication) {
 		LOG.debug("[START]- Authenticating, generating and storing token");
 		//get the authenticated principal
-		AuthenticatedDetails authDetails = loginFormAuthenticationManager.authenticate(authentication);
+		Authentication authDetails = apiKeyAuthManager.authenticate(authentication);
 		//Update the refresh interval
-		authDetails = AuthenticationUpdaterUtil.updateRefreshPeriodIfNecessary(authentication, authDetails);
+		//authDetails = AuthenticationUpdaterUtil.updateRefreshPeriodIfNecessary(authentication, authDetails);
 		//Generate a Access Token
-		AccessToken accessToken = super.generateToken(authentication, authDetails);
-		
+		AccessToken accessToken = persistedAccessTokenProvider.generateToken(authDetails);
+		//TODO populate the authentication object from the access Token
 		//TODO check for _2FA level authentication, if 2FA process this mail processing in background and return back to the user
 		LOG.debug("[END]- Authenticating, generating and storing token");
-		return accessToken;
+		return authentication;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.uimirror.auth.controller.AuthenticationProvider#supports(java.lang.Class)
+	 */
+	@Override
+	public boolean supports(Class<?> authentication) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

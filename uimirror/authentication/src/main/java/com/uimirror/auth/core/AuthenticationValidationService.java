@@ -13,13 +13,14 @@ package com.uimirror.auth.core;
 import com.uimirror.auth.bean.AccountState;
 import com.uimirror.auth.bean.AccountStatus;
 import com.uimirror.auth.bean.BasicCredentials;
+import com.uimirror.core.service.MatcherService;
 import com.uimirror.core.service.ValidatorService;
 
 /**
  * Comon validation logic that applies for a account i.e user /client
  * @author Jay
  */
-public interface AuthenticationValidationService extends ValidatorService{
+public interface AuthenticationValidationService extends ValidatorService, MatcherService{
 
 	
 	/**

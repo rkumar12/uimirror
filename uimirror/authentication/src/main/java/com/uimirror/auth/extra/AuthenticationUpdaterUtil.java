@@ -17,9 +17,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
 import com.uimirror.auth.bean.AuthenticatedDetails;
-import com.uimirror.auth.bean.Authentication;
 import com.uimirror.auth.bean.CredentialType;
 import com.uimirror.auth.core.AccessTokenFields;
+import com.uimirror.core.auth.Authentication;
 
 /**
  * An utility that helps to update the refresh token to the authenticated details

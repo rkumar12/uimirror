@@ -10,7 +10,7 @@
  *******************************************************************************/
 package com.uimirror.auth.core;
 
-import com.uimirror.auth.bean.Authentication;
+import com.uimirror.core.auth.Authentication;
 import com.uimirror.core.exceptions.BaseRunTimeException;
 
 

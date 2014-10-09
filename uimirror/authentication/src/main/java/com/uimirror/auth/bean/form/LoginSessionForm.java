@@ -21,7 +21,7 @@ import com.uimirror.core.bean.form.AuthenticatedHeaderForm;
  * 
  * @author Jay
  */
-public class LoginSessionsForm extends AuthenticatedHeaderForm{
+public class LoginSessionForm extends AuthenticatedHeaderForm{
 
 	private static final long serialVersionUID = 3625790752921721133L;
 	

@@ -20,7 +20,7 @@ import org.glassfish.jersey.server.JSONP;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.uimirror.auth.bean.AccessToken;
+import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.bean.form.AuthenticatedHeaderForm;
 
 /**

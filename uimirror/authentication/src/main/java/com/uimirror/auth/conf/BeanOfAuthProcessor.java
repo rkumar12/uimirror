@@ -15,9 +15,9 @@ import org.springframework.context.annotation.Configuration;
 
 import com.uimirror.auth.client.bean.form.ClientAPIForm;
 import com.uimirror.auth.client.bean.form.ClientSecretKeyForm;
-import com.uimirror.auth.client.processor.AccessTokenProcessor;
-import com.uimirror.auth.client.processor.SecurityTokenProcessor;
 import com.uimirror.auth.client.processor.APIKeyProcessor;
+import com.uimirror.auth.client.processor.AccessTokenProcessor;
+import com.uimirror.auth.client.processor.SecretKeyProcessor;
 import com.uimirror.auth.controller.Processor;
 import com.uimirror.auth.user.bean.form.LoginFormAuthenticationForm;
 import com.uimirror.auth.user.bean.form.OTPAuthenticationForm;
@@ -51,17 +51,17 @@ public class BeanOfAuthProcessor {
 	}
 	
 	@Bean
-	public Processor<ClientSecretKeyForm> accessTokenProcessor(){
-		return new SecurityTokenProcessor();
+	public Processor<ClientSecretKeyForm> secretKeyProcessor(){
+		return new SecretKeyProcessor();
 	}
 	
 	@Bean
-	public Processor<ClientAPIForm> secretCodeProcessor(){
+	public Processor<ClientAPIForm> apiKeyProcessor(){
 		return new APIKeyProcessor();
 	}
 
 	@Bean
-	public Processor<AuthenticatedHeaderForm> accessTokenExtraProcessor(){
+	public Processor<AuthenticatedHeaderForm> accessTokenProcessor(){
 		return new AccessTokenProcessor();
 	}
 

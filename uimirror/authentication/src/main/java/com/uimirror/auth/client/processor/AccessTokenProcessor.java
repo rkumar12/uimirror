@@ -14,14 +14,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.uimirror.auth.bean.AccessToken;
-import com.uimirror.auth.bean.Authentication;
 import com.uimirror.auth.bean.CredentialType;
 import com.uimirror.auth.client.bean.OAuth2Authentication;
 import com.uimirror.auth.controller.AuthenticationProvider;
 import com.uimirror.auth.controller.Processor;
 import com.uimirror.auth.core.AuthenticationManager;
 import com.uimirror.auth.exception.AuthToApplicationExceptionMapper;
+import com.uimirror.core.auth.AccessToken;
+import com.uimirror.core.auth.Authentication;
 import com.uimirror.core.bean.form.AuthenticatedHeaderForm;
 import com.uimirror.core.extra.MapException;
 import com.uimirror.core.rest.extra.ApplicationException;
@@ -40,7 +40,7 @@ public class AccessTokenProcessor implements Processor<AuthenticatedHeaderForm>{
 	
 	private @Autowired TransformerService<AuthenticatedHeaderForm, OAuth2Authentication> accessTokenToAuthTransformer;
 	private @Autowired ResponseTransFormer<String> jsonResponseTransFormer;
-	private @Autowired AuthenticationProvider loginFormAuthProvider;
+	private @Autowired AuthenticationProvider accessKeyAuthProvider;
 	
 	/* (non-Javadoc)
 	 * @see com.uimirror.auth.controller.AuthenticationController#getAccessToken(javax.ws.rs.core.MultivaluedMap)
@@ -56,7 +56,9 @@ public class AccessTokenProcessor implements Processor<AuthenticatedHeaderForm>{
 		param = null;
 		LOG.debug("[END]- Authenticating the user and trying to to get the authentication details {}", auth);
 		//Remove Unnecessary information from the accessToken Before Sending to the user
-		return jsonResponseTransFormer.doTransForm(generateToken(auth).toResponseMap());
+		Authentication authPrincipal = generateToken(auth);
+		AccessToken token = (AccessToken)authPrincipal.getPrincipal();
+		return jsonResponseTransFormer.doTransForm(token.toResponseMap());
 	}
 	
 	/**
@@ -75,8 +77,8 @@ public class AccessTokenProcessor implements Processor<AuthenticatedHeaderForm>{
 	 * @param auth
 	 * @return
 	 */
-	private AccessToken generateToken(Authentication auth){
-		return loginFormAuthProvider.authenticate(auth);
+	private Authentication generateToken(Authentication auth){
+		return accessKeyAuthProvider.authenticate(auth);
 	}
 
 }

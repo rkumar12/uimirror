@@ -14,6 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.uimirror.core.Parameters;
+import com.uimirror.core.auth.Authentication;
 
 /**
  * Base class for <code>Authentication</code> objects.

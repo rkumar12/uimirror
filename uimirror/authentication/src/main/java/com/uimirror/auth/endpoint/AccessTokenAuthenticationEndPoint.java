@@ -22,8 +22,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.uimirror.auth.bean.AccessToken;
 import com.uimirror.auth.controller.Processor;
+import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.bean.form.AuthenticatedHeaderForm;
 
 /**
@@ -35,7 +35,7 @@ import com.uimirror.core.bean.form.AuthenticatedHeaderForm;
 @Path(AuthenticationEndPointConstant.ACCESS_HOME_PATH)
 public class AccessTokenAuthenticationEndPoint{
 
-	private @Autowired Processor<AuthenticatedHeaderForm> accessTokenExtraProcessor;
+	private @Autowired Processor<AuthenticatedHeaderForm> accessTokenProcessor;
 	private static Logger LOG = LoggerFactory.getLogger(AccessTokenAuthenticationEndPoint.class);
 	public AccessTokenAuthenticationEndPoint() {
 	}
@@ -56,7 +56,7 @@ public class AccessTokenAuthenticationEndPoint{
 	@Path(AuthenticationEndPointConstant.ACCESS_TOKEN_VALIDATION_PATH)
 	public Object doValidate(@BeanParam AuthenticatedHeaderForm form){
 		LOG.info("[ENTRY]- Received requst for access key validation");
-		Object response = accessTokenExtraProcessor.invoke(form);
+		Object response = accessTokenProcessor.invoke(form);
 		LOG.info("[EXIT]- Received requst for access key validation");
 		return response;
 	}
