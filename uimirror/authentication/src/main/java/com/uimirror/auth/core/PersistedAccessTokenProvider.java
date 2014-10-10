@@ -57,9 +57,9 @@ public class PersistedAccessTokenProvider implements AccessTokenProvider{
 	 * @return
 	 */
 	@Override
-	public AccessToken getValidToken(Authentication auth){
+	public AccessToken getValidToken(String token){
 		LOG.debug("[SINGLE]- Validating the details provided for the accesstoken");
-		return userAccessTokenManager.getValidToken(auth);
+		return null;//userAccessTokenManager.getValidToken(auth);
 	}
 	
 

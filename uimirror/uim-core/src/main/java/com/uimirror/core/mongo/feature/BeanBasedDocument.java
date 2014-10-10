@@ -11,6 +11,7 @@
 package com.uimirror.core.mongo.feature;
 
 import java.io.Serializable;
+import java.util.Map;
 
 /**
  * <p>Common Class for the bean based Document Mapping</p>
@@ -22,9 +23,15 @@ public abstract class BeanBasedDocument extends MongoDocumentSerializer implemen
 	private static final long serialVersionUID = 1661966237018687368L;
 	
 	private String id;
-	
+	public BeanBasedDocument(){
+		//NOP
+	}
 	public BeanBasedDocument(String id) {
 		this.id = id;
+	}
+	
+	public BeanBasedDocument(Map<String, Object> map){
+		initFromMap(map);
 	}
 	
 	public String getId() {

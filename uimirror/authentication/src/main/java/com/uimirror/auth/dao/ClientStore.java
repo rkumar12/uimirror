@@ -8,19 +8,23 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.auth.controller;
+package com.uimirror.auth.dao;
 
-import com.uimirror.core.auth.AccessToken;
-import com.uimirror.core.auth.Authentication;
+import com.uimirror.auth.client.Client;
 
 /**
+ * A basic repo for the client 
+ * that deals with store and retrieve of the client
  * @author Jay
  */
-public interface AccessTokenProvider {
-	
-	public AccessToken generateToken(Authentication auth);
-	
-	
-	public AccessToken getValidToken(String token);
+//TODO impement this latter
+public interface ClientStore {
 
+	Client findClientByApiKey(String apiKey);
+	
+	Client findClientById(String clientId);
+	
+	Client findActieveClientByApiKey(String apiKey);
+	
+	Client findActieveClientById(String clientId);
 }
