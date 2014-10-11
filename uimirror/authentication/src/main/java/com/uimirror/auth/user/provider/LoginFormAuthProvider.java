@@ -71,7 +71,7 @@ public class LoginFormAuthProvider implements AuthenticationProvider{
 	 */
 	private Authentication generateAuthenticatedTokenPrincipal(Authentication auth){
 		//Generate a Access Token
-		AccessToken accessToken = persistedAccessTokenProvider.generateToken(auth);
+		AccessToken accessToken = persistedAccessTokenProvider.store(auth);
 		//TODO right place to check the Authentication token _2FA, if _2FA do the background process of email
 		return populateNewAuthenticatedToken(accessToken);
 	}

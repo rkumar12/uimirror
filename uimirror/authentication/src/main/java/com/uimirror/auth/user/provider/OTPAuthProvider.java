@@ -73,7 +73,7 @@ public class OTPAuthProvider implements AuthenticationProvider{
 	 */
 	private Authentication generateAuthenticatedTokenPrincipal(Authentication auth){
 		//Generate a Access Token
-		AccessToken accessToken = persistedAccessTokenProvider.generateToken(auth);
+		AccessToken accessToken = persistedAccessTokenProvider.store(auth);
 		return populateNewAuthenticatedToken(accessToken);
 	}
 	

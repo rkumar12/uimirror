@@ -30,18 +30,41 @@ public class DefaultAccessToken extends AbstractAccessToken{
 	private static final long serialVersionUID = -6156839027050013727L;
 	
 	/**
-	 *This call should be avoided until, there is no existing map from which this state
-	 *needs to de-seralize. the next immediate call should be {@linkplain AbstractAccessToken#initFromMap(Map)} 
+	 * @param map
 	 */
-	public DefaultAccessToken() {
-		super();
-		//DON't use this until you have a map to initialize the state
+	public DefaultAccessToken(Map<String, Object> map) {
+		super(map);
 	}
 	
+	/**
+	 * @param token
+	 */
+	public DefaultAccessToken(Token token) {
+		super(token);
+	}
+
+	/**
+	 * @param token
+	 * @param owner
+	 * @param client
+	 * @param expire
+	 * @param type
+	 * @param scope
+	 * @param notes
+	 * @param instructions
+	 */
 	public DefaultAccessToken(Token token, String owner, String client, long expire, TokenType type, Scope scope, Map<String, Object> notes, Map<String, Object> instructions) {
 		super(token, owner, client, expire, type, scope, notes, instructions);
 	}
-	
+
+	/**
+	 * @param token
+	 * @param owner
+	 * @param client
+	 * @param expire
+	 * @param type
+	 * @param scope
+	 */
 	public DefaultAccessToken(Token token, String owner, String client, long expire, TokenType type, Scope scope) {
 		super(token, owner, client, expire, type, scope);
 	}
@@ -57,6 +80,14 @@ public class DefaultAccessToken extends AbstractAccessToken{
 		if(StringUtils.hasText(token.getParaphrase()))
 			rs.put(AccessTokenFields.ENCRYPT_STARTEGY, token.getParaphrase());
 		return rs;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.uimirror.core.auth.AccessToken#eraseEsential()
+	 */
+	@Override
+	public AccessToken eraseEsential() {
+		return new DefaultAccessToken(this.getToken());
 	}
 
 }

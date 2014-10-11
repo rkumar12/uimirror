@@ -23,7 +23,7 @@ import com.uimirror.core.auth.Scope;
  * Implementations which use this class should be immutable.
  * Should accomodate the following details
  * response_type=code&
- * client_id=CLIENT_ID&redirect_uri=REDIRECT_URI&scope=read&app=rti
+ * client_id=CLIENT_ID&redirect_uri=REDIRECT_URI&scope=read
  * 
  * @author Jay
  */
@@ -32,21 +32,22 @@ public class OAuth2APIKeyAuthentication extends AbstractAuthentication{
 	private static final long serialVersionUID = 347196781678243458L;
 	private Object token;
 
-	public OAuth2APIKeyAuthentication(String clientId, String redirectUrl, String scope, String app) {
-		init(clientId, redirectUrl, scope, app);
+	public OAuth2APIKeyAuthentication(String clientId, String redirectUrl, String scope) {
+		init(clientId, redirectUrl, scope);
 	}
-	public OAuth2APIKeyAuthentication(String clientId, String redirectUrl, String scope, String app, String ip, String userAgent) {
+	public OAuth2APIKeyAuthentication(String clientId, String redirectUrl, String scope, String ip, String userAgent) {
 		super(ip, userAgent);
-		init(clientId, redirectUrl, scope, app);
+		init(clientId, redirectUrl, scope);
 	}
 	
 	public OAuth2APIKeyAuthentication(Object tokenPrincipal, Map<String, Object> details) {
 		this.token = tokenPrincipal;
 		setDetails(details);
+		setAuthenticated(Boolean.TRUE);
 	}
 	
-	private void init(String clientId, String redirectUrl, String scope, String app){
-		initDetails(redirectUrl, clientId, scope, app);
+	private void init(String clientId, String redirectUrl, String scope){
+		initDetails(redirectUrl, clientId, scope);
 	}
 	
 	/**
@@ -54,15 +55,13 @@ public class OAuth2APIKeyAuthentication extends AbstractAuthentication{
 	 * @param redirectUrl
 	 * @param clientId
 	 * @param scope
-	 * @param app
 	 */
-	private void initDetails(String redirectUrl, String clientId, String scope, String app){
+	private void initDetails(String redirectUrl, String clientId, String scope){
 		@SuppressWarnings("unchecked")
 		Map<String, Object> details = (Map<String, Object>)getDetails();
 		details.put(AuthConstants.REDIRECT_URI, redirectUrl);
 		details.put(AuthConstants.CLIENT_ID, clientId);
 		details.put(AuthConstants.SCOPE, Scope.getEnum(scope));
-		details.put(AuthConstants.APP, app);
 		setDetails(details);
 	}
 

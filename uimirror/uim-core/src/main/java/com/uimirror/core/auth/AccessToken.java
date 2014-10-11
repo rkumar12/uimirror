@@ -51,7 +51,7 @@ public interface AccessToken extends Principal, Serializable{
 	 * @return
 	 * 
 	 */
-	String getScope();
+	Scope getScope();
 	
 	/**
 	 * Specifies the owner for this token
@@ -87,6 +87,7 @@ public interface AccessToken extends Principal, Serializable{
 	
 	/**
 	 * Should remove the un-necessary info from the token details
+	 * This should be called when response being sent to the client, shouldn't be before
 	 * @return
 	 */
 	AccessToken eraseEsential();

@@ -10,18 +10,17 @@
  *******************************************************************************/
 package com.uimirror.auth.client.provider;
 
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.CollectionUtils;
 
 import com.uimirror.auth.client.bean.OAuth2Authentication;
 import com.uimirror.auth.controller.AccessTokenProvider;
 import com.uimirror.auth.controller.AuthenticationProvider;
 import com.uimirror.auth.core.AuthenticationManager;
+import com.uimirror.auth.dao.AccessTokenStore;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.Authentication;
 
@@ -45,9 +44,11 @@ public class AccessKeyAuthProvider implements AuthenticationProvider{
 		LOG.debug("[START]- Authenticating, generating and storing token");
 		//Step 1- get the authenticated principal
 		Authentication authDetails = getAuthenticatedDetails(authentication);
-		//Step 2- generate a authentication which has a access token
+		//Step 2- Store principal
+		storeAuthenticatedPrincipal((AccessToken)authDetails.getPrincipal());
+		//Step 3- generate a authentication which has a access token
 		LOG.debug("[END]- Authenticating, generating and storing token");
-		return generateAuthenticatedTokenPrincipal(authDetails);
+		return cleanAuthentication(authDetails);
 	}
 
 	/**
@@ -60,33 +61,26 @@ public class AccessKeyAuthProvider implements AuthenticationProvider{
 	}
 	
 	/**
+	 * Stores the {@link AccessToken} using {@link AccessTokenStore}
+	 * @param token
+	 */
+	private void storeAuthenticatedPrincipal(AccessToken token){
+		persistedAccessTokenProvider.store(token);
+	}
+	
+	/**
 	 * It should generate a access token and tries to encapsulate the accesstoken to the
 	 * {@link Authentication}
 	 * 
 	 * @param auth an authenticated principal that indicate the principal clearly.
 	 * @return
 	 */
-	private Authentication generateAuthenticatedTokenPrincipal(Authentication auth){
-		//Generate a Access Token
-		AccessToken accessToken = persistedAccessTokenProvider.generateToken(auth);
-		return populateNewAuthenticatedToken(accessToken);
-	}
-	
-	/**
-	 * Generates a new {@link Authentication} object using the {@link AccessToken}
-	 * @param token
-	 * @return
-	 */
-	private Authentication populateNewAuthenticatedToken(AccessToken token){
-		Map<String, Object> details = new LinkedHashMap<String, Object>(10);
-		if(!CollectionUtils.isEmpty(token.getNotes())){
-			details.putAll(token.getNotes());
-		}
-		if(!CollectionUtils.isEmpty(token.getInstructions())){
-			details.putAll(token.getInstructions());
-		}
-		token.eraseEsential();
-		return new OAuth2Authentication(token, details);
+	@SuppressWarnings("unchecked")
+	private Authentication cleanAuthentication(Authentication auth){
+		//Clean the Authentication principal
+		AccessToken accessToken = (AccessToken)auth.getPrincipal();
+		accessToken = accessToken.eraseEsential();
+		return new OAuth2Authentication(accessToken, (Map<String, Object>)auth.getDetails());
 	}
 
 	/* (non-Javadoc)

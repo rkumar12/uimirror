@@ -15,7 +15,7 @@ package com.uimirror.core;
  * that a form will will be submited with the specified key
  * @author Jay
  */
-public interface Parameters {
+public interface Parameters extends Constants{
 
 	String USER_AGENT = "user-agent";
 	String IP = "host";

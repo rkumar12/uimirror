@@ -14,13 +14,26 @@ import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.Authentication;
 
 /**
+ * An {@link AccessToken} provider which takes care about the different type of generation of the token
+ * 
  * @author Jay
  */
 public interface AccessTokenProvider {
 	
-	public AccessToken generateToken(Authentication auth);
+	/**
+	 * Based on the {@link Authentication} principal, it will try to create a {@link AccessToken}
+	 * 
+	 * @param token
+	 * @return
+	 */
+	public void store(AccessToken token);
 	
 	
-	public AccessToken getValidToken(String token);
+	/**
+	 * Gets the valid token from the token ID specified.
+	 * @param token
+	 * @return
+	 */
+	public AccessToken getValid(String token);
 
 }

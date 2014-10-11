@@ -24,7 +24,20 @@ public class DateTimeUtil {
 	 * @return
 	 */
 	public static final long getCurrentSystemUTCEpoch(){
-		return ZonedDateTime.now(Clock.systemUTC()).toEpochSecond();
+		return getCurrentUTCTime().toEpochSecond();
+	}
+	
+	/**
+	 * get the system time w.r.t UTC add the time interval in minutes and convert to EPOCH
+	 * @param minutes
+	 * @return
+	 */
+	public static final long addToCurrentUTCTimeConvertToEpoch(long minutes){
+		return getCurrentUTCTime().plusMinutes(minutes).toEpochSecond();
+	}
+	
+	public static final ZonedDateTime getCurrentUTCTime(){
+		return ZonedDateTime.now(Clock.systemUTC());
 	}
 
 }

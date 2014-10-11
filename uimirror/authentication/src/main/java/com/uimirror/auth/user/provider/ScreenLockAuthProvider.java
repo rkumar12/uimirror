@@ -45,7 +45,7 @@ public class ScreenLockAuthProvider implements AuthenticationProvider{
 		//TODO steps should be from AuthenticationManager get the AccessToken, Deserilze to Authenticated details then
 		// validate the entered screen lock password, if everything seems ok, then generate a new token and send back to the client
 		//get the authenticated principal
-		AccessToken accessToken = persistedAccessTokenProvider.getValidToken(authentication);
+		AccessToken accessToken = persistedAccessTokenProvider.getValid(authentication);
 		//AuthenticatedDetails authDetails = screenLockAuthenticationManager.authenticate(authentication);
 		//Generate a Access Token
 		//AccessToken accessToken = super.generateToken(authentication, authDetails);

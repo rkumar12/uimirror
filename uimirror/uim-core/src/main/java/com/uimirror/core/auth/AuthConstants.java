@@ -34,7 +34,7 @@ public interface AuthConstants extends Parameters{
 	String AUTHORIZATION_TOKEN = "Authorization";
 	String ACCESS_TOKEN = "access_token";
 	//Default refresh period is 10 Mins
-	String DEFAULT_REFRESH_INTERVAL = Integer.toString(10*60);
+	int DEFAULT_EXPIRY_INTERVAL = 10;
 	
 	//For Client specific screen
 	String CLIENT_ID = "client_id";
@@ -42,5 +42,12 @@ public interface AuthConstants extends Parameters{
 	String CLIENT_SECRET_CODE = "code";
 	String LIMIT = "limit";
 	String SESSION_ID = "session_id";
+	
+	//Auth refresh instructions
+	String INST_AUTH_EXPIRY_INTERVAL = "expiry_inst";
+	
+	//Instructions Next step
+	String INST_NEXT_STEP = "next";
+	String INST_NEXT_USER_AUTH = "user_auth";
 	
 }

@@ -22,13 +22,13 @@ import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.Scope;
 import com.uimirror.core.auth.Token;
 import com.uimirror.core.auth.TokenType;
-import com.uimirror.core.mongo.feature.MongoDocumentSerializer;
+import com.uimirror.core.mongo.feature.BeanBasedDocument;
 
 /**
  * A basic implementation of the accesstoken
  * @author Jay
  */
-public abstract class AbstractAccessToken extends MongoDocumentSerializer implements AccessToken{
+public abstract class AbstractAccessToken extends BeanBasedDocument implements AccessToken{
 
 	private static final long serialVersionUID = 1758356201287067187L;
 	private Token token;
@@ -40,12 +40,8 @@ public abstract class AbstractAccessToken extends MongoDocumentSerializer implem
 	private Map<String, Object> notes;
 	private Map<String, Object> instructions;
 	
-	/**
-	 *This call should be avoided until, there is no existing map from which this state
-	 *needs to de-seralize. the next immediate call should be {@linkplain AbstractAccessToken#initFromMap(Map)} 
-	 */
-	public AbstractAccessToken() {
-		//DON't use this until you have a map to initialize the state
+	protected AbstractAccessToken(Token token){
+		this.token = token;
 	}
 
 	/**
@@ -76,6 +72,14 @@ public abstract class AbstractAccessToken extends MongoDocumentSerializer implem
 		initialize(token, owner, client, expire, type, scope, null, null);
 	}
 	
+	/**
+	 * This will initialize the object state from the map
+	 * @param map
+	 */
+	public AbstractAccessToken(Map<String, Object> map){
+		initFromMap(map);
+	}
+	
 	private void initialize(Token token, String owner, String client, long expire, TokenType type, Scope scope, Map<String, Object> notes, Map<String, Object> instructions){
 		this.token = token;
 		this.owner = owner;
@@ -83,8 +87,8 @@ public abstract class AbstractAccessToken extends MongoDocumentSerializer implem
 		this.expire = expire;
 		this.type = type;
 		this.scope = scope;
-		this.notes = CollectionUtils.isEmpty(notes) ? new LinkedHashMap<String, Object>() : notes;
-		this.instructions = CollectionUtils.isEmpty(instructions) ? new LinkedHashMap<String, Object>() : instructions;
+		this.notes = notes == null ? new LinkedHashMap<String, Object>() : notes;
+		this.instructions = instructions == null ? new LinkedHashMap<String, Object>() : instructions;
 	}
 	/**
 	 * This will update the instructions and notes iff provided arguments are not empty
@@ -94,9 +98,9 @@ public abstract class AbstractAccessToken extends MongoDocumentSerializer implem
 	 */
 	public void updateInstructions(Map<String, Object> notes, Map<String, Object> instructions){
 		if(!CollectionUtils.isEmpty(notes))
-			this.notes = notes;
+			this.notes.putAll(notes);
 		if(!CollectionUtils.isEmpty(instructions))
-			this.instructions = instructions;
+			this.instructions.putAll(instructions);
 	}
 
 	/* (non-Javadoc)
@@ -115,8 +119,10 @@ public abstract class AbstractAccessToken extends MongoDocumentSerializer implem
 		this.expire = (long)src.getOrDefault(AccessTokenFields.AUTH_TKN_EXPIRES, 0l);
 		String scope = (String)src.get(AccessTokenFields.SCOPE);
 		this.scope = StringUtils.hasText(scope) ? Scope.getEnum(scope):null;
-		this.notes = (Map<String, Object>)src.get(AccessTokenFields.AUTH_TKN_NOTES);
 		this.instructions = (Map<String, Object>)src.get(AccessTokenFields.AUTH_TKN_INSTRUCTIONS);
+		this.instructions = this.instructions == null ? new LinkedHashMap<String, Object>() : this.instructions ;
+		this.notes = (Map<String, Object>)src.get(AccessTokenFields.AUTH_TKN_NOTES);
+		this.notes = this.notes == null ? new LinkedHashMap<String, Object>() : this.notes;
 	}
 	
 	/**
@@ -250,6 +256,19 @@ public abstract class AbstractAccessToken extends MongoDocumentSerializer implem
 	@Override
 	public Map<String, Object> getInstructions() {
 		return this.instructions;
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.uimirror.core.auth.bean.AccessToken#toResponseMap()
+	 */
+	@Override
+	public Map<String, Object> toResponseMap() {
+		Map<String, Object> rs = new LinkedHashMap<String, Object>(15);
+		Token token = this.getToken().getEncrypted();
+		rs.put(AccessTokenFields.TOKEN, token.getToken());
+		if(StringUtils.hasText(token.getParaphrase()))
+			rs.put(AccessTokenFields.ENCRYPT_STARTEGY, token.getParaphrase());
+		return rs;
 	}
 
 }
