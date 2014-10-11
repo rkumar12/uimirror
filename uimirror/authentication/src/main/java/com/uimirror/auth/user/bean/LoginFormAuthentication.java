@@ -57,8 +57,23 @@ public class LoginFormAuthentication extends OAuth2Authentication{
 	 * @param tokenPrincipal
 	 * @param details
 	 */
+	public LoginFormAuthentication(String tokenPrincipal, Map<String, Object> details) {
+		super(tokenPrincipal, details);
+	}
+	
+	/**
+	 * @param tokenPrincipal
+	 * @param details
+	 */
 	public LoginFormAuthentication(Object tokenPrincipal, Map<String, Object> details) {
 		super(tokenPrincipal, details);
+	}
+	
+	/**
+	 * @param tokenPrincipal
+	 */
+	public LoginFormAuthentication(Object tokenPrincipal) {
+		super(tokenPrincipal);
 	}
 	
 	/**

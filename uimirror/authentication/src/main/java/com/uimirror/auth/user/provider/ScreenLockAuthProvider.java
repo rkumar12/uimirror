@@ -16,9 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.uimirror.auth.controller.AccessTokenProvider;
 import com.uimirror.auth.controller.AuthenticationProvider;
-import com.uimirror.auth.core.AuthenticationException;
 import com.uimirror.auth.core.AuthenticationManager;
-import com.uimirror.auth.core.PersistedAccessTokenProvider;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.Authentication;
 

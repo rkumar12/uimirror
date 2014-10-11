@@ -20,11 +20,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 
+import com.uimirror.auth.bean.AccountStatus;
 import com.uimirror.auth.bean.DefaultAccessToken;
 import com.uimirror.auth.client.Client;
 import com.uimirror.auth.client.bean.OAuth2APIKeyAuthentication;
 import com.uimirror.auth.core.AuthenticationException;
 import com.uimirror.auth.core.AuthenticationManager;
+import com.uimirror.auth.core.LockedException;
 import com.uimirror.auth.core.TokenGenerator;
 import com.uimirror.auth.dao.ClientStore;
 import com.uimirror.auth.exception.AuthExceptionMapper;
@@ -60,7 +62,8 @@ public class APIKeyAuthManager implements AuthenticationManager{
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 		Assert.notNull(authentication, "Authention Request Object can't be empty");
 		LOG.info("[START]- Authenticating Client");
-		Client client = getActieveClientDetails(authentication);
+		Client client = getClientDetails(authentication);
+		doCheck(client);
 		AccessToken token = generateToken(authentication, client);
 		Authentication authenticated = getAuthenticatedDetails(authentication, token);
 		LOG.info("[END]- Authenticating User");
@@ -72,9 +75,9 @@ public class APIKeyAuthManager implements AuthenticationManager{
 	 * @param authentication
 	 * @return
 	 */
-	private Client getActieveClientDetails(Authentication authentication){
+	private Client getClientDetails(Authentication authentication){
 		LOG.debug("[START]- Reteriving acteive Client By api Key");
-		Client client = reteriveActiveClient(authentication.getName());
+		Client client = reteriveClient(authentication.getName());
 		LOG.debug("[END]- Reteriving acteive Client By api Key");
 		return client;
 	}
@@ -84,8 +87,17 @@ public class APIKeyAuthManager implements AuthenticationManager{
 	 * @param apiKey
 	 * @return
 	 */
-	private Client reteriveActiveClient(String apiKey){
-		return clientStore.findActieveClientByApiKey(apiKey);
+	private Client reteriveClient(String apiKey){
+		return clientStore.findClientByApiKey(apiKey);
+	}
+	
+	/**
+	 * Check the current client status
+	 * @param client
+	 */
+	private void doCheck(Client client) {
+		if(AccountStatus.BLOCKED.equals(client.getStatus()))
+			throw new LockedException();
 	}
 	
 	/**
@@ -149,5 +161,6 @@ public class APIKeyAuthManager implements AuthenticationManager{
 		Scope scope = Scope.getEnum(scp) != null ? Scope.getEnum(scp) : Scope.READ;
 		return scope;
 	}
+	
 
 }

@@ -21,7 +21,8 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.mongodb.Mongo;
 import com.uimirror.auth.DBFileds;
-import com.uimirror.auth.dao.CredentialsStore;
+import com.uimirror.auth.dao.UserCredentialsStore;
+import com.uimirror.auth.user.bean.UserCredentials;
 import com.uimirror.core.dao.DBException;
 import com.uimirror.core.dao.MongoExceptionMapper;
 import com.uimirror.core.dao.MongoSerializer;
@@ -34,7 +35,7 @@ import com.uimirror.core.extra.MapException;
  * @author Jay
  */
 @Repository
-public class UserCredentialStore extends MongoSerializer implements CredentialsStore {
+public class UserCredentialStore extends MongoSerializer implements UserCredentialsStore {
 	
 	private @Value("${auth.db.name}")String dbName;
 	private @Value("${auth.usr.col.name}")String collectionName;
@@ -73,13 +74,14 @@ public class UserCredentialStore extends MongoSerializer implements CredentialsS
 	 */
 	@Override
 	@MapException(use=MongoExceptionMapper.NAME)
-	public Object getCredentials(Object identifier) throws DBException {
+	public UserCredentials getCredentialsByUserName(Object identifier) throws DBException {
 		DBObject res = getCollection().findOne(buildUserCredentialSerachQuery(identifier));
 		if(res == null){
 			throw new RecordNotFoundException();
 		}
 		//Make sure no other thing setting as null to response
-		return res.toMap();
+		//return res.toMap();
+		return null;
 	}
 	
 	/**

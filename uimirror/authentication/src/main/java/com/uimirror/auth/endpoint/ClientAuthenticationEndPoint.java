@@ -76,7 +76,7 @@ public class ClientAuthenticationEndPoint{
 	 * a user authentication form will process.
 	 * 
 	 * A standard url will look like /auth?response_type=code&
-  	 *	client_id=CLIENT_ID&redirect_uri=REDIRECT_URI&scope=read&app=rti
+  	 *	client_id=CLIENT_ID&redirect_uri=REDIRECT_URI&scope=read
 	 * @return
 	 */
 	@GET

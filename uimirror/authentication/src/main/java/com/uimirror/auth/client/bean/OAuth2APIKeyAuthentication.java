@@ -45,6 +45,10 @@ public class OAuth2APIKeyAuthentication extends AbstractAuthentication{
 		setDetails(details);
 		setAuthenticated(Boolean.TRUE);
 	}
+	public OAuth2APIKeyAuthentication(Object tokenPrincipal) {
+		this.token = tokenPrincipal;
+		setAuthenticated(Boolean.TRUE);
+	}
 	
 	private void init(String clientId, String redirectUrl, String scope){
 		initDetails(redirectUrl, clientId, scope);

@@ -35,5 +35,12 @@ public interface AccessTokenProvider {
 	 * @return
 	 */
 	public AccessToken getValid(String token);
+	
+	/**
+	 * Gets the valid token from the token ID specified.
+	 * @param token
+	 * @return
+	 */
+	public AccessToken get(String token);
 
 }

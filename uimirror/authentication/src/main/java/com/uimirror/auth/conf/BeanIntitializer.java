@@ -18,10 +18,8 @@ import org.springframework.context.annotation.Import;
 
 import com.uimirror.auth.controller.AuthenticationProvider;
 import com.uimirror.auth.core.AuthenticationManager;
-import com.uimirror.auth.core.AuthenticationValidationService;
 import com.uimirror.auth.core.PasswordMatcher;
 import com.uimirror.auth.user.LoginFormAuthenticationManager;
-import com.uimirror.auth.user.UserAuthenticationValidationService;
 import com.uimirror.auth.user.provider.LoginFormAuthProvider;
 import com.uimirror.core.crypto.CryptoMatcherService;
 import com.uimirror.core.crypto.MatcherServiceImpl;
@@ -64,12 +62,6 @@ public class BeanIntitializer {
 	@Autowired
 	public PasswordMatcher passwordMatcher(CryptoMatcherService cryptoMatcherService){
 		return new PasswordMatcher(cryptoMatcherService);
-	}
-	
-	@Bean
-	@Autowired
-	public AuthenticationValidationService userAuthenticationValidationService(PasswordMatcher passwordMatcher){
-		return new UserAuthenticationValidationService(passwordMatcher);
 	}
 	
 	@Bean

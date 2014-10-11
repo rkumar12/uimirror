@@ -35,6 +35,7 @@ public interface AuthConstants extends Parameters{
 	String ACCESS_TOKEN = "access_token";
 	//Default refresh period is 10 Mins
 	int DEFAULT_EXPIRY_INTERVAL = 10;
+	int KEEP_ME_LOGED_IN_EXPIRY_INTERVAL = 24*60;
 	
 	//For Client specific screen
 	String CLIENT_ID = "client_id";
@@ -49,5 +50,8 @@ public interface AuthConstants extends Parameters{
 	//Instructions Next step
 	String INST_NEXT_STEP = "next";
 	String INST_NEXT_USER_AUTH = "user_auth";
+	String INST_NEXT_USER_OTP = "otp";
+	String INST_NEXT_ACCESS_TOKEN = "access";
+	String INST_RESTORE_REQUIRED = "restore";
 	
 }

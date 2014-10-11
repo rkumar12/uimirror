@@ -17,16 +17,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 
-import com.uimirror.auth.bean.AuthenticatedDetails;
-import com.uimirror.auth.bean.BasicCredentials;
 import com.uimirror.auth.bean.CredentialType;
 import com.uimirror.auth.core.AuthenticationException;
 import com.uimirror.auth.core.AuthenticationManager;
-import com.uimirror.auth.core.AuthenticationValidationService;
 import com.uimirror.auth.core.BadCredentialsException;
-import com.uimirror.auth.dao.CredentialsStore;
+import com.uimirror.auth.dao.UserCredentialsStore;
 import com.uimirror.auth.exception.AuthExceptionMapper;
 import com.uimirror.auth.user.bean.UserAuthenticatedDetails;
+import com.uimirror.auth.user.bean.UserCredentials;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.Authentication;
 import com.uimirror.core.extra.MapException;
@@ -43,9 +41,8 @@ public class ScreenLockAuthenticationManager implements AuthenticationManager{
 	protected static final Logger LOG = LoggerFactory.getLogger(ScreenLockAuthenticationManager.class);
 	
 	//TODO check and process the proper screen lock password
-	private @Autowired CredentialsStore userCredentialStore;
+	private @Autowired UserCredentialsStore userCredentialStore;
 	
-	private @Autowired AuthenticationValidationService userAuthenticationValidationService;
 
 	/* (non-Javadoc)
 	 * @see com.uimirror.core.auth.AuthenticationManager#authenticate(com.uimirror.core.auth.Authentication)
@@ -55,7 +52,7 @@ public class ScreenLockAuthenticationManager implements AuthenticationManager{
 	public AuthenticatedDetails authenticate(Authentication authentication) throws AuthenticationException {
 		Assert.notNull(authentication, "Authention Request Object can't be empty");
 		LOG.info("[START]- Authenticating User for unlocking the screen");
-		BasicCredentials usr = getUserCredentialDetails(authentication);
+		UserCredentials usr = getUserCredentialDetails(authentication);
 		doAuthenticate(authentication, usr);
 		AuthenticatedDetails authDetails = getAuthenticatedDetails(authentication, usr);
 		LOG.info("[END]- Authenticating User for unlocking the screen");
@@ -67,9 +64,9 @@ public class ScreenLockAuthenticationManager implements AuthenticationManager{
 	 * @param authentication
 	 * @return
 	 */
-	private BasicCredentials getUserCredentialDetails(Authentication authentication){
+	private UserCredentials getUserCredentialDetails(Authentication authentication){
 		LOG.debug("[START]- Reteriving User Credentials on basics of the user id");
-		BasicCredentials userCredentials = handleLoginForm(authentication.getName());
+		UserCredentials userCredentials = handleLoginForm(authentication.getName());
 		LOG.debug("[END]- Reteriving User Credentials on basics of the user id");
 		return userCredentials;
 	}
@@ -79,8 +76,8 @@ public class ScreenLockAuthenticationManager implements AuthenticationManager{
 	 * @param userId
 	 * @return
 	 */
-	private BasicCredentials handleLoginForm(String userId){
-		return new BasicUserCredentials(getAuthenticationDetails(userId));
+	private UserCredentials handleLoginForm(String userId){
+		return new DefaultUserCredentials(getAuthenticationDetails(userId));
 	}
 	
 	/**
@@ -91,7 +88,7 @@ public class ScreenLockAuthenticationManager implements AuthenticationManager{
 	 */
 	@SuppressWarnings("unchecked")
 	private Map<String, Object> getAuthenticationDetails(String userId){
-		return (Map<String, Object>)userCredentialStore.getCredentials(userId);
+		return (Map<String, Object>)userCredentialStore.getCredentialsByUserName(userId);
 	}
 	
 	/**
@@ -101,7 +98,7 @@ public class ScreenLockAuthenticationManager implements AuthenticationManager{
 	 * @return <code>true</code> if successfully authenticated else <code>false</code>
 	 * or appropriate {@link AuthenticationException}
 	 */
-	private boolean doAuthenticate(Authentication auth, BasicCredentials userCredentials){
+	private boolean doAuthenticate(Authentication auth, UserCredentials userCredentials){
 		return userAuthenticationValidationService.doMatch(userCredentials, auth);
 	}
 	
@@ -115,7 +112,7 @@ public class ScreenLockAuthenticationManager implements AuthenticationManager{
 	 * @param usr
 	 * @return
 	 */
-	private AuthenticatedDetails getAuthenticatedDetails(Authentication auth, BasicCredentials usr) {
+	private AuthenticatedDetails getAuthenticatedDetails(Authentication auth, UserCredentials usr) {
 		return new UserAuthenticatedDetails((String)usr.getUserId(), usr.getInstructions());
 	}
 

@@ -8,9 +8,13 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.auth.bean;
+package com.uimirror.auth.user.bean;
 
+import java.util.List;
 import java.util.Map;
+
+import com.uimirror.auth.bean.AccountState;
+import com.uimirror.auth.bean.AccountStatus;
 
 
 /**
@@ -19,17 +23,24 @@ import java.util.Map;
  * and so on
  * @author Jay
  */
-public interface BasicCredentials {
+public interface UserCredentials {
+
 	/**
-	 * Specifies User id for the user/api key for the client
+	 * Specifies the profile id of the user
 	 * @return
 	 */
-	Object getUserId();
+	String getProfileId();
+	
+	/**
+	 * Specifies User id for the user
+	 * @return
+	 */
+	List<String> getUserId();
 	/**
 	 * specifies password for the user/ null for client
 	 * @return
 	 */
-	Object getPassword();
+	String getPassword();
 	/**
 	 * <p>Specifies account state for both user and client</p>
 	 * @return
@@ -41,21 +52,15 @@ public interface BasicCredentials {
 	 */
 	AccountStatus getAccountStatus();
 	/**
-	 * if {@link BasicCredentials#getPassword()} has value then it will have , else empty
+	 * if {@link UserCredentials#getPassword()} has value then it will have , else empty
 	 * @return
 	 */
-	Object getEncryptionStratgy();
+	String getEncryptionStratgy();
 	
 	/**
 	 * other instructions associated with the account
 	 * @return
 	 */
 	Map<String, Object> getInstructions();
-	
-	/**
-	 * In case of client it requires the redirect uri to be validated
-	 * @return
-	 */
-	String getRedirectUri();
 
 }

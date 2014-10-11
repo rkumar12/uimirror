@@ -62,7 +62,7 @@ public class SecretKeyAuthManager implements AuthenticationManager, MatcherServi
 		Assert.notNull(authentication, "Authention Request Object can't be empty");
 		LOG.info("[START]- Authenticating Client and generating access token");
 		//Step 1- Authenticate and get the previous access Token, which has the user id and client info
-		AccessToken token = authenticateAndGetDetails(authentication);
+		AccessToken token = authenticateAndGetToken(authentication);
 		//Step 2- Mark the principal as the previous AccessToken
 		Authentication authenticated = getAuthenticatedDetails(authentication, token);
 		LOG.info("[END]- Authenticating Client and generating access token");
@@ -75,7 +75,7 @@ public class SecretKeyAuthManager implements AuthenticationManager, MatcherServi
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	private AccessToken authenticateAndGetDetails(Authentication authentication){
+	private AccessToken authenticateAndGetToken(Authentication authentication){
 		LOG.debug("[START]- Reteriving Secret Code details issued to client eariller");
 		Map<String, String> credentials = (Map<String, String>)authentication.getCredentials();
 		AccessToken accessToken = getActiveToken(credentials.get(AuthConstants.CLIENT_SECRET_CODE));
@@ -175,7 +175,7 @@ public class SecretKeyAuthManager implements AuthenticationManager, MatcherServi
 	 */
 	private Map<String, Object> getInstructions(Map<String, Object> prevInstructions){
 		Map<String, Object> instructions = new LinkedHashMap<String, Object>(5);
-		instructions.put(AuthConstants.INST_AUTH_EXPIRY_INTERVAL, instructions.get(AuthConstants.INST_AUTH_EXPIRY_INTERVAL));
+		instructions.put(AuthConstants.INST_AUTH_EXPIRY_INTERVAL, prevInstructions.get(AuthConstants.INST_AUTH_EXPIRY_INTERVAL));
 		return instructions;
 	}
 

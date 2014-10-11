@@ -10,7 +10,6 @@
  *******************************************************************************/
 package com.uimirror.auth.controller;
 
-import com.uimirror.auth.core.AccessTokenManager;
 import com.uimirror.auth.core.AuthenticationException;
 import com.uimirror.auth.core.AuthenticationManager;
 import com.uimirror.core.auth.AccessToken;

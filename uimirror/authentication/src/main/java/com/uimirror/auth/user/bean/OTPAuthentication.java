@@ -58,6 +58,13 @@ public class OTPAuthentication extends OAuth2Authentication{
 	}
 	
 	/**
+	 * @param tokenPrincipal
+	 */
+	public OTPAuthentication(Object tokenPrincipal) {
+		super(tokenPrincipal);
+	}
+	
+	/**
 	 * @param otp
 	 */
 	private void init(String otp){

@@ -10,6 +10,7 @@
  *******************************************************************************/
 package com.uimirror.auth.dao;
 
+import com.uimirror.auth.user.bean.UserCredentials;
 import com.uimirror.core.dao.DBException;
 
 /**
@@ -18,7 +19,7 @@ import com.uimirror.core.dao.DBException;
  * @author Jay
  */
 //TODO complete this implementation as like AccessTokenStore
-public interface CredentialsStore {
+public interface UserCredentialsStore {
 
 	/**
 	 * <p>Retrieves the credential object in the given document by the provided search criteria</p>
@@ -26,5 +27,5 @@ public interface CredentialsStore {
 	 * @return
 	 * @throws DBException
 	 */
-	Object getCredentials(Object identifier) throws DBException;
+	UserCredentials getCredentialsByUserName(Object identifier) throws DBException;
 }

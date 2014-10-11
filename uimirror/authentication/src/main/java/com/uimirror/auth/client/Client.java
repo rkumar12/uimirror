@@ -12,6 +12,7 @@ package com.uimirror.auth.client;
 
 import java.util.Map;
 
+import com.uimirror.auth.bean.AccountStatus;
 import com.uimirror.core.mongo.feature.BeanBasedDocument;
 
 /**
@@ -24,6 +25,7 @@ public class Client extends BeanBasedDocument{
 	private static final long serialVersionUID = -5074118579759365950L;
 	
 	private String secret;
+	private AccountStatus status;
 
 	public Client(Map<String, Object> map) {
 		super(map);
@@ -39,6 +41,18 @@ public class Client extends BeanBasedDocument{
 
 	public void setSecret(String secret) {
 		this.secret = secret;
+	}
+
+	public AccountStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(AccountStatus status) {
+		this.status = status;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
 	/* (non-Javadoc)

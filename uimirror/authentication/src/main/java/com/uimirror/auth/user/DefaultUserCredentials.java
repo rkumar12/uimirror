@@ -18,28 +18,28 @@ import org.springframework.util.StringUtils;
 import com.uimirror.auth.DBFileds;
 import com.uimirror.auth.bean.AccountState;
 import com.uimirror.auth.bean.AccountStatus;
-import com.uimirror.auth.bean.BasicCredentials;
+import com.uimirror.auth.user.bean.UserCredentials;
 import com.uimirror.core.mongo.feature.BeanBasedDocument;
 
 /**
  * A Basic User Credentials Object
  * @author Jay
  */
-public class BasicUserCredentials extends BeanBasedDocument implements BasicCredentials{
+public class DefaultUserCredentials extends BeanBasedDocument implements UserCredentials{
 
 	private static final long serialVersionUID = -8054579659925533437L;
-	private final List<String> userNames;
-	private final String password;
-	private final AccountState accountState;
-	private final AccountStatus accountStatus;
-	private final String encryptionStratgy;
-	private final Map<String, Object> instructions;
+	private List<String> userNames;
+	private String password;
+	private AccountState accountState;
+	private AccountStatus accountStatus;
+	private String encryptionStratgy;
+	private Map<String, Object> instructions;
 	
 	/**
 	 * 
 	 */
 	@SuppressWarnings("unchecked")
-	public BasicUserCredentials(Map<String, Object> raw) {
+	public DefaultUserCredentials(Map<String, Object> raw) {
 		super((String)raw.get(DBFileds.ID));
 		this.userNames = (List<String>) raw.get(DBFileds.UC_USER_ID);
 		this.password = (String)raw.get(DBFileds.PASSWORD);
@@ -51,61 +51,7 @@ public class BasicUserCredentials extends BeanBasedDocument implements BasicCred
 		this.accountState = StringUtils.hasText(state) ? AccountState.getEnum(state) : AccountState.ENABLED;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.uimirror.core.auth.BasicCredentials#getUserId()
-	 */
-	@Override
-	public Object getUserId() {
-		return super.getId();
-	}
-
-	/* (non-Javadoc)
-	 * @see com.uimirror.core.auth.BasicCredentials#getPassword()
-	 */
-	@Override
-	public Object getPassword() {
-		return this.password;
-	}
-
-	/* (non-Javadoc)
-	 * @see com.uimirror.core.auth.BasicCredentials#getAccountState()
-	 */
-	@Override
-	public AccountState getAccountState() {
-		return this.accountState;
-	}
-
-	/* (non-Javadoc)
-	 * @see com.uimirror.core.auth.BasicCredentials#getAccountStatus()
-	 */
-	@Override
-	public AccountStatus getAccountStatus() {
-		return this.accountStatus;
-	}
-
-	/* (non-Javadoc)
-	 * @see com.uimirror.core.auth.BasicCredentials#getEncryptionStratgy()
-	 */
-	@Override
-	public Object getEncryptionStratgy() {
-		return this.encryptionStratgy;
-	}
-
-	/* (non-Javadoc)
-	 * @see com.uimirror.core.auth.BasicCredentials#getInstructions()
-	 */
-	@Override
-	public Map<String, Object> getInstructions() {
-		return this.instructions;
-	}
-
-	/* (non-Javadoc)
-	 * @see com.uimirror.core.auth.BasicCredentials#getRedirectUri()
-	 */
-	@Override
-	public String getRedirectUri() {
-		return null;
-	}
+	
 
 	/* (non-Javadoc)
 	 * @see com.uimirror.core.mongo.feature.MongoDocumentSerializer#initFromMap(java.util.Map)
@@ -117,6 +63,80 @@ public class BasicUserCredentials extends BeanBasedDocument implements BasicCred
 
 	public List<String> getUserNames() {
 		return userNames;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.uimirror.auth.bean.UserCredentials#getProfileId()
+	 */
+	@Override
+	public String getProfileId() {
+		return getId();
+	}
+
+
+
+	/* (non-Javadoc)
+	 * @see com.uimirror.auth.bean.UserCredentials#getUserId()
+	 */
+	@Override
+	public List<String> getUserId() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+	/* (non-Javadoc)
+	 * @see com.uimirror.auth.bean.UserCredentials#getPassword()
+	 */
+	@Override
+	public String getPassword() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+	/* (non-Javadoc)
+	 * @see com.uimirror.auth.bean.UserCredentials#getAccountState()
+	 */
+	@Override
+	public AccountState getAccountState() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+	/* (non-Javadoc)
+	 * @see com.uimirror.auth.bean.UserCredentials#getAccountStatus()
+	 */
+	@Override
+	public AccountStatus getAccountStatus() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+	/* (non-Javadoc)
+	 * @see com.uimirror.auth.bean.UserCredentials#getEncryptionStratgy()
+	 */
+	@Override
+	public String getEncryptionStratgy() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+	/* (non-Javadoc)
+	 * @see com.uimirror.auth.bean.UserCredentials#getInstructions()
+	 */
+	@Override
+	public Map<String, Object> getInstructions() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

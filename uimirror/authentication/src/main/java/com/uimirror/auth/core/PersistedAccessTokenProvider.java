@@ -12,11 +12,8 @@ package com.uimirror.auth.core;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import com.uimirror.auth.bean.AuthenticatedDetails;
 import com.uimirror.auth.controller.AccessTokenProvider;
-import com.uimirror.auth.user.UserAccessTokenManager;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.Authentication;
 
@@ -32,7 +29,7 @@ public class PersistedAccessTokenProvider implements AccessTokenProvider{
 
 	protected static final Logger LOG = LoggerFactory.getLogger(PersistedAccessTokenProvider.class);
 	
-	private @Autowired AccessTokenManager userAccessTokenManager;
+	//private @Autowired AccessTokenManager userAccessTokenManager;
 	
 
 	/**
@@ -44,10 +41,10 @@ public class PersistedAccessTokenProvider implements AccessTokenProvider{
 	 * @return
 	 */
 	@Override
-	public AccessToken store(Authentication auth) {
+	public void store(AccessToken token) {
 		LOG.debug("[SINGLE]- Generating the AccessToken based on the Authentications");
 		//TODO rectify this first
-		return userAccessTokenManager.generateToken(auth, null);
+		//userAccessTokenManager.generateToken(null, null);
 	}
 	
 	/**
@@ -58,6 +55,18 @@ public class PersistedAccessTokenProvider implements AccessTokenProvider{
 	 */
 	@Override
 	public AccessToken getValid(String token){
+		LOG.debug("[SINGLE]- Validating the details provided for the accesstoken");
+		return null;//userAccessTokenManager.getValidToken(auth);
+	}
+	
+	/**
+	 * Will return the valid {@link AccessToken} based on the {@link Authentication}
+	 * if the provided details are valid will return the {@linkplain AccessToken} else <code>null</code>
+	 * @param auth
+	 * @return
+	 */
+	@Override
+	public AccessToken get(String token){
 		LOG.debug("[SINGLE]- Validating the details provided for the accesstoken");
 		return null;//userAccessTokenManager.getValidToken(auth);
 	}

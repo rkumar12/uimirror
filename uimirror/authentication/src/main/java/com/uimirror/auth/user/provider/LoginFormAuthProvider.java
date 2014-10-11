@@ -10,20 +10,21 @@
  *******************************************************************************/
 package com.uimirror.auth.user.provider;
 
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.CollectionUtils;
 
 import com.uimirror.auth.controller.AccessTokenProvider;
 import com.uimirror.auth.controller.AuthenticationProvider;
 import com.uimirror.auth.core.AuthenticationManager;
+import com.uimirror.auth.dao.AccessTokenStore;
 import com.uimirror.auth.user.bean.LoginFormAuthentication;
 import com.uimirror.core.auth.AccessToken;
+import com.uimirror.core.auth.AuthConstants;
 import com.uimirror.core.auth.Authentication;
+import com.uimirror.core.auth.TokenType;
 
 /**
  * Validates the {@link Authentication} and populate the authenticated principal
@@ -34,7 +35,7 @@ import com.uimirror.core.auth.Authentication;
 public class LoginFormAuthProvider implements AuthenticationProvider{
 
 	private static final Logger LOG = LoggerFactory.getLogger(LoginFormAuthProvider.class);
-	private @Autowired AuthenticationManager loginFormAuthenticationManager;
+	private @Autowired AuthenticationManager loginFormAuthManager;
 	private @Autowired AccessTokenProvider persistedAccessTokenProvider;
 
 	/* (non-Javadoc)
@@ -45,9 +46,14 @@ public class LoginFormAuthProvider implements AuthenticationProvider{
 		LOG.debug("[START]- Authenticating, generating and storing token");
 		//Step 1- get the authenticated principal
 		Authentication authenticated = getAuthenticatedDetails(authentication);
-		//Step 2- generate a authentication which has a access token
+		AccessToken token = (AccessToken)authenticated.getPrincipal();
+		//Step 2- Check Any action required before storing the principal
+		doOtherProcess(token);
+		//Step 3- Store the token
+		storeAuthenticatedPrincipal(token);
+		//Step 4- Clean Authentication Principal
 		LOG.debug("[END]- Authenticating, generating and storing token");
-		return generateAuthenticatedTokenPrincipal(authenticated);
+		return cleanAuthentication(authenticated);
 	}
 
 	/**
@@ -56,10 +62,29 @@ public class LoginFormAuthProvider implements AuthenticationProvider{
 	 * @return
 	 */
 	private Authentication getAuthenticatedDetails(Authentication auth){
-		//Should able to validate the earlier token then followed by user credentials
-		//If this is the final step, should say client is accepted by user or not etc 
-		//TODO
-		return loginFormAuthenticationManager.authenticate(auth);
+		return loginFormAuthManager.authenticate(auth);
+	}
+	
+	/**
+	 * This will process other process such as in case of otp, it will send mail,
+	 * in case user has earlier deactivated the account, so user can reactivated the same.
+	 * @param token
+	 */
+	private void doOtherProcess(AccessToken token){
+		if(TokenType._2FA.equals(token.getType()))
+			System.out.println("DO the Mail processing");
+		Map<String, Object> instructions = token.getInstructions();
+		if(instructions.get(AuthConstants.INST_RESTORE_REQUIRED) != null){
+			//Process account restore as well
+		}
+	}
+	
+	/**
+	 * Stores the {@link AccessToken} using {@link AccessTokenStore}
+	 * @param token
+	 */
+	private void storeAuthenticatedPrincipal(AccessToken token){
+		persistedAccessTokenProvider.store(token);
 	}
 	
 	/**
@@ -69,28 +94,11 @@ public class LoginFormAuthProvider implements AuthenticationProvider{
 	 * @param auth an authenticated principal that indicate the principal clearly.
 	 * @return
 	 */
-	private Authentication generateAuthenticatedTokenPrincipal(Authentication auth){
-		//Generate a Access Token
-		AccessToken accessToken = persistedAccessTokenProvider.store(auth);
-		//TODO right place to check the Authentication token _2FA, if _2FA do the background process of email
-		return populateNewAuthenticatedToken(accessToken);
-	}
-	
-	/**
-	 * Generates a new {@link Authentication} object using the {@link AccessToken}
-	 * @param token
-	 * @return
-	 */
-	private Authentication populateNewAuthenticatedToken(AccessToken token){
-		Map<String, Object> details = new LinkedHashMap<String, Object>(10);
-		if(!CollectionUtils.isEmpty(token.getNotes())){
-			details.putAll(token.getNotes());
-		}
-		if(!CollectionUtils.isEmpty(token.getInstructions())){
-			details.putAll(token.getInstructions());
-		}
-		token.eraseEsential();
-		return new LoginFormAuthentication(token, details);
+	@SuppressWarnings("unchecked")
+	private Authentication cleanAuthentication(Authentication auth){
+		//Clean the Authentication principal
+		AccessToken accessToken = (AccessToken)auth.getPrincipal();
+		return new LoginFormAuthentication(accessToken.toResponseMap(), (Map<String, Object>)auth.getDetails());
 	}
 
 	/* (non-Javadoc)

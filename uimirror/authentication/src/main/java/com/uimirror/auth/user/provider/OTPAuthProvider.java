@@ -10,13 +10,11 @@
  *******************************************************************************/
 package com.uimirror.auth.user.provider;
 
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.CollectionUtils;
 
 import com.uimirror.auth.controller.AccessTokenProvider;
 import com.uimirror.auth.controller.AuthenticationProvider;
@@ -37,7 +35,7 @@ public class OTPAuthProvider implements AuthenticationProvider{
 
 	private static final Logger LOG = LoggerFactory.getLogger(OTPAuthProvider.class);
 	private @Autowired AccessTokenProvider persistedAccessTokenProvider;
-	private @Autowired AuthenticationManager otpAuthenticationManager;
+	private @Autowired AuthenticationManager otpAuthManager;
 
 	/* (non-Javadoc)
 	 * @see com.uimirror.core.auth.controller.AuthenticationProvider#getAuthenticateToken(com.uimirror.core.auth.bean.Authentication)
@@ -47,9 +45,12 @@ public class OTPAuthProvider implements AuthenticationProvider{
 		LOG.debug("[START]- Authenticating, generating or refreshing and storing token");
 		//Step 1- get the authenticated principal
 		Authentication authenticated = getAuthenticatedDetails(authentication);
-		//Step 2- generate a authentication which has a access token
-		LOG.debug("[END]- Authenticating, generating or refreshing and storing token");
-		return generateAuthenticatedTokenPrincipal(authenticated);
+		AccessToken token = (AccessToken)authenticated.getPrincipal();
+		//Step 2- Store the token
+		storeAuthenticatedPrincipal(token);
+		//Step 3- Clean Authentication Principal
+		LOG.debug("[END]- Authenticating, generating and storing token");
+		return cleanAuthentication(authenticated);
 	}
 
 	/**
@@ -58,10 +59,15 @@ public class OTPAuthProvider implements AuthenticationProvider{
 	 * @return
 	 */
 	private Authentication getAuthenticatedDetails(Authentication auth){
-		//This should check what type of token needs to generate
-		//such as user has granted access to client earlier or not etc.
-		//TODO
-		return otpAuthenticationManager.authenticate(auth);
+		return otpAuthManager.authenticate(auth);
+	}
+	
+	/**
+	 * Stores the {@link AccessToken}
+	 * @param token
+	 */
+	private void storeAuthenticatedPrincipal(AccessToken token) {
+		persistedAccessTokenProvider.store(token);
 	}
 	
 	/**
@@ -71,27 +77,11 @@ public class OTPAuthProvider implements AuthenticationProvider{
 	 * @param auth an authenticated principal that indicate the principal clearly.
 	 * @return
 	 */
-	private Authentication generateAuthenticatedTokenPrincipal(Authentication auth){
-		//Generate a Access Token
-		AccessToken accessToken = persistedAccessTokenProvider.store(auth);
-		return populateNewAuthenticatedToken(accessToken);
-	}
-	
-	/**
-	 * Generates a new {@link Authentication} object using the {@link AccessToken}
-	 * @param token
-	 * @return
-	 */
-	private Authentication populateNewAuthenticatedToken(AccessToken token){
-		Map<String, Object> details = new LinkedHashMap<String, Object>(10);
-		if(!CollectionUtils.isEmpty(token.getNotes())){
-			details.putAll(token.getNotes());
-		}
-		if(!CollectionUtils.isEmpty(token.getInstructions())){
-			details.putAll(token.getInstructions());
-		}
-		token.eraseEsential();
-		return new OTPAuthentication(token, details);
+	@SuppressWarnings("unchecked")
+	private Authentication cleanAuthentication(Authentication auth){
+		//Clean the Authentication principal
+		AccessToken accessToken = (AccessToken)auth.getPrincipal();
+		return new OTPAuthentication(accessToken.toResponseMap(), (Map<String, Object>)auth.getDetails());
 	}
 
 	/* (non-Javadoc)

@@ -41,9 +41,18 @@ public class OAuth2Authentication extends AbstractAuthentication{
 		init(token);
 	}
 	
-	public OAuth2Authentication(Object tokenPrincipal, Map<String, Object> details) {
-		this.token = tokenPrincipal;
+	public OAuth2Authentication(String token, Map<String, Object> details) {
+		init(token);
 		setDetails(details);
+	}
+	
+	public OAuth2Authentication(Object token, Map<String, Object> details) {
+		this.token = token;
+		setDetails(details);
+	}
+	
+	public OAuth2Authentication(Object token) {
+		this.token = token;
 	}
 	
 	private void init(String token){
