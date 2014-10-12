@@ -41,6 +41,12 @@ public interface UserCredentials {
 	 * @return
 	 */
 	String getPassword();
+	
+	/**
+	 * specifies password for the user screen lock
+	 * @return
+	 */
+	String getScreenPassword();
 	/**
 	 * <p>Specifies account state for both user and client</p>
 	 * @return

@@ -30,6 +30,7 @@ public class DefaultUserCredentials extends BeanBasedDocument implements UserCre
 	private static final long serialVersionUID = -8054579659925533437L;
 	private List<String> userNames;
 	private String password;
+	private String screenPassword;
 	private AccountState accountState;
 	private AccountStatus accountStatus;
 	private String encryptionStratgy;
@@ -138,5 +139,18 @@ public class DefaultUserCredentials extends BeanBasedDocument implements UserCre
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+
+
+	/* (non-Javadoc)
+	 * @see com.uimirror.auth.user.bean.UserCredentials#getScreenPassword()
+	 */
+	@Override
+	public String getScreenPassword() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
 
 }

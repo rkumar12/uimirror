@@ -52,8 +52,15 @@ public class ScreenLockAuthentication extends OAuth2Authentication{
 	 * @param tokenPrincipal
 	 * @param details
 	 */
-	public ScreenLockAuthentication(Map<String, Object> tokenPrincipal, Map<String, Object> details) {
+	public ScreenLockAuthentication(Object tokenPrincipal, Map<String, Object> details) {
 		super(tokenPrincipal, details);
+	}
+	
+	/**
+	 * @param tokenPrincipal
+	 */
+	public ScreenLockAuthentication(Object tokenPrincipal) {
+		super(tokenPrincipal);
 	}
 	
 	/**

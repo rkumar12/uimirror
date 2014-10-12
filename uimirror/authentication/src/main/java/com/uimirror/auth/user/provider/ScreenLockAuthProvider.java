@@ -10,6 +10,8 @@
  *******************************************************************************/
 package com.uimirror.auth.user.provider;
 
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.uimirror.auth.controller.AccessTokenProvider;
 import com.uimirror.auth.controller.AuthenticationProvider;
 import com.uimirror.auth.core.AuthenticationManager;
+import com.uimirror.auth.user.bean.ScreenLockAuthentication;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.Authentication;
 
@@ -40,15 +43,39 @@ public class ScreenLockAuthProvider implements AuthenticationProvider{
 	@Override
 	public Authentication authenticate(Authentication authentication) {
 		LOG.debug("[START]- Authenticating, generating or refreshing and storing token");
-		//TODO steps should be from AuthenticationManager get the AccessToken, Deserilze to Authenticated details then
-		// validate the entered screen lock password, if everything seems ok, then generate a new token and send back to the client
-		//get the authenticated principal
-		AccessToken accessToken = persistedAccessTokenProvider.getValid(authentication);
-		//AuthenticatedDetails authDetails = screenLockAuthenticationManager.authenticate(authentication);
-		//Generate a Access Token
-		//AccessToken accessToken = super.generateToken(authentication, authDetails);
-		LOG.debug("[END]- Authenticating, generating or refreshing and storing token");
-		return null;
+		//Step 1- get the authenticated principal
+		Authentication authenticated = getAuthenticatedDetails(authentication);
+		AccessToken token = (AccessToken)authenticated.getPrincipal();
+		//Step 2- Store the token
+		storeAuthenticatedPrincipal(token);
+		//Step 3- Clean Authentication Principal
+		LOG.debug("[END]- Authenticating, generating and storing token");
+		return cleanAuthentication(authenticated);
+	}
+
+	/**
+	 * @param authentication
+	 * @return
+	 */
+	private Authentication getAuthenticatedDetails(Authentication authentication) {
+		return screenLockAuthenticationManager.authenticate(authentication);
+	}
+
+	/**
+	 * @param token
+	 */
+	private void storeAuthenticatedPrincipal(AccessToken token) {
+		persistedAccessTokenProvider.store(token);
+	}
+	
+	/**
+	 * @param authenticated
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	private Authentication cleanAuthentication(Authentication authenticated) {
+		AccessToken accessToken = (AccessToken)authenticated.getPrincipal();
+		return new ScreenLockAuthentication(accessToken.toResponseMap(), (Map<String, Object>)authenticated.getDetails());
 	}
 
 	/* (non-Javadoc)
@@ -56,8 +83,7 @@ public class ScreenLockAuthProvider implements AuthenticationProvider{
 	 */
 	@Override
 	public boolean supports(Class<?> authentication) {
-		// TODO Auto-generated method stub
-		return false;
+		return ScreenLockAuthentication.class.isAssignableFrom(authentication);
 	}
 
 }

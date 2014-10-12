@@ -10,6 +10,7 @@
  *******************************************************************************/
 package com.uimirror.auth.user;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -17,17 +18,25 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 
-import com.uimirror.auth.bean.CredentialType;
+import com.uimirror.auth.bean.DefaultAccessToken;
+import com.uimirror.auth.controller.AccessTokenProvider;
 import com.uimirror.auth.core.AuthenticationException;
 import com.uimirror.auth.core.AuthenticationManager;
 import com.uimirror.auth.core.BadCredentialsException;
+import com.uimirror.auth.core.InvalidTokenException;
+import com.uimirror.auth.core.PasswordMatcher;
+import com.uimirror.auth.core.TokenGenerator;
 import com.uimirror.auth.dao.UserCredentialsStore;
 import com.uimirror.auth.exception.AuthExceptionMapper;
-import com.uimirror.auth.user.bean.UserAuthenticatedDetails;
+import com.uimirror.auth.user.bean.ScreenLockAuthentication;
 import com.uimirror.auth.user.bean.UserCredentials;
 import com.uimirror.core.auth.AccessToken;
+import com.uimirror.core.auth.AuthConstants;
 import com.uimirror.core.auth.Authentication;
+import com.uimirror.core.auth.Token;
+import com.uimirror.core.auth.TokenType;
 import com.uimirror.core.extra.MapException;
+import com.uimirror.core.util.DateTimeUtil;
 
 /**
  * Implementation of {@link AuthenticationManager#authenticate(Authentication)}
@@ -40,44 +49,54 @@ public class ScreenLockAuthenticationManager implements AuthenticationManager{
 	
 	protected static final Logger LOG = LoggerFactory.getLogger(ScreenLockAuthenticationManager.class);
 	
-	//TODO check and process the proper screen lock password
 	private @Autowired UserCredentialsStore userCredentialStore;
-	
+	private @Autowired AccessTokenProvider persistedAccessTokenProvider;
+	private @Autowired PasswordMatcher passwordMatcher;
 
 	/* (non-Javadoc)
 	 * @see com.uimirror.core.auth.AuthenticationManager#authenticate(com.uimirror.core.auth.Authentication)
 	 */
 	@Override
 	@MapException(use=AuthExceptionMapper.NAME)
-	public AuthenticatedDetails authenticate(Authentication authentication) throws AuthenticationException {
+	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 		Assert.notNull(authentication, "Authention Request Object can't be empty");
 		LOG.info("[START]- Authenticating User for unlocking the screen");
-		UserCredentials usr = getUserCredentialDetails(authentication);
-		doAuthenticate(authentication, usr);
-		AuthenticatedDetails authDetails = getAuthenticatedDetails(authentication, usr);
+		AccessToken token = authenticateAndGetToken(authentication);
 		LOG.info("[END]- Authenticating User for unlocking the screen");
-		return authDetails;
+		return new ScreenLockAuthentication(token);
 	}
 
+
 	/**
-	 * Gets the {@link UserCredentials} object from the {@link Authentication}
 	 * @param authentication
 	 * @return
 	 */
-	private UserCredentials getUserCredentialDetails(Authentication authentication){
-		LOG.debug("[START]- Reteriving User Credentials on basics of the user id");
-		UserCredentials userCredentials = handleLoginForm(authentication.getName());
-		LOG.debug("[END]- Reteriving User Credentials on basics of the user id");
-		return userCredentials;
+	@SuppressWarnings("unchecked")
+	private AccessToken authenticateAndGetToken(Authentication authentication) {
+		Map<String, String> credentials = (Map<String, String>)authentication.getCredentials();
+		//Step 1- Get the previous Token
+		AccessToken prevToken = getPreviousToken(credentials);
+		//Step 2- Get the user credentials
+		UserCredentials userCredentials = getUserCredentials(prevToken.getOwner());
+		//Step 3- Check the account status as well password match
+		doAuthenticate(credentials.get(AuthConstants.PASSWORD), userCredentials);
+		//Step 4- Generate a new Token
+		AccessToken newToken = issueNewToken(prevToken, userCredentials, authentication);
+		return newToken;
 	}
 	
 	/**
-	 * Handles the {@link CredentialType#LOGINFORM} request
-	 * @param userId
+	 * This will retrieve the previous token issued for the client.
+	 * 
+	 * @param credentials
 	 * @return
 	 */
-	private UserCredentials handleLoginForm(String userId){
-		return new DefaultUserCredentials(getAuthenticationDetails(userId));
+	private AccessToken getPreviousToken(Map<String, String> credentials){
+		String access_token = credentials.get(AuthConstants.ACCESS_TOKEN);
+		AccessToken token = persistedAccessTokenProvider.get(access_token);
+		if(token == null || !TokenType.ACCESS.equals(token.getType()))
+			throw new InvalidTokenException();
+		return token;
 	}
 	
 	/**
@@ -86,9 +105,8 @@ public class ScreenLockAuthenticationManager implements AuthenticationManager{
 	 * @param userId
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
-	private Map<String, Object> getAuthenticationDetails(String userId){
-		return (Map<String, Object>)userCredentialStore.getCredentialsByUserName(userId);
+	private UserCredentials getUserCredentials(String userId){
+		return userCredentialStore.getCredentialsByUserName(userId);
 	}
 	
 	/**
@@ -98,22 +116,76 @@ public class ScreenLockAuthenticationManager implements AuthenticationManager{
 	 * @return <code>true</code> if successfully authenticated else <code>false</code>
 	 * or appropriate {@link AuthenticationException}
 	 */
-	private boolean doAuthenticate(Authentication auth, UserCredentials userCredentials){
-		return userAuthenticationValidationService.doMatch(userCredentials, auth);
+	private boolean doAuthenticate(String providedPassword, UserCredentials userCredentials){
+		if(!passwordMatcher.match(providedPassword, userCredentials.getScreenPassword(), userCredentials.getEncryptionStratgy()))
+			throw new BadCredentialsException();
+		
+		return Boolean.TRUE;
 	}
 	
 	/**
-	 * convert the user details into {@linkplain AuthenticatedDetails} that will be used latter
-	 * for the {@linkplain AccessToken} generation logic
-	 * Accommodate the user basic information into the authenticated details.
-	 * {@link AccessToken} else generate a fully phased token.
-	 * 
-	 * @param auth
-	 * @param usr
+	 * Issue a new Token based on the previous and current state of the account.
+	 * @param prevToken
+	 * @param userCredentials
+	 * @param authentication
 	 * @return
 	 */
-	private AuthenticatedDetails getAuthenticatedDetails(Authentication auth, UserCredentials usr) {
-		return new UserAuthenticatedDetails((String)usr.getUserId(), usr.getInstructions());
+	@SuppressWarnings("unchecked")
+	private AccessToken issueNewToken(AccessToken prevToken, UserCredentials userCredentials, Authentication authentication) {
+		Map<String, Object> instructions = (Map<String, Object>)prevToken.getInstructions();
+		Map<String, Object> details = (Map<String, Object>)authentication.getDetails();
+		Token token = TokenGenerator.getNewOneWithOutPharse();
+		TokenType tokenType = TokenType.ACCESS;
+		long expiresOn = getExpiresOn(instructions);
+		String requestor = prevToken.getClient();
+		String owner = userCredentials.getProfileId();
+		return new DefaultAccessToken(token, owner, requestor
+				, expiresOn, tokenType, prevToken.getScope()
+				, getNotes(details), getInstructions(instructions));
 	}
 
+	/**
+	 * Decides the expires interval of the token
+	 * @param instructions
+	 * @return
+	 */
+	private long getExpiresOn(Map<String, Object> instructions){
+		return DateTimeUtil.addToCurrentUTCTimeConvertToEpoch(getExpiresInterval(instructions));
+	}
+
+	/**
+	 * Gets the expires period of the token
+	 * @param instructions
+	 * @return
+	 */
+	private long getExpiresInterval(Map<String, Object> instructions){
+		long expires = 0l;
+		if(instructions.get(AuthConstants.INST_AUTH_EXPIRY_INTERVAL) != null){
+			expires = (long)instructions.get(AuthConstants.INST_AUTH_EXPIRY_INTERVAL);
+		}
+		return expires;
+	}
+	
+	/**
+	 * Get details such as IP and user agent
+	 * @param details
+	 * @return
+	 */
+	private Map<String, Object> getNotes(Map<String, Object> details){
+		Map<String, Object> notes = new LinkedHashMap<String, Object>(5);
+		notes.put(AuthConstants.IP, details.get(AuthConstants.IP));
+		notes.put(AuthConstants.USER_AGENT, details.get(AuthConstants.USER_AGENT));
+		return notes;
+	}
+	
+	/**
+	 * Get instructions for this token such as expire interval
+	 * @param instructions
+	 * @return
+	 */
+	private Map<String, Object> getInstructions(Map<String, Object> prevInstructions){
+		Map<String, Object> instructions = new LinkedHashMap<String, Object>(5);
+		instructions.put(AuthConstants.INST_AUTH_EXPIRY_INTERVAL, getExpiresInterval(prevInstructions));
+		return instructions;
+	}
 }

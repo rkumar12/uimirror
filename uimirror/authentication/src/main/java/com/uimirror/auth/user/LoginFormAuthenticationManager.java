@@ -103,7 +103,7 @@ public class LoginFormAuthenticationManager implements AuthenticationManager{
 	private AccessToken getPreviousToken(Map<String, String> credentials){
 		String access_token = credentials.get(AuthConstants.ACCESS_TOKEN);
 		AccessToken token = persistedAccessTokenProvider.get(access_token);
-		if(token == null)
+		if(token == null || !TokenType.TEMPORAL.equals(token.getType()))
 			throw new InvalidTokenException();
 		return token;
 	}
