@@ -18,7 +18,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 
-import com.uimirror.auth.DBFileds;
 import com.uimirror.auth.bean.AccountState;
 import com.uimirror.auth.bean.AccountStatus;
 import com.uimirror.auth.bean.DefaultAccessToken;
@@ -213,7 +212,7 @@ public class LoginFormAuthenticationManager implements AuthenticationManager{
 	 */
 	private boolean isOTPRequired(UserCredentials userCredentials){
 		Map<String, Object> instructions = userCredentials.getInstructions();
-		if(instructions.get(DBFileds.UC_ACC_INS_2FA) != null)
+		if(instructions.get(UserAuthDBFields.ACC_INS_2FA) != null)
 			return Boolean.TRUE;
 		return Boolean.FALSE;
 	}

@@ -15,7 +15,6 @@ import java.util.Map;
 
 import org.springframework.util.StringUtils;
 
-import com.uimirror.auth.DBFileds;
 import com.uimirror.auth.bean.AccountState;
 import com.uimirror.auth.bean.AccountStatus;
 import com.uimirror.auth.user.bean.UserCredentials;
@@ -41,13 +40,13 @@ public class DefaultUserCredentials extends BeanBasedDocument implements UserCre
 	 */
 	@SuppressWarnings("unchecked")
 	public DefaultUserCredentials(Map<String, Object> raw) {
-		super((String)raw.get(DBFileds.ID));
-		this.userNames = (List<String>) raw.get(DBFileds.UC_USER_ID);
-		this.password = (String)raw.get(DBFileds.PASSWORD);
-		this.encryptionStratgy = (String)raw.get(DBFileds.UC_ENCRYPTION_PWD);
-		this.instructions = (Map<String, Object>)raw.get(DBFileds.UC_ACCOUNT_INSTRUCTION);
-		String status = (String)raw.get(DBFileds.UC_ACCOUNT_STATUS);
-		String state = (String)raw.get(DBFileds.UC_ACCOUNT_STATE);
+		super((String)raw.get(UserAuthDBFields.ID));
+		this.userNames = (List<String>) raw.get(UserAuthDBFields.USER_ID);
+		this.password = (String)raw.get(UserAuthDBFields.PASSWORD);
+		this.encryptionStratgy = (String)raw.get(UserAuthDBFields.ENCRYPTION_PWD);
+		this.instructions = (Map<String, Object>)raw.get(UserAuthDBFields.ACCOUNT_INSTRUCTION);
+		String status = (String)raw.get(UserAuthDBFields.ACCOUNT_STATUS);
+		String state = (String)raw.get(UserAuthDBFields.ACCOUNT_STATE);
 		this.accountStatus = StringUtils.hasText(status) ? AccountStatus.getEnum(status) : AccountStatus.ACTIEVE;
 		this.accountState = StringUtils.hasText(state) ? AccountState.getEnum(state) : AccountState.ENABLED;
 	}
@@ -58,8 +57,9 @@ public class DefaultUserCredentials extends BeanBasedDocument implements UserCre
 	 * @see com.uimirror.core.mongo.feature.MongoDocumentSerializer#initFromMap(java.util.Map)
 	 */
 	@Override
-	public void initFromMap(Map<String, Object> src) {
+	public UserCredentials initFromMap(Map<String, Object> src) {
 		//This Implementation not required as value is already de-serialized
+		return null;
 	}
 
 	public List<String> getUserNames() {

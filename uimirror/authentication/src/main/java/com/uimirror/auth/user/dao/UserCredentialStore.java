@@ -20,8 +20,8 @@ import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.mongodb.Mongo;
-import com.uimirror.auth.DBFileds;
 import com.uimirror.auth.dao.UserCredentialsStore;
+import com.uimirror.auth.user.UserAuthDBFields;
 import com.uimirror.auth.user.bean.UserCredentials;
 import com.uimirror.core.dao.DBException;
 import com.uimirror.core.dao.MongoExceptionMapper;
@@ -90,7 +90,7 @@ public class UserCredentialStore extends MongoSerializer implements UserCredenti
 	 * @return
 	 */
 	private DBObject buildUserCredentialSerachQuery(Object identifier){
-		return new BasicDBObject(DBFileds.UC_USER_ID, identifier.toString());
+		return new BasicDBObject(UserAuthDBFields.USER_ID, identifier.toString());
 	}
 
 }

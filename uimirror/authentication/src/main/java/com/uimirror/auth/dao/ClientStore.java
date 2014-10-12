@@ -17,14 +17,35 @@ import com.uimirror.auth.client.Client;
  * that deals with store and retrieve of the client
  * @author Jay
  */
-//TODO impement this latter
 public interface ClientStore {
 
+	/**
+	 * Query a {@link Client} record by the apiKey
+	 * 
+	 * @param apiKey if invalid will throw {@link IllegalArgumentException}
+	 * @return
+	 */
 	Client findClientByApiKey(String apiKey);
 	
+	/**
+	 * Query a Client By client ID
+	 * @param clientId if invalid throw {@link IllegalArgumentException}
+	 * @return
+	 */
 	Client findClientById(String clientId);
 	
+	/**
+	 * Query a client by apiKey
+	 * 
+	 * @param apiKey if invalid throw {@link IllegalArgumentException}
+	 * @return
+	 */
 	Client findActieveClientByApiKey(String apiKey);
 	
+	/**
+	 * query a active client by client id
+	 * @param clientId if invalid throw {@link IllegalArgumentException}
+	 * @return
+	 */
 	Client findActieveClientById(String clientId);
 }

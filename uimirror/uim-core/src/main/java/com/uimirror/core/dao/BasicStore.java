@@ -10,9 +10,11 @@
  *******************************************************************************/
 package com.uimirror.core.dao;
 
+import java.util.List;
 import java.util.Map;
 
 import com.uimirror.core.BasicMongoOperators;
+import com.uimirror.core.mongo.feature.BeanBasedDocument;
 import com.uimirror.core.mongo.feature.MongoDocumentSerializer;
 
 /**
@@ -27,14 +29,14 @@ import com.uimirror.core.mongo.feature.MongoDocumentSerializer;
  * 
  * @author Jay
  */
-public interface BasicStore {
+public interface BasicStore<T extends BeanBasedDocument> {
 
 	/**
 	 * Stores the document by calling 
 	 * {@linkplain MongoDocumentSerializer#toMap()}
 	 * @param doc
 	 */
-	void store(MongoDocumentSerializer doc) throws DBException;
+	void store(T doc) throws DBException;
 	
 	/**
 	 * Defines the contract of the delete by ID
@@ -56,28 +58,28 @@ public interface BasicStore {
 	 * @param id
 	 * @return
 	 */
-	Map<String, Object> getById(Object id) throws DBException;
+	T getById(Object id) throws DBException;
+	
+	/**
+	 * Get the document by the query specified
+	 * If the query is null, it will get all the documents
+	 * @param query
+	 * @return
+	 */
+	List<T> getByQuery(Map<String, Object> query) throws DBException;
 	
 	/**
 	 * Updates the document on the available specific id
-	 * The update map or document pass will be append with single $SET
+	 * The update map should have the proper $SET commands
 	 * @param id
 	 * @param toUpdate
 	 * @return number of record got updated
 	 */
-	int setSingleById(Object id, MongoDocumentSerializer toUpdate) throws DBException;
+	int updateById(Object id, Map<String, Object> toUpdate) throws DBException;
 	
 	/**
-	 * Update the document based on the query specified be append with single $SET
-	 * @param query
-	 * @param toUpdate
-	 * @return
-	 * @throws DBException
-	 */
-	int setSingleByQuery(Map<String, Object> query, MongoDocumentSerializer toUpdate) throws DBException;
-	
-	/**
-	 * Update the document based on the query specified
+	 * Update the document based on the query specified.
+	 * The update map should have the proper $SET commands
 	 * @param query
 	 * @param toUpdate
 	 * @return

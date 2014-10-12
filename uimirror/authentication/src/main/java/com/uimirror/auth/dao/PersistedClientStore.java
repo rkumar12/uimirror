@@ -10,48 +10,29 @@
  *******************************************************************************/
 package com.uimirror.auth.dao;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.Assert;
 
-import com.mongodb.DB;
 import com.mongodb.DBCollection;
-import com.mongodb.Mongo;
+import com.uimirror.auth.bean.AccountStatus;
 import com.uimirror.auth.client.Client;
+import com.uimirror.auth.client.ClientDBFields;
+import com.uimirror.core.dao.AbstractMongoStore;
 import com.uimirror.core.dao.MongoExceptionMapper;
-import com.uimirror.core.dao.MongoSerializer;
 import com.uimirror.core.extra.MapException;
 
 /**
- * This will be the client store DB implementations
+ * This will be the client store In Mongo DB implementations
  * 
  * @author Jay
  */
 @Repository
-public class PersistedClientStore extends MongoSerializer implements ClientStore{
-
-	private @Value("${client.db.name}")String dbName;
-	private @Value("${client.col.name}")String collectionName;
-
-	/**
-	 * Assign/ Create collection from the given {@link DB}
-	 * @param db
-	 * @param collectionName
-	 */
-	public PersistedClientStore(DB db, String collectionName) {
-		super(db, collectionName);
-	}
-
-	/**
-	 * Assign/ Create collection from the given {@link Mongo}
-	 * @param mongo
-	 * @param dbName
-	 * @param collectionName
-	 */
-	public PersistedClientStore(Mongo mongo, String dbName, String collectionName){
-		super(mongo, dbName, collectionName);
-	}
+public class PersistedClientStore extends AbstractMongoStore<Client> implements ClientStore{
 	
 	/**
 	 * Assign/ Create collection from the given {@link DBCollection}
@@ -59,7 +40,7 @@ public class PersistedClientStore extends MongoSerializer implements ClientStore
 	 */
 	@Autowired
 	public PersistedClientStore(@Qualifier("clientBasicInfoCol") DBCollection collection){
-		super(collection);
+		super(collection, Client.class);
 	}
 
 	/* (non-Javadoc)
@@ -68,8 +49,7 @@ public class PersistedClientStore extends MongoSerializer implements ClientStore
 	@Override
 	@MapException(use=MongoExceptionMapper.NAME)
 	public Client findClientByApiKey(String apiKey) {
-		// TODO Auto-generated method stub
-		return null;
+		return queryFirstRecord(getApiKeyQuery(apiKey));
 	}
 
 	/* (non-Javadoc)
@@ -77,8 +57,7 @@ public class PersistedClientStore extends MongoSerializer implements ClientStore
 	 */
 	@Override
 	public Client findClientById(String clientId) {
-		// TODO Auto-generated method stub
-		return null;
+		return getById(clientId);
 	}
 
 	/* (non-Javadoc)
@@ -86,8 +65,9 @@ public class PersistedClientStore extends MongoSerializer implements ClientStore
 	 */
 	@Override
 	public Client findActieveClientByApiKey(String apiKey) {
-		// TODO Auto-generated method stub
-		return null;
+		Map<String, Object> apiKeyQuery = getApiKeyQuery(apiKey);
+		apiKeyQuery.put(ClientDBFields.STATUS, AccountStatus.ACTIEVE.getStatus());
+		return queryFirstRecord(apiKeyQuery);
 	}
 
 	/* (non-Javadoc)
@@ -95,7 +75,20 @@ public class PersistedClientStore extends MongoSerializer implements ClientStore
 	 */
 	@Override
 	public Client findActieveClientById(String clientId) {
-		// TODO Auto-generated method stub
-		return null;
+		Map<String, Object> idQuery = getIdMap(clientId);
+		idQuery.put(ClientDBFields.STATUS, AccountStatus.ACTIEVE.getStatus());
+		return queryFirstRecord(idQuery);
+	}
+	
+	/**
+	 * Creates a query for the API Key
+	 * @param apiKey
+	 * @return
+	 */
+	private Map<String, Object> getApiKeyQuery(String apiKey){
+		Assert.hasText(apiKey, "Api key Query Parameter can't be empty");
+		Map<String, Object> query = new LinkedHashMap<String, Object>(3);
+		query.put(ClientDBFields.API_KEY, apiKey);
+		return query;
 	}
 }

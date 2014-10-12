@@ -8,23 +8,23 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.auth;
+package com.uimirror.auth.client;
+
+import com.uimirror.core.BasicDBFields;
 
 /**
- * Contains all the DB fields required for application
+ * Contains all the basic db fields that will be used by the client
  * @author Jay
  */
-public interface DBFileds {
-
-	String ID = "_id";
+public interface ClientDBFields extends BasicDBFields{
 	
-	//User Credentials
-	String UC_USER_ID = "uid";
-	String PASSWORD = "pwd";
-	String UC_ACCOUNT_STATE = "state";
-	String UC_ACCOUNT_STATUS = "status";
-	String UC_ENCRYPTION_PWD = "salt";
-	String UC_ACCOUNT_INSTRUCTION = "sti";
-	//User Account Instructions for 2FA
-	String UC_ACC_INS_2FA = "2fa";
+	String NAME = "name";
+	String SECRET = "secret";
+	String REDIRECT_URI = "redirect_uri";
+	String STATUS = "status";
+	String API_KEY = "api_key";
+	String REGISTERED_ON = "registered_on";
+	String REGISTERED_BY = "registered_by";
+	String DETAILS = "details";
+
 }

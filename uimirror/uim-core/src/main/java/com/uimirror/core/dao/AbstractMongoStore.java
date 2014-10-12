@@ -10,6 +10,7 @@
  *******************************************************************************/
 package com.uimirror.core.dao;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -17,6 +18,8 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
@@ -28,6 +31,7 @@ import com.mongodb.WriteResult;
 import com.uimirror.core.BasicDBFields;
 import com.uimirror.core.BasicMongoOperators;
 import com.uimirror.core.extra.MapException;
+import com.uimirror.core.mongo.feature.BeanBasedDocument;
 import com.uimirror.core.mongo.feature.MongoDocumentSerializer;
 
 /**
@@ -36,54 +40,76 @@ import com.uimirror.core.mongo.feature.MongoDocumentSerializer;
  * the operators defined in {@linkplain BasicMongoOperators}
  * Make sure in case of update giving the proper {@linkplain Map} with key as one of 
  * the operators defined in {@linkplain BasicMongoOperators} leaving the top most document
- * as by default its taking {@linkplain BasicMongoOperators#SET} only for {@linkplain BasicStore#setSingleById(Object, MongoDocumentSerializer)}
+ * as by default its taking {@linkplain BasicMongoOperators#SET} only for {@linkplain BasicStore#updateById(Object, MongoDocumentSerializer)}
  * else in case for the updateByQuery pass the updated {@linkplain Map<String, Object} as fully update filed
  * with proper operators from the {@linkplain BasicMongoOperators}
  * 
  * @author Jay
  */
-public class AbstractStore extends MongoInitializer implements BasicStore{
+public abstract class AbstractMongoStore<T extends BeanBasedDocument> extends MongoInitializer implements BasicStore<T>{
 
-	protected static final Logger LOG = LoggerFactory.getLogger(AbstractStore.class);
-	
+	protected static final Logger LOG = LoggerFactory.getLogger(AbstractMongoStore.class);
+	private T t;
 	/**
 	 * Assign/ Create collection from the given {@link Mongo}
 	 * @param mongo
 	 * @param dbName
 	 * @param collectionName
 	 */
-	public AbstractStore(Mongo mongo, String dbName, String collectionName){
+	public AbstractMongoStore(Mongo mongo, String dbName, String collectionName , Class<? extends BeanBasedDocument> claz){
 		super(mongo, dbName, collectionName);
+		setTargetClass(claz);
+		
 	}
 	
 	/**
 	 * Assign/ Create collection from the given {@link DBCollection}
 	 * @param collection
 	 */
-	public AbstractStore(DBCollection collection){
+	public AbstractMongoStore(DBCollection collection, Class<? extends BeanBasedDocument> claz){
 		super(collection);
+		setTargetClass(claz);
 	}
 	
 	/**
 	 * @param db
 	 * @param collectionName
 	 */
-	public AbstractStore(DB db, String collectionName) {
+	public AbstractMongoStore(DB db, String collectionName, Class<? extends BeanBasedDocument> claz) {
 		super(db, collectionName);
+		setTargetClass(claz);
 	}
-
+	
+	/**
+	 * Initialize the type of serialization of the class
+	 * @param claz
+	 */
+	@SuppressWarnings("unchecked")
+	private void setTargetClass(Class<? extends BeanBasedDocument> claz){
+		try {
+			t = (T) claz.getConstructor().newInstance(new Object[] { });
+		} catch (InstantiationException | IllegalAccessException
+				| IllegalArgumentException | InvocationTargetException
+				| NoSuchMethodException | SecurityException e) {
+			throw new IllegalArgumentException("Provided class can't be cast to desired document");
+		}
+	}
 
 	/* (non-Javadoc)
 	 * @see com.uimirror.core.dao.BasicStore#store(com.uimirror.core.mongo.feature.MongoDocumentSerializer)
 	 */
 	@Override
 	@MapException(use=MongoExceptionMapper.NAME)
-	public void store(MongoDocumentSerializer doc) throws DBException {
+	public void store(T doc) throws DBException {
 		LOG.debug("[START]- Storing the object");
-		BasicDBObject obj = new BasicDBObject(doc.toMap());
-		getCollection().save(obj);
+		Assert.notNull(doc, "Object To store can't be empty");
+		Map<String, Object> document = doc.toMap();
+		if(CollectionUtils.isEmpty(document))
+			throw new IllegalArgumentException("Object To store can't be empty");
+		getCollection().save(convertToDBObject(document));
 		LOG.debug("[END]- Storing the object");
 	}
+
 
 	/* (non-Javadoc)
 	 * @see com.uimirror.core.dao.BasicStore#deleteById(java.lang.Object)
@@ -94,7 +120,6 @@ public class AbstractStore extends MongoInitializer implements BasicStore{
 		LOG.debug("[SINGLE]- Deleting the object");
 		delete(getIdQuery(id));
 	}
-	
 	/* (non-Javadoc)
 	 * @see com.uimirror.core.dao.BasicStore#deleteByQuery(java.util.Map)
 	 */
@@ -102,7 +127,7 @@ public class AbstractStore extends MongoInitializer implements BasicStore{
 	@MapException(use=MongoExceptionMapper.NAME)
 	public int deleteByQuery(Map<String, Object> query) throws DBException {
 		LOG.debug("[SINGLE]- Deleting the objects based on the query");
-		return getNumberOfDocumentAffected(delete(new BasicDBObject(query)));
+		return getNumberOfDocumentAffected(delete(convertToDBObject(query)));
 	}
 	
 	/**
@@ -122,31 +147,35 @@ public class AbstractStore extends MongoInitializer implements BasicStore{
 	@SuppressWarnings("unchecked")
 	@Override
 	@MapException(use=MongoExceptionMapper.NAME)
-	public Map<String,Object> getById(Object id) throws DBException {
+	public T getById(Object id) throws DBException {
 		LOG.debug("[START]- Getting an object based on the ID");
 		DBObject result = getCollection().findOne(getIdQuery(id));
 		if(result == null){
 			throw new RecordNotFoundException();
 		}
 		LOG.debug("[END]- Getting an object based on the ID");
-		return result.toMap();
+		return (T) t.initFromMap(result.toMap());
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.uimirror.core.dao.BasicStore#getByQuery(java.lang.Object)
+	 */
+	@MapException(use=MongoExceptionMapper.NAME)
+	@Override
+	public List<T> getByQuery(Map<String, Object> query) throws DBException {
+		LOG.debug("[START]- Getting an object based on the Query specified");
+		DBCursor cursor = getCollection().find(convertToDBObject(query));
+		LOG.debug("[END]- Getting an object based on the Query specified");
+		return getFromCursor(cursor, 50);
 	}
 
 	/* (non-Javadoc)
 	 * @see com.uimirror.core.dao.BasicStore#updateById(java.lang.Object, com.uimirror.core.mongo.feature.MongoDocumentSerializer)
 	 */
 	@Override
-	public int setSingleById(Object id, MongoDocumentSerializer toUpdate) throws DBException {
+	public int updateById(Object id, Map<String, Object> toUpdate) throws DBException {
 		LOG.debug("[SINGLE]- Updateing the document by ID");
-		return updateByQuery(getIdMap(id), getSetSingleMap(toUpdate.toMap()));
-	}
-
-	/* (non-Javadoc)
-	 * @see com.uimirror.core.dao.BasicStore#updateByQuery(java.util.Map, com.uimirror.core.mongo.feature.MongoDocumentSerializer)
-	 */
-	@Override
-	public int setSingleByQuery(Map<String, Object> query, MongoDocumentSerializer toUpdate) throws DBException {
-		return updateByQuery(query, getSetSingleMap(toUpdate.toMap()));
+		return updateByQuery(getIdMap(id), toUpdate);
 	}
 	
 	/* (non-Javadoc)
@@ -165,23 +194,23 @@ public class AbstractStore extends MongoInitializer implements BasicStore{
 	 * @return
 	 */
 	protected WriteResult update(Map<String, Object> q, Map<String, Object> u){
-		return getCollection().update(new BasicDBObject(q), new BasicDBObject(u));
+		return getCollection().update(convertToDBObject(q), convertToDBObject(u));
 	}
 	
 	/**
-	 * Concerts the {@linkplain DBCursor} into list of {@linkplain Map}
+	 * Concerts the {@linkplain DBCursor} into list of {@linkplain T}
 	 * @param cursor
 	 * @param fetchSize
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public List<Map<String, Object>> getFromCursor(DBCursor cursor, int fetchSize){
+	public List<T> getFromCursor(DBCursor cursor, int fetchSize){
 		fetchSize = fetchSize <= 0 ? 20 : fetchSize;
 		int thirtyPercentage = fetchSize*((30/100)*100);
 		//Retrieve max of 20 at a time
 		cursor.batchSize(fetchSize);
-		List<Map<String, Object>> results = new ArrayList<Map<String, Object>>(fetchSize+(fetchSize+thirtyPercentage));
-		cursor.forEach((result) -> results.add(result.toMap()));
+		List<T> results = new ArrayList<T>(fetchSize+(fetchSize+thirtyPercentage));
+		cursor.forEach((result) -> results.add((T)result.toMap()));
 		return results;
 	}
 	
@@ -219,10 +248,33 @@ public class AbstractStore extends MongoInitializer implements BasicStore{
 	 * @param obj
 	 * @return
 	 */
-	protected Map<String, Object> getSetSingleMap(Map<String, Object> obj){
-		Map<String, Object> s = new LinkedHashMap<String, Object>(3);
-		s.put(BasicMongoOperators.SET, obj);
-		return s;
+//	protected Map<String, Object> getSetSingleMap(Map<String, Object> obj){
+//		Map<String, Object> s = new LinkedHashMap<String, Object>(3);
+//		s.put(BasicMongoOperators.SET, obj);
+//		return s;
+//	}
+	
+	/**
+	 * Converts the provided map into {@link DBObject}
+	 * @param obj
+	 * @return
+	 */
+	protected DBObject convertToDBObject(Map<String, Object> obj){
+		return new BasicDBObject(obj);
+	}
+	
+	/**
+	 * Query for the first record from the document.
+	 * @param query
+	 * @return
+	 * @throws RecordNotFoundException
+	 */
+	protected T queryFirstRecord(Map<String, Object> query) throws RecordNotFoundException{
+		List<T> results = getByQuery(query);
+		if(CollectionUtils.isEmpty(results)){
+			throw new RecordNotFoundException("No Record Found");
+		}
+		return results.get(0);
 	}
 
 }

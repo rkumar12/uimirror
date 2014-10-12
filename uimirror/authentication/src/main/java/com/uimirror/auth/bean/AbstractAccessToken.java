@@ -108,7 +108,7 @@ public abstract class AbstractAccessToken extends BeanBasedDocument implements A
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public void initFromMap(Map<String, Object> src) {
+	public AccessToken initFromMap(Map<String, Object> src) {
 		String token = (String)src.get(AccessTokenFields.ID);
 		String pharse = (String)src.get(AccessTokenFields.ENCRYPT_STARTEGY);
 		this.token = new Token(token, pharse);
@@ -123,6 +123,7 @@ public abstract class AbstractAccessToken extends BeanBasedDocument implements A
 		this.instructions = this.instructions == null ? new LinkedHashMap<String, Object>() : this.instructions ;
 		this.notes = (Map<String, Object>)src.get(AccessTokenFields.AUTH_TKN_NOTES);
 		this.notes = this.notes == null ? new LinkedHashMap<String, Object>() : this.notes;
+		return this;
 	}
 	
 	/**
