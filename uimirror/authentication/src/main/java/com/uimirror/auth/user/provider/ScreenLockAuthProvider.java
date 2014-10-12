@@ -34,7 +34,7 @@ import com.uimirror.core.auth.Authentication;
 public class ScreenLockAuthProvider implements AuthenticationProvider{
 
 	private static final Logger LOG = LoggerFactory.getLogger(ScreenLockAuthProvider.class);
-	private @Autowired AuthenticationManager screenLockAuthenticationManager;
+	private @Autowired AuthenticationManager screenLockAuthManager;
 	private @Autowired AccessTokenProvider persistedAccessTokenProvider;
 
 	/* (non-Javadoc)
@@ -58,7 +58,7 @@ public class ScreenLockAuthProvider implements AuthenticationProvider{
 	 * @return
 	 */
 	private Authentication getAuthenticatedDetails(Authentication authentication) {
-		return screenLockAuthenticationManager.authenticate(authentication);
+		return screenLockAuthManager.authenticate(authentication);
 	}
 
 	/**

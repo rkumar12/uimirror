@@ -50,7 +50,7 @@ public class SecretKeyAuthManager implements AuthenticationManager, MatcherServi
 	
 	protected static final Logger LOG = LoggerFactory.getLogger(SecretKeyAuthManager.class);
 	
-	private @Autowired ClientStore clientStore;
+	private @Autowired ClientStore persistedClientStore;
 	private @Autowired AccessTokenProvider persistedAccessTokenProvider;
 
 	/* (non-Javadoc)
@@ -96,7 +96,7 @@ public class SecretKeyAuthManager implements AuthenticationManager, MatcherServi
 	 * @return
 	 */
 	private Client reteriveActieveClient(String apiKey){
-		return clientStore.findActieveClientByApiKey(apiKey);
+		return persistedClientStore.findActieveClientByApiKey(apiKey);
 	}
 	
 	/**

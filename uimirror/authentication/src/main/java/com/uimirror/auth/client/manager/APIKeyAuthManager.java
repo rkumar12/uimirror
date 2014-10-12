@@ -52,7 +52,7 @@ public class APIKeyAuthManager implements AuthenticationManager{
 	
 	protected static final Logger LOG = LoggerFactory.getLogger(APIKeyAuthManager.class);
 	
-	private @Autowired ClientStore clientStore;
+	private @Autowired ClientStore persistedClientStore;
 
 	/* (non-Javadoc)
 	 * @see com.uimirror.core.auth.AuthenticationManager#authenticate(com.uimirror.core.auth.Authentication)
@@ -88,7 +88,7 @@ public class APIKeyAuthManager implements AuthenticationManager{
 	 * @return
 	 */
 	private Client reteriveClient(String apiKey){
-		return clientStore.findClientByApiKey(apiKey);
+		return persistedClientStore.findClientByApiKey(apiKey);
 	}
 	
 	/**
