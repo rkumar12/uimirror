@@ -18,7 +18,7 @@ import org.springframework.context.annotation.Import;
 
 import com.uimirror.auth.controller.AccessTokenProvider;
 import com.uimirror.auth.core.PasswordMatcher;
-import com.uimirror.auth.core.PersistedAccessTokenProvider;
+import com.uimirror.auth.core.PersistedAccessTokenMongoProvider;
 import com.uimirror.core.crypto.CryptoMatcherService;
 import com.uimirror.core.crypto.MatcherServiceImpl;
 import com.uimirror.core.rest.extra.JsonResponseTransFormer;
@@ -66,7 +66,7 @@ public class BeanIntitializer {
 	//****Access Token providers****
 	@Bean
 	public AccessTokenProvider persistedAccessTokenProvider(){
-		return new PersistedAccessTokenProvider();
+		return new PersistedAccessTokenMongoProvider();
 	}
 	//****Access Token providers end****
 

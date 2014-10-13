@@ -26,20 +26,20 @@ public interface AccessTokenProvider {
 	 * @param token
 	 * @return
 	 */
-	public void store(AccessToken token);
+	void store(AccessToken token);
 	
 	/**
 	 * Gets the valid token from the token ID specified.
 	 * @param token
 	 * @return
 	 */
-	public AccessToken getValid(String token);
+	AccessToken getValid(String token);
 	
 	/**
 	 * Gets the valid token from the token ID specified.
 	 * @param token
 	 * @return
 	 */
-	public AccessToken get(String token);
+	AccessToken get(String token);
 
 }

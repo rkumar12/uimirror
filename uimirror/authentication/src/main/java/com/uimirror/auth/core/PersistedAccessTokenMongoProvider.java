@@ -12,24 +12,23 @@ package com.uimirror.auth.core;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.uimirror.auth.controller.AccessTokenProvider;
+import com.uimirror.auth.dao.AccessTokenStore;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.Authentication;
 
 /**
- * This is the common implementation of the user authentication provider
- * such that any access token getting generated for the user should have one 
- * {@link AccessTokenManager} such as {@linkplain UserAccessTokenManager} and process 
- * to generate the {@link AccessToken}
+ * Common Mongo DB bridge to persist and retrieve the {@link AccessToken}
  * 
  * @author Jay
  */
-public class PersistedAccessTokenProvider implements AccessTokenProvider{
+public class PersistedAccessTokenMongoProvider implements AccessTokenProvider{
 
-	protected static final Logger LOG = LoggerFactory.getLogger(PersistedAccessTokenProvider.class);
+	protected static final Logger LOG = LoggerFactory.getLogger(PersistedAccessTokenMongoProvider.class);
 	
-	//private @Autowired AccessTokenManager userAccessTokenManager;
+	private @Autowired AccessTokenStore persistedAccessTokenMongoStore;
 	
 
 	/**
@@ -43,8 +42,7 @@ public class PersistedAccessTokenProvider implements AccessTokenProvider{
 	@Override
 	public void store(AccessToken token) {
 		LOG.debug("[SINGLE]- Generating the AccessToken based on the Authentications");
-		//TODO rectify this first
-		//userAccessTokenManager.generateToken(null, null);
+		persistedAccessTokenMongoStore.store(token);
 	}
 	
 	/**
@@ -56,7 +54,7 @@ public class PersistedAccessTokenProvider implements AccessTokenProvider{
 	@Override
 	public AccessToken getValid(String token){
 		LOG.debug("[SINGLE]- Validating the details provided for the accesstoken");
-		return null;//userAccessTokenManager.getValidToken(auth);
+		return persistedAccessTokenMongoStore.getValid(token);
 	}
 	
 	/**
@@ -68,7 +66,7 @@ public class PersistedAccessTokenProvider implements AccessTokenProvider{
 	@Override
 	public AccessToken get(String token){
 		LOG.debug("[SINGLE]- Validating the details provided for the accesstoken");
-		return null;//userAccessTokenManager.getValidToken(auth);
+		return persistedAccessTokenMongoStore.get(token);
 	}
 	
 

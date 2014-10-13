@@ -11,6 +11,7 @@
 package com.uimirror.auth.user;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -59,7 +60,11 @@ public class UserAuthorizedClient extends BeanBasedDocument<UserAuthorizedClient
 		UserAuthorizedClient authorizedClients = null;
 		if(clientsMap != null){
 			List<ClientAuthorizedScope> clients = new ArrayList<ClientAuthorizedScope>(clientsMap.size()+5);
-			clientsMap.forEach((map) -> clients.add(new ClientAuthorizedScope((String)map.get(UserAuthorizedClientDBFields.CLIENT_ID), (String)map.get(UserAuthorizedClientDBFields.SCOPE))));
+			clientsMap.forEach((map) -> {
+				ClientAuthorizedScope ca = new ClientAuthorizedScope((String)map.get(UserAuthorizedClientDBFields.CLIENT_ID)
+						, (String)map.get(UserAuthorizedClientDBFields.SCOPE));
+				clients.add(ca);
+			});
 			authorizedClients = new UserAuthorizedClient(id, clients);
 		}else{
 			authorizedClients = new UserAuthorizedClient(id, null);
@@ -121,6 +126,37 @@ public class UserAuthorizedClient extends BeanBasedDocument<UserAuthorizedClient
 	 */
 	private boolean isMatched(){
 		return !CollectionUtils.isEmpty(getClients()) && getClients().size() == 1;
+	}
+	
+	/**
+	 * This map the document should have which fields
+	 * always it will have _id
+	 */
+	@Override
+	public Map<String, Object> toMap(){
+		//First check if it represents a valid state then can be serialized
+		if(!isValid())
+			throw new IllegalStateException("Can't be serailized the state of the object");
+		return serailize();
+	}
+	
+	/**
+	 * Creates the {@link Map} that will be serialized over the network
+	 * @return
+	 */
+	private Map<String, Object> serailize() {
+		Map<String, Object> map = new LinkedHashMap<String, Object>(10);
+		map.put(UserAuthorizedClientDBFields.ID, this.getId());
+		List<Map<String, Object>> clients = new ArrayList<Map<String,Object>>(getClients().size());
+		
+		getClients().forEach((client) -> {
+			Map<String, Object> c = new LinkedHashMap<String, Object>();
+			c.put(UserAuthorizedClientDBFields.CLIENT_ID, client.getClientId());
+			c.put(UserAuthorizedClientDBFields.SCOPE, client.getScope().getScope());
+			clients.add(c);
+		});
+		map.put(UserAuthorizedClientDBFields.CLIENTS, clients);
+		return map;
 	}
 	
 }

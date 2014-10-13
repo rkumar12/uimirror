@@ -17,4 +17,5 @@ public interface BasicMongoOperators {
 	String SET = "$set";
 	String LESSTHANEQUEAL = "$lte";
 	String ELEMENT_MATCH = "$elemMatch";
+	String LESS_THAN_EQUAL = "$lte";
 }

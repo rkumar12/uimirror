@@ -17,7 +17,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
-import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 import com.mongodb.DBCollection;
@@ -63,19 +62,7 @@ public class PersistedUserAuthorizedClientMongoStore extends AbstractMongoStore<
 	 */
 	@Override
 	public List<UserAuthorizedClient> getAllAuthroziedClient(String profileId) {
-		return getByQuery(getProfileIdQuery(profileId));
-	}
-	
-	/**
-	 * Builds the query to search by profile id
-	 * @param identifier
-	 * @return
-	 */
-	private Map<String, Object> getProfileIdQuery(String identifier){
-		Assert.hasText(identifier, "UserID Query Parameter can't be empty");
-		Map<String, Object> query = new LinkedHashMap<String, Object>(3);
-		query.put(UserAuthorizedClientDBFields.ID, identifier);
-		return query;
+		return getByQuery(getIdMap(profileId));
 	}
 	
 	/**
@@ -97,7 +84,7 @@ public class PersistedUserAuthorizedClientMongoStore extends AbstractMongoStore<
 	 * @return
 	 */
 	private Map<String, Object> getClientIdScopeSerachQuery(String profileId, String clientId, String scope){
-		Map<String, Object> query = getProfileIdQuery(profileId);
+		Map<String, Object> query = getIdMap(profileId);
 		Map<String, Object> elementMatchQuery = new LinkedHashMap<String, Object>(5);
 		elementMatchQuery.put(BasicMongoOperators.ELEMENT_MATCH, getArrayFindCreteria(clientId, scope));
 		query.put(UserAuthorizedClientDBFields.CLIENTS, elementMatchQuery);
