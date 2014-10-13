@@ -23,8 +23,7 @@ import com.uimirror.auth.bean.AccountStatus;
 import com.uimirror.auth.client.Client;
 import com.uimirror.auth.client.ClientDBFields;
 import com.uimirror.core.dao.AbstractMongoStore;
-import com.uimirror.core.dao.MongoExceptionMapper;
-import com.uimirror.core.extra.MapException;
+import com.uimirror.core.dao.DBException;
 
 /**
  * This will be the client store In Mongo DB implementations
@@ -47,8 +46,7 @@ public class PersistedClientStore extends AbstractMongoStore<Client> implements 
 	 * @see com.uimirror.auth.dao.ClientStore#findClientByApiKey(java.lang.String)
 	 */
 	@Override
-	@MapException(use=MongoExceptionMapper.NAME)
-	public Client findClientByApiKey(String apiKey) {
+	public Client findClientByApiKey(String apiKey) throws DBException{
 		return queryFirstRecord(getApiKeyQuery(apiKey));
 	}
 
@@ -56,7 +54,7 @@ public class PersistedClientStore extends AbstractMongoStore<Client> implements 
 	 * @see com.uimirror.auth.dao.ClientStore#findClientById(java.lang.String)
 	 */
 	@Override
-	public Client findClientById(String clientId) {
+	public Client findClientById(String clientId) throws DBException{
 		return getById(clientId);
 	}
 
@@ -64,7 +62,7 @@ public class PersistedClientStore extends AbstractMongoStore<Client> implements 
 	 * @see com.uimirror.auth.dao.ClientStore#findActieveClientByApiKey(java.lang.String)
 	 */
 	@Override
-	public Client findActieveClientByApiKey(String apiKey) {
+	public Client findActieveClientByApiKey(String apiKey) throws DBException{
 		Map<String, Object> apiKeyQuery = getApiKeyQuery(apiKey);
 		apiKeyQuery.put(ClientDBFields.STATUS, AccountStatus.ACTIEVE.getStatus());
 		return queryFirstRecord(apiKeyQuery);
@@ -74,7 +72,7 @@ public class PersistedClientStore extends AbstractMongoStore<Client> implements 
 	 * @see com.uimirror.auth.dao.ClientStore#findActieveClientById(java.lang.String)
 	 */
 	@Override
-	public Client findActieveClientById(String clientId) {
+	public Client findActieveClientById(String clientId) throws DBException{
 		Map<String, Object> idQuery = getIdMap(clientId);
 		idQuery.put(ClientDBFields.STATUS, AccountStatus.ACTIEVE.getStatus());
 		return queryFirstRecord(idQuery);

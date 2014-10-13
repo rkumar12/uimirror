@@ -10,12 +10,8 @@
  *******************************************************************************/
 package com.uimirror.auth.bean;
 
-import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.springframework.util.StringUtils;
-
-import com.uimirror.auth.core.AccessTokenFields;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.Scope;
 import com.uimirror.core.auth.Token;
@@ -35,12 +31,17 @@ public class DefaultAccessToken extends AbstractAccessToken{
 	public DefaultAccessToken(Map<String, Object> map) {
 		super(map);
 	}
+	//TODO think about it again for erase credentials
+	private DefaultAccessToken(Token token){
+		super(token);
+	}
 	
 	/**
+	 *Don't Use this until has some special use case
 	 * @param token
 	 */
-	public DefaultAccessToken(Token token) {
-		super(token);
+	public DefaultAccessToken() {
+		super();
 	}
 
 	/**
@@ -67,19 +68,6 @@ public class DefaultAccessToken extends AbstractAccessToken{
 	 */
 	public DefaultAccessToken(Token token, String owner, String client, long expire, TokenType type, Scope scope) {
 		super(token, owner, client, expire, type, scope);
-	}
-
-	/* (non-Javadoc)
-	 * @see com.uimirror.core.auth.bean.AccessToken#toResponseMap()
-	 */
-	@Override
-	public Map<String, Object> toResponseMap() {
-		Map<String, Object> rs = new LinkedHashMap<String, Object>(15);
-		Token token = super.getToken().getEncrypted();
-		rs.put(AccessTokenFields.TOKEN, token.getToken());
-		if(StringUtils.hasText(token.getParaphrase()))
-			rs.put(AccessTokenFields.ENCRYPT_STARTEGY, token.getParaphrase());
-		return rs;
 	}
 
 	/* (non-Javadoc)

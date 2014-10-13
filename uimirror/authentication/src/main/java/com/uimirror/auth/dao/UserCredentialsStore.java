@@ -10,7 +10,7 @@
  *******************************************************************************/
 package com.uimirror.auth.dao;
 
-import com.uimirror.auth.user.bean.UserCredentials;
+import com.uimirror.auth.user.UserCredentials;
 import com.uimirror.core.dao.DBException;
 
 /**
@@ -18,7 +18,6 @@ import com.uimirror.core.dao.DBException;
  * 
  * @author Jay
  */
-//TODO complete this implementation as like AccessTokenStore
 public interface UserCredentialsStore {
 
 	/**
@@ -27,5 +26,13 @@ public interface UserCredentialsStore {
 	 * @return
 	 * @throws DBException
 	 */
-	UserCredentials getCredentialsByUserName(Object identifier) throws DBException;
+	UserCredentials getCredentialsByUserName(String identifier) throws DBException;
+	
+	/**
+	 * Retrieves the document by id
+	 * @param identifier
+	 * @return
+	 * @throws DBException
+	 */
+	UserCredentials getCredentialsByProfileId(String identifier) throws DBException;
 }

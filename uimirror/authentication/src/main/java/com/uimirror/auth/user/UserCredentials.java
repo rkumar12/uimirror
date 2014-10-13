@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.auth.user.bean;
+package com.uimirror.auth.user;
 
 import java.util.List;
 import java.util.Map;

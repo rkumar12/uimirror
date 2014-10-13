@@ -21,6 +21,7 @@ public interface UserAuthDBFields extends BasicDBFields{
 	//User Credentials
 	String USER_ID = "uid";
 	String PASSWORD = "pwd";
+	String SCREEN_PASSWORD = "screen_pwd";
 	String ACCOUNT_STATE = "state";
 	String ACCOUNT_STATUS = "status";
 	String ENCRYPTION_PWD = "salt";

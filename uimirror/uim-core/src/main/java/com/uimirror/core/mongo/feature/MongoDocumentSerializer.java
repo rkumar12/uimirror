@@ -12,6 +12,8 @@ package com.uimirror.core.mongo.feature;
 
 import java.util.Map;
 
+import org.springframework.util.CollectionUtils;
+
 import com.uimirror.core.util.BeanToMap;
 
 /**
@@ -34,5 +36,14 @@ public abstract class MongoDocumentSerializer {
 	 * @param src
 	 */
 	public abstract Object initFromMap(Map<String, Object> src); 
+	
+	/**
+	 * Validates the incoming source to initialize
+	 * @param src
+	 */
+	protected void validateSource(Map<String, Object> src){
+		if(CollectionUtils.isEmpty(src))
+			throw new IllegalArgumentException("Initialization Source can't be empty");
+	}
 
 }

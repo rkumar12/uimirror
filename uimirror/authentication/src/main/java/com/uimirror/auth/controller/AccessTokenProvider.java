@@ -28,7 +28,6 @@ public interface AccessTokenProvider {
 	 */
 	public void store(AccessToken token);
 	
-	
 	/**
 	 * Gets the valid token from the token ID specified.
 	 * @param token

@@ -12,8 +12,10 @@ package com.uimirror.auth.client;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
+
 import com.uimirror.auth.bean.AccountStatus;
 import com.uimirror.core.mongo.feature.BeanBasedDocument;
 import com.uimirror.core.service.BeanValidatorService;
@@ -134,14 +136,7 @@ public class Client extends BeanBasedDocument implements BeanValidatorService{
 		return this;
 	}
 	
-	/**
-	 * Validates the incoming source to initialize
-	 * @param src
-	 */
-	private void validateSource(Map<String, Object> src){
-		if(CollectionUtils.isEmpty(src))
-			throw new IllegalArgumentException("Initialization Source can't be empty");
-	}
+	
 	
 	@SuppressWarnings("unchecked")
 	private void init(Map<String, Object> src){

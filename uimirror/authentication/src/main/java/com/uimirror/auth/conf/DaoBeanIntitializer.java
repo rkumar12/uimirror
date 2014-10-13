@@ -32,15 +32,25 @@ import com.uimirror.core.mongo.MongoDbFactory;
 public class DaoBeanIntitializer {
 	
 	protected @Value("${mongo.host:127.0.0.1}") String host;
+	protected @Value("${mongo.token.host:127.0.0.1}") String tokenHost;
 	protected @Value("${auth.db.name:uim_ouath}") String authDb;
 	protected @Value("${auth.usr.col.name:usr_auth}") String userAuthCollection;
 	protected @Value("${client.db.name:uim_client}") String clientDb;
 	protected @Value("${client.col.name:basic_info}") String clientBasicInfoCollection;
+	protected @Value("${auth.token.db.name:uim_ouath_token}") String tokenDb;
+	protected @Value("${auth.token.col.name:token}") String ouathTokenCol;
 	
 	@Bean
 	public Mongo mongo() throws UnknownHostException{
 		ConnectionFactory cf = new ConnectionFactory();
 		cf.setHost(host);
+		return cf.getMongoClient();
+	}
+	
+	@Bean
+	public Mongo tokenMongo() throws UnknownHostException{
+		ConnectionFactory cf = new ConnectionFactory();
+		cf.setHost(tokenHost);
 		return cf.getMongoClient();
 	}
 	
@@ -54,6 +64,17 @@ public class DaoBeanIntitializer {
 	@Autowired
 	public DBCollection usrAuthCol(DB authDB) throws UnknownHostException{
 		return DBCollectionUtil.getCollection(authDB, this.userAuthCollection);
+	}
+	@Bean
+	@Autowired
+	public DB tokenDB(Mongo tokenMongo) throws UnknownHostException{
+		return MongoDbFactory.getDB(tokenMongo, this.tokenDb);
+	}
+	
+	@Bean
+	@Autowired
+	public DBCollection tokenOuathCol(DB tokenDB) throws UnknownHostException{
+		return DBCollectionUtil.getCollection(tokenDB, this.ouathTokenCol);
 	}
 
 	@Bean

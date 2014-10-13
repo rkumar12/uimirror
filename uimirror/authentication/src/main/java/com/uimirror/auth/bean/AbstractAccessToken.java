@@ -23,12 +23,13 @@ import com.uimirror.core.auth.Scope;
 import com.uimirror.core.auth.Token;
 import com.uimirror.core.auth.TokenType;
 import com.uimirror.core.mongo.feature.BeanBasedDocument;
+import com.uimirror.core.service.BeanValidatorService;
 
 /**
  * A basic implementation of the accesstoken
  * @author Jay
  */
-public abstract class AbstractAccessToken extends BeanBasedDocument implements AccessToken{
+public abstract class AbstractAccessToken extends BeanBasedDocument implements AccessToken, BeanValidatorService{
 
 	private static final long serialVersionUID = 1758356201287067187L;
 	private Token token;
@@ -40,6 +41,12 @@ public abstract class AbstractAccessToken extends BeanBasedDocument implements A
 	private Map<String, Object> notes;
 	private Map<String, Object> instructions;
 	
+	//Don't use this if not special condition
+	protected AbstractAccessToken(){
+		super();
+	}
+
+	//TODO think about it again for erase credentials
 	protected AbstractAccessToken(Token token){
 		this.token = token;
 	}
@@ -55,7 +62,6 @@ public abstract class AbstractAccessToken extends BeanBasedDocument implements A
 	 * @param instructions
 	 */
 	public AbstractAccessToken(Token token, String owner, String client, long expire, TokenType type, Scope scope, Map<String, Object> notes, Map<String, Object> instructions) {
-		super();
 		initialize(token, owner, client, expire, type, scope, notes, instructions);
 	}
 
@@ -68,7 +74,6 @@ public abstract class AbstractAccessToken extends BeanBasedDocument implements A
 	 * @param scope
 	 */
 	public AbstractAccessToken(Token token, String owner, String client, long expire, TokenType type, Scope scope) {
-		super();
 		initialize(token, owner, client, expire, type, scope, null, null);
 	}
 	
@@ -77,11 +82,12 @@ public abstract class AbstractAccessToken extends BeanBasedDocument implements A
 	 * @param map
 	 */
 	public AbstractAccessToken(Map<String, Object> map){
-		initFromMap(map);
+		super(map);
 	}
 	
 	private void initialize(Token token, String owner, String client, long expire, TokenType type, Scope scope, Map<String, Object> notes, Map<String, Object> instructions){
 		this.token = token;
+		this.setId(this.token.getToken());
 		this.owner = owner;
 		this.client = client;
 		this.expire = expire;
@@ -96,22 +102,35 @@ public abstract class AbstractAccessToken extends BeanBasedDocument implements A
 	 * @param instructions
 	 * @return
 	 */
-	public void updateInstructions(Map<String, Object> notes, Map<String, Object> instructions){
+	public AccessToken updateInstructions(Map<String, Object> notes, Map<String, Object> instructions){
 		if(!CollectionUtils.isEmpty(notes))
 			this.notes.putAll(notes);
 		if(!CollectionUtils.isEmpty(instructions))
 			this.instructions.putAll(instructions);
+		return this;
 	}
 
 	/* (non-Javadoc)
 	 * @see com.uimirror.core.mongo.feature.MongoDocumentSerializer#initFromMap(java.util.Map)
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public AccessToken initFromMap(Map<String, Object> src) {
+		//Validate the source shouldn't be empty
+		validateSource(src);
+		//Initialize the state
+		init(src);
+		return this;
+	}
+	
+	/**
+	 * @param src
+	 */
+	@SuppressWarnings("unchecked")
+	private void init(Map<String, Object> src) {
 		String token = (String)src.get(AccessTokenFields.ID);
 		String pharse = (String)src.get(AccessTokenFields.ENCRYPT_STARTEGY);
 		this.token = new Token(token, pharse);
+		setId(this.token.getToken());
 		String type = (String)src.get(AccessTokenFields.TYPE);
 		this.type = StringUtils.hasText(type)? TokenType.getEnum(type) : null;
 		this.owner = (String)src.get(AccessTokenFields.AUTH_TKN_OWNER);
@@ -120,24 +139,53 @@ public abstract class AbstractAccessToken extends BeanBasedDocument implements A
 		String scope = (String)src.get(AccessTokenFields.SCOPE);
 		this.scope = StringUtils.hasText(scope) ? Scope.getEnum(scope):null;
 		this.instructions = (Map<String, Object>)src.get(AccessTokenFields.AUTH_TKN_INSTRUCTIONS);
-		this.instructions = this.instructions == null ? new LinkedHashMap<String, Object>() : this.instructions ;
+		this.instructions = this.instructions == null ? new LinkedHashMap<String, Object>(5) : this.instructions ;
 		this.notes = (Map<String, Object>)src.get(AccessTokenFields.AUTH_TKN_NOTES);
-		this.notes = this.notes == null ? new LinkedHashMap<String, Object>() : this.notes;
-		return this;
+		this.notes = this.notes == null ? new LinkedHashMap<String, Object>(5) : this.notes;
 	}
-	
+
 	/**
 	 * This map the document should have which fields
 	 * always it will have _id, parapharse, id, expire, type and scope
 	 */
 	@Override
 	public Map<String, Object> toMap(){
+		//First check if it represents a valid state then can be serialized
+		if(!isValid())
+			throw new IllegalStateException("Can't be serailized the state of the object");
+		return serailize();
+	}
+
+	/** 
+	 * Checks the necessary fields that needs to be present to demonstrate a state of the client. 
+	 * @see com.uimirror.core.service.BeanValidatorService#isValid()
+	 */
+	@Override
+	public boolean isValid() {
+		boolean valid = Boolean.TRUE;
+		if(!StringUtils.hasText(getId()))
+			valid = Boolean.FALSE;
+		if(getType() == null)
+			valid = Boolean.FALSE;
+		if(!StringUtils.hasText(getClient()))
+			valid = Boolean.FALSE;
+		if(getScope() == null)
+			valid = Boolean.FALSE;
+		return valid;
+	}
+	
+	/**
+	 * Creates the {@link Map} that will be serialized over the network
+	 * @return
+	 */
+	private Map<String, Object> serailize() {
 		Map<String, Object> map = new LinkedHashMap<String, Object>(10);
 		map.put(AccessTokenFields.ID, this.token.getToken());
 		if(StringUtils.hasText(this.token.getParaphrase()))
 			map.put(AccessTokenFields.ENCRYPT_STARTEGY, this.token.getParaphrase());
 		map.put(AccessTokenFields.TYPE, this.type.getTokenType());
-		map.put(AccessTokenFields.AUTH_TKN_OWNER, this.owner);
+		if(StringUtils.hasText(getOwner()))
+			map.put(AccessTokenFields.AUTH_TKN_OWNER, this.owner);
 		map.put(AccessTokenFields.AUTH_TKN_CLIENT, this.client);
 		map.put(AccessTokenFields.AUTH_TKN_EXPIRES, this.expire);
 		if(!CollectionUtils.isEmpty(notes))

@@ -13,7 +13,7 @@ package com.uimirror.core.dao;
 import java.util.List;
 import java.util.Map;
 
-import com.uimirror.core.BasicMongoOperators;
+import com.uimirror.core.mongo.BasicMongoOperators;
 import com.uimirror.core.mongo.feature.BeanBasedDocument;
 import com.uimirror.core.mongo.feature.MongoDocumentSerializer;
 

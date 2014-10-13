@@ -33,7 +33,6 @@ import com.uimirror.auth.core.TokenGenerator;
 import com.uimirror.auth.dao.UserCredentialsStore;
 import com.uimirror.auth.exception.AuthExceptionMapper;
 import com.uimirror.auth.user.bean.LoginFormAuthentication;
-import com.uimirror.auth.user.bean.UserCredentials;
 import com.uimirror.core.RandomKeyGenerator;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.AuthConstants;

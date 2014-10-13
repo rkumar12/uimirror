@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.core;
+package com.uimirror.core.mongo;
 
 /**
  * @author Jay
@@ -16,4 +16,5 @@ package com.uimirror.core;
 public interface BasicMongoOperators {
 	String SET = "$set";
 	String LESSTHANEQUEAL = "$lte";
+	String ELEMENT_MATCH = "$elemMatch";
 }

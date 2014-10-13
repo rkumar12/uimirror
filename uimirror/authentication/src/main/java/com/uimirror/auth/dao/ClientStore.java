@@ -11,6 +11,7 @@
 package com.uimirror.auth.dao;
 
 import com.uimirror.auth.client.Client;
+import com.uimirror.core.dao.DBException;
 
 /**
  * A basic repo for the client 
@@ -25,14 +26,14 @@ public interface ClientStore {
 	 * @param apiKey if invalid will throw {@link IllegalArgumentException}
 	 * @return
 	 */
-	Client findClientByApiKey(String apiKey);
+	Client findClientByApiKey(String apiKey)  throws DBException;
 	
 	/**
 	 * Query a Client By client ID
 	 * @param clientId if invalid throw {@link IllegalArgumentException}
 	 * @return
 	 */
-	Client findClientById(String clientId);
+	Client findClientById(String clientId) throws DBException;
 	
 	/**
 	 * Query a client by apiKey
@@ -40,12 +41,12 @@ public interface ClientStore {
 	 * @param apiKey if invalid throw {@link IllegalArgumentException}
 	 * @return
 	 */
-	Client findActieveClientByApiKey(String apiKey);
+	Client findActieveClientByApiKey(String apiKey) throws DBException;
 	
 	/**
 	 * query a active client by client id
 	 * @param clientId if invalid throw {@link IllegalArgumentException}
 	 * @return
 	 */
-	Client findActieveClientById(String clientId);
+	Client findActieveClientById(String clientId) throws DBException;
 }

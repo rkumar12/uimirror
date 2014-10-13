@@ -10,21 +10,23 @@
  *******************************************************************************/
 package com.uimirror.auth.user;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import com.uimirror.auth.bean.AccountState;
 import com.uimirror.auth.bean.AccountStatus;
-import com.uimirror.auth.user.bean.UserCredentials;
 import com.uimirror.core.mongo.feature.BeanBasedDocument;
+import com.uimirror.core.service.BeanValidatorService;
 
 /**
  * A Basic User Credentials Object
  * @author Jay
  */
-public class DefaultUserCredentials extends BeanBasedDocument implements UserCredentials{
+public class DefaultUserCredentials extends BeanBasedDocument implements UserCredentials, BeanValidatorService{
 
 	private static final long serialVersionUID = -8054579659925533437L;
 	private List<String> userNames;
@@ -35,35 +37,52 @@ public class DefaultUserCredentials extends BeanBasedDocument implements UserCre
 	private String encryptionStratgy;
 	private Map<String, Object> instructions;
 	
+	//DOn't Use this until it has specific requirement
+	public DefaultUserCredentials(){
+		super();
+	}
+	
 	/**
-	 * 
+	 * @param raw
 	 */
-	@SuppressWarnings("unchecked")
 	public DefaultUserCredentials(Map<String, Object> raw) {
-		super((String)raw.get(UserAuthDBFields.ID));
-		this.userNames = (List<String>) raw.get(UserAuthDBFields.USER_ID);
-		this.password = (String)raw.get(UserAuthDBFields.PASSWORD);
-		this.encryptionStratgy = (String)raw.get(UserAuthDBFields.ENCRYPTION_PWD);
-		this.instructions = (Map<String, Object>)raw.get(UserAuthDBFields.ACCOUNT_INSTRUCTION);
-		String status = (String)raw.get(UserAuthDBFields.ACCOUNT_STATUS);
-		String state = (String)raw.get(UserAuthDBFields.ACCOUNT_STATE);
-		this.accountStatus = StringUtils.hasText(status) ? AccountStatus.getEnum(status) : AccountStatus.ACTIEVE;
-		this.accountState = StringUtils.hasText(state) ? AccountState.getEnum(state) : AccountState.ENABLED;
+		super(raw);
 	}
 
-	
+	/**
+	 * @param profileId
+	 * @param userNames
+	 * @param password
+	 * @param screenPassword
+	 * @param accountState
+	 * @param accountStatus
+	 * @param encryptionStratgy
+	 * @param instructions
+	 */
+	public DefaultUserCredentials(String profileId, List<String> userNames, String password,
+			String screenPassword, AccountState accountState,
+			AccountStatus accountStatus, String encryptionStratgy,
+			Map<String, Object> instructions) {
+		super(profileId);
+		this.userNames = userNames;
+		this.password = password;
+		this.screenPassword = screenPassword;
+		this.accountState = accountState;
+		this.accountStatus = accountStatus;
+		this.encryptionStratgy = encryptionStratgy;
+		this.instructions = instructions;
+	}
 
 	/* (non-Javadoc)
 	 * @see com.uimirror.core.mongo.feature.MongoDocumentSerializer#initFromMap(java.util.Map)
 	 */
 	@Override
 	public UserCredentials initFromMap(Map<String, Object> src) {
-		//This Implementation not required as value is already de-serialized
-		return null;
-	}
-
-	public List<String> getUserNames() {
-		return userNames;
+		//Validate the source shouldn't be empty
+		validateSource(src);
+		//Initialize the state
+		init(src);
+		return this;
 	}
 
 	/* (non-Javadoc)
@@ -74,83 +93,123 @@ public class DefaultUserCredentials extends BeanBasedDocument implements UserCre
 		return getId();
 	}
 
-
-
 	/* (non-Javadoc)
 	 * @see com.uimirror.auth.bean.UserCredentials#getUserId()
 	 */
 	@Override
 	public List<String> getUserId() {
-		// TODO Auto-generated method stub
-		return null;
+		return userNames;
 	}
-
-
 
 	/* (non-Javadoc)
 	 * @see com.uimirror.auth.bean.UserCredentials#getPassword()
 	 */
 	@Override
 	public String getPassword() {
-		// TODO Auto-generated method stub
-		return null;
+		return password;
 	}
-
-
 
 	/* (non-Javadoc)
 	 * @see com.uimirror.auth.bean.UserCredentials#getAccountState()
 	 */
 	@Override
 	public AccountState getAccountState() {
-		// TODO Auto-generated method stub
-		return null;
+		return accountState;
 	}
-
-
 
 	/* (non-Javadoc)
 	 * @see com.uimirror.auth.bean.UserCredentials#getAccountStatus()
 	 */
 	@Override
 	public AccountStatus getAccountStatus() {
-		// TODO Auto-generated method stub
-		return null;
+		return accountStatus;
 	}
-
-
 
 	/* (non-Javadoc)
 	 * @see com.uimirror.auth.bean.UserCredentials#getEncryptionStratgy()
 	 */
 	@Override
 	public String getEncryptionStratgy() {
-		// TODO Auto-generated method stub
-		return null;
+		return encryptionStratgy;
 	}
-
-
 
 	/* (non-Javadoc)
 	 * @see com.uimirror.auth.bean.UserCredentials#getInstructions()
 	 */
 	@Override
 	public Map<String, Object> getInstructions() {
-		// TODO Auto-generated method stub
-		return null;
+		return instructions;
 	}
-
-
 
 	/* (non-Javadoc)
 	 * @see com.uimirror.auth.user.bean.UserCredentials#getScreenPassword()
 	 */
 	@Override
 	public String getScreenPassword() {
-		// TODO Auto-generated method stub
-		return null;
+		return screenPassword;
 	}
 	
+	@SuppressWarnings("unchecked")
+	private void init(Map<String, Object> raw){
+		this.setId((String)raw.get(UserAuthDBFields.ID));
+		this.userNames = (List<String>) raw.get(UserAuthDBFields.USER_ID);
+		this.password = (String)raw.get(UserAuthDBFields.PASSWORD);
+		this.screenPassword = (String)raw.get(UserAuthDBFields.SCREEN_PASSWORD);
+		this.encryptionStratgy = (String)raw.get(UserAuthDBFields.ENCRYPTION_PWD);
+		this.instructions = (Map<String, Object>)raw.get(UserAuthDBFields.ACCOUNT_INSTRUCTION);
+		String status = (String)raw.get(UserAuthDBFields.ACCOUNT_STATUS);
+		String state = (String)raw.get(UserAuthDBFields.ACCOUNT_STATE);
+		this.accountStatus = StringUtils.hasText(status) ? AccountStatus.getEnum(status) : AccountStatus.ACTIEVE;
+		this.accountState = StringUtils.hasText(state) ? AccountState.getEnum(state) : AccountState.ENABLED;
+	}
 	
+	/** 
+	 * Checks the necessary fields that needs to be present to demonstrate a state of the client. 
+	 * @see com.uimirror.core.service.BeanValidatorService#isValid()
+	 */
+	@Override
+	public boolean isValid() {
+		boolean valid = Boolean.TRUE;
+		if(!StringUtils.hasText(getId()))
+			valid = Boolean.FALSE;
+		if(CollectionUtils.isEmpty(getUserId()))
+			valid = Boolean.FALSE;
+		if(!StringUtils.hasText(getPassword()))
+			valid = Boolean.FALSE;
+		return valid;
+	}
+	
+	/**
+	 * Create a map that needs to be persisted
+	 * @return
+	 * @throws IllegalStateException 
+	 */
+	@Override
+	public Map<String, Object> toMap() throws IllegalStateException{
+		//First check if it represents a valid state then can be serialized
+		if(!isValid())
+			throw new IllegalStateException("Can't be serailized the state of the object");
+		return serailize();
+	}
+	
+	/**
+	 * Serialize the current state that needs to be persisted to the system.
+	 * @return
+	 */
+	public Map<String, Object> serailize(){
+		Map<String, Object> state = new LinkedHashMap<String, Object>(16);
+		state.put(UserAuthDBFields.ID, getId());
+		state.put(UserAuthDBFields.USER_ID, getUserId());
+		state.put(UserAuthDBFields.PASSWORD, getPassword());
+		if(StringUtils.hasText(getScreenPassword()))
+			state.put(UserAuthDBFields.SCREEN_PASSWORD, getScreenPassword());
+		if(StringUtils.hasText(getEncryptionStratgy()))
+			state.put(UserAuthDBFields.ENCRYPTION_PWD, getEncryptionStratgy());
+		if(!CollectionUtils.isEmpty(getInstructions()))
+			state.put(UserAuthDBFields.ACCOUNT_INSTRUCTION, getInstructions());
+		state.put(UserAuthDBFields.ACCOUNT_STATUS, getAccountStatus().getStatus());
+		state.put(UserAuthDBFields.ACCOUNT_STATE, getAccountState().getState());
+		return state;
+	}
 
 }
