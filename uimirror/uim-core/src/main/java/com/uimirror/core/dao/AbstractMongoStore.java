@@ -46,7 +46,7 @@ import com.uimirror.core.mongo.feature.MongoDocumentSerializer;
  * 
  * @author Jay
  */
-public abstract class AbstractMongoStore<T extends BeanBasedDocument> extends MongoInitializer implements BasicStore<T>{
+public abstract class AbstractMongoStore<T extends BeanBasedDocument<T>> extends MongoInitializer implements BasicStore<T>{
 
 	protected static final Logger LOG = LoggerFactory.getLogger(AbstractMongoStore.class);
 	private T t;
@@ -56,7 +56,7 @@ public abstract class AbstractMongoStore<T extends BeanBasedDocument> extends Mo
 	 * @param dbName
 	 * @param collectionName
 	 */
-	public AbstractMongoStore(Mongo mongo, String dbName, String collectionName , Class<? extends BeanBasedDocument> claz){
+	public AbstractMongoStore(Mongo mongo, String dbName, String collectionName , Class<? extends BeanBasedDocument<T>> claz){
 		super(mongo, dbName, collectionName);
 		setTargetClass(claz);
 		
@@ -66,7 +66,7 @@ public abstract class AbstractMongoStore<T extends BeanBasedDocument> extends Mo
 	 * Assign/ Create collection from the given {@link DBCollection}
 	 * @param collection
 	 */
-	public AbstractMongoStore(DBCollection collection, Class<? extends BeanBasedDocument> claz){
+	public AbstractMongoStore(DBCollection collection, Class<? extends BeanBasedDocument<T>> claz){
 		super(collection);
 		setTargetClass(claz);
 	}
@@ -75,7 +75,7 @@ public abstract class AbstractMongoStore<T extends BeanBasedDocument> extends Mo
 	 * @param db
 	 * @param collectionName
 	 */
-	public AbstractMongoStore(DB db, String collectionName, Class<? extends BeanBasedDocument> claz) {
+	public AbstractMongoStore(DB db, String collectionName, Class<? extends BeanBasedDocument<T>> claz) {
 		super(db, collectionName);
 		setTargetClass(claz);
 	}
@@ -85,7 +85,7 @@ public abstract class AbstractMongoStore<T extends BeanBasedDocument> extends Mo
 	 * @param claz
 	 */
 	@SuppressWarnings("unchecked")
-	private void setTargetClass(Class<? extends BeanBasedDocument> claz){
+	private void setTargetClass(Class<? extends BeanBasedDocument<T>> claz){
 		try {
 			t = (T) claz.getConstructor().newInstance(new Object[] { });
 		} catch (InstantiationException | IllegalAccessException
@@ -210,7 +210,7 @@ public abstract class AbstractMongoStore<T extends BeanBasedDocument> extends Mo
 		//Retrieve max of 20 at a time
 		cursor.batchSize(fetchSize);
 		List<T> results = new ArrayList<T>(fetchSize+(fetchSize+thirtyPercentage));
-		cursor.forEach((result) -> results.add((T)result.toMap()));
+		cursor.forEach((result) -> results.add(t.initFromMap(result.toMap())));
 		return results;
 	}
 	

@@ -25,7 +25,7 @@ import com.uimirror.core.service.BeanValidatorService;
  * API key, client secret, redirect URL  
  * @author Jay
  */
-public class Client extends BeanBasedDocument implements BeanValidatorService{
+public class Client extends BeanBasedDocument<Client> implements BeanValidatorService{
 
 	private static final long serialVersionUID = -5074118579759365950L;
 	private String name;
@@ -132,26 +132,27 @@ public class Client extends BeanBasedDocument implements BeanValidatorService{
 		//Validate the source shouldn't be empty
 		validateSource(src);
 		//Initialize the state
-		init(src);
-		return this;
+		return init(src);
 	}
 	
 	
 	
 	@SuppressWarnings("unchecked")
-	private void init(Map<String, Object> src){
-		this.setId((String)src.get(ClientDBFields.ID));
-		this.name = (String)src.get(ClientDBFields.NAME);
-		this.secret = (String)src.get(ClientDBFields.SECRET);
-		this.redirectURI = (String)src.get(ClientDBFields.REDIRECT_URI);
-		String status = (String)src.get(ClientDBFields.STATUS);
-		this.status = AccountStatus.getEnum(status);
-		this.apiKey = (String)src.get(ClientDBFields.API_KEY);
-		this.registeredBy = (String)src.get(ClientDBFields.REGISTERED_BY);
+	private Client init(Map<String, Object> src){
+		String id = (String)src.get(ClientDBFields.ID);
+		String name = (String)src.get(ClientDBFields.NAME);
+		String secret = (String)src.get(ClientDBFields.SECRET);
+		String redirectURI = (String)src.get(ClientDBFields.REDIRECT_URI);
+		String st = (String)src.get(ClientDBFields.STATUS);
+		AccountStatus status = AccountStatus.getEnum(st);
+		String apiKey = (String)src.get(ClientDBFields.API_KEY);
+		String  registeredBy = (String)src.get(ClientDBFields.REGISTERED_BY);
+		long registeredOn = 0l;
 		if(src.get(ClientDBFields.REGISTERED_ON) != null){
-			this.registeredOn = (long)src.get(ClientDBFields.REGISTERED_ON);
+			registeredOn = (long)src.get(ClientDBFields.REGISTERED_ON);
 		}
-		this.details = (Map<String, Object>)src.get(ClientDBFields.DETAILS);
+		Map<String, Object> details = (Map<String, Object>)src.get(ClientDBFields.DETAILS);
+		return new Client(id, name, secret, redirectURI, status, apiKey, registeredOn, registeredBy, details);
 	}
 
 	/** 

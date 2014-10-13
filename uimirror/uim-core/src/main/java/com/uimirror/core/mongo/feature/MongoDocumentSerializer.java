@@ -20,7 +20,7 @@ import com.uimirror.core.util.BeanToMap;
  * <p>Default dto bean serialization and de-serialization</p>
  * @author Jay
  */
-public abstract class MongoDocumentSerializer {
+public abstract class MongoDocumentSerializer<T> {
 
 	/**
 	 * <p>Defines contract how a object class while saving will be serialized</p>
@@ -35,7 +35,7 @@ public abstract class MongoDocumentSerializer {
 	 * Defines contract, from the source object , value needs to be initialized.
 	 * @param src
 	 */
-	public abstract Object initFromMap(Map<String, Object> src); 
+	public abstract T initFromMap(Map<String, Object> src);
 	
 	/**
 	 * Validates the incoming source to initialize

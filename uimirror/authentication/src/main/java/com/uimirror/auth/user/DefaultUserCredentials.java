@@ -26,7 +26,7 @@ import com.uimirror.core.service.BeanValidatorService;
  * A Basic User Credentials Object
  * @author Jay
  */
-public class DefaultUserCredentials extends BeanBasedDocument implements UserCredentials, BeanValidatorService{
+public class DefaultUserCredentials extends BeanBasedDocument<DefaultUserCredentials> implements UserCredentials, BeanValidatorService{
 
 	private static final long serialVersionUID = -8054579659925533437L;
 	private List<String> userNames;
@@ -77,12 +77,11 @@ public class DefaultUserCredentials extends BeanBasedDocument implements UserCre
 	 * @see com.uimirror.core.mongo.feature.MongoDocumentSerializer#initFromMap(java.util.Map)
 	 */
 	@Override
-	public UserCredentials initFromMap(Map<String, Object> src) {
+	public DefaultUserCredentials initFromMap(Map<String, Object> src) {
 		//Validate the source shouldn't be empty
 		validateSource(src);
 		//Initialize the state
-		init(src);
-		return this;
+		return init(src);
 	}
 
 	/* (non-Javadoc)
@@ -150,17 +149,18 @@ public class DefaultUserCredentials extends BeanBasedDocument implements UserCre
 	}
 	
 	@SuppressWarnings("unchecked")
-	private void init(Map<String, Object> raw){
-		this.setId((String)raw.get(UserAuthDBFields.ID));
-		this.userNames = (List<String>) raw.get(UserAuthDBFields.USER_ID);
-		this.password = (String)raw.get(UserAuthDBFields.PASSWORD);
-		this.screenPassword = (String)raw.get(UserAuthDBFields.SCREEN_PASSWORD);
-		this.encryptionStratgy = (String)raw.get(UserAuthDBFields.ENCRYPTION_PWD);
-		this.instructions = (Map<String, Object>)raw.get(UserAuthDBFields.ACCOUNT_INSTRUCTION);
-		String status = (String)raw.get(UserAuthDBFields.ACCOUNT_STATUS);
-		String state = (String)raw.get(UserAuthDBFields.ACCOUNT_STATE);
-		this.accountStatus = StringUtils.hasText(status) ? AccountStatus.getEnum(status) : AccountStatus.ACTIEVE;
-		this.accountState = StringUtils.hasText(state) ? AccountState.getEnum(state) : AccountState.ENABLED;
+	private DefaultUserCredentials init(Map<String, Object> raw){
+		String id = (String)raw.get(UserAuthDBFields.ID);
+		List<String> userNames = (List<String>) raw.get(UserAuthDBFields.USER_ID);
+		String password = (String)raw.get(UserAuthDBFields.PASSWORD);
+		String screenPassword = (String)raw.get(UserAuthDBFields.SCREEN_PASSWORD);
+		String encryptionStratgy = (String)raw.get(UserAuthDBFields.ENCRYPTION_PWD);
+		Map<String, Object> instructions = (Map<String, Object>)raw.get(UserAuthDBFields.ACCOUNT_INSTRUCTION);
+		String statVal = (String)raw.get(UserAuthDBFields.ACCOUNT_STATUS);
+		String stateVal = (String)raw.get(UserAuthDBFields.ACCOUNT_STATE);
+		AccountStatus accountStatus = StringUtils.hasText(statVal) ? AccountStatus.getEnum(statVal) : AccountStatus.ACTIEVE;
+		AccountState accountState = StringUtils.hasText(stateVal) ? AccountState.getEnum(stateVal) : AccountState.ENABLED;
+		return new DefaultUserCredentials(id, userNames, password, screenPassword, accountState, accountStatus, encryptionStratgy, instructions);
 	}
 	
 	/** 

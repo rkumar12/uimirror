@@ -18,7 +18,7 @@ import java.util.Map;
  * <p>Each class needs to extend this class to obtain the flexibility.</p>
  * @author Jay
  */
-public abstract class BeanBasedDocument extends MongoDocumentSerializer implements Serializable{
+public abstract class BeanBasedDocument<T> extends MongoDocumentSerializer<T> implements Serializable{
 	
 	private static final long serialVersionUID = 1661966237018687368L;
 	

@@ -29,7 +29,7 @@ import com.uimirror.core.service.BeanValidatorService;
  * A basic implementation of the accesstoken
  * @author Jay
  */
-public abstract class AbstractAccessToken extends BeanBasedDocument implements AccessToken, BeanValidatorService{
+public abstract class AbstractAccessToken<T> extends BeanBasedDocument<T> implements AccessToken, BeanValidatorService{
 
 	private static final long serialVersionUID = 1758356201287067187L;
 	private Token token;
@@ -114,35 +114,19 @@ public abstract class AbstractAccessToken extends BeanBasedDocument implements A
 	 * @see com.uimirror.core.mongo.feature.MongoDocumentSerializer#initFromMap(java.util.Map)
 	 */
 	@Override
-	public AccessToken initFromMap(Map<String, Object> src) {
+	public T initFromMap(Map<String, Object> src) {
 		//Validate the source shouldn't be empty
 		validateSource(src);
 		//Initialize the state
-		init(src);
-		return this;
+		return init(src);
 	}
 	
 	/**
+	 * Defines the contract for the de-serializing the persisted source to represent a valid state.
 	 * @param src
+	 * @return
 	 */
-	@SuppressWarnings("unchecked")
-	private void init(Map<String, Object> src) {
-		String token = (String)src.get(AccessTokenFields.ID);
-		String pharse = (String)src.get(AccessTokenFields.ENCRYPT_STARTEGY);
-		this.token = new Token(token, pharse);
-		setId(this.token.getToken());
-		String type = (String)src.get(AccessTokenFields.TYPE);
-		this.type = StringUtils.hasText(type)? TokenType.getEnum(type) : null;
-		this.owner = (String)src.get(AccessTokenFields.AUTH_TKN_OWNER);
-		this.client = (String)src.get(AccessTokenFields.AUTH_TKN_CLIENT);
-		this.expire = (long)src.getOrDefault(AccessTokenFields.AUTH_TKN_EXPIRES, 0l);
-		String scope = (String)src.get(AccessTokenFields.SCOPE);
-		this.scope = StringUtils.hasText(scope) ? Scope.getEnum(scope):null;
-		this.instructions = (Map<String, Object>)src.get(AccessTokenFields.AUTH_TKN_INSTRUCTIONS);
-		this.instructions = this.instructions == null ? new LinkedHashMap<String, Object>(5) : this.instructions ;
-		this.notes = (Map<String, Object>)src.get(AccessTokenFields.AUTH_TKN_NOTES);
-		this.notes = this.notes == null ? new LinkedHashMap<String, Object>(5) : this.notes;
-	}
+	protected abstract T init(Map<String, Object> src);
 
 	/**
 	 * This map the document should have which fields
@@ -296,7 +280,7 @@ public abstract class AbstractAccessToken extends BeanBasedDocument implements A
 	 */
 	@Override
 	public Map<String, Object> getNotes() {
-		return this.notes;
+		return this.notes == null ? new LinkedHashMap<String, Object>(5) : this.notes;
 	}
 
 	/* (non-Javadoc)
@@ -304,7 +288,7 @@ public abstract class AbstractAccessToken extends BeanBasedDocument implements A
 	 */
 	@Override
 	public Map<String, Object> getInstructions() {
-		return this.instructions;
+		return this.instructions == null ? new LinkedHashMap<String, Object>(5) : this.instructions;
 	}
 	
 	/* (non-Javadoc)
