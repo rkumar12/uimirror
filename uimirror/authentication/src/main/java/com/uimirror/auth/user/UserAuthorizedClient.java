@@ -10,6 +10,7 @@
  *******************************************************************************/
 package com.uimirror.auth.user;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -26,7 +27,7 @@ import com.uimirror.core.service.BeanValidatorService;
  * accordingly during new request access token, user will be promoted for the same.
  * @author Jay
  */
-public class UserAuthorizedClients extends BeanBasedDocument<UserAuthorizedClients> implements BeanValidatorService{
+public class UserAuthorizedClient extends BeanBasedDocument<UserAuthorizedClient> implements BeanValidatorService{
 
 	private static final long serialVersionUID = 8725514681944084516L;
 	private List<ClientAuthorizedScope> clients;
@@ -35,22 +36,36 @@ public class UserAuthorizedClients extends BeanBasedDocument<UserAuthorizedClien
 	 * @see com.uimirror.core.mongo.feature.MongoDocumentSerializer#initFromMap(java.util.Map)
 	 */
 	@Override
-	public UserAuthorizedClients initFromMap(Map<String, Object> src) {
+	public UserAuthorizedClient initFromMap(Map<String, Object> src) {
 		//Validate the source shouldn't be empty
 		validateSource(src);
 		//Initialize the state
-		init(src);
-		return this;
+		return init(src);
+	}
+	
+	public UserAuthorizedClient(String id, List<ClientAuthorizedScope> clients){
+		this.setId(id);
+		this.clients = clients;
 	}
 
 	/**
 	 * Initialize the state of the object from the given source {@link Map}
 	 * @param src
 	 */
-	private void init(Map<String, Object> src) {
-		this.setId((String)src.get(UserAuthorizedClientDBFields.ID));
-		List<Map<String, Object>> clients =  (List<Map<String, Object>>)src.get(UserAuthorizedClientDBFields.CLIENTS);
+	@SuppressWarnings("unchecked")
+	private UserAuthorizedClient init(Map<String, Object> src) {
+		String id = (String)src.get(UserAuthorizedClientDBFields.ID);
+		List<Map<String, Object>> clientsMap =  (List<Map<String, Object>>)src.get(UserAuthorizedClientDBFields.CLIENTS);
+		UserAuthorizedClient authorizedClients = null;
+		if(clientsMap != null){
+			List<ClientAuthorizedScope> clients = new ArrayList<ClientAuthorizedScope>(clientsMap.size()+5);
+			clientsMap.forEach((map) -> clients.add(new ClientAuthorizedScope((String)map.get(UserAuthorizedClientDBFields.CLIENT_ID), (String)map.get(UserAuthorizedClientDBFields.SCOPE))));
+			authorizedClients = new UserAuthorizedClient(id, clients);
+		}else{
+			authorizedClients = new UserAuthorizedClient(id, null);
+		}
 		
+		return authorizedClients;
 	}
 
 	/* (non-Javadoc)
@@ -71,7 +86,7 @@ public class UserAuthorizedClients extends BeanBasedDocument<UserAuthorizedClien
 	 * @return
 	 */
 	public List<ClientAuthorizedScope> getClients() {
-		return clients;
+		return clients == null ? new ArrayList<ClientAuthorizedScope>(5) : clients;
 	}
 	
 	public String getProfileId(){

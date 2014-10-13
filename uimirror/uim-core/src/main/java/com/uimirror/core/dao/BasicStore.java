@@ -29,7 +29,7 @@ import com.uimirror.core.mongo.feature.MongoDocumentSerializer;
  * 
  * @author Jay
  */
-public interface BasicStore<T extends BeanBasedDocument> {
+public interface BasicStore<T extends BeanBasedDocument<T>> {
 
 	/**
 	 * Stores the document by calling 
@@ -61,12 +61,29 @@ public interface BasicStore<T extends BeanBasedDocument> {
 	T getById(Object id) throws DBException;
 	
 	/**
+	 * Get the document by ID
+	 * @param id
+	 * @param fields
+	 * @return
+	 */
+	T getById(Object id, Map<String, Object> fields) throws DBException;
+	
+	/**
 	 * Get the document by the query specified
 	 * If the query is null, it will get all the documents
 	 * @param query
 	 * @return
 	 */
 	List<T> getByQuery(Map<String, Object> query) throws DBException;
+	
+	/**
+	 * Get the document by the query specified
+	 * If the query is null, it will get all the documents
+	 * @param query
+	 * @param fields
+	 * @return
+	 */
+	List<T> getByQuery(Map<String, Object> query, Map<String, Object> fields) throws DBException;
 	
 	/**
 	 * Updates the document on the available specific id

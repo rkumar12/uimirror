@@ -22,4 +22,6 @@ public interface UserAuthorizedClientDBFields extends BasicDBFields{
 	String CLIENTS = "clients";
 	String CLIENT_ID = "client_id";
 	String SCOPE = "scope";
+	
+	String CLIENT_ARRAY_MATCH_DOC = CLIENTS+".$";
 }

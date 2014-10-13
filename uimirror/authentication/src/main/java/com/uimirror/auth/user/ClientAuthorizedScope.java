@@ -10,6 +10,8 @@
  *******************************************************************************/
 package com.uimirror.auth.user;
 
+import org.springframework.util.StringUtils;
+
 import com.uimirror.core.auth.Scope;
 
 /**
@@ -23,11 +25,18 @@ public class ClientAuthorizedScope{
 	private Scope scope;
 
 	public ClientAuthorizedScope(String clientId, Scope scope) {
-	
 		super();
 		this.clientId = clientId;
 		this.scope = scope;
 	}
+	
+	public ClientAuthorizedScope(String clientId, String scope) {
+		super();
+		this.clientId = clientId;
+		if(StringUtils.hasText(scope))
+			this.scope = Scope.getEnum(scope);
+	}
+	
 	public String getClientId() {
 		return clientId;
 	}

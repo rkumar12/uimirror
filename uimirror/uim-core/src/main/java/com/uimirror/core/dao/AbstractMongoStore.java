@@ -144,27 +144,43 @@ public abstract class AbstractMongoStore<T extends BeanBasedDocument<T>> extends
 	/* (non-Javadoc)
 	 * @see com.uimirror.core.dao.BasicStore#getById(java.lang.Object)
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
-	@MapException(use=MongoExceptionMapper.NAME)
 	public T getById(Object id) throws DBException {
+		return getById(id, null);
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.uimirror.core.dao.BasicStore#getByQuery(java.lang.Object)
+	 */
+	@Override
+	public List<T> getByQuery(Map<String, Object> query) throws DBException {
+		return getByQuery(query, null);
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.uimirror.core.dao.BasicStore#getById(java.lang.Object, java.util.Map)
+	 */
+	@Override
+	@SuppressWarnings("unchecked")
+	@MapException(use=MongoExceptionMapper.NAME)
+	public T getById(Object id, Map<String, Object> fields) throws DBException {
 		LOG.debug("[START]- Getting an object based on the ID");
-		DBObject result = getCollection().findOne(getIdQuery(id));
+		DBObject result = getCollection().findOne(getIdQuery(id), convertToDBObject(fields));
 		if(result == null){
 			throw new RecordNotFoundException();
 		}
 		LOG.debug("[END]- Getting an object based on the ID");
 		return (T) t.initFromMap(result.toMap());
 	}
-	
+
 	/* (non-Javadoc)
-	 * @see com.uimirror.core.dao.BasicStore#getByQuery(java.lang.Object)
+	 * @see com.uimirror.core.dao.BasicStore#getByQuery(java.util.Map, java.util.Map)
 	 */
-	@MapException(use=MongoExceptionMapper.NAME)
 	@Override
-	public List<T> getByQuery(Map<String, Object> query) throws DBException {
+	@MapException(use=MongoExceptionMapper.NAME)
+	public List<T> getByQuery(Map<String, Object> query, Map<String, Object> fields) throws DBException {
 		LOG.debug("[START]- Getting an object based on the Query specified");
-		DBCursor cursor = getCollection().find(convertToDBObject(query));
+		DBCursor cursor = getCollection().find(convertToDBObject(query), convertToDBObject(fields));
 		LOG.debug("[END]- Getting an object based on the Query specified");
 		return getFromCursor(cursor, 50);
 	}
@@ -211,6 +227,9 @@ public abstract class AbstractMongoStore<T extends BeanBasedDocument<T>> extends
 		cursor.batchSize(fetchSize);
 		List<T> results = new ArrayList<T>(fetchSize+(fetchSize+thirtyPercentage));
 		cursor.forEach((result) -> results.add(t.initFromMap(result.toMap())));
+		if(CollectionUtils.isEmpty(results)){
+			throw new RecordNotFoundException("No Record Found");
+		}
 		return results;
 	}
 	
@@ -260,7 +279,12 @@ public abstract class AbstractMongoStore<T extends BeanBasedDocument<T>> extends
 	 * @return
 	 */
 	protected DBObject convertToDBObject(Map<String, Object> obj){
-		return new BasicDBObject(obj);
+		DBObject dbObject = null;
+		if(CollectionUtils.isEmpty(obj))
+			dbObject = new BasicDBObject();
+		else
+			dbObject = new BasicDBObject(obj);
+		return dbObject;
 	}
 	
 	/**
@@ -271,9 +295,18 @@ public abstract class AbstractMongoStore<T extends BeanBasedDocument<T>> extends
 	 */
 	protected T queryFirstRecord(Map<String, Object> query) throws RecordNotFoundException{
 		List<T> results = getByQuery(query);
-		if(CollectionUtils.isEmpty(results)){
-			throw new RecordNotFoundException("No Record Found");
-		}
+		return results.get(0);
+	}
+	
+	/**
+	 * Query for the first record from the document.
+	 * @param query
+	 * @param fields
+	 * @return
+	 * @throws RecordNotFoundException
+	 */
+	protected T queryFirstRecord(Map<String, Object> query, Map<String, Object> fields) throws RecordNotFoundException{
+		List<T> results = getByQuery(query, fields);
 		return results.get(0);
 	}
 

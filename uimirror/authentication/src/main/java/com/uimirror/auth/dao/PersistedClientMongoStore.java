@@ -31,14 +31,14 @@ import com.uimirror.core.dao.DBException;
  * @author Jay
  */
 @Repository
-public class PersistedClientStore extends AbstractMongoStore<Client> implements ClientStore{
+public class PersistedClientMongoStore extends AbstractMongoStore<Client> implements ClientStore{
 	
 	/**
 	 * Assign/ Create collection from the given {@link DBCollection}
 	 * @param collection
 	 */
 	@Autowired
-	public PersistedClientStore(@Qualifier("clientBasicInfoCol") DBCollection collection){
+	public PersistedClientMongoStore(@Qualifier("clientBasicInfoCol") DBCollection collection){
 		super(collection, Client.class);
 	}
 
