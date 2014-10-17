@@ -21,9 +21,7 @@ import com.uimirror.auth.user.UserAuthorizedClient;
 import com.uimirror.core.Processor;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.service.TransformerService;
-import com.uimirror.core.util.thread.BackgroundProcessor;
-import com.uimirror.core.util.thread.ExecutorServiceAbstractAdapter;
-import com.uimirror.core.util.thread.SubmitAndForgetAdapter;
+import com.uimirror.core.util.thread.AbstractBackgroundProcessor;
 
 /**
  * Set of operation that needs to be handled after user has granted access to the client
@@ -32,17 +30,16 @@ import com.uimirror.core.util.thread.SubmitAndForgetAdapter;
  * </ol> 
  * @author Jay
  */
-public class AllowAuthorizationClientProcessor implements BackgroundProcessor<AccessToken, Object>{
+public class AllowAuthorizationClientProcessor extends AbstractBackgroundProcessor<AccessToken, Object>{
 
 	protected static final Logger LOG = LoggerFactory.getLogger(AllowAuthorizationClientProcessor.class);
 	
 	public static final String NAME = "AACP";
 	private @Autowired TransformerService<AccessToken, UserAuthorizedClient> tokenToAuthorizedClientTransformer;
 	private @Autowired Processor<UserAuthorizedClient> allowClientprocessor;
-	private final ExecutorServiceAbstractAdapter adapter;
 
 	public AllowAuthorizationClientProcessor(){
-		adapter = new SubmitAndForgetAdapter(1);
+		super(1);
 	}
 	
 	/* (non-Javadoc)
@@ -51,7 +48,7 @@ public class AllowAuthorizationClientProcessor implements BackgroundProcessor<Ac
 	@Override
 	public void invoke(AccessToken token){
 		LOG.debug("[START]- Persisting new Authroized client for the user");
-		adapter.submitTasks(createJobs(token));
+		getAdaptor().submitTasks(createJobs(token));
 		LOG.debug("[END]- Persisting new Authroized client for the user");
 	}
 	
@@ -114,7 +111,7 @@ public class AllowAuthorizationClientProcessor implements BackgroundProcessor<Ac
 	 */
 	@Override
 	public Object getResult() {
-		throw new IllegalStateException("This Thread doesn't support feauture result");
+		return getResults();
 	}
 
 }
