@@ -37,7 +37,6 @@ import com.uimirror.core.auth.Scope;
 import com.uimirror.core.auth.Token;
 import com.uimirror.core.auth.TokenType;
 import com.uimirror.core.extra.MapException;
-import com.uimirror.core.util.DateTimeUtil;
 
 /**
  * Implementation of {@link AuthenticationManager#authenticate(Authentication)}
@@ -63,6 +62,7 @@ public class APIKeyAuthManager implements AuthenticationManager{
 		Assert.notNull(authentication, "Authention Request Object can't be empty");
 		LOG.info("[START]- Authenticating Client");
 		Client client = getClientDetails(authentication);
+		//Check the client for its account state and status
 		doCheck(client);
 		AccessToken token = generateToken(authentication, client);
 		Authentication authenticated = getAuthenticatedDetails(authentication, token);
@@ -118,12 +118,12 @@ public class APIKeyAuthManager implements AuthenticationManager{
 	 * @param client
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	private AccessToken generateToken(Authentication auth, Client client){
 		Token token = TokenGenerator.getNewOne();
 		TokenType type = TokenType.TEMPORAL;
 		String requestor = client.getClientId();
-		long expire = DateTimeUtil.addToCurrentUTCTimeConvertToEpoch(AuthConstants.DEFAULT_EXPIRY_INTERVAL+50);
-		@SuppressWarnings("unchecked")
+		long expire = 0l;
 		Map<String, Object> details = (Map<String, Object>)auth.getDetails();
 		return new DefaultAccessToken(token, null, requestor, expire, type, getScope(details), getNotes(details), getInstructions());
 	}

@@ -22,10 +22,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.uimirror.auth.controller.Processor;
 import com.uimirror.auth.user.bean.form.LoginFormAuthenticationForm;
 import com.uimirror.auth.user.bean.form.OTPAuthenticationForm;
 import com.uimirror.auth.user.bean.form.ScreenLockAuthenticationForm;
+import com.uimirror.core.Processor;
 import com.uimirror.core.auth.AccessToken;
 
 /**

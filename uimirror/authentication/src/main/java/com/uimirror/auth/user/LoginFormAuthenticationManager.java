@@ -173,7 +173,8 @@ public class LoginFormAuthenticationManager implements AuthenticationManager{
 	 * @return
 	 */
 	private long getExpiresOn(Map<String, Object> details, TokenType type){
-		return DateTimeUtil.addToCurrentUTCTimeConvertToEpoch(getExpiresInterval(details, type));
+		long expire = getExpiresInterval(details, type);
+		return expire == 0l ? 0l : DateTimeUtil.addToCurrentUTCTimeConvertToEpoch(expire);
 	}
 
 	/**

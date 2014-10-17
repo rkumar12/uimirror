@@ -33,6 +33,8 @@ public abstract class ExecutorServiceAbstractAdapter {
 	
 	public abstract void submitTask(List<? extends Callable<Object>> callabels) throws IllegalArgumentException;
 	
+	public abstract void submitTasks(List<? extends Runnable> runabels) throws IllegalArgumentException;
+	
 	public abstract Object[] getResults() throws InterruptedException, ExecutionException;
 	
 	public void claimResource() {

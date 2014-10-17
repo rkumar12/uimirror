@@ -27,6 +27,7 @@ import org.springframework.util.CollectionUtils;
  * @author Jay
  * @since 0.1
  */
+//TODO why callable here it can be runnable
 public class SubmitAndForgetAdapter extends ExecutorServiceAbstractAdapter{
 
 	public SubmitAndForgetAdapter(int numberOfThraed) {
@@ -43,6 +44,21 @@ public class SubmitAndForgetAdapter extends ExecutorServiceAbstractAdapter{
     		throw new IllegalArgumentException("No Job is there to execute");
     	}
 		callabels.forEach(callabel -> executorService.submit(callabel));
+	}
+
+	/**
+	 * Submit the Runnable tasks to execute in background.
+	 *  
+	 * @param runabels
+	 * @throws IllegalArgumentException
+	 */
+	@Override
+	public void submitTasks(List<? extends Runnable> runabels) throws IllegalArgumentException {
+		if(CollectionUtils.isEmpty(runabels)){
+    		claimResource();
+    		throw new IllegalArgumentException("No Job is there to execute");
+    	}
+		runabels.forEach(callabel -> executorService.submit(callabel));
 	}
 
 	/* (non-Javadoc)

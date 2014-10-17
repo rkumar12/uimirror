@@ -80,7 +80,7 @@ public class APIKeyAuthProvider implements AuthenticationProvider{
 		//Clean the Authentication principal
 		AccessToken accessToken = (AccessToken)auth.getPrincipal();
 		//No cleaning required as this will be a internal application communication
-		//accessToken = accessToken.eraseEsential();
+		accessToken = accessToken.eraseEsential();
 		return new OAuth2APIKeyAuthentication(accessToken, (Map<String, Object>)auth.getDetails());
 	}
 

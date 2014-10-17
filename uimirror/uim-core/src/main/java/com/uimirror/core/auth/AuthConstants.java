@@ -33,6 +33,8 @@ public interface AuthConstants extends Parameters{
 	String APP = "app";
 	String AUTHORIZATION_TOKEN = "Authorization";
 	String ACCESS_TOKEN = "access_token";
+	String APPROVAL = "approval";
+	
 	//Default refresh period is 10 Mins
 	int DEFAULT_EXPIRY_INTERVAL = 10;
 	int KEEP_ME_LOGED_IN_EXPIRY_INTERVAL = 24*60;

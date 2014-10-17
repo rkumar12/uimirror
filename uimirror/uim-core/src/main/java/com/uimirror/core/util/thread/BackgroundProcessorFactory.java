@@ -8,23 +8,22 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.auth.controller;
-
-import com.uimirror.core.rest.extra.ApplicationException;
+package com.uimirror.core.util.thread;
 
 /**
- * Bridge between the service end point and application service response 
+ * The Service locator factory pattern implementation of the
+ * back ground jobs.
+ * 
+ * Please note this bean and managed bean should be a prototype
+ * bean
  * @author Jay
  */
-public interface Processor<P> {
+public interface BackgroundProcessorFactory<P,R> {
 
 	/**
-	 * This will process the defined type of parameters and run the business logic to 
-	 * generate a response that will be send to the user
-	 * @param param
+	 * Factory container for the background processors
+	 * @param name
 	 * @return
-	 * @throws ApplicationException
 	 */
-	Object invoke(P param) throws ApplicationException;
-
+	BackgroundProcessor<P, R> getProcessor(String name);
 }

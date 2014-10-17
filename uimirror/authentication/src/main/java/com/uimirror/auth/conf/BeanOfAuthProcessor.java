@@ -18,13 +18,13 @@ import com.uimirror.auth.client.bean.form.ClientSecretKeyForm;
 import com.uimirror.auth.client.processor.APIKeyProcessor;
 import com.uimirror.auth.client.processor.AccessTokenProcessor;
 import com.uimirror.auth.client.processor.SecretKeyProcessor;
-import com.uimirror.auth.controller.Processor;
 import com.uimirror.auth.user.bean.form.LoginFormAuthenticationForm;
 import com.uimirror.auth.user.bean.form.OTPAuthenticationForm;
 import com.uimirror.auth.user.bean.form.ScreenLockAuthenticationForm;
 import com.uimirror.auth.user.processor.LoginFormAuthProcessor;
 import com.uimirror.auth.user.processor.OTPAuthProcessor;
 import com.uimirror.auth.user.processor.ScreenLockAuthProcessor;
+import com.uimirror.core.Processor;
 import com.uimirror.core.bean.form.AuthenticatedHeaderForm;
 
 /**

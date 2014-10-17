@@ -13,7 +13,7 @@ package com.uimirror.auth.user.processor;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.uimirror.auth.bean.form.LoginSessionForm;
-import com.uimirror.auth.controller.Processor;
+import com.uimirror.core.Processor;
 import com.uimirror.core.bean.form.AuthenticatedHeaderForm;
 import com.uimirror.core.rest.extra.ApplicationException;
 

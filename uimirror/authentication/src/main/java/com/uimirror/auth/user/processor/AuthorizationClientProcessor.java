@@ -8,17 +8,17 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.auth.client.processor;
+package com.uimirror.auth.user.processor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.uimirror.auth.client.bean.OAuth2SecretKeyAuthentication;
-import com.uimirror.auth.client.bean.form.ClientSecretKeyForm;
 import com.uimirror.auth.controller.AuthenticationProvider;
 import com.uimirror.auth.core.AuthenticationManager;
 import com.uimirror.auth.exception.AuthToApplicationExceptionMapper;
+import com.uimirror.auth.user.bean.ClientAuthorizationAuthentication;
+import com.uimirror.auth.user.bean.form.AuthorizeClientAuthenticationForm;
 import com.uimirror.core.Processor;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.Authentication;
@@ -30,46 +30,47 @@ import com.uimirror.core.service.TransformerService;
 /**
  * Extracts the field, interact with the {@link AuthenticationManager}
  * and respond back to the caller with the valid response.
+ * This authentication process involves in accepting the Client.
  * 
+ * Its expected user should have given the earlier accessToken along with
+ * the OTP received in the mail
  * @author Jay
  */
-public class SecretKeyProcessor implements Processor<ClientSecretKeyForm>{
+public class AuthorizationClientProcessor implements Processor<AuthorizeClientAuthenticationForm>{
 
-	protected static final Logger LOG = LoggerFactory.getLogger(SecretKeyProcessor.class);
+	protected static final Logger LOG = LoggerFactory.getLogger(AuthorizationClientProcessor.class);
 	
-	private @Autowired TransformerService<ClientSecretKeyForm, OAuth2SecretKeyAuthentication> secretKeyToAuthTransformer;
+	private @Autowired TransformerService<AuthorizeClientAuthenticationForm, ClientAuthorizationAuthentication> clientAuthorizationFormToAuthTransformer;
 	private @Autowired ResponseTransFormer<String> jsonResponseTransFormer;
-	private @Autowired AuthenticationProvider secretCodeAuthProvider;
+	private @Autowired AuthenticationProvider clientAuthorizationAuthProvider;
 	
 	/* (non-Javadoc)
 	 * @see com.uimirror.auth.controller.AuthenticationController#getAccessToken(javax.ws.rs.core.MultivaluedMap)
 	 */
 	@Override
 	@MapException(use=AuthToApplicationExceptionMapper.NAME)
-	public Object invoke(ClientSecretKeyForm param) throws ApplicationException{
-		LOG.debug("[START]- Authenticating the user and trying to to get the authentication details");
+	public Object invoke(AuthorizeClientAuthenticationForm param) throws ApplicationException{
+		LOG.debug("[START]- Generating a new accesstoken based on the previous accesstoken and Client Authorization by user");
 		//Step 1- Transform the bean to Authentication
 		Authentication auth = getTransformedObject(param);
 		//Let GC take this ASAP
 		param = null;
-		//Step 2- Authenticate and issue a token
-		Authentication authPrincipal = authenticateAndIssueToken(auth);
-		AccessToken token = (AccessToken)authPrincipal.getPrincipal();
-		LOG.debug("[END]- Authenticating the user and trying to to get the authentication details {}", auth);
 		//Remove Unnecessary information from the accessToken Before Sending to the user
-		return jsonResponseTransFormer.doTransForm(token);
+		Authentication authToken = authenticateAndIssueToken(auth);
+		AccessToken token = (AccessToken)authToken.getPrincipal();
+		LOG.debug("[END]- Generating a new accesstoken based on the previous accesstoken and Client Authorization by user {}", auth);
+		return jsonResponseTransFormer.doTransForm(token.toResponseMap());
 	}
 	
 	/**
 	 * converts the form bean object into a {@link Authentication} object
-	 * 
 	 * @param param
 	 * @return
 	 */
-	private Authentication getTransformedObject(ClientSecretKeyForm param){
-		return secretKeyToAuthTransformer.transform(param);
+	private Authentication getTransformedObject(AuthorizeClientAuthenticationForm param) {
+		return clientAuthorizationFormToAuthTransformer.transform(param);
 	}
-	
+
 	/**
 	 * On basics of {@link CredentialType}, it will simply validate or generate 
 	 * the access token {@link AccessToken}
@@ -77,7 +78,7 @@ public class SecretKeyProcessor implements Processor<ClientSecretKeyForm>{
 	 * @return
 	 */
 	private Authentication authenticateAndIssueToken(Authentication auth){
-		return secretCodeAuthProvider.authenticate(auth);
+		return clientAuthorizationAuthProvider.authenticate(auth);
 	}
 
 }

@@ -19,41 +19,60 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.uimirror.auth.controller.AccessTokenProvider;
 import com.uimirror.auth.controller.AuthenticationProvider;
 import com.uimirror.auth.core.AuthenticationManager;
-import com.uimirror.auth.dao.AccessTokenStore;
-import com.uimirror.auth.user.bean.LoginFormAuthentication;
+import com.uimirror.auth.user.bean.ClientAuthorizationAuthentication;
+import com.uimirror.auth.user.processor.AllowAuthorizationClientProcessor;
+import com.uimirror.auth.user.processor.DenyAuthorizationClientProcessor;
 import com.uimirror.core.auth.AccessToken;
-import com.uimirror.core.auth.AuthConstants;
 import com.uimirror.core.auth.Authentication;
 import com.uimirror.core.auth.TokenType;
+import com.uimirror.core.util.thread.BackgroundProcessor;
+import com.uimirror.core.util.thread.BackgroundProcessorFactory;
 
 /**
  * Validates the {@link Authentication} and populate the authenticated principal
- * with the appropriate token i.e temporal_token/secret_token. 
+ * with the appropriate token i.e temporal_token/secret_token.
+ * 
+ * it should adhere the methodology of {@linkplain AuthenticationManager#authenticate(Authentication)}
  * 
  * @author Jay
  */
-public class LoginFormAuthProvider implements AuthenticationProvider{
+public class ClientAuthorizationAuthProvider implements AuthenticationProvider{
 
-	private static final Logger LOG = LoggerFactory.getLogger(LoginFormAuthProvider.class);
-	private @Autowired AuthenticationManager loginFormAuthManager;
+	private static final Logger LOG = LoggerFactory.getLogger(ClientAuthorizationAuthProvider.class);
 	private @Autowired AccessTokenProvider persistedAccessTokenProvider;
+	private @Autowired AuthenticationManager ClientAuthorizationAuthManager;
+	private @Autowired BackgroundProcessorFactory<AccessToken, Object> backgroundProcessorFactory;
+	private @Autowired AllowAuthorizationClientProcessor allowAuthorizationClientProcessor;
+	private @Autowired DenyAuthorizationClientProcessor denyAuthorizationClientProcessor;
 
 	/* (non-Javadoc)
 	 * @see com.uimirror.core.auth.controller.AuthenticationProvider#getAuthenticateToken(com.uimirror.core.auth.bean.Authentication)
 	 */
 	@Override
 	public Authentication authenticate(Authentication authentication) {
-		LOG.debug("[START]- Authenticating, generating and storing token");
+		LOG.debug("[START]- Authenticating, generating or refreshing and storing token");
 		//Step 1- get the authenticated principal
 		Authentication authenticated = getAuthenticatedDetails(authentication);
 		AccessToken token = (AccessToken)authenticated.getPrincipal();
-		//Step 2- Check Any action required before storing the principal
+		//Step 2- Check for the other process such as if approved, store the authorized reference for future the db etc
 		doOtherProcess(token);
-		//Step 3- Store the token
+		//Step 3-Store the token iff required else cancel
 		storeAuthenticatedPrincipal(token);
-		//Step 4- Clean Authentication Principal
+		//Step 3- Clean Authentication Principal
 		LOG.debug("[END]- Authenticating, generating and storing token");
 		return cleanAuthentication(authenticated);
+	}
+
+	/**
+	 * @param token
+	 */
+	private void doOtherProcess(final AccessToken token) {
+		//If any process needs to be taken care such as saving the client
+		BackgroundProcessor<AccessToken, Object> processor = null;
+		processor = TokenType.SECRET.equals(token.getType()) 
+				? backgroundProcessorFactory.getProcessor(AllowAuthorizationClientProcessor.NAME) 
+						: backgroundProcessorFactory.getProcessor(DenyAuthorizationClientProcessor.NAME);  
+		processor.invoke(token);
 	}
 
 	/**
@@ -62,30 +81,16 @@ public class LoginFormAuthProvider implements AuthenticationProvider{
 	 * @return
 	 */
 	private Authentication getAuthenticatedDetails(Authentication auth){
-		return loginFormAuthManager.authenticate(auth);
+		return ClientAuthorizationAuthManager.authenticate(auth);
 	}
 	
 	/**
-	 * This will process other process such as in case of otp, it will send mail,
-	 * in case user has earlier deactivated the account, so user can reactivated the same.
+	 * Stores the {@link AccessToken} iff its a secret token else forget
 	 * @param token
 	 */
-	private void doOtherProcess(AccessToken token){
-		if(TokenType._2FA.equals(token.getType()))
-			System.out.println("DO the Mail processing");
-		Map<String, Object> instructions = token.getInstructions();
-		if(instructions.get(AuthConstants.INST_RESTORE_REQUIRED) != null){
-			//Process account restore as well
-			//TODO mail and restore account
-		}
-	}
-	
-	/**
-	 * Stores the {@link AccessToken} using {@link AccessTokenStore}
-	 * @param token
-	 */
-	private void storeAuthenticatedPrincipal(AccessToken token){
-		persistedAccessTokenProvider.store(token);
+	private void storeAuthenticatedPrincipal(AccessToken token) {
+		if(TokenType.SECRET.equals(token.getType()))
+			persistedAccessTokenProvider.store(token);
 	}
 	
 	/**
@@ -99,7 +104,7 @@ public class LoginFormAuthProvider implements AuthenticationProvider{
 	private Authentication cleanAuthentication(Authentication auth){
 		//Clean the Authentication principal
 		AccessToken accessToken = (AccessToken)auth.getPrincipal();
-		return new LoginFormAuthentication(accessToken.eraseEsential(), (Map<String, Object>)auth.getDetails());
+		return new ClientAuthorizationAuthentication(accessToken.eraseEsential(), (Map<String, Object>)auth.getDetails());
 	}
 
 	/* (non-Javadoc)
@@ -107,7 +112,7 @@ public class LoginFormAuthProvider implements AuthenticationProvider{
 	 */
 	@Override
 	public boolean supports(Class<?> authentication) {
-		return LoginFormAuthentication.class.isAssignableFrom(authentication);
+		return ClientAuthorizationAuthentication.class.isAssignableFrom(authentication);
 	}
 
 }

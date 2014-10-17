@@ -81,7 +81,7 @@ public class OTPAuthProvider implements AuthenticationProvider{
 	private Authentication cleanAuthentication(Authentication auth){
 		//Clean the Authentication principal
 		AccessToken accessToken = (AccessToken)auth.getPrincipal();
-		return new OTPAuthentication(accessToken.toResponseMap(), (Map<String, Object>)auth.getDetails());
+		return new OTPAuthentication(accessToken.eraseEsential(), (Map<String, Object>)auth.getDetails());
 	}
 
 	/* (non-Javadoc)

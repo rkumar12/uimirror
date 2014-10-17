@@ -53,4 +53,13 @@ public class SubmitAndResultAdapter extends ExecutorServiceAbstractAdapter{
 		claimResource();
 		return results;
 	}
+
+	/* (non-Javadoc)
+	 * @see com.uimirror.core.util.thread.ExecutorServiceAbstractAdapter#submitTasks(java.util.List)
+	 */
+	@Override
+	public void submitTasks(List<? extends Runnable> runabels)
+			throws IllegalArgumentException {
+		throw new IllegalArgumentException("No Supported");
+	}
 }

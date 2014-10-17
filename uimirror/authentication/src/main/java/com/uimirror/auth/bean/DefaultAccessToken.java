@@ -34,10 +34,6 @@ public class DefaultAccessToken extends AbstractAccessToken<DefaultAccessToken>{
 	public DefaultAccessToken(Map<String, Object> map) {
 		super(map);
 	}
-	//TODO think about it again for erase credentials
-	private DefaultAccessToken(Token token){
-		super(token);
-	}
 	
 	/**
 	 *Don't Use this until has some special use case
@@ -78,7 +74,7 @@ public class DefaultAccessToken extends AbstractAccessToken<DefaultAccessToken>{
 	 */
 	@Override
 	public AccessToken eraseEsential() {
-		return new DefaultAccessToken(this.getToken());
+		return new DefaultAccessToken(this.getToken(), this.getOwner(), this.getClient(), this.getExpire(), this.getType(), this.getScope());
 	}
 	/* (non-Javadoc)
 	 * @see com.uimirror.auth.bean.AbstractAccessToken#init(java.util.Map)

@@ -301,6 +301,7 @@ public abstract class AbstractAccessToken<T> extends BeanBasedDocument<T> implem
 		rs.put(AccessTokenFields.TOKEN, token.getToken());
 		if(StringUtils.hasText(token.getParaphrase()))
 			rs.put(AccessTokenFields.ENCRYPT_STARTEGY, token.getParaphrase());
+		rs.put(AccessTokenFields.TYPE, type.getTokenType());
 		return rs;
 	}
 

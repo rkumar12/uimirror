@@ -25,6 +25,7 @@ public enum TokenType {
 	SECRET("S"),
 	TEMPORAL("T"),
 	USER_PERMISSION("UP"),
+	CANCELLED("C"),
 	_2FA("2F");
 	
 	private final String tokenType;

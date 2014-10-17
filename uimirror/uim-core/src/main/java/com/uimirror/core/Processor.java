@@ -10,10 +10,21 @@
  *******************************************************************************/
 package com.uimirror.core;
 
+import com.uimirror.core.rest.extra.ApplicationException;
+
 /**
+ * Bridge between the service end point and application service response 
  * @author Jay
  */
-public interface BasicDBFields {
-	String ID = "_id";
-	String ON = "on";
+public interface Processor<P> {
+
+	/**
+	 * This will process the defined type of parameters and run the business logic to 
+	 * generate a response that will be send to the user
+	 * @param param
+	 * @return
+	 * @throws ApplicationException
+	 */
+	Object invoke(P param) throws ApplicationException;
+
 }

@@ -15,11 +15,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.uimirror.auth.controller.AuthenticationProvider;
-import com.uimirror.auth.controller.Processor;
 import com.uimirror.auth.core.AuthenticationManager;
 import com.uimirror.auth.exception.AuthToApplicationExceptionMapper;
 import com.uimirror.auth.user.bean.OTPAuthentication;
 import com.uimirror.auth.user.bean.form.OTPAuthenticationForm;
+import com.uimirror.core.Processor;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.Authentication;
 import com.uimirror.core.extra.MapException;
@@ -58,8 +58,8 @@ public class OTPAuthProcessor implements Processor<OTPAuthenticationForm>{
 		//Remove Unnecessary information from the accessToken Before Sending to the user
 		Authentication authToken = authenticateAndIssueToken(auth);
 		AccessToken token = (AccessToken)authToken.getPrincipal();
-		LOG.debug("[END]- Generating a new accesstoken based on the previous accesstoken and and OTP for the 2FA {}", auth);
-		return jsonResponseTransFormer.doTransForm(token);
+		LOG.debug("[END]- Generating a new accesstoken based on the previous accesstoken and OTP for the 2FA {}", auth);
+		return jsonResponseTransFormer.doTransForm(token.toResponseMap());
 	}
 	
 	/**

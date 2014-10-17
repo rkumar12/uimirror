@@ -44,6 +44,11 @@ public class UserAuthorizedClient extends BeanBasedDocument<UserAuthorizedClient
 		return init(src);
 	}
 	
+	/**
+	 * @param id
+	 * @param clients
+	 * @param on
+	 */
 	public UserAuthorizedClient(String id, List<ClientAuthorizedScope> clients){
 		this.setId(id);
 		this.clients = clients;
@@ -62,7 +67,7 @@ public class UserAuthorizedClient extends BeanBasedDocument<UserAuthorizedClient
 			List<ClientAuthorizedScope> clients = new ArrayList<ClientAuthorizedScope>(clientsMap.size()+5);
 			clientsMap.forEach((map) -> {
 				ClientAuthorizedScope ca = new ClientAuthorizedScope((String)map.get(UserAuthorizedClientDBFields.CLIENT_ID)
-						, (String)map.get(UserAuthorizedClientDBFields.SCOPE));
+						, (String)map.get(UserAuthorizedClientDBFields.SCOPE), (long)src.getOrDefault(UserAuthorizedClientDBFields.ON, 0l));
 				clients.add(ca);
 			});
 			authorizedClients = new UserAuthorizedClient(id, clients);
@@ -114,8 +119,16 @@ public class UserAuthorizedClient extends BeanBasedDocument<UserAuthorizedClient
 	 * @return
 	 */
 	public Scope getMatchingClientScope(){
+		return getMathcingClient() == null ? null : getMathcingClient().getScope();
+	}
+	
+	/**
+	 * Returns the matching client by given query
+	 * @return
+	 */
+	public ClientAuthorizedScope getMathcingClient(){
 		if(isMatched())
-			return getClients().get(0).getScope();
+			return getClients().get(0);
 		else
 			return null;
 	}
@@ -153,6 +166,7 @@ public class UserAuthorizedClient extends BeanBasedDocument<UserAuthorizedClient
 			Map<String, Object> c = new LinkedHashMap<String, Object>();
 			c.put(UserAuthorizedClientDBFields.CLIENT_ID, client.getClientId());
 			c.put(UserAuthorizedClientDBFields.SCOPE, client.getScope().getScope());
+			c.put(UserAuthorizedClientDBFields.ON, client.getOn());
 			clients.add(c);
 		});
 		map.put(UserAuthorizedClientDBFields.CLIENTS, clients);

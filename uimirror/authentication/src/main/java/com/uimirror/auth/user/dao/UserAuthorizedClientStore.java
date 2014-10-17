@@ -46,5 +46,20 @@ public interface UserAuthorizedClientStore {
 	 * @return
 	 */
 	List<UserAuthorizedClient> getAllAuthroziedClient(String profileId);
+	
+	/**
+	 * This will pull the client from the authorization list
+	 * @param profileId
+	 * @param clientId
+	 * @return 
+	 */
+	int unAuthorizeAClient(String profileId, String clientId);
+	
+	/**
+	 * This will authorize the client specified, will try to add to the list
+	 * @param userAuthorizedClient
+	 * @return
+	 */
+	int authorizeClient(UserAuthorizedClient userAuthorizedClient);
 
 }

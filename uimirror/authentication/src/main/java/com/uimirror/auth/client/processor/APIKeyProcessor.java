@@ -17,8 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.uimirror.auth.client.bean.OAuth2APIKeyAuthentication;
 import com.uimirror.auth.client.bean.form.ClientAPIForm;
 import com.uimirror.auth.controller.AuthenticationProvider;
-import com.uimirror.auth.controller.Processor;
 import com.uimirror.auth.exception.AuthToApplicationExceptionMapper;
+import com.uimirror.core.Processor;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.Authentication;
 import com.uimirror.core.extra.MapException;
@@ -56,7 +56,7 @@ public class APIKeyProcessor implements Processor<ClientAPIForm>{
 		AccessToken token = (AccessToken)authPrincipal.getPrincipal();
 		//Remove Unnecessary information from the accessToken Before Sending to the user
 		LOG.debug("[END]- Authenticating the user and trying to to get the authentication details {}", auth);
-		return jsonResponseTransFormer.doTransForm(token);
+		return jsonResponseTransFormer.doTransForm(token.toResponseMap());
 	}
 	
 	/**

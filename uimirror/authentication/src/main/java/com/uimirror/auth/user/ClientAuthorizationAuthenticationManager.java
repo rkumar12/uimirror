@@ -17,17 +17,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
-import org.springframework.util.StringUtils;
 
 import com.uimirror.auth.bean.DefaultAccessToken;
 import com.uimirror.auth.controller.AccessTokenProvider;
 import com.uimirror.auth.core.AuthenticationException;
 import com.uimirror.auth.core.AuthenticationManager;
-import com.uimirror.auth.core.BadCredentialsException;
 import com.uimirror.auth.core.InvalidTokenException;
 import com.uimirror.auth.core.TokenGenerator;
 import com.uimirror.auth.exception.AuthExceptionMapper;
-import com.uimirror.auth.user.bean.OTPAuthentication;
+import com.uimirror.auth.user.bean.ClientAuthorizationAuthentication;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.AuthConstants;
 import com.uimirror.core.auth.Authentication;
@@ -43,9 +41,9 @@ import com.uimirror.core.util.DateTimeUtil;
  * 
  * @author Jay
  */
-public class OTPAuthenticationManager implements AuthenticationManager{
+public class ClientAuthorizationAuthenticationManager implements AuthenticationManager{
 	
-	protected static final Logger LOG = LoggerFactory.getLogger(OTPAuthenticationManager.class);
+	protected static final Logger LOG = LoggerFactory.getLogger(ClientAuthorizationAuthenticationManager.class);
 	private @Autowired AccessTokenProvider persistedAccessTokenProvider;
 
 	/* (non-Javadoc)
@@ -55,10 +53,10 @@ public class OTPAuthenticationManager implements AuthenticationManager{
 	@MapException(use=AuthExceptionMapper.NAME)
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 		Assert.notNull(authentication, "Authention Request Object can't be empty");
-		LOG.info("[START]- Authenticating User's OTP");
+		LOG.info("[START]- Authenticating User's Access Token");
 		AccessToken token = authenticateAndGetToken(authentication);
-		LOG.info("[END]- Authenticating User");
-		return new OTPAuthentication(token);
+		LOG.info("[END]- Authenticating User's Access Token");
+		return new ClientAuthorizationAuthentication(token);
 	}
 
 	/**
@@ -68,15 +66,13 @@ public class OTPAuthenticationManager implements AuthenticationManager{
 	 */
 	@SuppressWarnings("unchecked")
 	private AccessToken authenticateAndGetToken(Authentication authentication){
-		LOG.debug("[START]- Reteriving Previous Token to match with OTP");
+		LOG.debug("[START]- Reteriving Previous Token to validate");
 		Map<String, String> credentials = (Map<String, String>)authentication.getCredentials();
 		//Step 1- Get the previous Token
 		AccessToken prevToken = getPreviousToken(credentials);
-		//Step 3- Check the account status as well OTP
-		doAuthenticate(credentials.get(AuthConstants.PASSWORD), prevToken.getInstructions());
-		//Step 4- Generate a new Token
+		//Step 2- Generate a new Token
 		AccessToken newToken = issueNewToken(prevToken, authentication);
-		LOG.debug("[END]- Reteriving Previous Token to match with OTP");
+		LOG.debug("[END]- Reteriving Previous Token to validate");
 		return newToken;
 	}
 
@@ -89,26 +85,9 @@ public class OTPAuthenticationManager implements AuthenticationManager{
 	private AccessToken getPreviousToken(Map<String, String> credentials){
 		String access_token = credentials.get(AuthConstants.ACCESS_TOKEN);
 		AccessToken token = persistedAccessTokenProvider.get(access_token);
-		if(token == null || !TokenType._2FA.equals(token.getType()))
+		if(token == null || !TokenType.USER_PERMISSION.equals(token.getType()))
 			throw new InvalidTokenException();
 		return token;
-	}
-	
-	/**
-	 * <p>This will validate the credentials in the order, authentication should happen</p>
-	 * @param auth
-	 * @param map
-	 * @return <code>true</code> if successfully authenticated else <code>false</code>
-	 * or appropriate {@link AuthenticationException}
-	 */
-	private boolean doAuthenticate(String providedOtp, Map<String, Object> map){
-		if(!StringUtils.hasText(providedOtp))
-			throw new BadCredentialsException();
-		String otp = (String)map.get(AuthConstants.OTP);
-		if(!providedOtp.equals(otp))
-			throw new BadCredentialsException();
-		
-		return Boolean.TRUE;
 	}
 	
 	/**
@@ -118,19 +97,69 @@ public class OTPAuthenticationManager implements AuthenticationManager{
 	 * @return
 	 */
 	private AccessToken issueNewToken(AccessToken prevToken, Authentication authentication) {
-		//TODO check here if it is a secret key, then user has accepted client or not, 
-		//TODO if not issue temporal token and expires time will be 0l
+
+		String requestor = prevToken.getClient();
+		//Get the Requester client info in background //TODO think of a way how can be manged via spring
+		
 		@SuppressWarnings("unchecked")
 		Map<String, Object> details = (Map<String, Object>)authentication.getDetails();
-		Map<String, Object> intsructions = prevToken.getInstructions();
-		Token token = TokenGenerator.getNewOneWithOutPharse();
-		TokenType tokenType = TokenType.SECRET;
-		long expiresOn = getExpiresOn(intsructions);
-		String requestor = prevToken.getClient();
+		TokenType tokenType = determineTokenType(details);
+		Token token = generateToken(tokenType, prevToken.getToken());
 		String owner = prevToken.getOwner();
+		Map<String, Object> intsructions = prevToken.getInstructions();
+		long expiresOn = determineExpiresOn(tokenType, intsructions);
+		//TODO check for the instructions as instructions depends on the earlier source as well
 		return new DefaultAccessToken(token, owner, requestor
 				, expiresOn, tokenType, prevToken.getScope()
 				, getNotes(details), getInstructions(intsructions));
+	}
+	
+	/**
+	 * Determines the {@link TokenType} based on the user action such as,
+	 * if user has opted for the deny, then there is no meaning to process and generate new token
+	 * in that case it will be {@link TokenType#CANCELLED}, which will not generate any new token
+	 * else {@link TokenType#SECRET} which will generate new token.
+	 * @param details
+	 * @return
+	 */
+	private TokenType determineTokenType(Map<String, Object> details){
+		Approval approval = (Approval)details.get(AuthConstants.APPROVAL);
+		TokenType tokenType = null;
+		if(Approval.DENY.equals(approval))
+			tokenType= TokenType.CANCELLED;
+		else
+			tokenType= TokenType.SECRET;
+		return tokenType;
+	}
+	
+	/**
+	 * Based on the token type, it will create if {@link TokenType#SECRET}
+	 * else it will re-asgin the previous one.
+	 * @param type
+	 * @param earillerToken
+	 * @return
+	 */
+	private Token generateToken(TokenType type, Token earillerToken){
+		Token token = null;
+		if(TokenType.SECRET.equals(type))
+			token = TokenGenerator.getNewOneWithOutPharse();
+		else
+			token = earillerToken;
+		return token;	
+	}
+	
+	/**
+	 * Determines the expires on time on UTC EPOCH time, if {@link TokenType#SECRET}
+	 * then only a valid expires will apply else 0l
+	 * @param type
+	 * @param intsructions
+	 * @return
+	 */
+	private long determineExpiresOn(TokenType type, Map<String, Object> intsructions){
+		long expires = 0l;
+		if(TokenType.SECRET.equals(type))
+			expires = getExpiresOn(intsructions);
+		return expires;
 	}
 	
 	/**

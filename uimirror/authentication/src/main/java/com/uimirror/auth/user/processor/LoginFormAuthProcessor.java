@@ -15,11 +15,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.uimirror.auth.controller.AuthenticationProvider;
-import com.uimirror.auth.controller.Processor;
 import com.uimirror.auth.core.AuthenticationManager;
 import com.uimirror.auth.exception.AuthToApplicationExceptionMapper;
 import com.uimirror.auth.user.bean.LoginFormAuthentication;
 import com.uimirror.auth.user.bean.form.LoginFormAuthenticationForm;
+import com.uimirror.core.Processor;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.Authentication;
 import com.uimirror.core.extra.MapException;
@@ -56,7 +56,7 @@ public class LoginFormAuthProcessor implements Processor<LoginFormAuthentication
 		//Remove Unnecessary information from the accessToken Before Sending to the user
 		AccessToken token = (AccessToken)authToken.getPrincipal();
 		LOG.debug("[END]- Authenticating the user and trying to to get the authentication details {}", auth);
-		return jsonResponseTransFormer.doTransForm(token);
+		return jsonResponseTransFormer.doTransForm(token.toResponseMap());
 	}
 	
 	/**

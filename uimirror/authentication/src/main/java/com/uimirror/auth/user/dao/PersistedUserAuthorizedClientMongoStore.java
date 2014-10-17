@@ -10,6 +10,7 @@
  *******************************************************************************/
 package com.uimirror.auth.user.dao;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,13 +18,17 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import com.mongodb.DBCollection;
+import com.uimirror.auth.user.ClientAuthorizedScope;
 import com.uimirror.auth.user.UserAuthorizedClient;
 import com.uimirror.auth.user.UserAuthorizedClientDBFields;
 import com.uimirror.core.dao.AbstractMongoStore;
 import com.uimirror.core.mongo.BasicMongoOperators;
+import com.uimirror.core.rest.extra.IllegalArgumentException;
 
 /**
  * A Basic MONGO store for the User approved clients with the scope.
@@ -114,6 +119,89 @@ public class PersistedUserAuthorizedClientMongoStore extends AbstractMongoStore<
 		Map<String, Object> fields = new LinkedHashMap<String, Object>(5);
 		fields.put(UserAuthorizedClientDBFields.CLIENT_ARRAY_MATCH_DOC, 1);
 		return fields;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.uimirror.auth.user.dao.UserAuthorizedClientStore#unAuthorizeAClient(java.lang.String, java.lang.String)
+	 */
+	@Override
+	public int unAuthorizeAClient(String profileId, String clientId) {
+		Assert.hasText(profileId, "Profile ID requires");
+		Assert.hasText(clientId, "Client ID requires");
+		Map<String, Object> clientIdMap = getClientIdMap(clientId);
+		return updateById(profileId, prepareClientPullMap(clientIdMap));
+	}
+
+	/* (non-Javadoc)
+	 * @see com.uimirror.auth.user.dao.UserAuthorizedClientStore#authorizeClient(com.uimirror.auth.user.UserAuthorizedClient)
+	 */
+	@Override
+	public int authorizeClient(UserAuthorizedClient userAuthorizedClient) {
+		Assert.notNull(userAuthorizedClient, "Client To Update can't be invalid");
+		return updateById(userAuthorizedClient.getProfileId(), prepareClientEachAddToSetMap(convertToListOfClient(userAuthorizedClient.getClients())));
+	}
+	
+	/**
+	 * Converts the given list of bean to List of map
+	 * @param clients
+	 * @return
+	 */
+	private List<Map<String, Object>> convertToListOfClient(List<ClientAuthorizedScope> clients){
+		if(CollectionUtils.isEmpty(clients))
+			throw new IllegalArgumentException("Clients sould present");
+		List<Map<String, Object>> clientDocs = new ArrayList<Map<String,Object>>(5);
+		clients.forEach((client) -> {
+			if(client.isValid())
+				clientDocs.add(client.toMap());
+		});
+		return clientDocs;
+	}
+	
+	/**
+	 * Creates the query for add to set.
+	 * @param clientDocs
+	 * @return
+	 */
+	private Map<String, Object> prepareClientEachAddToSetMap(List<Map<String, Object>> clientDocs){
+		Map<String, Object> eachMap = new LinkedHashMap<String, Object>(3);
+		eachMap.put(BasicMongoOperators.EACH, clientDocs);
+		Map<String, Object> clientsMap = getClientsMap(eachMap);
+		Map<String, Object> addToSetMap = new LinkedHashMap<String, Object>(3);
+		addToSetMap.put(BasicMongoOperators.ADD_TO_SET, clientsMap);
+		return addToSetMap;
+	}
+	
+	/**
+	 * Build a map for Client Id
+	 * @param clientId
+	 * @return
+	 */
+	private Map<String, Object> getClientIdMap(String clientId){
+		Map<String, Object> fields = new LinkedHashMap<String, Object>(5);
+		fields.put(UserAuthorizedClientDBFields.CLIENT_ID, clientId);
+		return fields;
+	}
+	
+	/**
+	 * Build a map for Client Array Pull
+	 * @param map
+	 * @return
+	 */
+	private Map<String, Object> prepareClientPullMap(Map<String, Object> map){
+		Map<String, Object> pullClientMap = new LinkedHashMap<String, Object>(5);
+		pullClientMap.put(BasicMongoOperators.PULL, getClientsMap(map));
+		return pullClientMap;
+	}
+	
+	/**
+	 * Gives the clients key and value as the map specified
+	 * @param map
+	 * @return
+	 */
+	private Map<String, Object> getClientsMap(Map<String, Object> map){
+		Map<String, Object> clientMap = new LinkedHashMap<String, Object>(5);
+		clientMap.put(UserAuthorizedClientDBFields.CLIENTS, map);
+		return clientMap;
 	}
 	
 }
