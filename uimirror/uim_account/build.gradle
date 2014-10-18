@@ -1,0 +1,82 @@
+import java.lang.invoke.LambdaForm.Compiled;
+
+//apply plugin: 'distribution'
+apply plugin:'application'
+
+ext {
+	slf4jVersion = "1.7.2"
+	qosLogBackVersion = "1.1.1"
+	jerseyVersion = "2.12"
+	javaeeApiVersion = "7.0"
+	springVersion = "4.1.0.RELEASE"
+	springBootVersion = '1.1.6.RELEASE'
+	junitVersion = '4.11'
+	//gensonVersion = '1.1-RC2'
+	janinoVersion = '2.7.6'
+}
+group = "com.uimirror"
+version = 1.0
+
+dependencies {
+	compile project(':uim-core')
+	//Logging
+	compile (group: 'org.slf4j', name: 'jcl-over-slf4j', version: slf4jVersion)
+	compile (group: 'ch.qos.logback', name: 'logback-classic', version: qosLogBackVersion){
+        exclude group: 'org.slf4j', module: 'slf4j-api' //by both name and group
+    }
+	compile (group: 'ch.qos.logback', name: 'logback-core', version: qosLogBackVersion)
+	compile (group: 'org.codehaus.janino', name: 'janino', version: janinoVersion)
+	//Logging End
+	//Spring Start
+	compile (group: 'org.springframework', name: 'spring-core', version: springVersion)
+	compile (group: 'org.springframework', name: 'spring-context', version: springVersion)
+		//[group: 'org.springframework', name: 'spring-web', version: springVersion],
+	compile (group: 'org.springframework', name: 'spring-beans', version: springVersion)
+	compile (group: 'org.springframework', name: 'spring-web', version: springVersion)
+	compile (group: 'org.springframework', name: 'spring-expression', version: springVersion)
+
+	//Spring End
+	compile group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet', version: jerseyVersion
+	compile group: 'org.glassfish.jersey.ext', name: 'jersey-spring3', version: jerseyVersion
+	compile group: 'org.glassfish.jersey.media', name: 'jersey-media-json-processing', version: jerseyVersion
+	compile (group: 'javax', name: 'javaee-api', version: javaeeApiVersion)
+	
+	//Genson
+	//compile (group: 'com.owlike', name: 'genson', version: gensonVersion)
+	
+	//Test jars
+	testCompile group: 'junit', name: 'junit', version: junitVersion
+	testCompile group: 'org.springframework', name: 'spring-test', version: springVersion
+}
+dependencies {
+	   compile (group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: springBootVersion){
+		   	exclude module: 'jackson-databind'
+			exclude module: 'spring-webmvc'
+			exclude module: 'spring-web'
+			exclude module: 'log4j-over-slf4j'
+			exclude module: 'jboss-logging'
+			exclude module: 'jul-to-slf4j'
+		 }
+	   //Don't use Actuator as it has nested depedancy to fasterxml, think of alternative latter
+//	   compile (group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: springBootVersion){
+//		   	exclude module: 'jackson-databind'
+//			//exclude module: 'spring-web'
+//		 }
+		   
+	//compile("org.springframework.boot:spring-boot-starter-jetty")
+	// end::jetty[]
+	// tag::actuator[]
+	// end::actuator[]
+	testCompile (group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: springBootVersion)
+}
+
+jar {
+	manifest.attributes provider: 'Uimirror Account Module'
+}
+
+description = "An Account Module By Uimirror Team."
+
+mainClassName = "com.uimirror.account.StartApp"
+applicationDefaultJvmArgs = ["-Dgreeting.language=en"]
+
+defaultTasks 'clean', 'build', 'intsall'
