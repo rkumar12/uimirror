@@ -8,25 +8,14 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.core.rest.extra;
-
-import com.owlike.genson.Genson;
+package com.uimirror.account.endpoint;
 
 /**
- * Transforms the source object into json string
- * 
  * @author Jay
  */
-public class JsonResponseTransFormer implements ResponseTransFormer<String>{
+public interface EndPointConstant {
+
+	String HOME ="/";
 	
-	public static final String NAME = "json";
-
-	public JsonResponseTransFormer() {
-	}
-
-	@Override
-	public String doTransForm(Object src) {
-		return new Genson().serialize(src);
-	}
-
+	String REGISTER = "/register";
 }

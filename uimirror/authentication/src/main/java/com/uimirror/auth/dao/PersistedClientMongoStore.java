@@ -19,11 +19,11 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
 import com.mongodb.DBCollection;
-import com.uimirror.auth.bean.AccountStatus;
 import com.uimirror.auth.client.Client;
 import com.uimirror.auth.client.ClientDBFields;
 import com.uimirror.core.dao.AbstractMongoStore;
 import com.uimirror.core.dao.DBException;
+import com.uimirror.core.user.AccountStatus;
 
 /**
  * This will be the client store In Mongo DB implementations

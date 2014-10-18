@@ -8,25 +8,17 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.core.rest.extra;
+package com.uimirror.account.create.dao;
 
-import com.owlike.genson.Genson;
+import com.uimirror.core.user.bean.BasicUserDetails;
 
 /**
- * Transforms the source object into json string
- * 
  * @author Jay
  */
-public class JsonResponseTransFormer implements ResponseTransFormer<String>{
+//TODO update java doc
+public interface BasicUserStore {
+
+	BasicUserDetails findByEmail(String email);
 	
-	public static final String NAME = "json";
-
-	public JsonResponseTransFormer() {
-	}
-
-	@Override
-	public String doTransForm(Object src) {
-		return new Genson().serialize(src);
-	}
-
+	void store(BasicUserDetails details);
 }

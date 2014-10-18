@@ -1,2 +1,2 @@
 
-include "ws-resource-security", "ws-resource-auditing", "authentication", "uim-core"
+include "ws-resource-security", "ws-resource-auditing", "authentication", "uim-core", "uim_account"

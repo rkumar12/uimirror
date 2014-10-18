@@ -16,9 +16,9 @@ import java.util.Map;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import com.uimirror.auth.bean.AccountStatus;
 import com.uimirror.core.mongo.feature.BeanBasedDocument;
 import com.uimirror.core.service.BeanValidatorService;
+import com.uimirror.core.user.AccountStatus;
 
 /**
  * A basic client , which will have at minimum client id,

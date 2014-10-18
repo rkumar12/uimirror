@@ -13,8 +13,8 @@ package com.uimirror.auth.user;
 import java.util.List;
 import java.util.Map;
 
-import com.uimirror.auth.bean.AccountState;
-import com.uimirror.auth.bean.AccountStatus;
+import com.uimirror.core.user.AccountState;
+import com.uimirror.core.user.AccountStatus;
 
 
 /**

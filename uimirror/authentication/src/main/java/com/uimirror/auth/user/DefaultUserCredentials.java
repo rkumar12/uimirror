@@ -17,10 +17,10 @@ import java.util.Map;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import com.uimirror.auth.bean.AccountState;
-import com.uimirror.auth.bean.AccountStatus;
 import com.uimirror.core.mongo.feature.BeanBasedDocument;
 import com.uimirror.core.service.BeanValidatorService;
+import com.uimirror.core.user.AccountState;
+import com.uimirror.core.user.AccountStatus;
 
 /**
  * A Basic User Credentials Object

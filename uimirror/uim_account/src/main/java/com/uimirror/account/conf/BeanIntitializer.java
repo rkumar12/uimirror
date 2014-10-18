@@ -8,17 +8,12 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.auth.conf;
+package com.uimirror.account.conf;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ServiceLocatorFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 
-import com.uimirror.auth.controller.AccessTokenProvider;
-import com.uimirror.auth.core.PasswordMatcher;
-import com.uimirror.auth.core.PersistedAccessTokenMongoProvider;
 import com.uimirror.core.crypto.CryptoMatcherService;
 import com.uimirror.core.crypto.MatcherServiceImpl;
 import com.uimirror.core.rest.extra.JsonResponseTransFormer;
@@ -31,8 +26,6 @@ import com.uimirror.core.rest.extra.TransformResponseAspect;
  * @author Jay
  */
 @Configuration
-@Import({BeanOfExceptionIntitializer.class, BeanOfAuthProcessor.class
-	, BeanOfAuthManagers.class, BeanOfAuthProviders.class, BeanOfTransformers.class})
 public class BeanIntitializer {
 
 	@Bean(name=JsonResponseTransFormer.NAME)
@@ -41,6 +34,7 @@ public class BeanIntitializer {
 	}
 	
 	@Bean
+	//TODO delete this
 	public TransformResponseAspect transformResponseAspect(){
 		return new TransformResponseAspect();
 	}
@@ -56,18 +50,5 @@ public class BeanIntitializer {
 	public CryptoMatcherService cryptoMatcherService(){
 		return new MatcherServiceImpl();
 	}
-	
-	@Bean
-	@Autowired
-	public PasswordMatcher passwordMatcher(CryptoMatcherService cryptoMatcherService){
-		return new PasswordMatcher(cryptoMatcherService);
-	}
-	
-	//****Access Token providers****
-	@Bean
-	public AccessTokenProvider persistedAccessTokenProvider(){
-		return new PersistedAccessTokenMongoProvider();
-	}
-	//****Access Token providers end****
 
 }

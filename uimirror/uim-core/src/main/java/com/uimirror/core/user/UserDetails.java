@@ -8,25 +8,33 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.core.rest.extra;
+package com.uimirror.core.user;
 
-import com.owlike.genson.Genson;
+import java.util.Map;
+
+import com.uimirror.core.bean.Gender;
 
 /**
- * Transforms the source object into json string
- * 
  * @author Jay
  */
-public class JsonResponseTransFormer implements ResponseTransFormer<String>{
+//TODO add java doc
+public interface UserDetails {
+
+	String getProfileId();
 	
-	public static final String NAME = "json";
-
-	public JsonResponseTransFormer() {
-	}
-
-	@Override
-	public String doTransForm(Object src) {
-		return new Genson().serialize(src);
-	}
-
+	String getFirstName();
+	
+	String getLastName();
+	
+	String getEmail();
+	
+	String getDateOfBirth();
+	
+	Gender getGender();
+	
+	AccountStatus getAccountStatus();
+	
+	AccountState getAccountState();
+	
+	Map<String, Object> getDetails();
 }

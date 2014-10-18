@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.auth.bean;
+package com.uimirror.core.user;
 
 /**
  * This identifier for the possible state of an account

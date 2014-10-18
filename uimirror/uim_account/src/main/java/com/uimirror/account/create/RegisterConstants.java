@@ -8,25 +8,19 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.core.rest.extra;
+package com.uimirror.account.create;
 
-import com.owlike.genson.Genson;
+import com.uimirror.core.Parameters;
 
 /**
- * Transforms the source object into json string
- * 
  * @author Jay
  */
-public class JsonResponseTransFormer implements ResponseTransFormer<String>{
-	
-	public static final String NAME = "json";
+public interface RegisterConstants extends Parameters{
 
-	public JsonResponseTransFormer() {
-	}
-
-	@Override
-	public String doTransForm(Object src) {
-		return new Genson().serialize(src);
-	}
-
+	String FIRST_NAME = "first_name";
+	String LAST_NAME = "last_name";
+	String EMAIl = "email";
+	String GENDER = "gender";
+	String DATE_OF_BIRTH = "dob";
+	String PASSWORD = "password";
 }

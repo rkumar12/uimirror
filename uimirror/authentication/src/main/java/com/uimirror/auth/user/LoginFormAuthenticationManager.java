@@ -18,8 +18,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 
-import com.uimirror.auth.bean.AccountState;
-import com.uimirror.auth.bean.AccountStatus;
 import com.uimirror.auth.bean.DefaultAccessToken;
 import com.uimirror.auth.controller.AccessTokenProvider;
 import com.uimirror.auth.core.AuthenticationException;
@@ -40,6 +38,8 @@ import com.uimirror.core.auth.Authentication;
 import com.uimirror.core.auth.Token;
 import com.uimirror.core.auth.TokenType;
 import com.uimirror.core.extra.MapException;
+import com.uimirror.core.user.AccountState;
+import com.uimirror.core.user.AccountStatus;
 import com.uimirror.core.util.DateTimeUtil;
 
 /**
