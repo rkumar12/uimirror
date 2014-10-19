@@ -32,6 +32,7 @@ import com.uimirror.auth.dao.UserCredentialsStore;
 import com.uimirror.auth.exception.AuthExceptionMapper;
 import com.uimirror.auth.user.bean.LoginAuthentication;
 import com.uimirror.auth.user.dao.UserAuthorizedClientStore;
+import com.uimirror.auth.user.processor.UserRestoreProcessor;
 import com.uimirror.core.RandomKeyGenerator;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.AuthConstants;
@@ -43,6 +44,7 @@ import com.uimirror.core.extra.MapException;
 import com.uimirror.core.user.AccountState;
 import com.uimirror.core.user.AccountStatus;
 import com.uimirror.core.util.DateTimeUtil;
+import com.uimirror.core.util.thread.BackgroundProcessorFactory;
 
 /**
  * Implementation of {@link AuthenticationManager#authenticate(Authentication)}
@@ -55,6 +57,7 @@ import com.uimirror.core.util.DateTimeUtil;
  * <li>Validate the user credentials</li>
  * <li>Generate a Secret {@link AccessToken} of type {@link TokenType#SECRET} or
  * {@link TokenType#_2FA} or {@linkplain TokenType#USER_PERMISSION}</li>
+ * <li>Restore user account if required</li>
  * </ol>
  * @author Jay
  */
@@ -66,6 +69,7 @@ public class LoginFormAuthenticationManager implements AuthenticationManager{
 	private @Autowired AccessTokenProvider persistedAccessTokenProvider;
 	private @Autowired PasswordMatcher passwordMatcher;
 	private @Autowired UserAuthorizedClientStore persistedUserAuthorizedClientMongoStore;
+	private @Autowired BackgroundProcessorFactory<String, Object> backgroundProcessorFactory; 
 
 	/* (non-Javadoc)
 	 * @see com.uimirror.core.auth.AuthenticationManager#authenticate(com.uimirror.core.auth.Authentication)
@@ -98,6 +102,8 @@ public class LoginFormAuthenticationManager implements AuthenticationManager{
 		doAuthenticate(credentials.get(AuthConstants.PASSWORD), userCredentials);
 		//Step 4- Generate a new Token
 		AccessToken newToken = issueNewToken(prevToken, userCredentials, authentication);
+		//Step 5- Restore User Account If required
+		doAccountRestoreIfRequired(userCredentials);
 		LOG.debug("[END]- Reteriving User Credentials on basics of the user id");
 		return newToken;
 	}
@@ -163,7 +169,7 @@ public class LoginFormAuthenticationManager implements AuthenticationManager{
 		String owner = userCredentials.getProfileId();
 		return new DefaultAccessToken(token, owner, requestor
 				, expiresOn, tokenType, prevToken.getScope()
-				, getNotes(details), getInstructions(details, tokenType, userCredentials.getAccountState()));
+				, getNotes(details), getInstructions(details, tokenType));
 	}
 	
 	/**
@@ -279,21 +285,42 @@ public class LoginFormAuthenticationManager implements AuthenticationManager{
 	/**
 	 * Get instructions for this token such as expire interval
 	 * @param details
+	 * @param type
 	 * @return
 	 */
-	private Map<String, Object> getInstructions(Map<String, Object> details, TokenType type, AccountState state){
+	private Map<String, Object> getInstructions(Map<String, Object> details, TokenType type){
 		Map<String, Object> instructions = new LinkedHashMap<String, Object>(5);
 		instructions.put(AuthConstants.INST_AUTH_EXPIRY_INTERVAL, getMaxExpiresTime(details, type));
 		if(TokenType._2FA.equals(type)){
 			instructions.put(AuthConstants.OTP, RandomKeyGenerator.randomString(4));
 			instructions.put(AuthConstants.INST_NEXT_STEP, AuthConstants.INST_NEXT_USER_OTP);
+		}else if(TokenType.USER_PERMISSION.equals(type)){
+			instructions.put(AuthConstants.INST_NEXT_STEP, AuthConstants.INST_NEXT_CLIENT_AUTHORIZATION);
 		}else{
 			instructions.put(AuthConstants.INST_NEXT_STEP, AuthConstants.INST_NEXT_ACCESS_TOKEN);
 		}
-		if(AccountState.DISABLED.equals(state)){
-			instructions.put(AuthConstants.INST_RESTORE_REQUIRED, Boolean.TRUE);
-		}
 		return instructions;
+	}
+	/**
+	 * Checks if the user account is in disabled state 
+	 * it will try to restore the user account to normal state in background
+	 * @param userCredentials
+	 */
+	private void doAccountRestoreIfRequired(UserCredentials userCredentials){
+		if(isAccountRestoreRequired(userCredentials))
+			backgroundProcessorFactory.getProcessor(UserRestoreProcessor.NAME).invoke(userCredentials.getProfileId());
+	}
+	
+	/**
+	 * Checks if the account state {@link AccountState#DISABLED}, then tries to restore the account in back ground.
+	 * 
+	 * @param userCredentials
+	 * @return
+	 */
+	private boolean isAccountRestoreRequired(UserCredentials userCredentials){
+		boolean restore = Boolean.FALSE;
+		restore = AccountState.DISABLED.equals(userCredentials.getAccountState()) ? Boolean.TRUE : Boolean.FALSE;
+		return restore;
 	}
 
 }

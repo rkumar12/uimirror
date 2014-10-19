@@ -78,6 +78,13 @@ public interface AccessToken extends Principal, Serializable{
 	Map<String, Object> getInstructions();
 	
 	/**
+	 * @param notes
+	 * @param instructions
+	 * @return
+	 */
+	AccessToken updateInstructions(Map<String, Object> notes, Map<String, Object> instructions);
+	
+	/**
 	 * Converts to the response Map, which in-terms will be transformed to the json
 	 * Necessary to remove unnecessary info while serializing such as it might have user agent
 	 * host name, extra authentication parameters etc

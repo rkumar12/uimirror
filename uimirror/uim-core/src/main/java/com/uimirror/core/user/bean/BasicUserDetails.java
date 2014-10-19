@@ -24,6 +24,7 @@ import com.uimirror.core.user.UserDetails;
  * @author Jay
  */
 //TODO check Client.java and do the necessary changes
+//TODO implement the Store for this
 public class BasicUserDetails extends BeanBasedDocument<BasicUserDetails> implements UserDetails, BeanValidatorService{
 
 	private static final long serialVersionUID = -5282406171053226490L;

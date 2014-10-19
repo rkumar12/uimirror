@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.uimirror.auth.controller.AuthenticationProvider;
+import com.uimirror.auth.core.processor.InvalidateTokenProcessor;
 import com.uimirror.auth.exception.AuthToApplicationExceptionMapper;
 import com.uimirror.auth.user.bean.LoginAuthentication;
 import com.uimirror.auth.user.bean.form.LoginForm;
@@ -31,13 +32,12 @@ import com.uimirror.core.service.TransformerService;
  * <ol>
  * <li>Extract the provided form to a well defined authentication bean i.e {@link LoginAuthentication}</li>
  * <li>Authenticate the provided previous token, User credentials and generate token</li>
- * <li>Transform the generated response into json</li>
  * <li>Invalidate the previous token</li>
+ * <li>Transform the generated response into json</li>
  * </ol>
  * 
  * @author Jay
  */
-//TODO invalidate the previous token
 public class LoginFormAuthProcessor implements Processor<LoginForm>{
 
 	protected static final Logger LOG = LoggerFactory.getLogger(LoginFormAuthProcessor.class);
@@ -45,6 +45,7 @@ public class LoginFormAuthProcessor implements Processor<LoginForm>{
 	private @Autowired TransformerService<LoginForm, LoginAuthentication> loginFormToAuthTransformer;
 	private @Autowired ResponseTransFormer<String> jsonResponseTransFormer;
 	private @Autowired AuthenticationProvider loginFormAuthProvider;
+	private @Autowired InvalidateTokenProcessor invalidateTokenProcessor;
 
 	
 	/* (non-Javadoc)
@@ -55,6 +56,7 @@ public class LoginFormAuthProcessor implements Processor<LoginForm>{
 	public Object invoke(LoginForm param) throws ApplicationException{
 		LOG.debug("[START]- Authenticating the user.");
 		//Step 1- Transform the bean to Authentication
+		String prevToken = param.getToken();
 		Authentication auth = getTransformedObject(param);
 		//Let GC take this ASAP
 		param = null;
@@ -62,6 +64,8 @@ public class LoginFormAuthProcessor implements Processor<LoginForm>{
 		//Remove Unnecessary information from the accessToken Before Sending to the user
 		AccessToken token = (AccessToken)authToken.getPrincipal();
 		LOG.debug("[END]- Authenticating the user.");
+		//Invalidate the previous Token
+		invalidateTokenProcessor.invoke(prevToken);
 		return jsonResponseTransFormer.doTransForm(token.toResponseMap());
 	}
 	

@@ -59,6 +59,18 @@ public class PersistedClientMongoStore extends AbstractMongoStore<Client> implem
 	}
 
 	/* (non-Javadoc)
+	 * @see com.uimirror.auth.dao.ClientStore#findClientById(java.lang.String, java.util.Map)
+	 */
+	@Override
+	public Client findClientById(String clientId, String ... fields) throws DBException {
+		Map<String, Object> projections = new LinkedHashMap<String, Object>();
+		for(String field: fields){
+			projections.put(field, 1);
+		}
+		return getById(clientId, projections);
+	}
+
+	/* (non-Javadoc)
 	 * @see com.uimirror.auth.dao.ClientStore#findActieveClientByApiKey(java.lang.String)
 	 */
 	@Override
@@ -89,4 +101,5 @@ public class PersistedClientMongoStore extends AbstractMongoStore<Client> implem
 		query.put(ClientDBFields.API_KEY, apiKey);
 		return query;
 	}
+	
 }

@@ -12,6 +12,7 @@ package com.uimirror.core.mail;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.util.Map;
 import java.util.Properties;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ import org.thymeleaf.templateresolver.ITemplateResolver;
 
 import com.uimirror.core.Constants;
 import com.uimirror.core.crypto.PBEWithMD5AndDESCrypto;
+import com.uimirror.core.util.thread.BackgroundProcessor;
 
 /**
  * Initialize or configures the email template resolvers
@@ -70,4 +72,16 @@ public class EmailBeanInitializr {
 		return sEngine;
 	}
 	
+	@Bean
+	@Autowired
+	public MailService mailService(JavaMailSender mailSender, SpringTemplateEngine templateEngine){
+		return new MailService(mailSender, templateEngine);
+	}
+	
+	@Bean(name=BackgroundMailService.NAME)
+	public BackgroundProcessor<Map<String, Object>, Object> backgroundMailService(MailService mailService){
+		BackgroundMailService bgMailService = new BackgroundMailService();
+		bgMailService.setMailService(mailService);
+		return bgMailService;
+	}
 }

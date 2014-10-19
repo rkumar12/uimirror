@@ -33,6 +33,7 @@ import com.uimirror.core.util.thread.AbstractBackgroundProcessor;
 public class BackgroundMailService extends AbstractBackgroundProcessor<Map<String, Object>, Object>{
 
 	private MailService mailService;
+	public static final String NAME = "BMS";
 	
 	/**
 	 * @param size
@@ -103,9 +104,10 @@ public class BackgroundMailService extends AbstractBackgroundProcessor<Map<Strin
 			}
 			LOG.info("[BACKGROUND-MAIL-END]- processing email in background");
 		}
-		
 	}
 
-	
+	public void setMailService(MailService mailService) {
+		this.mailService = mailService;
+	}
 
 }

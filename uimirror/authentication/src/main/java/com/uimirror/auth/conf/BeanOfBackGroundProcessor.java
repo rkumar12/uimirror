@@ -14,8 +14,11 @@ import org.springframework.beans.factory.config.ServiceLocatorFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.uimirror.auth.core.processor.InvalidateTokenProcessor;
 import com.uimirror.auth.user.processor.AllowAuthorizationClientProcessor;
 import com.uimirror.auth.user.processor.DenyAuthorizationClientProcessor;
+import com.uimirror.auth.user.processor.OTPMailProcessor;
+import com.uimirror.auth.user.processor.UserRestoreProcessor;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.util.thread.BackgroundProcessor;
 import com.uimirror.core.util.thread.BackgroundProcessorFactory;
@@ -42,6 +45,21 @@ public class BeanOfBackGroundProcessor {
 	@Bean(name=DenyAuthorizationClientProcessor.NAME)
 	public BackgroundProcessor<AccessToken, Object> denyAuthorizationClientProcessor(){
 		return new DenyAuthorizationClientProcessor();
+	}
+	
+	@Bean(name=UserRestoreProcessor.NAME)
+	public BackgroundProcessor<String, Object> userRestoreProcessor(){
+		return new UserRestoreProcessor();
+	}
+	
+	@Bean(name=OTPMailProcessor.NAME)
+	public BackgroundProcessor<AccessToken, Object> otpMailProcessor(){
+		return new OTPMailProcessor();
+	}
+	
+	@Bean(name=InvalidateTokenProcessor.NAME)
+	public BackgroundProcessor<String, Object> invalidateTokenProcessor(){
+		return new InvalidateTokenProcessor();
 	}
 
 }

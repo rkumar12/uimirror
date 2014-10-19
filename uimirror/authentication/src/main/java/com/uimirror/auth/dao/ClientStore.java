@@ -36,6 +36,14 @@ public interface ClientStore {
 	Client findClientById(String clientId) throws DBException;
 	
 	/**
+	 * Query a Client By client ID
+	 * @param clientId if invalid throw {@link IllegalArgumentException}
+	 * @param fields
+	 * @return
+	 */
+	Client findClientById(String clientId, String ... fields) throws DBException;
+	
+	/**
 	 * Query a client by apiKey
 	 * 
 	 * @param apiKey if invalid throw {@link IllegalArgumentException}

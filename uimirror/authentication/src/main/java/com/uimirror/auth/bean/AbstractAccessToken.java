@@ -13,6 +13,7 @@ package com.uimirror.auth.bean;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -97,6 +98,7 @@ public abstract class AbstractAccessToken<T> extends BeanBasedDocument<T> implem
 	 * @param instructions
 	 * @return
 	 */
+	@Autowired
 	public AccessToken updateInstructions(Map<String, Object> notes, Map<String, Object> instructions){
 		if(!CollectionUtils.isEmpty(notes))
 			this.notes.putAll(notes);

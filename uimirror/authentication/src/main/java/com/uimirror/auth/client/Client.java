@@ -144,7 +144,7 @@ public class Client extends BeanBasedDocument<Client> implements BeanValidatorSe
 		String secret = (String)src.get(ClientDBFields.SECRET);
 		String redirectURI = (String)src.get(ClientDBFields.REDIRECT_URI);
 		String st = (String)src.get(ClientDBFields.STATUS);
-		AccountStatus status = AccountStatus.getEnum(st);
+		AccountStatus status = st == null ? null : AccountStatus.getEnum(st);
 		String apiKey = (String)src.get(ClientDBFields.API_KEY);
 		String  registeredBy = (String)src.get(ClientDBFields.REGISTERED_BY);
 		long registeredOn = 0l;
