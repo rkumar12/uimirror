@@ -21,6 +21,7 @@ import com.uimirror.auth.core.PasswordMatcher;
 import com.uimirror.auth.core.PersistedAccessTokenMongoProvider;
 import com.uimirror.core.crypto.CryptoMatcherService;
 import com.uimirror.core.crypto.MatcherServiceImpl;
+import com.uimirror.core.mail.EmailBeanInitializr;
 import com.uimirror.core.rest.extra.JsonResponseTransFormer;
 import com.uimirror.core.rest.extra.ResponseTransFormer;
 import com.uimirror.core.rest.extra.ResponseTransFormerFactory;
@@ -32,7 +33,8 @@ import com.uimirror.core.rest.extra.TransformResponseAspect;
  */
 @Configuration
 @Import({BeanOfExceptionIntitializer.class, BeanOfAuthProcessor.class
-	, BeanOfAuthManagers.class, BeanOfAuthProviders.class, BeanOfTransformers.class})
+	, BeanOfAuthManagers.class, BeanOfAuthProviders.class
+	, BeanOfTransformers.class, EmailBeanInitializr.class})
 public class BeanIntitializer {
 
 	@Bean(name=JsonResponseTransFormer.NAME)

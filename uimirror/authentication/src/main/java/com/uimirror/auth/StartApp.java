@@ -21,7 +21,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
 import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
@@ -44,8 +43,8 @@ import com.uimirror.auth.conf.WebAppInitializer;
  */
 @Configuration
 @ImportResource("classpath*:applicationContext.xml")
-@EnableAutoConfiguration
-@ComponentScan(basePackages= {"com.uimirror.auth", "com.uimirror.core"})
+//@EnableAutoConfiguration
+@ComponentScan(basePackages= {"com.uimirror.auth"})
 @Import({
 	AppConfig.class, BeanIntitializer.class, WebAppInitializer.class
 })

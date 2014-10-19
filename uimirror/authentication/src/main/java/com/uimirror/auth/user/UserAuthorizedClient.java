@@ -32,6 +32,11 @@ public class UserAuthorizedClient extends BeanBasedDocument<UserAuthorizedClient
 
 	private static final long serialVersionUID = 8725514681944084516L;
 	private List<ClientAuthorizedScope> clients;
+	
+	//DOn't Use this until it has specific requirement
+	public UserAuthorizedClient(){
+		//NOP
+	}
 
 	/* (non-Javadoc)
 	 * @see com.uimirror.core.mongo.feature.MongoDocumentSerializer#initFromMap(java.util.Map)

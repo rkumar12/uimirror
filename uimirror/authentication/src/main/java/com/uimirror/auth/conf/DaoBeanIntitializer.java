@@ -35,6 +35,7 @@ public class DaoBeanIntitializer {
 	protected @Value("${mongo.token.host:127.0.0.1}") String tokenHost;
 	protected @Value("${auth.db.name:uim_ouath}") String authDb;
 	protected @Value("${auth.usr.col.name:usr_auth}") String userAuthCollection;
+	protected @Value("${auth.usr.client.col.name:usr_auth_client}") String userAuthorizedClientCollection;
 	protected @Value("${client.db.name:uim_client}") String clientDb;
 	protected @Value("${client.col.name:basic_info}") String clientBasicInfoCollection;
 	protected @Value("${auth.token.db.name:uim_ouath_token}") String tokenDb;
@@ -65,6 +66,13 @@ public class DaoBeanIntitializer {
 	public DBCollection usrAuthCol(DB authDB) throws UnknownHostException{
 		return DBCollectionUtil.getCollection(authDB, this.userAuthCollection);
 	}
+	
+	@Bean
+	@Autowired
+	public DBCollection userAuthorizedClientCol(DB authDB) throws UnknownHostException{
+		return DBCollectionUtil.getCollection(authDB, this.userAuthorizedClientCollection);
+	}
+
 	@Bean
 	@Autowired
 	public DB tokenDB(Mongo tokenMongo) throws UnknownHostException{
