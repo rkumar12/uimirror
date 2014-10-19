@@ -179,6 +179,13 @@ public class LoginFormAuthenticationManager implements AuthenticationManager{
 		return type;
 	}
 	
+	/**
+	 * Checks if the client has been authorized by the user for the given scope
+	 * @param profileId
+	 * @param clientId
+	 * @param scope
+	 * @return
+	 */
 	private boolean isClientAuthorized(String profileId, String clientId, String scope){
 		boolean authroized = Boolean.FALSE;
 		try{
