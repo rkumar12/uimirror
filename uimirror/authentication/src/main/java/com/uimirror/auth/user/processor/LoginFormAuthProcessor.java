@@ -29,7 +29,7 @@ import com.uimirror.core.service.TransformerService;
 
 /**
  * Extracts the field, interact with the {@link AuthenticationManager}
- * and respond back to the caller with the valid response.
+ * and respond back to the caller with the valid response {@link AccessToken}.
  * 
  * @author Jay
  */
@@ -40,9 +40,10 @@ public class LoginFormAuthProcessor implements Processor<LoginFormAuthentication
 	private @Autowired TransformerService<LoginFormAuthenticationForm, LoginFormAuthentication> loginFormToAuthTransformer;
 	private @Autowired ResponseTransFormer<String> jsonResponseTransFormer;
 	private @Autowired AuthenticationProvider loginFormAuthProvider;
+
 	
 	/* (non-Javadoc)
-	 * @see com.uimirror.auth.controller.AuthenticationController#getAccessToken(javax.ws.rs.core.MultivaluedMap)
+	 * @see com.uimirror.core.Processor#invoke(java.lang.Object)
 	 */
 	@Override
 	@MapException(use=AuthToApplicationExceptionMapper.NAME)

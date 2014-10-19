@@ -33,7 +33,7 @@ import com.uimirror.core.bean.form.AuthenticatedHeaderForm;
  * 
  * @author Jay
  */
-@Path("/oauth2")
+@Path(AuthenticationEndPointConstant.OUATH2_HOME)
 public class ClientAuthenticationEndPoint{
 
 	private static Logger LOG = LoggerFactory.getLogger(ClientAuthenticationEndPoint.class);
@@ -41,6 +41,32 @@ public class ClientAuthenticationEndPoint{
 	private @Autowired Processor<ClientSecretKeyForm> secretKeyProcessor;
 	private @Autowired Processor<ClientAPIForm> apiKeyProcessor;
 	private @Autowired Processor<AuthenticatedHeaderForm> accessTokenProcessor;
+	
+	/**
+	 * Handles for the incoming request that needs validate the client,
+	 * if client api KEY is valid then it will generate a temporal token, using which 
+	 * a user authentication form will process.
+	 * 
+	 * A standard url will look like /auth?response_type=code&
+  	 *	client_id=CLIENT_ID&redirect_uri=REDIRECT_URI&scope=read
+  	 *
+  	 * A standard response will be 
+  	 * response {
+     *	"token":"RsT5OjbzRn430zqMLgV3Ia",
+     *  "type" : "temporal"
+	 *	}
+	 * @return
+	 */
+	@GET
+	@Produces({ "application/x-javascript", MediaType.APPLICATION_JSON })
+	@JSONP(queryParam="cb", callback="callback")
+	@Path(AuthenticationEndPointConstant.OUATH_2_AUTH_PATH)
+	public Object getSecretCode(@BeanParam ClientAPIForm form){
+		LOG.info("[ENTRY]- Received request for client Secret Code with the param {}", form);
+		Object response = apiKeyProcessor.invoke(form);
+		LOG.info("[EXIT]- Received request for client Secret Code");
+		return response;
+	}
 	
 	/**
 	 * handles the client secret token in the below format
@@ -53,8 +79,11 @@ public class ClientAuthenticationEndPoint{
      * in case of success validation will issue a new accestoken for this response
      * 
      * response {
-     *	"access_token":"RsT5OjbzRn430zqMLgV3Ia"
+     *	"token":"RsT5OjbzRn430zqMLgV3Ia",
+     *  "type" : "temporal"
 	 *	}
+	 * Using this token, UIMIRROR oauth server should request for the user login operation
+	 * {@link UserAuthenticationEndPoint#login(com.uimirror.auth.user.bean.form.LoginFormAuthenticationForm)}
 	 * 
 	 * @param form
 	 * @return
@@ -67,26 +96,6 @@ public class ClientAuthenticationEndPoint{
 		LOG.info("[ENTRY]- Received request for client access toekn");
 		Object response = secretKeyProcessor.invoke(form);
 		LOG.info("[EXIT]- Received request for client access toekn");
-		return response;
-	}
-	
-	/**
-	 * Handles for the incoming request that needs validate the client,
-	 * if client api KEY is valid then it will generate a temporal token, using which 
-	 * a user authentication form will process.
-	 * 
-	 * A standard url will look like /auth?response_type=code&
-  	 *	client_id=CLIENT_ID&redirect_uri=REDIRECT_URI&scope=read
-	 * @return
-	 */
-	@GET
-	@Produces({ "application/x-javascript", MediaType.APPLICATION_JSON })
-	@JSONP(queryParam="cb", callback="callback")
-	@Path(AuthenticationEndPointConstant.OUATH_2_AUTH_PATH)
-	public Object getSecretCode(@BeanParam ClientAPIForm form){
-		LOG.info("[ENTRY]- Received request for client Secret Code with the param {}", form);
-		Object response = apiKeyProcessor.invoke(form);
-		LOG.info("[EXIT]- Received request for client Secret Code");
 		return response;
 	}
 	

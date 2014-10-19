@@ -29,13 +29,14 @@ import com.uimirror.core.Processor;
 import com.uimirror.core.auth.AccessToken;
 
 /**
- * Controller which will be for the common path, any user will try to be get authenticated.
- * User which represnts a individual entity will be validated and issue with a accesstoken with expiry and refresh token
+ * This authentication end point will be responsible for the user login {@link #login(LoginFormAuthenticationForm)},
+ * {@link #unlockScreen(ScreenLockAuthenticationForm)}, {@link #otp(OTPAuthenticationForm)}
+ * the result of all this operations will be a token 
  * known as {@link AccessToken}
  * 
  * @author Jay
  */
-@Path("/")
+@Path(AuthenticationEndPointConstant.HOME)
 public class UserAuthenticationEndPoint{
 
 	private static Logger LOG = LoggerFactory.getLogger(UserAuthenticationEndPoint.class);
@@ -43,8 +44,8 @@ public class UserAuthenticationEndPoint{
 	private @Autowired Processor<ScreenLockAuthenticationForm> screenLockAuthProcessor;
 	private @Autowired Processor<OTPAuthenticationForm> otpAuthProcessor;
 	
-	
 	public UserAuthenticationEndPoint() {
+		//NOP
 	}
 	
 	/**
@@ -52,6 +53,17 @@ public class UserAuthenticationEndPoint{
 	 * and try to authenticate the eariller token issued, to validate if the request is from a valid source
 	 * if request is from a valid source it tries to authenticate the user provided details and 
 	 * in case user doesn't have any _2FA enabled, it will generate a security token and return back to the user.
+	 * 
+	 * POST https://api.oauth2server.com/login
+     *	Authorization=authorization_code&
+     *	uid=USER_ID_HERE&
+     *	password=PASSWORD_HERE&
+     * in case of success validation will issue a new accestoken for this response
+     * 
+     * response {
+     *	"token":"RsT5OjbzRn430zqMLgV3Ia",
+     *  "type" " "secret"
+	 *	}
 	 * 
 	 * @param loginForm
 	 * @return
@@ -62,9 +74,9 @@ public class UserAuthenticationEndPoint{
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Path(AuthenticationEndPointConstant.LOGIN_PATH)
 	public Object login(@BeanParam LoginFormAuthenticationForm loginForm){
-		LOG.info("[ENTRY]- Received requst for authentication");
+		LOG.info("[ENTRY]- Received requst for user authentication by user name and password");
 		Object response = loginFormAuthProcessor.invoke(loginForm);
-		LOG.info("[EXIT]- Received requst for authentication");
+		LOG.info("[EXIT]- Received requst for user authentication by user name and password");
 		return response;
 	}
 	

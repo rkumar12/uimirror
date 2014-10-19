@@ -16,7 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.uimirror.auth.client.bean.OAuth2APIKeyAuthentication;
+import com.uimirror.auth.client.bean.APIKeyAuthentication;
 import com.uimirror.auth.controller.AccessTokenProvider;
 import com.uimirror.auth.controller.AuthenticationProvider;
 import com.uimirror.auth.core.AuthenticationManager;
@@ -25,8 +25,12 @@ import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.Authentication;
 
 /**
- * Validates the {@link Authentication} and populate the authenticated principal
- * with the appropriate token.
+ * The step of operations for this processor is defined as below:
+ * <ol>
+ * <li>Authenticate the provided client details using {@linkplain Authentication}</li>
+ * <li>Generate {@link AccessToken}</li>
+ * <li>Clean {@link AccessToken}</li>
+ * </ol>
  * 
  * @author Jay
  */
@@ -37,7 +41,7 @@ public class APIKeyAuthProvider implements AuthenticationProvider{
 	private @Autowired AccessTokenProvider persistedAccessTokenProvider;
 
 	/* (non-Javadoc)
-	 * @see com.uimirror.core.auth.controller.AuthenticationProvider#getAuthenticateToken(com.uimirror.core.auth.bean.Authentication)
+	 * @see com.uimirror.auth.controller.AuthenticationProvider#authenticate(com.uimirror.core.auth.Authentication)
 	 */
 	@Override
 	public Authentication authenticate(Authentication authentication) {
@@ -81,7 +85,7 @@ public class APIKeyAuthProvider implements AuthenticationProvider{
 		AccessToken accessToken = (AccessToken)auth.getPrincipal();
 		//No cleaning required as this will be a internal application communication
 		accessToken = accessToken.eraseEsential();
-		return new OAuth2APIKeyAuthentication(accessToken, (Map<String, Object>)auth.getDetails());
+		return new APIKeyAuthentication(accessToken, (Map<String, Object>)auth.getDetails());
 	}
 
 	/* (non-Javadoc)
@@ -89,7 +93,7 @@ public class APIKeyAuthProvider implements AuthenticationProvider{
 	 */
 	@Override
 	public boolean supports(Class<?> authentication) {
-		return OAuth2APIKeyAuthentication.class.isAssignableFrom(authentication);
+		return APIKeyAuthentication.class.isAssignableFrom(authentication);
 	}
 
 }

@@ -14,7 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.uimirror.auth.client.bean.OAuth2APIKeyAuthentication;
+import com.uimirror.auth.client.bean.APIKeyAuthentication;
 import com.uimirror.auth.client.bean.form.ClientAPIForm;
 import com.uimirror.auth.controller.AuthenticationProvider;
 import com.uimirror.auth.exception.AuthToApplicationExceptionMapper;
@@ -27,8 +27,12 @@ import com.uimirror.core.rest.extra.ResponseTransFormer;
 import com.uimirror.core.service.TransformerService;
 
 /**
- * This will process the API key validation by interacting with
- * {@linkplain AuthenticationProvider#authenticate(Authentication)}
+ * The step of operations for this processor is defined as below:
+ * <ol>
+ * <li>Extract the provided form to a well defined authentication bean</li>
+ * <li>Authenticate the provided client details and issue a new token</li>
+ * <li>Transform the generated response into json</li>
+ * </ol>
  * 
  * @author Jay
  */
@@ -36,17 +40,17 @@ public class APIKeyProcessor implements Processor<ClientAPIForm>{
 
 	protected static final Logger LOG = LoggerFactory.getLogger(APIKeyProcessor.class);
 	
-	private @Autowired TransformerService<ClientAPIForm, OAuth2APIKeyAuthentication> apiKeyToAuthTransformer;
+	private @Autowired TransformerService<ClientAPIForm, APIKeyAuthentication> apiKeyToAuthTransformer;
 	private @Autowired ResponseTransFormer<String> jsonResponseTransFormer;
 	private @Autowired AuthenticationProvider apiKeyAuthProvider;
 	
 	/* (non-Javadoc)
-	 * @see com.uimirror.auth.controller.AuthenticationController#getAccessToken(javax.ws.rs.core.MultivaluedMap)
+	 * @see com.uimirror.core.Processor#invoke(java.lang.Object)
 	 */
 	@Override
 	@MapException(use=AuthToApplicationExceptionMapper.NAME)
 	public Object invoke(ClientAPIForm param) throws ApplicationException{
-		LOG.debug("[START]- Authenticating the user and trying to to get the authentications details");
+		LOG.debug("[START]- Authenticating the client API KEY");
 		//Step 1- Transform the bean to Authentication
 		Authentication auth = getTransformedObject(param);
 		//Let GC take this ASAP
@@ -55,7 +59,8 @@ public class APIKeyProcessor implements Processor<ClientAPIForm>{
 		Authentication authPrincipal = authenticateAndIssueToken(auth);
 		AccessToken token = (AccessToken)authPrincipal.getPrincipal();
 		//Remove Unnecessary information from the accessToken Before Sending to the user
-		LOG.debug("[END]- Authenticating the user and trying to to get the authentication details {}", auth);
+		LOG.debug("[END]- Authenticating the client API KEY {}", auth);
+		//Step 3- Transform to json
 		return jsonResponseTransFormer.doTransForm(token.toResponseMap());
 	}
 	
@@ -71,7 +76,7 @@ public class APIKeyProcessor implements Processor<ClientAPIForm>{
 	
 	/**
 	 * This will validate the API key and generate a token, that will be used by
-	 * login page submit.
+	 * API KEY submit.
 	 * 
 	 * @param auth
 	 * @return

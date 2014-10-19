@@ -21,7 +21,7 @@ import org.springframework.util.StringUtils;
 
 import com.uimirror.auth.bean.DefaultAccessToken;
 import com.uimirror.auth.client.Client;
-import com.uimirror.auth.client.bean.OAuth2APIKeyAuthentication;
+import com.uimirror.auth.client.bean.APIKeyAuthentication;
 import com.uimirror.auth.controller.AccessTokenProvider;
 import com.uimirror.auth.core.AuthenticationException;
 import com.uimirror.auth.core.AuthenticationManager;
@@ -109,7 +109,7 @@ public class SecretKeyAuthManager implements AuthenticationManager, MatcherServi
 	}
 	
 	/**
-	 * This will create a new {@link Authentication} of type {@link OAuth2APIKeyAuthentication}
+	 * This will create a new {@link Authentication} of type {@link APIKeyAuthentication}
 	 * where principal is the {@link AccessToken} and details as passed from the authentication.
 	 * @param auth
 	 * @param token
@@ -120,7 +120,7 @@ public class SecretKeyAuthManager implements AuthenticationManager, MatcherServi
 		Map<String, Object> details = (Map<String, Object>)auth.getDetails();
 		//Issue a new Token with type as AccessToken
 		AccessToken newToken = issueANewToken(token, details);
-		return new OAuth2APIKeyAuthentication(newToken, details);
+		return new APIKeyAuthentication(newToken, details);
 	}
 	
 	/**

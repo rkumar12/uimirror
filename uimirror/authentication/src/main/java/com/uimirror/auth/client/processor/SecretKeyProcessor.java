@@ -17,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.uimirror.auth.client.bean.OAuth2SecretKeyAuthentication;
 import com.uimirror.auth.client.bean.form.ClientSecretKeyForm;
 import com.uimirror.auth.controller.AuthenticationProvider;
-import com.uimirror.auth.core.AuthenticationManager;
 import com.uimirror.auth.exception.AuthToApplicationExceptionMapper;
 import com.uimirror.core.Processor;
 import com.uimirror.core.auth.AccessToken;
@@ -28,8 +27,13 @@ import com.uimirror.core.rest.extra.ResponseTransFormer;
 import com.uimirror.core.service.TransformerService;
 
 /**
- * Extracts the field, interact with the {@link AuthenticationManager}
- * and respond back to the caller with the valid response.
+ * <ol>
+ * <li>Validates the provided Client details.</li>
+ * <li>Generate a new temporal token</li>
+ * <li>Store the token</li>
+ * <li>clean token</li>
+ * <li>generate a json response</li>
+ * </ol>
  * 
  * @author Jay
  */

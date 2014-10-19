@@ -13,7 +13,7 @@ package com.uimirror.auth.conf;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.uimirror.auth.client.bean.OAuth2APIKeyAuthentication;
+import com.uimirror.auth.client.bean.APIKeyAuthentication;
 import com.uimirror.auth.client.bean.OAuth2Authentication;
 import com.uimirror.auth.client.bean.OAuth2SecretKeyAuthentication;
 import com.uimirror.auth.client.bean.form.ClientAPIForm;
@@ -58,7 +58,7 @@ public class BeanOfTransformers {
 	}
 	
 	@Bean
-	public TransformerService<ClientAPIForm, OAuth2APIKeyAuthentication> apiKeyToAuthTransformer(){
+	public TransformerService<ClientAPIForm, APIKeyAuthentication> apiKeyToAuthTransformer(){
 		return new APIKeyToAuthTransformer();
 	}
 

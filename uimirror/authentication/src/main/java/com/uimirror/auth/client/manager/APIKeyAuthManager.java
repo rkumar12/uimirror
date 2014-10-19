@@ -13,8 +13,6 @@ package com.uimirror.auth.client.manager;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import javax.persistence.Access;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +20,7 @@ import org.springframework.util.Assert;
 
 import com.uimirror.auth.bean.DefaultAccessToken;
 import com.uimirror.auth.client.Client;
-import com.uimirror.auth.client.bean.OAuth2APIKeyAuthentication;
+import com.uimirror.auth.client.bean.APIKeyAuthentication;
 import com.uimirror.auth.core.AuthenticationException;
 import com.uimirror.auth.core.AuthenticationManager;
 import com.uimirror.auth.core.LockedException;
@@ -43,7 +41,15 @@ import com.uimirror.core.user.AccountStatus;
  * to validate the user provided details are valid or not.
  * if valid details, it will return the Authenticated Details in principal {@linkplain Authentication}
  * 
- * This always generate a {@link Access} or type {@link TokenType#TEMPORAL}
+ * This always generate a token of type {@link TokenType#TEMPORAL}, which will intern will be used by the 
+ * internal UIMirror Application to redirect to the login page
+ * 
+ * Steps are as below
+ * <ol>
+ * <li>Get Client Details</li>
+ * <li>Validate the Client Details</li>
+ * <li>Generate a Temporal {@link AccessToken} of type {@link TokenType#TEMPORAL}</li>
+ * </ol>
  * 
  * @author Jay
  */
@@ -59,11 +65,13 @@ public class APIKeyAuthManager implements AuthenticationManager{
 	@Override
 	@MapException(use=AuthExceptionMapper.NAME)
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-		Assert.notNull(authentication, "Authention Request Object can't be empty");
 		LOG.info("[START]- Authenticating Client");
+		Assert.notNull(authentication, "Authention Request Object can't be empty");
+		//Step 1-Get the Client Details
 		Client client = getClientDetails(authentication);
-		//Check the client for its account state and status
+		//Step 2-Check the client for its account state and status
 		doCheck(client);
+		//Step 3- Generate Token
 		AccessToken token = generateToken(authentication, client);
 		Authentication authenticated = getAuthenticatedDetails(authentication, token);
 		LOG.info("[END]- Authenticating User");
@@ -101,7 +109,7 @@ public class APIKeyAuthManager implements AuthenticationManager{
 	}
 	
 	/**
-	 * This will create a new {@link Authentication} of type {@link OAuth2APIKeyAuthentication}
+	 * This will create a new {@link Authentication} of type {@link APIKeyAuthentication}
 	 * where principal is the {@link Client} and details as passed from the authentication.
 	 * @param auth
 	 * @param token
@@ -109,7 +117,7 @@ public class APIKeyAuthManager implements AuthenticationManager{
 	 */
 	@SuppressWarnings("unchecked")
 	private Authentication getAuthenticatedDetails(Authentication auth, AccessToken token) {
-		return new OAuth2APIKeyAuthentication(token, (Map<String, Object>)auth.getDetails());
+		return new APIKeyAuthentication(token, (Map<String, Object>)auth.getDetails());
 	}
 	
 	/**

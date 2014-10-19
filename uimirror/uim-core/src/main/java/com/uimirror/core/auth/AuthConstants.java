@@ -51,7 +51,7 @@ public interface AuthConstants extends Parameters{
 	
 	//Instructions Next step
 	String INST_NEXT_STEP = "next";
-	String INST_NEXT_USER_AUTH = "user_auth";
+	String INST_NEXT_USER_AUTH = "user_login";
 	String INST_NEXT_USER_OTP = "otp";
 	String INST_NEXT_ACCESS_TOKEN = "access";
 	String INST_RESTORE_REQUIRED = "restore";

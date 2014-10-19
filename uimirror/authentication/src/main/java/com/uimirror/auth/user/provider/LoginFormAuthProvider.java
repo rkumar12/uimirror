@@ -39,7 +39,7 @@ public class LoginFormAuthProvider implements AuthenticationProvider{
 	private @Autowired AccessTokenProvider persistedAccessTokenProvider;
 
 	/* (non-Javadoc)
-	 * @see com.uimirror.core.auth.controller.AuthenticationProvider#getAuthenticateToken(com.uimirror.core.auth.bean.Authentication)
+	 * @see com.uimirror.auth.controller.AuthenticationProvider#authenticate(com.uimirror.core.auth.Authentication)
 	 */
 	@Override
 	public Authentication authenticate(Authentication authentication) {

@@ -27,30 +27,54 @@ import com.uimirror.core.auth.Scope;
  * 
  * @author Jay
  */
-public class OAuth2APIKeyAuthentication extends AbstractAuthentication{
+public class APIKeyAuthentication extends AbstractAuthentication{
 
 	private static final long serialVersionUID = 347196781678243458L;
 	private Object token;
 
-	public OAuth2APIKeyAuthentication(String clientId, String redirectUrl, String scope) {
+	/**
+	 * @param clientId
+	 * @param redirectUrl
+	 * @param scope
+	 */
+	public APIKeyAuthentication(String clientId, String redirectUrl, Scope scope) {
 		init(clientId, redirectUrl, scope);
 	}
-	public OAuth2APIKeyAuthentication(String clientId, String redirectUrl, String scope, String ip, String userAgent) {
+	/**
+	 * @param clientId
+	 * @param redirectUrl
+	 * @param scope
+	 * @param ip
+	 * @param userAgent
+	 */
+	public APIKeyAuthentication(String clientId, String redirectUrl, Scope scope, String ip, String userAgent) {
 		super(ip, userAgent);
 		init(clientId, redirectUrl, scope);
 	}
 	
-	public OAuth2APIKeyAuthentication(Object tokenPrincipal, Map<String, Object> details) {
+	/**
+	 * @param tokenPrincipal
+	 * @param details
+	 */
+	public APIKeyAuthentication(Object tokenPrincipal, Map<String, Object> details) {
 		this.token = tokenPrincipal;
 		setDetails(details);
 		setAuthenticated(Boolean.TRUE);
 	}
-	public OAuth2APIKeyAuthentication(Object tokenPrincipal) {
+	/**
+	 * @param tokenPrincipal
+	 */
+	public APIKeyAuthentication(Object tokenPrincipal) {
 		this.token = tokenPrincipal;
 		setAuthenticated(Boolean.TRUE);
 	}
 	
-	private void init(String clientId, String redirectUrl, String scope){
+	/**
+	 * @param clientId
+	 * @param redirectUrl
+	 * @param scope
+	 */
+	private void init(String clientId, String redirectUrl, Scope scope){
 		initDetails(redirectUrl, clientId, scope);
 	}
 	
@@ -60,12 +84,12 @@ public class OAuth2APIKeyAuthentication extends AbstractAuthentication{
 	 * @param clientId
 	 * @param scope
 	 */
-	private void initDetails(String redirectUrl, String clientId, String scope){
+	private void initDetails(String redirectUrl, String clientId, Scope scope){
 		@SuppressWarnings("unchecked")
 		Map<String, Object> details = (Map<String, Object>)getDetails();
 		details.put(AuthConstants.REDIRECT_URI, redirectUrl);
 		details.put(AuthConstants.CLIENT_ID, clientId);
-		details.put(AuthConstants.SCOPE, Scope.getEnum(scope));
+		details.put(AuthConstants.SCOPE, scope);
 		setDetails(details);
 	}
 
@@ -106,6 +130,11 @@ public class OAuth2APIKeyAuthentication extends AbstractAuthentication{
 			owner = (String)details.get(AccessTokenFields.AUTH_TKN_OWNER);
 		}
 		return owner;
+	}
+
+	@Override
+	public String toString() {
+		return "OAuth2APIKeyAuthentication [token=" + token + "]";
 	}
 
 }

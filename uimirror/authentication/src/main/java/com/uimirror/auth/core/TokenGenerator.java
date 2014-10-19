@@ -23,6 +23,7 @@ public class TokenGenerator {
 
 	/**
 	 * Generates a new {@link Token} using new random paraphrase and {@link UUID}
+	 * This also generates the para pharse as well
 	 * @return
 	 */
 	public static Token getNewOne(){

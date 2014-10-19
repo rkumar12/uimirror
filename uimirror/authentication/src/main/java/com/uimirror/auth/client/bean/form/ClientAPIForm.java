@@ -40,9 +40,6 @@ public class ClientAPIForm extends ClientMetaForm implements BeanValidatorServic
 	@QueryParam(AuthConstants.SCOPE)
 	private String scope;
 	
-	@QueryParam(AuthConstants.APP)
-	private String app;
-	
 	public String getClientId() {
 		return clientId;
 	}
@@ -51,20 +48,16 @@ public class ClientAPIForm extends ClientMetaForm implements BeanValidatorServic
 		return redirectURI;
 	}
 
-	public String getScope() {
-		return scope;
-	}
-
-	public String getApp() {
-		return app;
-	}
-
-	@Override
-	public String toString() {
-		return "ClientSecretCodeForm [clientId=" + clientId + ", redirectURI="
-				+ redirectURI + ", scope=" + scope + ", app=" + app + "]";
+	public Scope getScope() {
+		return Scope.getEnum(scope);
 	}
 	
+	@Override
+	public String toString() {
+		return "ClientAPIForm [clientId=" + clientId + ", redirectURI="
+				+ redirectURI + ", scope=" + scope + "]";
+	}
+
 	/* (non-Javadoc)
 	 * @see com.uimirror.core.service.BeanValidatorService#isValid()
 	 */
@@ -83,9 +76,7 @@ public class ClientAPIForm extends ClientMetaForm implements BeanValidatorServic
 			informIllegalArgument("redirect URI should be present");
 		if(!StringUtils.hasText(getClientId()))
 			informIllegalArgument("Client Id Should present");
-		if(!StringUtils.hasText(getApp()))
-			informIllegalArgument("App Should present");
-		if(!StringUtils.hasText(getScope()) || Scope.getEnum(getScope()) != null)
+		if(!StringUtils.hasText(scope) || Scope.getEnum(scope) != null)
 			informIllegalArgument("Scope Should present");
 	}
 	

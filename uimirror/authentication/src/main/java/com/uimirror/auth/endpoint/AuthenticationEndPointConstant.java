@@ -16,8 +16,9 @@ package com.uimirror.auth.endpoint;
  */
 public interface AuthenticationEndPointConstant {
 
+	String HOME = "/";
+	String OUATH2_HOME = "/oauth2";
 	String OUATH_2_AUTH_PATH = "/auth";
-
 	String UNLOCK_PATH = "/unlock/screen";
 	String TWO_FACTO_PATH = "/otp";
 	String OUATH_2_TOEKEN_PATH = "/token";
