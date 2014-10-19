@@ -23,11 +23,11 @@ import com.uimirror.auth.client.transformer.AccessTokenToAuthTransformer;
 import com.uimirror.auth.client.transformer.SecretKeyToAuthTransformer;
 import com.uimirror.auth.user.UserAuthorizedClient;
 import com.uimirror.auth.user.bean.ClientAuthorizationAuthentication;
-import com.uimirror.auth.user.bean.LoginFormAuthentication;
+import com.uimirror.auth.user.bean.LoginAuthentication;
 import com.uimirror.auth.user.bean.OTPAuthentication;
 import com.uimirror.auth.user.bean.ScreenLockAuthentication;
 import com.uimirror.auth.user.bean.form.AuthorizeClientAuthenticationForm;
-import com.uimirror.auth.user.bean.form.LoginFormAuthenticationForm;
+import com.uimirror.auth.user.bean.form.LoginForm;
 import com.uimirror.auth.user.bean.form.OTPAuthenticationForm;
 import com.uimirror.auth.user.bean.form.ScreenLockAuthenticationForm;
 import com.uimirror.auth.user.transformer.ClientAutorizeFormToAuthTransformer;
@@ -73,7 +73,7 @@ public class BeanOfTransformers {
 	}
 
 	@Bean
-	public TransformerService<LoginFormAuthenticationForm, LoginFormAuthentication> loginFormToAuthTransformer(){
+	public TransformerService<LoginForm, LoginAuthentication> loginFormToAuthTransformer(){
 		return new LoginFormToAuthTransformer();
 	}
 

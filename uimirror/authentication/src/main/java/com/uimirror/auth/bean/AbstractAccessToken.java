@@ -46,11 +46,6 @@ public abstract class AbstractAccessToken<T> extends BeanBasedDocument<T> implem
 		super();
 	}
 
-	//TODO think about it again for erase credentials
-	protected AbstractAccessToken(Token token){
-		this.token = token;
-	}
-
 	/**
 	 * @param token
 	 * @param owner
@@ -302,6 +297,9 @@ public abstract class AbstractAccessToken<T> extends BeanBasedDocument<T> implem
 		if(StringUtils.hasText(token.getParaphrase()))
 			rs.put(AccessTokenFields.ENCRYPT_STARTEGY, token.getParaphrase());
 		rs.put(AccessTokenFields.TYPE, type.getTokenType());
+		if(!CollectionUtils.isEmpty(getInstructions())){
+			rs.put(AccessTokenFields.AUTH_TKN_MESSAGES, getInstructions());
+		}
 		return rs;
 	}
 

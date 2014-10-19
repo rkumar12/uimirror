@@ -12,27 +12,27 @@ package com.uimirror.auth.user.transformer;
 
 import org.springframework.util.Assert;
 
-import com.uimirror.auth.user.bean.LoginFormAuthentication;
-import com.uimirror.auth.user.bean.form.LoginFormAuthenticationForm;
+import com.uimirror.auth.user.bean.LoginAuthentication;
+import com.uimirror.auth.user.bean.form.LoginForm;
 import com.uimirror.core.service.TransformerService;
 
 /**
- * A transformer implementation which will transform the {@linkplain LoginFormAuthenticationForm}
- * to {@linkplain LoginFormAuthentication}
+ * A transformer implementation which will transform the {@linkplain LoginForm}
+ * to {@linkplain LoginAuthentication}
  * @author Jay
  */
-public class LoginFormToAuthTransformer implements TransformerService<LoginFormAuthenticationForm, LoginFormAuthentication>{
+public class LoginFormToAuthTransformer implements TransformerService<LoginForm, LoginAuthentication>{
 
 
 	/* (non-Javadoc)
 	 * @see com.uimirror.core.service.TransformerService#transform(java.lang.Object)
 	 */
 	@Override
-	public LoginFormAuthentication transform(LoginFormAuthenticationForm src) {
+	public LoginAuthentication transform(LoginForm src) {
 		Assert.notNull(src, "Source Can't be empty");
 		//Validate the form
 		src.isValid();
-		return new LoginFormAuthentication(src.getToken(),src.getUserId(), src.getPassword(), src.getKeepMeLogedIn(), src.getIp(), src.getUserAgent());
+		return new LoginAuthentication(src.getToken(),src.getUserId(), src.getPassword(), src.getKeepMeLogedIn(), src.getIp(), src.getUserAgent());
 	}
 
 }

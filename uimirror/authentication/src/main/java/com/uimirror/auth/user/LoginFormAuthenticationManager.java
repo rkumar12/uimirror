@@ -30,13 +30,15 @@ import com.uimirror.auth.core.PasswordMatcher;
 import com.uimirror.auth.core.TokenGenerator;
 import com.uimirror.auth.dao.UserCredentialsStore;
 import com.uimirror.auth.exception.AuthExceptionMapper;
-import com.uimirror.auth.user.bean.LoginFormAuthentication;
+import com.uimirror.auth.user.bean.LoginAuthentication;
+import com.uimirror.auth.user.dao.UserAuthorizedClientStore;
 import com.uimirror.core.RandomKeyGenerator;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.AuthConstants;
 import com.uimirror.core.auth.Authentication;
 import com.uimirror.core.auth.Token;
 import com.uimirror.core.auth.TokenType;
+import com.uimirror.core.dao.RecordNotFoundException;
 import com.uimirror.core.extra.MapException;
 import com.uimirror.core.user.AccountState;
 import com.uimirror.core.user.AccountStatus;
@@ -47,6 +49,13 @@ import com.uimirror.core.util.DateTimeUtil;
  * to validate the user provided details are valid or not.
  * if valid details, it will return the Authenticated Details {@linkplain AuthenticatedDetails}
  * 
+ * Steps are as below
+ * <ol>
+ * <li>Validate the previous token</li>
+ * <li>Validate the user credentials</li>
+ * <li>Generate a Secret {@link AccessToken} of type {@link TokenType#SECRET} or
+ * {@link TokenType#_2FA} or {@linkplain TokenType#USER_PERMISSION}</li>
+ * </ol>
  * @author Jay
  */
 public class LoginFormAuthenticationManager implements AuthenticationManager{
@@ -56,6 +65,7 @@ public class LoginFormAuthenticationManager implements AuthenticationManager{
 	private @Autowired UserCredentialsStore userCredentialStore;
 	private @Autowired AccessTokenProvider persistedAccessTokenProvider;
 	private @Autowired PasswordMatcher passwordMatcher;
+	private @Autowired UserAuthorizedClientStore persistedUserAuthorizedClientMongoStore;
 
 	/* (non-Javadoc)
 	 * @see com.uimirror.core.auth.AuthenticationManager#authenticate(com.uimirror.core.auth.Authentication)
@@ -63,11 +73,11 @@ public class LoginFormAuthenticationManager implements AuthenticationManager{
 	@Override
 	@MapException(use=AuthExceptionMapper.NAME)
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-		Assert.notNull(authentication, "Authention Request Object can't be empty");
 		LOG.info("[START]- Authenticating User");
+		Assert.notNull(authentication, "Authention Request Object can't be empty");
 		AccessToken token = authenticateAndGetToken(authentication);
 		LOG.info("[END]- Authenticating User");
-		return new LoginFormAuthentication(token);
+		return new LoginAuthentication(token);
 	}
 
 	/**
@@ -100,8 +110,8 @@ public class LoginFormAuthenticationManager implements AuthenticationManager{
 	 */
 	private AccessToken getPreviousToken(Map<String, String> credentials){
 		String access_token = credentials.get(AuthConstants.ACCESS_TOKEN);
-		AccessToken token = persistedAccessTokenProvider.getValid(access_token);
-		if(token == null || !TokenType.TEMPORAL.equals(token.getType()))
+		AccessToken token = persistedAccessTokenProvider.get(access_token);
+		if(token == null || !TokenType.TEMPORAL.equals(token.getType()) || token.getExpire() > 0l)
 			throw new InvalidTokenException();
 		return token;
 	}
@@ -146,8 +156,8 @@ public class LoginFormAuthenticationManager implements AuthenticationManager{
 	private AccessToken issueNewToken(AccessToken prevToken, UserCredentials userCredentials, Authentication authentication) {
 		@SuppressWarnings("unchecked")
 		Map<String, Object> details = (Map<String, Object>)authentication.getDetails();
-		Token token = TokenGenerator.getNewOneWithOutPharse();
-		TokenType tokenType = getTokenType(userCredentials);
+		TokenType tokenType = getTokenType(userCredentials, prevToken);
+		Token token = generateToken(tokenType);
 		long expiresOn = getExpiresOn(details, tokenType);
 		String requestor = prevToken.getClient();
 		String owner = userCredentials.getProfileId();
@@ -161,9 +171,39 @@ public class LoginFormAuthenticationManager implements AuthenticationManager{
 	 * @param userCredentials
 	 * @return
 	 */
-	private TokenType getTokenType(UserCredentials userCredentials){
-		//TODO check here if it is a secret key, then user has accepted client or not, if not issue temporal token
-		return isOTPRequired(userCredentials) ? TokenType._2FA :  TokenType.SECRET;
+	private TokenType getTokenType(UserCredentials userCredentials, AccessToken prevTokn){
+		TokenType type = isOTPRequired(userCredentials) ? TokenType._2FA :  TokenType.SECRET;
+		if(TokenType.SECRET.equals(type) && !isClientAuthorized(userCredentials.getProfileId(), prevTokn.getClient(), prevTokn.getScope().getScope())){
+			type = TokenType.USER_PERMISSION;
+		}
+		return type;
+	}
+	
+	private boolean isClientAuthorized(String profileId, String clientId, String scope){
+		boolean authroized = Boolean.FALSE;
+		try{
+			if(persistedUserAuthorizedClientMongoStore.findAuthrorizedClient(profileId, clientId, scope) != null)
+				authroized = Boolean.TRUE;
+		}catch(RecordNotFoundException e){
+			LOG.warn("Client is not authroized by the user, need to promote the screen");
+		}
+		return authroized;
+	}
+	
+	/**
+	 * If {@link TokenType#SECRET} then generate the token without par-phrase
+	 * else a token with par-phase
+	 * @param type
+	 * @return
+	 */
+	private Token generateToken(TokenType type){
+		Token token = null;
+		if(TokenType.SECRET.equals(type))
+			token = TokenGenerator.getNewOneWithOutPharse();
+		else
+			token = TokenGenerator.getNewOne();
+		return token;
+			
 	}
 	
 	/**

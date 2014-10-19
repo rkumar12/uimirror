@@ -64,7 +64,6 @@ public class OAuth2Authentication extends AbstractAuthentication{
 	 * This will have two key {@linkplain AuthConstants.ACCESS_TOKEN}
 	 * 
 	 * @param code
-	 * @param clientSecret
 	 */
 	private void initCredentials(String token){
 		credentials = new LinkedHashMap<String, String>(5);

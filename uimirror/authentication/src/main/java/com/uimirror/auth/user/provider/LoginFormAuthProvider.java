@@ -20,15 +20,20 @@ import com.uimirror.auth.controller.AccessTokenProvider;
 import com.uimirror.auth.controller.AuthenticationProvider;
 import com.uimirror.auth.core.AuthenticationManager;
 import com.uimirror.auth.dao.AccessTokenStore;
-import com.uimirror.auth.user.bean.LoginFormAuthentication;
+import com.uimirror.auth.user.bean.LoginAuthentication;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.AuthConstants;
 import com.uimirror.core.auth.Authentication;
 import com.uimirror.core.auth.TokenType;
 
 /**
- * Validates the {@link Authentication} and populate the authenticated principal
- * with the appropriate token i.e temporal_token/secret_token. 
+ * The step of operations for this processor is defined as below:
+ * <ol>
+ * <li>Authenticate the provided token and client user name and password using {@link AuthenticationManager}</li>
+ * <li>Check for other operations {@link AccessToken} such as account restore or OTP authentication</li>
+ * <li>store the {@link AccessToken}</li>
+ * <li>clean the {@link AccessToken}</li>
+ * </ol> 
  * 
  * @author Jay
  */
@@ -99,7 +104,7 @@ public class LoginFormAuthProvider implements AuthenticationProvider{
 	private Authentication cleanAuthentication(Authentication auth){
 		//Clean the Authentication principal
 		AccessToken accessToken = (AccessToken)auth.getPrincipal();
-		return new LoginFormAuthentication(accessToken.eraseEsential(), (Map<String, Object>)auth.getDetails());
+		return new LoginAuthentication(accessToken.eraseEsential(), (Map<String, Object>)auth.getDetails());
 	}
 
 	/* (non-Javadoc)
@@ -107,7 +112,7 @@ public class LoginFormAuthProvider implements AuthenticationProvider{
 	 */
 	@Override
 	public boolean supports(Class<?> authentication) {
-		return LoginFormAuthentication.class.isAssignableFrom(authentication);
+		return LoginAuthentication.class.isAssignableFrom(authentication);
 	}
 
 }

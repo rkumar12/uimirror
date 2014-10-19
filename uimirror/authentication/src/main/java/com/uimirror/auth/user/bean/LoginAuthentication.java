@@ -26,7 +26,7 @@ import com.uimirror.core.auth.AuthConstants;
  * &userId=userid&password=password&keepMeLogedIn=y
  * @author Jay
  */
-public class LoginFormAuthentication extends OAuth2Authentication{
+public class LoginAuthentication extends OAuth2Authentication{
 
 	private static final long serialVersionUID = -4739920105672151406L;
 	
@@ -35,20 +35,10 @@ public class LoginFormAuthentication extends OAuth2Authentication{
 	 * @param userId
 	 * @param password
 	 * @param keepMeLoggedIn
-	 */
-	public LoginFormAuthentication(String token, String userId, String password, boolean keepMeLoggedIn) {
-		super(token);
-		init(userId, password, keepMeLoggedIn);
-	}
-	/**
-	 * @param token
-	 * @param userId
-	 * @param password
-	 * @param keepMeLoggedIn
 	 * @param ip
 	 * @param userAgent
 	 */
-	public LoginFormAuthentication(String token, String userId, String password, boolean keepMeLoggedIn, String ip, String userAgent) {
+	public LoginAuthentication(String token, String userId, String password, boolean keepMeLoggedIn, String ip, String userAgent) {
 		super(token, ip, userAgent);
 		init(userId, password, keepMeLoggedIn);
 	}
@@ -57,7 +47,7 @@ public class LoginFormAuthentication extends OAuth2Authentication{
 	 * @param tokenPrincipal
 	 * @param details
 	 */
-	public LoginFormAuthentication(String tokenPrincipal, Map<String, Object> details) {
+	public LoginAuthentication(String tokenPrincipal, Map<String, Object> details) {
 		super(tokenPrincipal, details);
 	}
 	
@@ -65,14 +55,14 @@ public class LoginFormAuthentication extends OAuth2Authentication{
 	 * @param tokenPrincipal
 	 * @param details
 	 */
-	public LoginFormAuthentication(Object tokenPrincipal, Map<String, Object> details) {
+	public LoginAuthentication(Object tokenPrincipal, Map<String, Object> details) {
 		super(tokenPrincipal, details);
 	}
 	
 	/**
 	 * @param tokenPrincipal
 	 */
-	public LoginFormAuthentication(Object tokenPrincipal) {
+	public LoginAuthentication(Object tokenPrincipal) {
 		super(tokenPrincipal);
 	}
 	

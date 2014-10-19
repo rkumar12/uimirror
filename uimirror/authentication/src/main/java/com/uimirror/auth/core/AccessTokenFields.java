@@ -27,6 +27,7 @@ public interface AccessTokenFields extends BasicDBFields{
 	String AUTH_TKN_EXPIRES = "expire";
 	String AUTH_TKN_NOTES = "note";
 	String AUTH_TKN_INSTRUCTIONS = "instructions";
+	String AUTH_TKN_MESSAGES = "msg";
 	//Token will be transfered from _ID, both are logical similar, only token will be in encrypted way
 	String TOKEN = "token";
 	//Refresh Token Interval

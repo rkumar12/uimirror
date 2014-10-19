@@ -76,6 +76,7 @@ public class DefaultAccessToken extends AbstractAccessToken<DefaultAccessToken>{
 	public AccessToken eraseEsential() {
 		return new DefaultAccessToken(this.getToken(), this.getOwner(), this.getClient(), this.getExpire(), this.getType(), this.getScope());
 	}
+	
 	/* (non-Javadoc)
 	 * @see com.uimirror.auth.bean.AbstractAccessToken#init(java.util.Map)
 	 */

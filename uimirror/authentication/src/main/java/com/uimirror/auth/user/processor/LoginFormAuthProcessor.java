@@ -15,10 +15,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.uimirror.auth.controller.AuthenticationProvider;
-import com.uimirror.auth.core.AuthenticationManager;
 import com.uimirror.auth.exception.AuthToApplicationExceptionMapper;
-import com.uimirror.auth.user.bean.LoginFormAuthentication;
-import com.uimirror.auth.user.bean.form.LoginFormAuthenticationForm;
+import com.uimirror.auth.user.bean.LoginAuthentication;
+import com.uimirror.auth.user.bean.form.LoginForm;
 import com.uimirror.core.Processor;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.Authentication;
@@ -28,16 +27,22 @@ import com.uimirror.core.rest.extra.ResponseTransFormer;
 import com.uimirror.core.service.TransformerService;
 
 /**
- * Extracts the field, interact with the {@link AuthenticationManager}
- * and respond back to the caller with the valid response {@link AccessToken}.
+ * The step of operations for this processor is defined as below:
+ * <ol>
+ * <li>Extract the provided form to a well defined authentication bean i.e {@link LoginAuthentication}</li>
+ * <li>Authenticate the provided previous token, User credentials and generate token</li>
+ * <li>Transform the generated response into json</li>
+ * <li>Invalidate the previous token</li>
+ * </ol>
  * 
  * @author Jay
  */
-public class LoginFormAuthProcessor implements Processor<LoginFormAuthenticationForm>{
+//TODO invalidate the previous token
+public class LoginFormAuthProcessor implements Processor<LoginForm>{
 
 	protected static final Logger LOG = LoggerFactory.getLogger(LoginFormAuthProcessor.class);
 	
-	private @Autowired TransformerService<LoginFormAuthenticationForm, LoginFormAuthentication> loginFormToAuthTransformer;
+	private @Autowired TransformerService<LoginForm, LoginAuthentication> loginFormToAuthTransformer;
 	private @Autowired ResponseTransFormer<String> jsonResponseTransFormer;
 	private @Autowired AuthenticationProvider loginFormAuthProvider;
 
@@ -47,8 +52,8 @@ public class LoginFormAuthProcessor implements Processor<LoginFormAuthentication
 	 */
 	@Override
 	@MapException(use=AuthToApplicationExceptionMapper.NAME)
-	public Object invoke(LoginFormAuthenticationForm param) throws ApplicationException{
-		LOG.debug("[START]- Authenticating the user and trying to to get the authentication details");
+	public Object invoke(LoginForm param) throws ApplicationException{
+		LOG.debug("[START]- Authenticating the user.");
 		//Step 1- Transform the bean to Authentication
 		Authentication auth = getTransformedObject(param);
 		//Let GC take this ASAP
@@ -56,7 +61,7 @@ public class LoginFormAuthProcessor implements Processor<LoginFormAuthentication
 		Authentication authToken = authenticateAndIssueToken(auth);
 		//Remove Unnecessary information from the accessToken Before Sending to the user
 		AccessToken token = (AccessToken)authToken.getPrincipal();
-		LOG.debug("[END]- Authenticating the user and trying to to get the authentication details {}", auth);
+		LOG.debug("[END]- Authenticating the user.");
 		return jsonResponseTransFormer.doTransForm(token.toResponseMap());
 	}
 	
@@ -66,7 +71,7 @@ public class LoginFormAuthProcessor implements Processor<LoginFormAuthentication
 	 * @param param
 	 * @return
 	 */
-	private Authentication getTransformedObject(LoginFormAuthenticationForm param){
+	private Authentication getTransformedObject(LoginForm param){
 		return loginFormToAuthTransformer.transform(param);
 	}
 	

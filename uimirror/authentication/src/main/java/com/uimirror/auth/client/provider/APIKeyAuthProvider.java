@@ -28,7 +28,7 @@ import com.uimirror.core.auth.Authentication;
  * The step of operations for this processor is defined as below:
  * <ol>
  * <li>Authenticate the provided client details using {@linkplain Authentication}</li>
- * <li>Generate {@link AccessToken}</li>
+ * <li>Store {@link AccessToken}</li>
  * <li>Clean {@link AccessToken}</li>
  * </ol>
  * 

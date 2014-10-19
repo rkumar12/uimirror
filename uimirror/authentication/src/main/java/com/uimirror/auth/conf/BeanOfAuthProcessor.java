@@ -20,7 +20,7 @@ import com.uimirror.auth.client.processor.AccessTokenProcessor;
 import com.uimirror.auth.client.processor.SecretKeyProcessor;
 import com.uimirror.auth.user.UserAuthorizedClient;
 import com.uimirror.auth.user.bean.form.AuthorizeClientAuthenticationForm;
-import com.uimirror.auth.user.bean.form.LoginFormAuthenticationForm;
+import com.uimirror.auth.user.bean.form.LoginForm;
 import com.uimirror.auth.user.bean.form.OTPAuthenticationForm;
 import com.uimirror.auth.user.bean.form.ScreenLockAuthenticationForm;
 import com.uimirror.auth.user.processor.AllowClientProcessor;
@@ -40,7 +40,7 @@ import com.uimirror.core.bean.form.AuthenticatedHeaderForm;
 public class BeanOfAuthProcessor {
 	
 	@Bean
-	public Processor<LoginFormAuthenticationForm> loginFormAuthProcessor(){
+	public Processor<LoginForm> loginFormAuthProcessor(){
 		return new LoginFormAuthProcessor();
 	}
 	

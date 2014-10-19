@@ -22,14 +22,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.uimirror.auth.user.bean.form.LoginFormAuthenticationForm;
+import com.uimirror.auth.user.bean.form.LoginForm;
 import com.uimirror.auth.user.bean.form.OTPAuthenticationForm;
 import com.uimirror.auth.user.bean.form.ScreenLockAuthenticationForm;
 import com.uimirror.core.Processor;
 import com.uimirror.core.auth.AccessToken;
 
 /**
- * This authentication end point will be responsible for the user login {@link #login(LoginFormAuthenticationForm)},
+ * This authentication end point will be responsible for the user login {@link #login(LoginForm)},
  * {@link #unlockScreen(ScreenLockAuthenticationForm)}, {@link #otp(OTPAuthenticationForm)}
  * the result of all this operations will be a token 
  * known as {@link AccessToken}
@@ -40,7 +40,7 @@ import com.uimirror.core.auth.AccessToken;
 public class UserAuthenticationEndPoint{
 
 	private static Logger LOG = LoggerFactory.getLogger(UserAuthenticationEndPoint.class);
-	private @Autowired Processor<LoginFormAuthenticationForm> loginFormAuthProcessor;
+	private @Autowired Processor<LoginForm> loginFormAuthProcessor;
 	private @Autowired Processor<ScreenLockAuthenticationForm> screenLockAuthProcessor;
 	private @Autowired Processor<OTPAuthenticationForm> otpAuthProcessor;
 	
@@ -58,11 +58,21 @@ public class UserAuthenticationEndPoint{
      *	Authorization=authorization_code&
      *	uid=USER_ID_HERE&
      *	password=PASSWORD_HERE&
+     *  keepmelogin=y
      * in case of success validation will issue a new accestoken for this response
      * 
      * response {
      *	"token":"RsT5OjbzRn430zqMLgV3Ia",
-     *  "type" " "secret"
+     *  "type" : "secret" or "otp"
+	 *	}
+	 * or
+	 * response {
+	 *	"token":"RsT5OjbzRn430zqMLgV3Ia",
+	 *  "type" : "USER_PERMISSION"
+	 *  "msg" : {
+	 *          "clientname" : "XYZ",
+	 *          "scope"      : "read"
+	 *  	}
 	 *	}
 	 * 
 	 * @param loginForm
@@ -73,7 +83,7 @@ public class UserAuthenticationEndPoint{
 	@JSONP(queryParam="cb", callback="callback")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Path(AuthenticationEndPointConstant.LOGIN_PATH)
-	public Object login(@BeanParam LoginFormAuthenticationForm loginForm){
+	public Object login(@BeanParam LoginForm loginForm){
 		LOG.info("[ENTRY]- Received requst for user authentication by user name and password");
 		Object response = loginFormAuthProcessor.invoke(loginForm);
 		LOG.info("[EXIT]- Received requst for user authentication by user name and password");

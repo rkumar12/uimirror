@@ -29,7 +29,7 @@ import com.uimirror.core.service.BeanValidatorService;
  * 
  * @author Jay
  */
-public final class LoginFormAuthenticationForm extends AuthenticatedHeaderForm implements BeanValidatorService{
+public final class LoginForm extends AuthenticatedHeaderForm implements BeanValidatorService{
 
 	private static final long serialVersionUID = -1215523730014366150L;
 
