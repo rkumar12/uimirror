@@ -26,6 +26,7 @@ import com.uimirror.core.extra.MapException;
 import com.uimirror.core.rest.extra.ApplicationException;
 import com.uimirror.core.rest.extra.ResponseTransFormer;
 import com.uimirror.core.service.TransformerService;
+import com.uimirror.core.util.thread.BackgroundProcessorFactory;
 
 /**
  * The main steps are as below:
@@ -48,7 +49,7 @@ public class SecretKeyProcessor implements Processor<ClientSecretKeyForm>{
 	private @Autowired TransformerService<ClientSecretKeyForm, OAuth2SecretKeyAuthentication> secretKeyToAuthTransformer;
 	private @Autowired ResponseTransFormer<String> jsonResponseTransFormer;
 	private @Autowired AuthenticationProvider secretCodeAuthProvider;
-	private @Autowired InvalidateTokenProcessor invalidateTokenProcessor;
+	private @Autowired BackgroundProcessorFactory<String, Object> backgroundProcessorFactory;
 	
 	/* (non-Javadoc)
 	 * @see com.uimirror.auth.controller.AuthenticationController#getAccessToken(javax.ws.rs.core.MultivaluedMap)
@@ -67,7 +68,7 @@ public class SecretKeyProcessor implements Processor<ClientSecretKeyForm>{
 		AccessToken token = (AccessToken)authPrincipal.getPrincipal();
 		LOG.debug("[END]- Issuing a new access token.");
 		//Invalidate the previous Token
-		invalidateTokenProcessor.invoke(prevToken);
+		backgroundProcessorFactory.getProcessor(InvalidateTokenProcessor.NAME).invoke(prevToken);
 		//Remove Unnecessary information from the accessToken Before Sending to the user
 		return jsonResponseTransFormer.doTransForm(token.toResponseMap());
 	}

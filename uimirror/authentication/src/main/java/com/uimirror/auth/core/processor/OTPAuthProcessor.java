@@ -26,6 +26,7 @@ import com.uimirror.core.extra.MapException;
 import com.uimirror.core.rest.extra.ApplicationException;
 import com.uimirror.core.rest.extra.ResponseTransFormer;
 import com.uimirror.core.service.TransformerService;
+import com.uimirror.core.util.thread.BackgroundProcessorFactory;
 
 /**
  * Extracts the field, interact with the {@link AuthenticationManager}
@@ -51,7 +52,7 @@ public class OTPAuthProcessor implements Processor<OTPAuthenticationForm>{
 	private @Autowired TransformerService<OTPAuthenticationForm, OTPAuthentication> otpFormToAuthTransformer;
 	private @Autowired ResponseTransFormer<String> jsonResponseTransFormer;
 	private @Autowired AuthenticationProvider otpAuthProvider;
-	private @Autowired InvalidateTokenProcessor invalidateTokenProcessor;
+	private @Autowired BackgroundProcessorFactory<String, Object> backgroundProcessorFactory;
 	
 	/* (non-Javadoc)
 	 * @see com.uimirror.auth.controller.AuthenticationController#getAccessToken(javax.ws.rs.core.MultivaluedMap)
@@ -69,7 +70,7 @@ public class OTPAuthProcessor implements Processor<OTPAuthenticationForm>{
 		Authentication authToken = authenticateAndIssueToken(auth);
 		AccessToken token = (AccessToken)authToken.getPrincipal();
 		//Invalidate the previous Token
-		invalidateTokenProcessor.invoke(prevToken);
+		backgroundProcessorFactory.getProcessor(InvalidateTokenProcessor.NAME).invoke(prevToken);
 		LOG.debug("[END]- Generating a new accesstoken based on the previous accesstoken and OTP for the 2FA");
 		return jsonResponseTransFormer.doTransForm(token.toResponseMap());
 	}

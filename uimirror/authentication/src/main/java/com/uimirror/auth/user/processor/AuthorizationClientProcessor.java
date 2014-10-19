@@ -27,6 +27,7 @@ import com.uimirror.core.extra.MapException;
 import com.uimirror.core.rest.extra.ApplicationException;
 import com.uimirror.core.rest.extra.ResponseTransFormer;
 import com.uimirror.core.service.TransformerService;
+import com.uimirror.core.util.thread.BackgroundProcessorFactory;
 
 /**
  * Extracts the field, interact with the {@link AuthenticationManager}
@@ -50,7 +51,7 @@ public class AuthorizationClientProcessor implements Processor<AuthorizeClientAu
 	private @Autowired TransformerService<AuthorizeClientAuthenticationForm, ClientAuthorizationAuthentication> clientAuthorizationFormToAuthTransformer;
 	private @Autowired ResponseTransFormer<String> jsonResponseTransFormer;
 	private @Autowired AuthenticationProvider clientAuthorizationAuthProvider;
-	private @Autowired InvalidateTokenProcessor invalidateTokenProcessor;
+	private @Autowired BackgroundProcessorFactory<String, Object> backgroundProcessorFactory;
 	
 	/* (non-Javadoc)
 	 * @see com.uimirror.auth.controller.AuthenticationController#getAccessToken(javax.ws.rs.core.MultivaluedMap)
@@ -68,7 +69,7 @@ public class AuthorizationClientProcessor implements Processor<AuthorizeClientAu
 		Authentication authToken = authenticateAndIssueToken(auth);
 		AccessToken token = authToken == null ? null : (AccessToken)authToken.getPrincipal();
 		//Invalidate the previous Token
-		invalidateTokenProcessor.invoke(prevToken);
+		backgroundProcessorFactory.getProcessor(InvalidateTokenProcessor.NAME).invoke(prevToken);
 		LOG.debug("[END]- Generating a new accesstoken based on the previous accesstoken and Client Authorization by user");
 		return jsonResponseTransFormer.doTransForm(token == null ? null : token.toResponseMap());
 	}

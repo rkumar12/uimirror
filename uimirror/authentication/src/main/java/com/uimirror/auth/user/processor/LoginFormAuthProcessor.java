@@ -26,6 +26,7 @@ import com.uimirror.core.extra.MapException;
 import com.uimirror.core.rest.extra.ApplicationException;
 import com.uimirror.core.rest.extra.ResponseTransFormer;
 import com.uimirror.core.service.TransformerService;
+import com.uimirror.core.util.thread.BackgroundProcessorFactory;
 
 /**
  * The step of operations for this processor is defined as below:
@@ -45,7 +46,7 @@ public class LoginFormAuthProcessor implements Processor<LoginForm>{
 	private @Autowired TransformerService<LoginForm, LoginAuthentication> loginFormToAuthTransformer;
 	private @Autowired ResponseTransFormer<String> jsonResponseTransFormer;
 	private @Autowired AuthenticationProvider loginFormAuthProvider;
-	private @Autowired InvalidateTokenProcessor invalidateTokenProcessor;
+	private @Autowired BackgroundProcessorFactory<String, Object> backgroundProcessorFactory;
 
 	
 	/* (non-Javadoc)
@@ -65,7 +66,7 @@ public class LoginFormAuthProcessor implements Processor<LoginForm>{
 		AccessToken token = (AccessToken)authToken.getPrincipal();
 		LOG.debug("[END]- Authenticating the user.");
 		//Invalidate the previous Token
-		invalidateTokenProcessor.invoke(prevToken);
+		backgroundProcessorFactory.getProcessor(InvalidateTokenProcessor.NAME).invoke(prevToken);
 		return jsonResponseTransFormer.doTransForm(token.toResponseMap());
 	}
 	
