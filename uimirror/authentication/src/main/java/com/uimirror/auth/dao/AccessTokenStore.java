@@ -136,6 +136,14 @@ public interface AccessTokenStore {
 	int deleteAllExpiredByClient(String clientId) throws DBException;
 	
 	/**
+	 * Delete documents based on the search criteria
+	 * @param query
+	 * @return
+	 * @throws DBException
+	 */
+	int deleteByQuery(Map<String, Object> query) throws DBException;
+	
+	/**
 	 * Mark all the token issued to the user as expired
 	 * @param ownerId
 	 * @throws DBException

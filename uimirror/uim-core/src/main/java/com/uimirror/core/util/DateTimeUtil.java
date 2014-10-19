@@ -36,6 +36,15 @@ public class DateTimeUtil {
 		return getCurrentUTCTime().plusMinutes(minutes).toEpochSecond();
 	}
 	
+	/**
+	 * get the system time w.r.t UTC minus the time interval in minutes and convert to EPOCH
+	 * @param minutes
+	 * @return
+	 */
+	public static final long minusToCurrentUTCTimeConvertToEpoch(long minutes){
+		return getCurrentUTCTime().minusMinutes(minutes).toEpochSecond();
+	}
+	
 	public static final ZonedDateTime getCurrentUTCTime(){
 		return ZonedDateTime.now(Clock.systemUTC());
 	}

@@ -17,8 +17,10 @@ public interface BasicMongoOperators {
 	String SET = "$set";
 	String LESSTHANEQUEAL = "$lte";
 	String ELEMENT_MATCH = "$elemMatch";
-	String LESS_THAN_EQUAL = "$lte";
 	String PULL = "$pull";
 	String EACH = "$each";
 	String ADD_TO_SET = "$addToSet";
+	String NOT = "$not";
+	String NOT_EQUAL = "$ne";
+	String OR = "$or";
 }

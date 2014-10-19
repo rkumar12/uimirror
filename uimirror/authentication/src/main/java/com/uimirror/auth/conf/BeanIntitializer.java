@@ -32,7 +32,7 @@ import com.uimirror.core.rest.extra.ResponseTransFormer;
 @Import({BeanOfExceptionIntitializer.class, BeanOfAuthProcessor.class
 	, BeanOfAuthManagers.class, BeanOfAuthProviders.class
 	, BeanOfTransformers.class, EmailBeanInitializr.class
-	, BeanOfBackGroundProcessor.class})
+	, BeanOfBackGroundProcessor.class, BeanOfSchedulers.class})
 public class BeanIntitializer {
 
 	@Bean(name=JsonResponseTransFormer.NAME)
