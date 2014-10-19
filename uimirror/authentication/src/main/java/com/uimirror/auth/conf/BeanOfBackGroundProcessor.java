@@ -15,9 +15,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.uimirror.auth.core.processor.InvalidateTokenProcessor;
+import com.uimirror.auth.core.processor.OTPMailProcessor;
 import com.uimirror.auth.user.processor.AllowAuthorizationClientProcessor;
 import com.uimirror.auth.user.processor.DenyAuthorizationClientProcessor;
-import com.uimirror.auth.user.processor.OTPMailProcessor;
 import com.uimirror.auth.user.processor.UserRestoreProcessor;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.util.thread.BackgroundProcessor;

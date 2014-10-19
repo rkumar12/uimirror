@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.auth.user.processor;
+package com.uimirror.auth.core.processor;
 
 import java.util.ArrayList;
 import java.util.List;
