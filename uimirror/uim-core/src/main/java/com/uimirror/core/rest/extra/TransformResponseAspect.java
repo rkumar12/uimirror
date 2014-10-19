@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author Jay
  */
 @Aspect
+@Deprecated
 public class TransformResponseAspect {
 
 	private static final Logger LOG = LoggerFactory.getLogger(TransformResponseAspect.class);

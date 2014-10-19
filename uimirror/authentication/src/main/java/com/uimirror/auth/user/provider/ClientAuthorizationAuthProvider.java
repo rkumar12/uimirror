@@ -40,10 +40,8 @@ public class ClientAuthorizationAuthProvider implements AuthenticationProvider{
 
 	private static final Logger LOG = LoggerFactory.getLogger(ClientAuthorizationAuthProvider.class);
 	private @Autowired AccessTokenProvider persistedAccessTokenProvider;
-	private @Autowired AuthenticationManager ClientAuthorizationAuthManager;
+	private @Autowired AuthenticationManager clientAuthorizationAuthManager;
 	private @Autowired BackgroundProcessorFactory<AccessToken, Object> backgroundProcessorFactory;
-	private @Autowired AllowAuthorizationClientProcessor allowAuthorizationClientProcessor;
-	private @Autowired DenyAuthorizationClientProcessor denyAuthorizationClientProcessor;
 
 	/* (non-Javadoc)
 	 * @see com.uimirror.core.auth.controller.AuthenticationProvider#getAuthenticateToken(com.uimirror.core.auth.bean.Authentication)
@@ -81,7 +79,7 @@ public class ClientAuthorizationAuthProvider implements AuthenticationProvider{
 	 * @return
 	 */
 	private Authentication getAuthenticatedDetails(Authentication auth){
-		return ClientAuthorizationAuthManager.authenticate(auth);
+		return clientAuthorizationAuthManager.authenticate(auth);
 	}
 	
 	/**

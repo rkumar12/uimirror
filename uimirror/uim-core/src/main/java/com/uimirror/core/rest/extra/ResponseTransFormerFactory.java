@@ -13,6 +13,7 @@ package com.uimirror.core.rest.extra;
 /**
  * @author Jay
  */
+@Deprecated
 public interface ResponseTransFormerFactory {
 	@SuppressWarnings("rawtypes")
 	ResponseTransFormer getTransFormer(String name);

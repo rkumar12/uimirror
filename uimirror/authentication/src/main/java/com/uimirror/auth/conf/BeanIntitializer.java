@@ -11,7 +11,6 @@
 package com.uimirror.auth.conf;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.ServiceLocatorFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -24,8 +23,6 @@ import com.uimirror.core.crypto.MatcherServiceImpl;
 import com.uimirror.core.mail.EmailBeanInitializr;
 import com.uimirror.core.rest.extra.JsonResponseTransFormer;
 import com.uimirror.core.rest.extra.ResponseTransFormer;
-import com.uimirror.core.rest.extra.ResponseTransFormerFactory;
-import com.uimirror.core.rest.extra.TransformResponseAspect;
 
 /**
  * Initialize or configures the service bean getting used for this application
@@ -34,24 +31,13 @@ import com.uimirror.core.rest.extra.TransformResponseAspect;
 @Configuration
 @Import({BeanOfExceptionIntitializer.class, BeanOfAuthProcessor.class
 	, BeanOfAuthManagers.class, BeanOfAuthProviders.class
-	, BeanOfTransformers.class, EmailBeanInitializr.class})
+	, BeanOfTransformers.class, EmailBeanInitializr.class
+	, BeanOfBackGroundProcessor.class})
 public class BeanIntitializer {
 
 	@Bean(name=JsonResponseTransFormer.NAME)
 	public ResponseTransFormer<String> jsonResponseTransFormer(){
 		return new JsonResponseTransFormer();
-	}
-	
-	@Bean
-	public TransformResponseAspect transformResponseAspect(){
-		return new TransformResponseAspect();
-	}
-	
-	@Bean
-	public ServiceLocatorFactoryBean responseTransFormerFactory(){
-		ServiceLocatorFactoryBean sb = new ServiceLocatorFactoryBean();
-		sb.setServiceLocatorInterface(ResponseTransFormerFactory.class);
-		return sb;
 	}
 	
 	@Bean

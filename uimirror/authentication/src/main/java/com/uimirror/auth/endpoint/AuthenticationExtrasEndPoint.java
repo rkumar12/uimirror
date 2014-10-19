@@ -21,8 +21,11 @@ import javax.ws.rs.core.MediaType;
 import org.glassfish.jersey.server.JSONP;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.uimirror.auth.bean.form.ForgetAClientForm;
+import com.uimirror.auth.user.bean.form.AuthorizeClientAuthenticationForm;
+import com.uimirror.core.Processor;
 import com.uimirror.core.bean.form.AuthenticatedHeaderForm;
 
 /**
@@ -35,6 +38,7 @@ import com.uimirror.core.bean.form.AuthenticatedHeaderForm;
 public class AuthenticationExtrasEndPoint{
 
 	private static Logger LOG = LoggerFactory.getLogger(AuthenticationExtrasEndPoint.class);
+	private @Autowired Processor<AuthorizeClientAuthenticationForm> authorizationClientProcessor;
 
 	/**
 	 * This will make sure, user is granting access to the client for using user information on behalf.
@@ -44,10 +48,11 @@ public class AuthenticationExtrasEndPoint{
 	@POST
 	@Produces({ "application/x-javascript", MediaType.APPLICATION_JSON })
 	@JSONP(queryParam="cb", callback="callback")
-	public Object grantAccessToClient(@BeanParam AuthenticatedHeaderForm form){
+	public Object grantAccessToClient(@BeanParam AuthorizeClientAuthenticationForm form){
 		LOG.info("[ENTRY]- Received request for granting access to the client, so that it can use the user data on behalf");
+		Object response = authorizationClientProcessor.invoke(form);
 		LOG.info("[EXIT]- Received request for granting access to the client, so that it can use the user data on behalf");
-		return null;
+		return response;
 	}
 	
 	/**

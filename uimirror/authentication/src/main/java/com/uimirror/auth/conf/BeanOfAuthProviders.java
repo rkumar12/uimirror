@@ -17,6 +17,7 @@ import com.uimirror.auth.client.provider.APIKeyAuthProvider;
 import com.uimirror.auth.client.provider.AccessKeyAuthProvider;
 import com.uimirror.auth.client.provider.SecretCodeAuthProvider;
 import com.uimirror.auth.controller.AuthenticationProvider;
+import com.uimirror.auth.user.provider.ClientAuthorizationAuthProvider;
 import com.uimirror.auth.user.provider.LoginFormAuthProvider;
 import com.uimirror.auth.user.provider.OTPAuthProvider;
 import com.uimirror.auth.user.provider.ScreenLockAuthProvider;
@@ -57,6 +58,11 @@ public class BeanOfAuthProviders {
 	@Bean
 	public AuthenticationProvider loginFormAuthProvider(){
 		return new LoginFormAuthProvider();
+	}
+
+	@Bean
+	public AuthenticationProvider clientAuthorizationAuthProvider(){
+		return new ClientAuthorizationAuthProvider();
 	}
 	//****Authentication providers end****
 

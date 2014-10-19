@@ -18,9 +18,13 @@ import com.uimirror.auth.client.bean.form.ClientSecretKeyForm;
 import com.uimirror.auth.client.processor.APIKeyProcessor;
 import com.uimirror.auth.client.processor.AccessTokenProcessor;
 import com.uimirror.auth.client.processor.SecretKeyProcessor;
+import com.uimirror.auth.user.UserAuthorizedClient;
+import com.uimirror.auth.user.bean.form.AuthorizeClientAuthenticationForm;
 import com.uimirror.auth.user.bean.form.LoginFormAuthenticationForm;
 import com.uimirror.auth.user.bean.form.OTPAuthenticationForm;
 import com.uimirror.auth.user.bean.form.ScreenLockAuthenticationForm;
+import com.uimirror.auth.user.processor.AllowClientProcessor;
+import com.uimirror.auth.user.processor.AuthorizationClientProcessor;
 import com.uimirror.auth.user.processor.LoginFormAuthProcessor;
 import com.uimirror.auth.user.processor.OTPAuthProcessor;
 import com.uimirror.auth.user.processor.ScreenLockAuthProcessor;
@@ -63,6 +67,16 @@ public class BeanOfAuthProcessor {
 	@Bean
 	public Processor<AuthenticatedHeaderForm> accessTokenProcessor(){
 		return new AccessTokenProcessor();
+	}
+
+	@Bean
+	public Processor<AuthorizeClientAuthenticationForm> authorizationClientProcessor(){
+		return new AuthorizationClientProcessor();
+	}
+
+	@Bean
+	public Processor<UserAuthorizedClient> allowClientprocessor(){
+		return new AllowClientProcessor();
 	}
 
 }

@@ -35,17 +35,17 @@ public class BeanOfExceptionIntitializer {
 		return sb;
 	}
 	
-	@Bean(name="AUTHTOAPPEM")
+	@Bean(name=AuthToApplicationExceptionMapper.NAME)
 	public ExceptionMapper authToApplicationExceptionMapper(){
 		return new AuthToApplicationExceptionMapper();
 	}
 	
-	@Bean(name="AUTHEM")
+	@Bean(name=AuthExceptionMapper.NAME)
 	public ExceptionMapper authExceptionMapper(){
 		return new AuthExceptionMapper();
 	}
 	
-	@Bean(name="MONGOEM")
+	@Bean(name=MongoExceptionMapper.NAME)
 	public ExceptionMapper mongoExceptionMapper(){
 		return new MongoExceptionMapper();
 	}
