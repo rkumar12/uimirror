@@ -43,7 +43,6 @@ import com.uimirror.auth.conf.WebAppInitializer;
  */
 @Configuration
 @ImportResource("classpath*:applicationContext.xml")
-//@EnableAutoConfiguration
 @ComponentScan(basePackages= {"com.uimirror.auth"})
 @Import({
 	AppConfig.class, BeanIntitializer.class, WebAppInitializer.class
