@@ -1,5 +1,3 @@
-import java.lang.invoke.LambdaForm.Compiled;
-
 //apply plugin: 'distribution'
 apply plugin:'application'
 
