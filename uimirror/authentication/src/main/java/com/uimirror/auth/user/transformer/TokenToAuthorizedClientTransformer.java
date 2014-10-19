@@ -48,12 +48,9 @@ public class TokenToAuthorizedClientTransformer implements TransformerService<Ac
 	 * @return
 	 */
 	private Scope getAuthorizedScope(AccessToken token){
-		Scope scope = null;
-		TokenType type = token.getType();
-		Scope tokenScope = token.getScope();
-		if(TokenType.SECRET.equals(type))
-			scope = tokenScope;
-		return scope;
+		if(TokenType.SECRET.equals(token.getType()))
+			return token.getScope();
+		return null;
 	}
 	
 	/**

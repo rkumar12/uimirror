@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.uimirror.auth.controller.AuthenticationProvider;
 import com.uimirror.auth.core.AuthenticationManager;
+import com.uimirror.auth.core.processor.InvalidateTokenProcessor;
 import com.uimirror.auth.exception.AuthToApplicationExceptionMapper;
 import com.uimirror.auth.user.bean.ClientAuthorizationAuthentication;
 import com.uimirror.auth.user.bean.form.AuthorizeClientAuthenticationForm;
@@ -32,8 +33,14 @@ import com.uimirror.core.service.TransformerService;
  * and respond back to the caller with the valid response.
  * This authentication process involves in accepting the Client.
  * 
- * Its expected user should have given the earlier accessToken along with
- * the OTP received in the mail
+ * Steps for this operations are as follows:
+ * <ol>
+ * <li>Extract the provided form to a well defined authentication bean i.e {@link ClientAuthorizationAuthentication}</li>
+ * <li>Authenticate the provided previous token</li>
+ * <li>Invalidate the previous token</li>
+ * <li>Transform the generated response into json</li>
+ * </ol>
+ * 
  * @author Jay
  */
 public class AuthorizationClientProcessor implements Processor<AuthorizeClientAuthenticationForm>{
@@ -43,6 +50,7 @@ public class AuthorizationClientProcessor implements Processor<AuthorizeClientAu
 	private @Autowired TransformerService<AuthorizeClientAuthenticationForm, ClientAuthorizationAuthentication> clientAuthorizationFormToAuthTransformer;
 	private @Autowired ResponseTransFormer<String> jsonResponseTransFormer;
 	private @Autowired AuthenticationProvider clientAuthorizationAuthProvider;
+	private @Autowired InvalidateTokenProcessor invalidateTokenProcessor;
 	
 	/* (non-Javadoc)
 	 * @see com.uimirror.auth.controller.AuthenticationController#getAccessToken(javax.ws.rs.core.MultivaluedMap)
@@ -51,15 +59,18 @@ public class AuthorizationClientProcessor implements Processor<AuthorizeClientAu
 	@MapException(use=AuthToApplicationExceptionMapper.NAME)
 	public Object invoke(AuthorizeClientAuthenticationForm param) throws ApplicationException{
 		LOG.debug("[START]- Generating a new accesstoken based on the previous accesstoken and Client Authorization by user");
+		String prevToken = param.getToken();
 		//Step 1- Transform the bean to Authentication
 		Authentication auth = getTransformedObject(param);
 		//Let GC take this ASAP
 		param = null;
 		//Remove Unnecessary information from the accessToken Before Sending to the user
 		Authentication authToken = authenticateAndIssueToken(auth);
-		AccessToken token = (AccessToken)authToken.getPrincipal();
-		LOG.debug("[END]- Generating a new accesstoken based on the previous accesstoken and Client Authorization by user {}", auth);
-		return jsonResponseTransFormer.doTransForm(token.toResponseMap());
+		AccessToken token = authToken == null ? null : (AccessToken)authToken.getPrincipal();
+		//Invalidate the previous Token
+		invalidateTokenProcessor.invoke(prevToken);
+		LOG.debug("[END]- Generating a new accesstoken based on the previous accesstoken and Client Authorization by user");
+		return jsonResponseTransFormer.doTransForm(token == null ? null : token.toResponseMap());
 	}
 	
 	/**

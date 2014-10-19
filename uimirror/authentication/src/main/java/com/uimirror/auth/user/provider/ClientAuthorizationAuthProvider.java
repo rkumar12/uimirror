@@ -10,16 +10,21 @@
  *******************************************************************************/
 package com.uimirror.auth.user.provider;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.uimirror.auth.client.Client;
+import com.uimirror.auth.client.ClientDBFields;
 import com.uimirror.auth.controller.AccessTokenProvider;
 import com.uimirror.auth.controller.AuthenticationProvider;
 import com.uimirror.auth.core.AuthenticationManager;
+import com.uimirror.auth.dao.ClientStore;
 import com.uimirror.auth.user.bean.ClientAuthorizationAuthentication;
+import com.uimirror.auth.user.bean.LoginAuthentication;
 import com.uimirror.auth.user.processor.AllowAuthorizationClientProcessor;
 import com.uimirror.auth.user.processor.DenyAuthorizationClientProcessor;
 import com.uimirror.core.auth.AccessToken;
@@ -33,6 +38,12 @@ import com.uimirror.core.util.thread.BackgroundProcessorFactory;
  * with the appropriate token i.e temporal_token/secret_token.
  * 
  * it should adhere the methodology of {@linkplain AuthenticationManager#authenticate(Authentication)}
+ * <ol>
+ * <li>Authenticate the provided token using {@link AuthenticationManager}</li>
+ * <li>store the {@link AccessToken} if needed</li>
+ * <li>store the user created operation for future reference</li>
+ * <li>clean the {@link AccessToken}</li>
+ * </ol>
  * 
  * @author Jay
  */
@@ -42,6 +53,7 @@ public class ClientAuthorizationAuthProvider implements AuthenticationProvider{
 	private @Autowired AccessTokenProvider persistedAccessTokenProvider;
 	private @Autowired AuthenticationManager clientAuthorizationAuthManager;
 	private @Autowired BackgroundProcessorFactory<AccessToken, Object> backgroundProcessorFactory;
+	private @Autowired ClientStore persistedClientStore;
 
 	/* (non-Javadoc)
 	 * @see com.uimirror.core.auth.controller.AuthenticationProvider#getAuthenticateToken(com.uimirror.core.auth.bean.Authentication)
@@ -56,9 +68,12 @@ public class ClientAuthorizationAuthProvider implements AuthenticationProvider{
 		doOtherProcess(token);
 		//Step 3-Store the token iff required else cancel
 		storeAuthenticatedPrincipal(token);
-		//Step 3- Clean Authentication Principal
+		//Step 4- Clean Authentication
+		authenticated = cleanAuthentication(authenticated);
+		//Step 5- Modify response to include client if required
+		authenticated = includeClientIfRequired(authenticated);
 		LOG.debug("[END]- Authenticating, generating and storing token");
-		return cleanAuthentication(authenticated);
+		return authenticated;
 	}
 
 	/**
@@ -98,11 +113,41 @@ public class ClientAuthorizationAuthProvider implements AuthenticationProvider{
 	 * @param auth an authenticated principal that indicate the principal clearly.
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
 	private Authentication cleanAuthentication(Authentication auth){
 		//Clean the Authentication principal
 		AccessToken accessToken = (AccessToken)auth.getPrincipal();
-		return new ClientAuthorizationAuthentication(accessToken.eraseEsential(), (Map<String, Object>)auth.getDetails());
+		if(TokenType.CANCELLED.equals(accessToken.getType()))
+			return null;
+		return new ClientAuthorizationAuthentication(accessToken.eraseEsential());
+	}
+	
+	/**
+	 * @param authenticated
+	 * @return
+	 */
+	private Authentication includeClientIfRequired(Authentication authenticated) {
+		if(authenticated == null)
+			return null;
+		AccessToken token = (AccessToken)authenticated.getPrincipal();
+		if(TokenType.SECRET.equals(token.getType())){
+			Map<String, Object> inst = new LinkedHashMap<String, Object>(5);
+			Client client = getClient(token.getClient(), ClientDBFields.REDIRECT_URI);
+			inst.put(ClientDBFields.REDIRECT_URI, client.getRedirectURI());
+			token = token.updateInstructions(null, inst);
+			authenticated = new LoginAuthentication(token);
+		}
+		return authenticated;
+	}
+	
+	/**
+	 * Retrieves the client details based on the client ID
+	 * @param clientId
+	 * @param fields
+	 * @return
+	 */
+	private Client getClient(String clientId, String ... fields){
+		Client client = persistedClientStore.findClientById(clientId, fields);
+		return client;
 	}
 
 	/* (non-Javadoc)

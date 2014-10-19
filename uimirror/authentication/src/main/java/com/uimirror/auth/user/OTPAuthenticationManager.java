@@ -28,11 +28,13 @@ import com.uimirror.auth.core.InvalidTokenException;
 import com.uimirror.auth.core.TokenGenerator;
 import com.uimirror.auth.exception.AuthExceptionMapper;
 import com.uimirror.auth.user.bean.OTPAuthentication;
+import com.uimirror.auth.user.dao.UserAuthorizedClientStore;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.AuthConstants;
 import com.uimirror.core.auth.Authentication;
 import com.uimirror.core.auth.Token;
 import com.uimirror.core.auth.TokenType;
+import com.uimirror.core.dao.RecordNotFoundException;
 import com.uimirror.core.extra.MapException;
 import com.uimirror.core.util.DateTimeUtil;
 
@@ -41,12 +43,21 @@ import com.uimirror.core.util.DateTimeUtil;
  * to validate the user provided details are valid or not.
  * if valid details, it will return the Authenticated Details {@linkplain AuthenticatedDetails}
  * 
+ * Steps are as below
+ * <ol>
+ * <li>Validate the previous token</li>
+ * <li>Validate the OTP</li>
+ * <li>Generate a Secret {@link AccessToken} of type {@link TokenType#SECRET} or
+ * {@linkplain TokenType#USER_PERMISSION}</li>
+ * </ol>
+ * 
  * @author Jay
  */
 public class OTPAuthenticationManager implements AuthenticationManager{
 	
 	protected static final Logger LOG = LoggerFactory.getLogger(OTPAuthenticationManager.class);
 	private @Autowired AccessTokenProvider persistedAccessTokenProvider;
+	private @Autowired UserAuthorizedClientStore persistedUserAuthorizedClientStore;
 
 	/* (non-Javadoc)
 	 * @see com.uimirror.core.auth.AuthenticationManager#authenticate(com.uimirror.core.auth.Authentication)
@@ -89,7 +100,7 @@ public class OTPAuthenticationManager implements AuthenticationManager{
 	private AccessToken getPreviousToken(Map<String, String> credentials){
 		String access_token = credentials.get(AuthConstants.ACCESS_TOKEN);
 		AccessToken token = persistedAccessTokenProvider.get(access_token);
-		if(token == null || !TokenType._2FA.equals(token.getType()))
+		if(token == null || !TokenType._2FA.equals(token.getType()) || token.getExpire() > 0l)
 			throw new InvalidTokenException();
 		return token;
 	}
@@ -118,27 +129,76 @@ public class OTPAuthenticationManager implements AuthenticationManager{
 	 * @return
 	 */
 	private AccessToken issueNewToken(AccessToken prevToken, Authentication authentication) {
-		//TODO check here if it is a secret key, then user has accepted client or not, 
-		//TODO if not issue temporal token and expires time will be 0l
 		@SuppressWarnings("unchecked")
 		Map<String, Object> details = (Map<String, Object>)authentication.getDetails();
 		Map<String, Object> intsructions = prevToken.getInstructions();
-		Token token = TokenGenerator.getNewOneWithOutPharse();
-		TokenType tokenType = TokenType.SECRET;
-		long expiresOn = getExpiresOn(intsructions);
+		//Get the TokenType first
+		TokenType tokenType = getTokenType(prevToken);
+		//Get Token
+		Token token = generateToken(tokenType);
+		//Get Expires On
+		long expiresOn = getExpiresOn(intsructions, tokenType);
 		String requestor = prevToken.getClient();
 		String owner = prevToken.getOwner();
+		
 		return new DefaultAccessToken(token, owner, requestor
 				, expiresOn, tokenType, prevToken.getScope()
-				, getNotes(details), getInstructions(intsructions));
+				, getNotes(details), getInstructions(intsructions, tokenType));
 	}
 	
 	/**
-	 * Decides the expires interval of the token
-	 * @param instructions
+	 * Decides the token type that should be appropriate for the next step of operations.
+	 * @param prevTokn
 	 * @return
 	 */
-	private long getExpiresOn(Map<String, Object> instructions){
+	private TokenType getTokenType(AccessToken prevTokn){
+		TokenType type = TokenType.SECRET;
+		if(!isClientAuthorized(prevTokn.getOwner(), prevTokn.getClient(), prevTokn.getScope().getScope())){
+			type = TokenType.USER_PERMISSION;
+		}
+		return type;
+	}
+	
+	/**
+	 * Checks if the client has been authorized by the user for the given scope
+	 * @param profileId
+	 * @param clientId
+	 * @param scope
+	 * @return
+	 */
+	private boolean isClientAuthorized(String profileId, String clientId, String scope){
+		boolean authroized = Boolean.FALSE;
+		try{
+			if(persistedUserAuthorizedClientStore.findAuthrorizedClient(profileId, clientId, scope) != null)
+				authroized = Boolean.TRUE;
+		}catch(RecordNotFoundException e){
+			LOG.warn("Client is not authroized by the user, need to promote the screen");
+		}
+		return authroized;
+	}
+	/**
+	 * If {@link TokenType#SECRET} then generate the token without par-phrase
+	 * else a token with par-phase
+	 * @param type
+	 * @return
+	 */
+	private Token generateToken(TokenType type){
+		Token token = null;
+		if(TokenType.SECRET.equals(type))
+			token = TokenGenerator.getNewOneWithOutPharse();
+		else
+			token = TokenGenerator.getNewOne();
+		return token;
+	}
+	/**
+	 * Decides the expires interval of the token
+	 * @param instructions
+	 * @param type
+	 * @return
+	 */
+	private long getExpiresOn(Map<String, Object> instructions, TokenType type){
+		if(TokenType.USER_PERMISSION.equals(type))
+			return 0l;
 		return DateTimeUtil.addToCurrentUTCTimeConvertToEpoch(getExpiresInterval(instructions));
 	}
 
@@ -172,10 +232,14 @@ public class OTPAuthenticationManager implements AuthenticationManager{
 	 * @param instructions
 	 * @return
 	 */
-	private Map<String, Object> getInstructions(Map<String, Object> prevInstructions){
+	private Map<String, Object> getInstructions(Map<String, Object> prevInstructions, TokenType type){
 		Map<String, Object> instructions = new LinkedHashMap<String, Object>(5);
 		instructions.put(AuthConstants.INST_AUTH_EXPIRY_INTERVAL, getExpiresInterval(prevInstructions));
-		instructions.put(AuthConstants.INST_NEXT_STEP, AuthConstants.INST_NEXT_ACCESS_TOKEN);
+		if(TokenType.USER_PERMISSION.equals(type)){
+			instructions.put(AuthConstants.INST_NEXT_STEP, AuthConstants.INST_NEXT_CLIENT_AUTHORIZATION);
+		}else{
+			instructions.put(AuthConstants.INST_NEXT_STEP, AuthConstants.INST_NEXT_ACCESS_TOKEN);
+		}
 		return instructions;
 	}
 

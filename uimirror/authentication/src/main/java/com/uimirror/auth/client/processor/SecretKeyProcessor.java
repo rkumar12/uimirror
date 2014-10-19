@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.uimirror.auth.client.bean.OAuth2SecretKeyAuthentication;
 import com.uimirror.auth.client.bean.form.ClientSecretKeyForm;
 import com.uimirror.auth.controller.AuthenticationProvider;
+import com.uimirror.auth.core.processor.InvalidateTokenProcessor;
 import com.uimirror.auth.exception.AuthToApplicationExceptionMapper;
 import com.uimirror.core.Processor;
 import com.uimirror.core.auth.AccessToken;
@@ -27,11 +28,14 @@ import com.uimirror.core.rest.extra.ResponseTransFormer;
 import com.uimirror.core.service.TransformerService;
 
 /**
+ * The main steps are as below:
+ * 
  * <ol>
  * <li>Validates the provided Client details.</li>
  * <li>Generate a new temporal token</li>
  * <li>Store the token</li>
  * <li>clean token</li>
+ * <li>Invalidate the previous token</li>
  * <li>generate a json response</li>
  * </ol>
  * 
@@ -44,6 +48,7 @@ public class SecretKeyProcessor implements Processor<ClientSecretKeyForm>{
 	private @Autowired TransformerService<ClientSecretKeyForm, OAuth2SecretKeyAuthentication> secretKeyToAuthTransformer;
 	private @Autowired ResponseTransFormer<String> jsonResponseTransFormer;
 	private @Autowired AuthenticationProvider secretCodeAuthProvider;
+	private @Autowired InvalidateTokenProcessor invalidateTokenProcessor;
 	
 	/* (non-Javadoc)
 	 * @see com.uimirror.auth.controller.AuthenticationController#getAccessToken(javax.ws.rs.core.MultivaluedMap)
@@ -51,7 +56,8 @@ public class SecretKeyProcessor implements Processor<ClientSecretKeyForm>{
 	@Override
 	@MapException(use=AuthToApplicationExceptionMapper.NAME)
 	public Object invoke(ClientSecretKeyForm param) throws ApplicationException{
-		LOG.debug("[START]- Authenticating the user and trying to to get the authentication details");
+		LOG.debug("[START]- Issuing a new access token.");
+		String prevToken = param.getSecretCode();
 		//Step 1- Transform the bean to Authentication
 		Authentication auth = getTransformedObject(param);
 		//Let GC take this ASAP
@@ -59,9 +65,11 @@ public class SecretKeyProcessor implements Processor<ClientSecretKeyForm>{
 		//Step 2- Authenticate and issue a token
 		Authentication authPrincipal = authenticateAndIssueToken(auth);
 		AccessToken token = (AccessToken)authPrincipal.getPrincipal();
-		LOG.debug("[END]- Authenticating the user and trying to to get the authentication details {}", auth);
+		LOG.debug("[END]- Issuing a new access token.");
+		//Invalidate the previous Token
+		invalidateTokenProcessor.invoke(prevToken);
 		//Remove Unnecessary information from the accessToken Before Sending to the user
-		return jsonResponseTransFormer.doTransForm(token);
+		return jsonResponseTransFormer.doTransForm(token.toResponseMap());
 	}
 	
 	/**

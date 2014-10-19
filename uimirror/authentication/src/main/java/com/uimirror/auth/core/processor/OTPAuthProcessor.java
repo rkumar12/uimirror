@@ -34,6 +34,14 @@ import com.uimirror.core.service.TransformerService;
  * 
  * Its expected user should have given the earlier accessToken along with
  * the OTP received in the mail
+ * 
+ * Steps for this operations are as follows:
+ * <ol>
+ * <li>Extract the provided form to a well defined authentication bean i.e {@link OTPAuthentication}</li>
+ * <li>Authenticate the provided previous token, and otp</li>
+ * <li>Invalidate the previous token</li>
+ * <li>Transform the generated response into json</li>
+ * </ol>
  * @author Jay
  */
 public class OTPAuthProcessor implements Processor<OTPAuthenticationForm>{
@@ -43,6 +51,7 @@ public class OTPAuthProcessor implements Processor<OTPAuthenticationForm>{
 	private @Autowired TransformerService<OTPAuthenticationForm, OTPAuthentication> otpFormToAuthTransformer;
 	private @Autowired ResponseTransFormer<String> jsonResponseTransFormer;
 	private @Autowired AuthenticationProvider otpAuthProvider;
+	private @Autowired InvalidateTokenProcessor invalidateTokenProcessor;
 	
 	/* (non-Javadoc)
 	 * @see com.uimirror.auth.controller.AuthenticationController#getAccessToken(javax.ws.rs.core.MultivaluedMap)
@@ -51,6 +60,7 @@ public class OTPAuthProcessor implements Processor<OTPAuthenticationForm>{
 	@MapException(use=AuthToApplicationExceptionMapper.NAME)
 	public Object invoke(OTPAuthenticationForm param) throws ApplicationException{
 		LOG.debug("[START]- Generating a new accesstoken based on the previous accesstoken and OTP for the 2FA");
+		String prevToken = param.getToken();
 		//Step 1- Transform the bean to Authentication
 		Authentication auth = getTransformedObject(param);
 		//Let GC take this ASAP
@@ -58,7 +68,9 @@ public class OTPAuthProcessor implements Processor<OTPAuthenticationForm>{
 		//Remove Unnecessary information from the accessToken Before Sending to the user
 		Authentication authToken = authenticateAndIssueToken(auth);
 		AccessToken token = (AccessToken)authToken.getPrincipal();
-		LOG.debug("[END]- Generating a new accesstoken based on the previous accesstoken and OTP for the 2FA {}", auth);
+		//Invalidate the previous Token
+		invalidateTokenProcessor.invoke(prevToken);
+		LOG.debug("[END]- Generating a new accesstoken based on the previous accesstoken and OTP for the 2FA");
 		return jsonResponseTransFormer.doTransForm(token.toResponseMap());
 	}
 	

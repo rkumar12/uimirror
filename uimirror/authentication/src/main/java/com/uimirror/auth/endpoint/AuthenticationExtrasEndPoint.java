@@ -43,6 +43,22 @@ public class AuthenticationExtrasEndPoint{
 	/**
 	 * This will make sure, user is granting access to the client for using user information on behalf.
 	 * and assigning him the appropriate the permissions.
+	 * 
+	 * POST https://api.oauth2server.com/allow
+     *	Authorization=authorization_code&
+     *	scope=SCOPE_HERE&
+     *  approval=Y&
+     * in case of success validation will issue a new accestoken for this response
+     * 
+     * response {
+     *	"token":"RsT5OjbzRn430zqMLgV3Ia",
+     *  "type" : "secret"
+	 *	}
+	 * or
+	 * response {
+	 *	"msg": "invalid"
+	 *	}
+	 * 
 	 * @return
 	 */
 	@POST
@@ -59,7 +75,7 @@ public class AuthenticationExtrasEndPoint{
 	 * This will remove the client removed from the user's granting list, so that user needs to give him access latter. 
 	 * 
 	 * @return
-	 */
+	 *////TODO pending implementation
 	@DELETE
 	@Produces({ "application/x-javascript", MediaType.APPLICATION_JSON })
 	@JSONP(queryParam="cb", callback="callback")
@@ -75,7 +91,7 @@ public class AuthenticationExtrasEndPoint{
 	 * and has appropriate permission or not.
 	 * 
 	 * @return
-	 */
+	 *///TODO pending implementation
 	@GET
 	@Produces({ "application/x-javascript", MediaType.APPLICATION_JSON })
 	@JSONP(queryParam="cb", callback="callback")

@@ -10,12 +10,11 @@
  *******************************************************************************/
 package com.uimirror.auth.client.provider;
 
-import java.util.Map;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.uimirror.auth.client.bean.OAuth2Authentication;
 import com.uimirror.auth.client.bean.OAuth2SecretKeyAuthentication;
 import com.uimirror.auth.controller.AccessTokenProvider;
 import com.uimirror.auth.controller.AuthenticationProvider;
@@ -27,6 +26,13 @@ import com.uimirror.core.auth.Authentication;
 /**
  * Validates the {@link Authentication} and populate the authenticated principal
  * with the appropriate token i.e access_token. 
+ * 
+ * Steps are as below:
+ * <ol>
+ * <li>Validate the previous token and generate a token</li>
+ * <li>store the token</li>
+ * <li>clean the prinicpal</li>
+ * </ol>
  * 
  * @author Jay
  */
@@ -47,7 +53,7 @@ public class SecretCodeAuthProvider implements AuthenticationProvider{
 		//Step 2- Store principal
 		storeAuthenticatedPrincipal((AccessToken)authDetails.getPrincipal());
 		LOG.debug("[END]- Authenticating, generating and storing token");
-		//Step 2- generate a authentication which has a access token
+		//Step 3- generate a authentication which has a access token
 		return cleanAuthentication(authDetails);
 	}
 
@@ -75,12 +81,10 @@ public class SecretCodeAuthProvider implements AuthenticationProvider{
 	 * @param auth an authenticated principal that indicate the principal clearly.
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
 	private Authentication cleanAuthentication(Authentication auth){
 		//Clean the Authentication principal
 		AccessToken accessToken = (AccessToken)auth.getPrincipal();
-		accessToken = accessToken.eraseEsential();
-		return new OAuth2SecretKeyAuthentication(accessToken, (Map<String, Object>)auth.getDetails());
+		return new OAuth2Authentication(accessToken.eraseEsential());
 	}
 
 	/* (non-Javadoc)

@@ -91,28 +91,27 @@ public class UserAuthenticationEndPoint{
 	}
 	
 	/**
-	 * Unlock the screen by validating the access-token provided,
-	 * if necessary, it will renew the token and send back. 
-	 * @param form
-	 * @return
-	 */
-	@POST
-	@Produces({ "application/x-javascript", MediaType.APPLICATION_JSON })
-	@JSONP(queryParam="cb", callback="callback")
-	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	@Path(AuthenticationEndPointConstant.UNLOCK_PATH)
-	public Object unlockScreen(ScreenLockAuthenticationForm form){
-		LOG.info("[ENTRY]- Received request for unlocking screen");
-		Object response = screenLockAuthProcessor.invoke(form);
-		LOG.info("[EXIT]- Received request for unlocking screen");
-		return response;
-	}
-	
-	/**
 	 * De-serialize the form, tries to validate the earlier token issued to process this request,
 	 * if everything is correct, it will process for OTP validation, if OTP matched, it will generate a new security code
 	 * and send back to the caller
-	 * 
+	 * POST https://api.oauth2server.com/login
+     *	Authorization=authorization_code&
+     *	otp=OTP_HERE&
+     * in case of success validation will issue a new accestoken for this response
+     * 
+     * response {
+     *	"token":"RsT5OjbzRn430zqMLgV3Ia",
+     *  "type" : "secret"
+	 *	}
+	 * or
+	 * response {
+	 *	"token":"RsT5OjbzRn430zqMLgV3Ia",
+	 *  "type" : "USER_PERMISSION"
+	 *  "msg" : {
+	 *          "clientname" : "XYZ",
+	 *          "scope"      : "read"
+	 *  	}
+	 *	}
 	 * @param form
 	 * @return
 	 */
@@ -125,6 +124,24 @@ public class UserAuthenticationEndPoint{
 		LOG.info("[ENTRY]- Received request for 2 Factor OTP Authentication");
 		Object response = otpAuthProcessor.invoke(form);
 		LOG.info("[EXIT]- Received request for 2 Factor OTP Authentication");
+		return response;
+	}
+	
+	/**
+	 * Unlock the screen by validating the access-token provided,
+	 * if necessary, it will renew the token and send back. 
+	 * @param form
+	 * @return
+	 *///TODO final remove
+	@POST
+	@Produces({ "application/x-javascript", MediaType.APPLICATION_JSON })
+	@JSONP(queryParam="cb", callback="callback")
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	@Path(AuthenticationEndPointConstant.UNLOCK_PATH)
+	public Object unlockScreen(ScreenLockAuthenticationForm form){
+		LOG.info("[ENTRY]- Received request for unlocking screen");
+		Object response = screenLockAuthProcessor.invoke(form);
+		LOG.info("[EXIT]- Received request for unlocking screen");
 		return response;
 	}
 	

@@ -29,6 +29,7 @@ import com.uimirror.auth.user.bean.ClientAuthorizationAuthentication;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.AuthConstants;
 import com.uimirror.core.auth.Authentication;
+import com.uimirror.core.auth.Scope;
 import com.uimirror.core.auth.Token;
 import com.uimirror.core.auth.TokenType;
 import com.uimirror.core.extra.MapException;
@@ -38,7 +39,11 @@ import com.uimirror.core.util.DateTimeUtil;
  * Implementation of {@link AuthenticationManager#authenticate(Authentication)}
  * to validate the user provided details are valid or not.
  * if valid details, it will return the Authenticated Details {@linkplain AuthenticatedDetails}
- * 
+ * Steps are as below
+ * <ol>
+ * <li>Validate the previous token</li>
+ * <li>Generate a Secret {@link AccessToken} of type {@link TokenType#SECRET}</li>
+ * </ol>
  * @author Jay
  */
 public class ClientAuthorizationAuthenticationManager implements AuthenticationManager{
@@ -85,7 +90,7 @@ public class ClientAuthorizationAuthenticationManager implements AuthenticationM
 	private AccessToken getPreviousToken(Map<String, String> credentials){
 		String access_token = credentials.get(AuthConstants.ACCESS_TOKEN);
 		AccessToken token = persistedAccessTokenProvider.get(access_token);
-		if(token == null || !TokenType.USER_PERMISSION.equals(token.getType()))
+		if(token == null || !TokenType.USER_PERMISSION.equals(token.getType()) || token.getExpire() > 0l)
 			throw new InvalidTokenException();
 		return token;
 	}
@@ -97,23 +102,21 @@ public class ClientAuthorizationAuthenticationManager implements AuthenticationM
 	 * @return
 	 */
 	private AccessToken issueNewToken(AccessToken prevToken, Authentication authentication) {
-
 		String requestor = prevToken.getClient();
-		//Get the Requester client info in background //TODO think of a way how can be manged via spring
-		
 		@SuppressWarnings("unchecked")
 		Map<String, Object> details = (Map<String, Object>)authentication.getDetails();
+		//Get the token Type first
 		TokenType tokenType = determineTokenType(details);
-		Token token = generateToken(tokenType, prevToken.getToken());
+		Token token = generateToken(tokenType);
 		String owner = prevToken.getOwner();
+		Scope scope = getTokenScope(details);
 		Map<String, Object> intsructions = prevToken.getInstructions();
 		long expiresOn = determineExpiresOn(tokenType, intsructions);
-		//TODO check for the instructions as instructions depends on the earlier source as well
 		return new DefaultAccessToken(token, owner, requestor
-				, expiresOn, tokenType, prevToken.getScope()
+				, expiresOn, tokenType, scope
 				, getNotes(details), getInstructions(intsructions));
 	}
-	
+
 	/**
 	 * Determines the {@link TokenType} based on the user action such as,
 	 * if user has opted for the deny, then there is no meaning to process and generate new token
@@ -134,18 +137,15 @@ public class ClientAuthorizationAuthenticationManager implements AuthenticationM
 	
 	/**
 	 * Based on the token type, it will create if {@link TokenType#SECRET}
-	 * else it will re-asgin the previous one.
+	 * 
 	 * @param type
-	 * @param earillerToken
 	 * @return
 	 */
-	private Token generateToken(TokenType type, Token earillerToken){
-		Token token = null;
-		if(TokenType.SECRET.equals(type))
-			token = TokenGenerator.getNewOneWithOutPharse();
-		else
-			token = earillerToken;
-		return token;	
+	private Token generateToken(TokenType type){
+		//If Token Type is Cancelled, stop the process
+		if(TokenType.CANCELLED.equals(type))
+			return null;
+		return TokenGenerator.getNewOneWithOutPharse();	
 	}
 	
 	/**
@@ -156,10 +156,9 @@ public class ClientAuthorizationAuthenticationManager implements AuthenticationM
 	 * @return
 	 */
 	private long determineExpiresOn(TokenType type, Map<String, Object> intsructions){
-		long expires = 0l;
-		if(TokenType.SECRET.equals(type))
-			expires = getExpiresOn(intsructions);
-		return expires;
+		if(TokenType.CANCELLED.equals(type))
+			return 0l;
+		return getExpiresOn(intsructions);
 	}
 	
 	/**
@@ -182,6 +181,15 @@ public class ClientAuthorizationAuthenticationManager implements AuthenticationM
 			expires = (long)instructions.get(AuthConstants.INST_AUTH_EXPIRY_INTERVAL);
 		}
 		return expires;
+	}
+	
+	/**
+	 * @param details
+	 * @return
+	 */
+	private Scope getTokenScope(Map<String, Object> details) {
+		Scope scope = (Scope)details.get(AuthConstants.SCOPE);
+		return scope;
 	}
 	
 	/**

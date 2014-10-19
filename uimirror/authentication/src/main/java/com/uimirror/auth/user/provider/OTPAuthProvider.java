@@ -10,24 +10,38 @@
  *******************************************************************************/
 package com.uimirror.auth.user.provider;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.uimirror.auth.client.Client;
+import com.uimirror.auth.client.ClientDBFields;
 import com.uimirror.auth.controller.AccessTokenProvider;
 import com.uimirror.auth.controller.AuthenticationProvider;
 import com.uimirror.auth.core.AuthenticationManager;
+import com.uimirror.auth.dao.ClientStore;
 import com.uimirror.auth.user.bean.OTPAuthentication;
 import com.uimirror.core.auth.AccessToken;
+import com.uimirror.core.auth.AuthConstants;
 import com.uimirror.core.auth.Authentication;
+import com.uimirror.core.auth.TokenType;
 
 /**
  * Validates the {@link Authentication} and populate the authenticated principal
  * with the appropriate token i.e temporal_token/secret_token.
  * 
  * it should adhere the methodology of {@linkplain AuthenticationManager#authenticate(Authentication)}
+ * 
+ * <ol>
+ * <li>Authenticate the provided token and otp using {@link AuthenticationManager}</li>
+ * <li>Check for other operations {@link AccessToken} such as Client Authorization required or not</li>
+ * <li>store the {@link AccessToken}</li>
+ * <li>clean the {@link AccessToken}</li>
+ * <li>include {@link Client} in the {@link AccessToken} if required</li>
+ * </ol>
  * 
  * @author Jay
  */
@@ -36,9 +50,10 @@ public class OTPAuthProvider implements AuthenticationProvider{
 	private static final Logger LOG = LoggerFactory.getLogger(OTPAuthProvider.class);
 	private @Autowired AccessTokenProvider persistedAccessTokenProvider;
 	private @Autowired AuthenticationManager otpAuthManager;
+	private @Autowired ClientStore persistedClientStore;
 
 	/* (non-Javadoc)
-	 * @see com.uimirror.core.auth.controller.AuthenticationProvider#getAuthenticateToken(com.uimirror.core.auth.bean.Authentication)
+	 * @see com.uimirror.auth.controller.AuthenticationProvider#authenticate(com.uimirror.core.auth.Authentication)
 	 */
 	@Override
 	public Authentication authenticate(Authentication authentication) {
@@ -48,9 +63,12 @@ public class OTPAuthProvider implements AuthenticationProvider{
 		AccessToken token = (AccessToken)authenticated.getPrincipal();
 		//Step 2- Store the token
 		storeAuthenticatedPrincipal(token);
-		//Step 3- Clean Authentication Principal
+		//Step 3- Clean Authentication
+		authenticated = cleanAuthentication(authenticated);
+		//Step 4- Modify response to include client if required
+		authenticated = includeClientIfRequired(authenticated);
 		LOG.debug("[END]- Authenticating, generating and storing token");
-		return cleanAuthentication(authenticated);
+		return authenticated;
 	}
 
 	/**
@@ -77,11 +95,45 @@ public class OTPAuthProvider implements AuthenticationProvider{
 	 * @param auth an authenticated principal that indicate the principal clearly.
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
 	private Authentication cleanAuthentication(Authentication auth){
 		//Clean the Authentication principal
 		AccessToken accessToken = (AccessToken)auth.getPrincipal();
-		return new OTPAuthentication(accessToken.eraseEsential(), (Map<String, Object>)auth.getDetails());
+		return new OTPAuthentication(accessToken.eraseEsential());
+	}
+	
+	/**
+	 * Includes the CLient details into the token as it will be required to authorize
+	 * @param token
+	 * @return
+	 */
+	private Authentication includeClientIfRequired(Authentication auth) {
+		AccessToken token = (AccessToken)auth.getPrincipal();
+		if(TokenType.USER_PERMISSION.equals(token.getType())){
+			Map<String, Object> inst = new LinkedHashMap<String, Object>(5);
+			Client client = getClient(token.getClient());
+			inst.put(ClientDBFields.NAME, client.getName());
+			inst.put(AuthConstants.SCOPE, token.getScope().getScope());
+			token = token.updateInstructions(null, inst);
+			auth = new OTPAuthentication(token);
+		}else if(TokenType.SECRET.equals(token.getType())){
+			Map<String, Object> inst = new LinkedHashMap<String, Object>(5);
+			Client client = getClient(token.getClient(), ClientDBFields.REDIRECT_URI);
+			inst.put(ClientDBFields.REDIRECT_URI, client.getRedirectURI());
+			token = token.updateInstructions(null, inst);
+			auth = new OTPAuthentication(token);
+		}
+		return auth;
+	}
+	
+	/**
+	 * Retrieves the client details based on the client ID
+	 * @param clientId
+	 * @param fields
+	 * @return
+	 */
+	private Client getClient(String clientId, String ... fields){
+		Client client = persistedClientStore.findClientById(clientId, fields);
+		return client;
 	}
 
 	/* (non-Javadoc)

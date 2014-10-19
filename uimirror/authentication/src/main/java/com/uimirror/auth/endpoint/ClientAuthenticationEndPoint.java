@@ -76,14 +76,13 @@ public class ClientAuthenticationEndPoint{
      *	redirect_uri=REDIRECT_URI&
      *	client_id=CLIENT_ID&
      *	client_secret=CLIENT_SECRET
+     *
      * in case of success validation will issue a new accestoken for this response
      * 
      * response {
      *	"token":"RsT5OjbzRn430zqMLgV3Ia",
-     *  "type" : "temporal"
+     *  "type" : "Access"
 	 *	}
-	 * Using this token, UIMIRROR oauth server should request for the user login operation
-	 * {@link UserAuthenticationEndPoint#login(com.uimirror.auth.user.bean.form.LoginFormAuthenticationForm)}
 	 * 
 	 * @param form
 	 * @return
@@ -105,7 +104,7 @@ public class ClientAuthenticationEndPoint{
 	 * Represents a valid user
 	 * 
 	 * @return
-	 */
+	 *///TODO review pending
 	@GET
 	@Produces({ "application/x-javascript", MediaType.APPLICATION_JSON })
 	@JSONP(queryParam="cb", callback="callback")

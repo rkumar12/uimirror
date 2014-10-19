@@ -27,6 +27,7 @@ import com.uimirror.auth.dao.AccessTokenStore;
 import com.uimirror.auth.dao.ClientStore;
 import com.uimirror.auth.user.bean.LoginAuthentication;
 import com.uimirror.core.auth.AccessToken;
+import com.uimirror.core.auth.AuthConstants;
 import com.uimirror.core.auth.Authentication;
 import com.uimirror.core.auth.TokenType;
 import com.uimirror.core.util.thread.BackgroundProcessorFactory;
@@ -109,8 +110,15 @@ public class LoginFormAuthProvider implements AuthenticationProvider{
 		AccessToken token = (AccessToken)auth.getPrincipal();
 		if(TokenType.USER_PERMISSION.equals(token.getType())){
 			Map<String, Object> inst = new LinkedHashMap<String, Object>(5);
-			Client client = getClient(token.getClient());
+			Client client = getClient(token.getClient(), ClientDBFields.NAME);
 			inst.put(ClientDBFields.NAME, client.getName());
+			inst.put(AuthConstants.SCOPE, token.getScope().getScope());
+			token = token.updateInstructions(null, inst);
+			auth = new LoginAuthentication(token);
+		}else if(TokenType.SECRET.equals(token.getType())){
+			Map<String, Object> inst = new LinkedHashMap<String, Object>(5);
+			Client client = getClient(token.getClient(), ClientDBFields.REDIRECT_URI);
+			inst.put(ClientDBFields.REDIRECT_URI, client.getRedirectURI());
 			token = token.updateInstructions(null, inst);
 			auth = new LoginAuthentication(token);
 		}
@@ -122,7 +130,7 @@ public class LoginFormAuthProvider implements AuthenticationProvider{
 	 * @param clientId
 	 * @return
 	 */
-	private Client getClient(String clientId){
+	private Client getClient(String clientId, String ... fields){
 		Client client = persistedClientStore.findClientById(clientId, ClientDBFields.NAME);
 		return client;
 	}

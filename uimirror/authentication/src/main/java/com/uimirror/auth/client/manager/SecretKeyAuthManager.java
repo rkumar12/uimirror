@@ -22,6 +22,7 @@ import org.springframework.util.StringUtils;
 import com.uimirror.auth.bean.DefaultAccessToken;
 import com.uimirror.auth.client.Client;
 import com.uimirror.auth.client.bean.APIKeyAuthentication;
+import com.uimirror.auth.client.bean.OAuth2Authentication;
 import com.uimirror.auth.controller.AccessTokenProvider;
 import com.uimirror.auth.core.AuthenticationException;
 import com.uimirror.auth.core.AuthenticationManager;
@@ -120,7 +121,7 @@ public class SecretKeyAuthManager implements AuthenticationManager, MatcherServi
 		Map<String, Object> details = (Map<String, Object>)auth.getDetails();
 		//Issue a new Token with type as AccessToken
 		AccessToken newToken = issueANewToken(token, details);
-		return new APIKeyAuthentication(newToken, details);
+		return new OAuth2Authentication(newToken);
 	}
 	
 	/**
@@ -133,7 +134,7 @@ public class SecretKeyAuthManager implements AuthenticationManager, MatcherServi
 	 */
 	private AccessToken issueANewToken(AccessToken prevToken, Map<String, Object> details){
 		Map<String, Object> prevInstructions = prevToken.getInstructions(); 
-		Token token = TokenGenerator.getNewOne();
+		Token token = TokenGenerator.getNewOneWithOutPharse();
 		TokenType type = TokenType.ACCESS;
 		String requestor = prevToken.getClient();
 		String owner = prevToken.getOwner();

@@ -68,7 +68,7 @@ public class LoginFormAuthenticationManager implements AuthenticationManager{
 	private @Autowired UserCredentialsStore userCredentialStore;
 	private @Autowired AccessTokenProvider persistedAccessTokenProvider;
 	private @Autowired PasswordMatcher passwordMatcher;
-	private @Autowired UserAuthorizedClientStore persistedUserAuthorizedClientMongoStore;
+	private @Autowired UserAuthorizedClientStore persistedUserAuthorizedClientStore;
 	private @Autowired BackgroundProcessorFactory<String, Object> backgroundProcessorFactory; 
 
 	/* (non-Javadoc)
@@ -175,6 +175,7 @@ public class LoginFormAuthenticationManager implements AuthenticationManager{
 	/**
 	 * Decides the token type that should be appropriate for the next step of operations.
 	 * @param userCredentials
+	 * @param prevTokn
 	 * @return
 	 */
 	private TokenType getTokenType(UserCredentials userCredentials, AccessToken prevTokn){
@@ -195,7 +196,7 @@ public class LoginFormAuthenticationManager implements AuthenticationManager{
 	private boolean isClientAuthorized(String profileId, String clientId, String scope){
 		boolean authroized = Boolean.FALSE;
 		try{
-			if(persistedUserAuthorizedClientMongoStore.findAuthrorizedClient(profileId, clientId, scope) != null)
+			if(persistedUserAuthorizedClientStore.findAuthrorizedClient(profileId, clientId, scope) != null)
 				authroized = Boolean.TRUE;
 		}catch(RecordNotFoundException e){
 			LOG.warn("Client is not authroized by the user, need to promote the screen");
@@ -216,7 +217,6 @@ public class LoginFormAuthenticationManager implements AuthenticationManager{
 		else
 			token = TokenGenerator.getNewOne();
 		return token;
-			
 	}
 	
 	/**
