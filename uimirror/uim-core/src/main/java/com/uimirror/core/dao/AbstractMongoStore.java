@@ -221,17 +221,17 @@ public abstract class AbstractMongoStore<T extends BeanBasedDocument<T>> extends
 	 */
 	@SuppressWarnings("unchecked")
 	public List<T> getFromCursor(DBCursor cursor, int fetchSize){
-//		fetchSize = fetchSize <= 0 ? 20 : fetchSize;
-//		int thirtyPercentage = fetchSize*((30/100)*100);
-//		//Retrieve max of 20 at a time
-//		cursor.batchSize(fetchSize);
-//		List<T> results = new ArrayList<T>(fetchSize+(fetchSize+thirtyPercentage));
-//		cursor.forEach((result) -> results.add(t.initFromMap(result.toMap())));
-//		if(CollectionUtils.isEmpty(results)){
-//			throw new RecordNotFoundException("No Record Found");
-//		}
-		//return results;
-		return null;
+		fetchSize = fetchSize <= 0 ? 20 : fetchSize;
+		int thirtyPercentage = fetchSize*((30/100)*100);
+		//Retrieve max of 20 at a time
+		cursor.batchSize(fetchSize);
+		List<T> results = new ArrayList<T>(fetchSize+(fetchSize+thirtyPercentage));
+		cursor.forEach((result) -> results.add((T)t.initFromMap(result.toMap())));
+		if(CollectionUtils.isEmpty(results)){
+			throw new RecordNotFoundException("No Record Found");
+		}
+		return results;
+		//return null;
 	}
 	
 	/**
