@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.account.endpoint;
+package com.uimirror.account.user.endpoint;
 
 /**
  * This contains all the URL path for the account end points.

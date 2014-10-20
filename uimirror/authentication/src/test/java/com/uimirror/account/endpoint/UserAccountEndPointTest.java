@@ -38,6 +38,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import com.uimirror.account.StartApp;
+import com.uimirror.account.user.endpoint.UserAccountEndPoint;
 import com.uimirror.account.user.form.RegisterConstants;
 import com.uimirror.core.auth.AuthConstants;
 

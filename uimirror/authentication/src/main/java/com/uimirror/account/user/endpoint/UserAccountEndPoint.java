@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.account.endpoint;
+package com.uimirror.account.user.endpoint;
 
 import javax.inject.Singleton;
 import javax.ws.rs.BeanParam;
