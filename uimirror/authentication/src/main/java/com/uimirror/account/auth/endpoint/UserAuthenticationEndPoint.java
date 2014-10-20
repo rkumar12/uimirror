@@ -36,7 +36,7 @@ import com.uimirror.core.auth.AccessToken;
  * 
  * @author Jay
  */
-@Path(AuthenticationEndPointConstant.HOME)
+@Path(AuthenticationEndPointConstant.AUTH)
 public class UserAuthenticationEndPoint{
 
 	private static Logger LOG = LoggerFactory.getLogger(UserAuthenticationEndPoint.class);

@@ -33,10 +33,7 @@ import com.uimirror.core.bean.form.AuthenticatedHeaderForm;
  * 
  * @author Jay
  */
-//TODO extra architecture required to validate the authentication header
-//TODO Move to the authentication extra project which will be away of this
-//As this shouldn't do the authentication to the request, this should only perform the login
-//details and give back to the client
+//TODO Give extra Thought currently not required this module
 @Path(AuthenticationEndPointConstant.LOGIN_SESSION_PATH)
 public class AuthenticationSessionEndPoint{
 

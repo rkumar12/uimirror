@@ -30,7 +30,7 @@ import com.uimirror.core.bean.form.AuthenticatedHeaderForm;
  * 
  * @author Jay
  */
-@Path("/")
+@Path(AuthenticationEndPointConstant.AUTH_MAIL_HOME)
 public class AuthenticationMailerEndPoint{
 
 	private static Logger LOG = LoggerFactory.getLogger(AuthenticationMailerEndPoint.class);
