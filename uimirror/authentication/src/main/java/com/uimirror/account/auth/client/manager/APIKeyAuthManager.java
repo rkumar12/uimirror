@@ -26,7 +26,7 @@ import com.uimirror.account.auth.core.LockedException;
 import com.uimirror.account.auth.core.TokenGenerator;
 import com.uimirror.account.auth.dao.ClientStore;
 import com.uimirror.account.auth.exception.AuthExceptionMapper;
-import com.uimirror.account.client.Client;
+import com.uimirror.account.client.bean.Client;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.AuthConstants;
 import com.uimirror.core.auth.Authentication;

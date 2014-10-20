@@ -10,7 +10,7 @@
  *******************************************************************************/
 package com.uimirror.account.auth.dao;
 
-import com.uimirror.account.client.Client;
+import com.uimirror.account.client.bean.Client;
 import com.uimirror.core.dao.DBException;
 
 /**

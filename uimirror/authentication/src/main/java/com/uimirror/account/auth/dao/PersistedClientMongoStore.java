@@ -19,8 +19,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
 import com.mongodb.DBCollection;
-import com.uimirror.account.client.Client;
 import com.uimirror.account.client.ClientDBFields;
+import com.uimirror.account.client.bean.Client;
 import com.uimirror.core.dao.AbstractMongoStore;
 import com.uimirror.core.dao.DBException;
 import com.uimirror.core.user.AccountStatus;
