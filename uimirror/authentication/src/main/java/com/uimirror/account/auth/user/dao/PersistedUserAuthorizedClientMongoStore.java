@@ -24,8 +24,8 @@ import org.springframework.util.StringUtils;
 
 import com.mongodb.DBCollection;
 import com.uimirror.account.auth.user.ClientAuthorizedScope;
-import com.uimirror.account.auth.user.UserAuthorizedClient;
 import com.uimirror.account.auth.user.UserAuthorizedClientDBFields;
+import com.uimirror.account.user.bean.UserAuthorizedClient;
 import com.uimirror.core.dao.AbstractMongoStore;
 import com.uimirror.core.mongo.BasicMongoOperators;
 import com.uimirror.core.rest.extra.IllegalArgumentException;

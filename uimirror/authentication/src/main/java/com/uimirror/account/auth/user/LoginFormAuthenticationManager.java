@@ -33,6 +33,8 @@ import com.uimirror.account.auth.exception.AuthExceptionMapper;
 import com.uimirror.account.auth.user.bean.LoginAuthentication;
 import com.uimirror.account.auth.user.dao.UserAuthorizedClientStore;
 import com.uimirror.account.auth.user.processor.UserRestoreProcessor;
+import com.uimirror.account.user.UserAuthDBFields;
+import com.uimirror.account.user.UserCredentials;
 import com.uimirror.core.RandomKeyGenerator;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.AuthConstants;

@@ -17,7 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.uimirror.account.auth.user.UserAuthorizedClient;
+import com.uimirror.account.user.bean.UserAuthorizedClient;
 import com.uimirror.core.Processor;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.service.TransformerService;

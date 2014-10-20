@@ -10,7 +10,7 @@
  *******************************************************************************/
 package com.uimirror.account.auth.dao;
 
-import com.uimirror.account.auth.user.UserCredentials;
+import com.uimirror.account.user.UserCredentials;
 import com.uimirror.core.dao.DBException;
 
 /**

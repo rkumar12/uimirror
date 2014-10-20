@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.account.auth.user;
+package com.uimirror.account.user.bean;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -17,6 +17,8 @@ import java.util.Map;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import com.uimirror.account.user.UserAuthDBFields;
+import com.uimirror.account.user.UserCredentials;
 import com.uimirror.core.mongo.feature.BeanBasedDocument;
 import com.uimirror.core.service.BeanValidatorService;
 import com.uimirror.core.user.AccountState;

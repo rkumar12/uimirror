@@ -26,6 +26,7 @@ import com.uimirror.account.auth.core.InvalidTokenException;
 import com.uimirror.account.auth.core.TokenGenerator;
 import com.uimirror.account.auth.exception.AuthExceptionMapper;
 import com.uimirror.account.auth.user.bean.ClientAuthorizationAuthentication;
+import com.uimirror.account.user.UserCredentials;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.AuthConstants;
 import com.uimirror.core.auth.Authentication;

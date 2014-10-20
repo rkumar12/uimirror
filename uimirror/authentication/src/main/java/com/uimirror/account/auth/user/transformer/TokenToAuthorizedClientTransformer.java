@@ -16,7 +16,7 @@ import java.util.List;
 import org.springframework.util.Assert;
 
 import com.uimirror.account.auth.user.ClientAuthorizedScope;
-import com.uimirror.account.auth.user.UserAuthorizedClient;
+import com.uimirror.account.user.bean.UserAuthorizedClient;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.Scope;
 import com.uimirror.core.auth.TokenType;

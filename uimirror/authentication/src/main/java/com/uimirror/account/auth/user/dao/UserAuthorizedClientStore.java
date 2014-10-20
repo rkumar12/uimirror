@@ -12,7 +12,7 @@ package com.uimirror.account.auth.user.dao;
 
 import java.util.List;
 
-import com.uimirror.account.auth.user.UserAuthorizedClient;
+import com.uimirror.account.user.bean.UserAuthorizedClient;
 
 /**
  * A basic store for the User authorized clients.
