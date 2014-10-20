@@ -35,4 +35,12 @@ public interface UserCredentialsStore {
 	 * @throws DBException
 	 */
 	UserCredentials getCredentialsByProfileId(String identifier) throws DBException;
+	
+	/**
+	 * This will change the account state as enabled
+	 * @param profileId
+	 * @return
+	 * @throws DBException
+	 */
+	int enableAccount(String profileId) throws DBException;
 }

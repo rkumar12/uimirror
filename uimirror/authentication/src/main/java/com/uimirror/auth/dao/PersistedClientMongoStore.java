@@ -101,5 +101,14 @@ public class PersistedClientMongoStore extends AbstractMongoStore<Client> implem
 		query.put(ClientDBFields.API_KEY, apiKey);
 		return query;
 	}
+
+	/* (non-Javadoc)
+	 * @see com.uimirror.core.dao.AbstractMongoStore#ensureIndex()
+	 */
+	@Override
+	protected void ensureIndex() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

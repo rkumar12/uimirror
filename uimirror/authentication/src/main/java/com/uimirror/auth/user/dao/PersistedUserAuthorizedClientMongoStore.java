@@ -203,5 +203,14 @@ public class PersistedUserAuthorizedClientMongoStore extends AbstractMongoStore<
 		clientMap.put(UserAuthorizedClientDBFields.CLIENTS, map);
 		return clientMap;
 	}
+
+	/* (non-Javadoc)
+	 * @see com.uimirror.core.dao.AbstractMongoStore#ensureIndex()
+	 */
+	@Override
+	protected void ensureIndex() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

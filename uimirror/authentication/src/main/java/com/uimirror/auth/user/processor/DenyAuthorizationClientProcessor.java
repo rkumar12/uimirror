@@ -14,7 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.uimirror.core.auth.AccessToken;
-import com.uimirror.core.util.thread.BackgroundProcessor;
+import com.uimirror.core.util.thread.AbstractBackgroundProcessor;
 
 /**
  * Set of operation that needs to be handled after user has denied access to the client
@@ -23,7 +23,14 @@ import com.uimirror.core.util.thread.BackgroundProcessor;
  * </ol>
  * @author Jay
  */
-public class DenyAuthorizationClientProcessor implements BackgroundProcessor<AccessToken, Object>{
+public class DenyAuthorizationClientProcessor extends AbstractBackgroundProcessor<AccessToken, Object>{
+
+	/**
+	 * @param size
+	 */
+	public DenyAuthorizationClientProcessor() {
+		super(1);
+	}
 
 	protected static final Logger LOG = LoggerFactory.getLogger(DenyAuthorizationClientProcessor.class);
 	
@@ -45,8 +52,7 @@ public class DenyAuthorizationClientProcessor implements BackgroundProcessor<Acc
 	 */
 	@Override
 	public Object getResult() throws IllegalThreadStateException {
-		// TODO Auto-generated method stub
-		return null;
+		return getResults();
 	}
 
 }

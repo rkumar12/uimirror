@@ -60,14 +60,15 @@ public class TokenDeleteScheduler {
 		exp2.put(AccessTokenFields.TYPE, exp2NotToken);
 		Map<String, Object> exp2TimeQuery = new LinkedHashMap<String, Object>();
 		exp2TimeQuery.put(BasicMongoOperators.LESSTHANEQUEAL, DateTimeUtil.minusToCurrentUTCTimeConvertToEpoch(5));
-		exp2.put(AccessTokenFields.AUTH_TKN_EXPIRES, timeFiledQuery);
+		exp2TimeQuery.put(BasicMongoOperators.GREATERTHAN, 0l);
+		exp2.put(AccessTokenFields.AUTH_TKN_EXPIRES, exp2TimeQuery);
 		
 		List<Map<String, Object>> expressions = new ArrayList<Map<String, Object>>(); 
 		expressions.add(exp1);
 		expressions.add(exp2);
 		Map<String, Object> orQuery = new LinkedHashMap<String, Object>();
 		orQuery.put(BasicMongoOperators.OR, expressions);
-		System.out.println(orQuery);
+		LOG.debug("Final Query {}",orQuery);
 		return orQuery;
 	}
 

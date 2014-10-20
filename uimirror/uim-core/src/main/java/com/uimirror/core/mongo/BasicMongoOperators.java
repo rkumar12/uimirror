@@ -16,6 +16,8 @@ package com.uimirror.core.mongo;
 public interface BasicMongoOperators {
 	String SET = "$set";
 	String LESSTHANEQUEAL = "$lte";
+	String GREATERTHANEQUEAL = "$gte";
+	String GREATERTHAN = "$gt";
 	String ELEMENT_MATCH = "$elemMatch";
 	String PULL = "$pull";
 	String EACH = "$each";

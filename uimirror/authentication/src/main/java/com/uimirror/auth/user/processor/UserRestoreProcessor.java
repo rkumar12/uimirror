@@ -17,10 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.uimirror.auth.user.UserAuthorizedClient;
-import com.uimirror.core.Processor;
-import com.uimirror.core.auth.AccessToken;
-import com.uimirror.core.service.TransformerService;
+import com.uimirror.auth.dao.UserCredentialsStore;
 import com.uimirror.core.user.AccountState;
 import com.uimirror.core.util.thread.AbstractBackgroundProcessor;
 
@@ -28,18 +25,17 @@ import com.uimirror.core.util.thread.AbstractBackgroundProcessor;
  * Set of operation that needs to be handled if user account is in {@link AccountState#DISABLED}
  * This will try to enable the account.
  * <ol>
- * <li>insert the new Document with the scope and client id</li>
+ * <li>Set the account state as enabled in credentials and basic user profile</li>
  * </ol> 
  * @author Jay
  */
-//TODO complete this ASAP
+//TODO User basic should have state, so implement that as well
 public class UserRestoreProcessor extends AbstractBackgroundProcessor<String, Object>{
 
 	protected static final Logger LOG = LoggerFactory.getLogger(UserRestoreProcessor.class);
 	
 	public static final String NAME = "URP";
-	private @Autowired TransformerService<AccessToken, UserAuthorizedClient> tokenToAuthorizedClientTransformer;
-	private @Autowired Processor<UserAuthorizedClient> allowClientprocessor;
+	private @Autowired UserCredentialsStore persistedUserCredentialMongoStore;
 
 	public UserRestoreProcessor(){
 		super(1);
@@ -50,9 +46,9 @@ public class UserRestoreProcessor extends AbstractBackgroundProcessor<String, Ob
 	 */
 	@Override
 	public void invoke(String profileId){
-		LOG.debug("[START]- Persisting new Authroized client for the user");
-		//getAdaptor().submitTasks(createJobs(token));
-		LOG.debug("[END]- Persisting new Authroized client for the user");
+		LOG.debug("[START]- Enabling/ Restoring user.");
+		getAdaptor().submitTasks(createJobs(profileId));
+		LOG.debug("[END]- Enabling/ Restoring user.");
 	}
 	
 	/**
@@ -60,29 +56,18 @@ public class UserRestoreProcessor extends AbstractBackgroundProcessor<String, Ob
 	 * @param token
 	 * @return
 	 */
-	private List<Runnable> createJobs(AccessToken token){
+	private List<Runnable> createJobs(String profileId){
 		List<Runnable> backgrounds = new ArrayList<Runnable>();
-		backgrounds.add(new RunInBackGround(token));
+		backgrounds.add(new RunInBackGround(profileId));
 		return backgrounds;
 	}
 	
 	/**
-	 * converts the form bean object into a {@link UserAuthorizedClient} object
-	 * @param param
-	 * @return
+	 * Enable account in the credentials
+	 * @param profileId
 	 */
-	private UserAuthorizedClient getTransformedObject(AccessToken token) {
-		return tokenToAuthorizedClientTransformer.transform(token);
-	}
-
-	/**
-	 * On basics of {@link CredentialType}, it will simply validate or generate 
-	 * the access token {@link AccessToken}
-	 * @param auth
-	 * @return
-	 */
-	private void handleAllowedAuthorizedRequest(UserAuthorizedClient auth){
-		allowClientprocessor.invoke(auth);
+	private void enableInCredentials(String profileId){
+		persistedUserCredentialMongoStore.enableAccount(profileId);
 	}
 
 	/**
@@ -91,9 +76,9 @@ public class UserRestoreProcessor extends AbstractBackgroundProcessor<String, Ob
 	 */
 	private class RunInBackGround implements Runnable{
 		
-		private final AccessToken token;
-		public RunInBackGround(AccessToken token){
-			this.token = token;
+		private final String profileId;
+		public RunInBackGround(String profileId){
+			this.profileId = profileId;
 		}
 
 		/* (non-Javadoc)
@@ -101,10 +86,8 @@ public class UserRestoreProcessor extends AbstractBackgroundProcessor<String, Ob
 		 */
 		@Override
 		public void run() {
-			//Step 1- Transform the token to the UserAuthorizedClient object
-			UserAuthorizedClient authorizedClient = getTransformedObject(token);
-			//Finally store the authorized client
-			handleAllowedAuthorizedRequest(authorizedClient);
+			//Step 1- Enable in Credentials first
+			enableInCredentials(profileId);
 		}
 		
 	}

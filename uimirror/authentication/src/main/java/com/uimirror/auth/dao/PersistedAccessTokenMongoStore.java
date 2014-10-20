@@ -199,4 +199,33 @@ public class PersistedAccessTokenMongoStore extends AbstractMongoStore<DefaultAc
 		return query;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.uimirror.auth.dao.AccessTokenStore#markAsExpired(java.lang.String)
+	 */
+	@Override
+	public int markAsExpired(String token) throws DBException {
+		Map<String, Object> setQuery = new LinkedHashMap<String, Object>(3);
+		setQuery.put(BasicMongoOperators.SET, getExpiryNowMap());
+		return updateById(token, setQuery);
+	}
+	
+	/**
+	 * Creates the map for the token expire fields to mark as now
+	 * @return
+	 */
+	private Map<String, Object> getExpiryNowMap(){
+		Map<String, Object> query = new LinkedHashMap<String, Object>(3);
+		query.put(AccessTokenFields.AUTH_TKN_EXPIRES, DateTimeUtil.getCurrentSystemUTCEpoch());
+		return query;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.uimirror.core.dao.AbstractMongoStore#ensureIndex()
+	 */
+	@Override
+	protected void ensureIndex() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

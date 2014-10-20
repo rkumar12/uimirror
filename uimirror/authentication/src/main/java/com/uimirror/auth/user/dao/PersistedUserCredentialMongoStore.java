@@ -25,6 +25,8 @@ import com.uimirror.auth.user.UserAuthDBFields;
 import com.uimirror.auth.user.UserCredentials;
 import com.uimirror.core.dao.AbstractMongoStore;
 import com.uimirror.core.dao.DBException;
+import com.uimirror.core.mongo.BasicMongoOperators;
+import com.uimirror.core.user.AccountState;
 
 /**
  * Retrieves the credential store for the user.
@@ -68,6 +70,35 @@ public class PersistedUserCredentialMongoStore extends AbstractMongoStore<Defaul
 	@Override
 	public UserCredentials getCredentialsByProfileId(String identifier) throws DBException {
 		return getById(identifier);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.uimirror.core.dao.AbstractMongoStore#ensureIndex()
+	 */
+	@Override
+	protected void ensureIndex() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see com.uimirror.auth.dao.UserCredentialsStore#enableAccount(java.lang.String)
+	 */
+	@Override
+	public int enableAccount(String profileId) throws DBException {
+		Map<String, Object> set = new LinkedHashMap<String, Object>(3);
+		set.put(BasicMongoOperators.SET, getAccountStateMap(AccountState.ENABLED));
+		return updateById(profileId, set);
+	}
+	
+	/**Create a map for the account state 
+	 * @param state
+	 * @return
+	 */
+	private Map<String, Object> getAccountStateMap(AccountState state){
+		Map<String, Object> field = new LinkedHashMap<String, Object>(3);
+		field.put(UserAuthDBFields.ACCOUNT_STATE, state.getState());
+		return field;
 	}
 
 }

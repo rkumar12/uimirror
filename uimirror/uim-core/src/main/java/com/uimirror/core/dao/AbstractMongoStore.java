@@ -310,5 +310,10 @@ public abstract class AbstractMongoStore<T extends BeanBasedDocument<T>> extends
 		List<T> results = getByQuery(query, fields);
 		return results.get(0);
 	}
+	
+	/**
+	 * Should have give the implementation to make sure, document has the enough index
+	 */
+	protected abstract void ensureIndex();
 
 }

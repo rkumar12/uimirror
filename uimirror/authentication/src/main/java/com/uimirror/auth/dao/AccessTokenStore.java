@@ -157,4 +157,11 @@ public interface AccessTokenStore {
 	 */
 	void markAllExpiredByClient(String clientId)throws DBException;
 	
+	/**
+	 * Mark the token issued for the client as expired
+	 * @param clientId
+	 * @throws DBException
+	 */
+	int markAsExpired(String token)throws DBException;
+	
 }
