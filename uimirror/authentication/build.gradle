@@ -74,7 +74,7 @@ jar {
 
 description = "An Authentication Module By Uimirror Team."
 
-mainClassName = "com.uimirror.auth.StartApp"
+mainClassName = "com.uimirror.account.auth.StartApp"
 applicationDefaultJvmArgs = ["-Dgreeting.language=en"]
 
 defaultTasks 'clean', 'build', 'intsall'
