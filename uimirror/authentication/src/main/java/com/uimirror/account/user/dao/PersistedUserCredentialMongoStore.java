@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.account.auth.user.dao;
+package com.uimirror.account.user.dao;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -19,7 +19,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
 import com.mongodb.DBCollection;
-import com.uimirror.account.auth.dao.UserCredentialsStore;
 import com.uimirror.account.user.UserAuthDBFields;
 import com.uimirror.account.user.UserCredentials;
 import com.uimirror.account.user.bean.DefaultUserCredentials;

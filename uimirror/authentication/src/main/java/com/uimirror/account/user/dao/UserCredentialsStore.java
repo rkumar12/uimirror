@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.account.auth.dao;
+package com.uimirror.account.user.dao;
 
 import com.uimirror.account.user.UserCredentials;
 import com.uimirror.core.dao.DBException;

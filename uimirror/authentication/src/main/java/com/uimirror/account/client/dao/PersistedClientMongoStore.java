@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.account.auth.dao;
+package com.uimirror.account.client.dao;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

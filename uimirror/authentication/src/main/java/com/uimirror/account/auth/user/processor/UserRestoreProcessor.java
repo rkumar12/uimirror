@@ -17,7 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.uimirror.account.auth.dao.UserCredentialsStore;
+import com.uimirror.account.user.dao.UserCredentialsStore;
 import com.uimirror.core.user.AccountState;
 import com.uimirror.core.util.thread.AbstractBackgroundProcessor;
 

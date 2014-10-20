@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.account.auth.dao;
+package com.uimirror.account.client.dao;
 
 import com.uimirror.account.client.bean.Client;
 import com.uimirror.core.dao.DBException;
