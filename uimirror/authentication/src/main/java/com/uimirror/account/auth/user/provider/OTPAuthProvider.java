@@ -17,13 +17,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.uimirror.account.auth.client.Client;
-import com.uimirror.account.auth.client.ClientDBFields;
 import com.uimirror.account.auth.controller.AccessTokenProvider;
 import com.uimirror.account.auth.controller.AuthenticationProvider;
 import com.uimirror.account.auth.core.AuthenticationManager;
 import com.uimirror.account.auth.dao.ClientStore;
 import com.uimirror.account.auth.user.bean.OTPAuthentication;
+import com.uimirror.account.client.Client;
+import com.uimirror.account.client.ClientDBFields;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.AuthConstants;
 import com.uimirror.core.auth.Authentication;

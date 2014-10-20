@@ -12,8 +12,8 @@ package com.uimirror.account.auth.client.transformer;
 
 import org.springframework.util.Assert;
 
-import com.uimirror.account.auth.client.bean.APIKeyAuthentication;
-import com.uimirror.account.auth.client.bean.form.ClientAPIForm;
+import com.uimirror.account.auth.client.APIKeyAuthentication;
+import com.uimirror.account.auth.client.form.ClientAPIForm;
 import com.uimirror.core.service.TransformerService;
 
 /**

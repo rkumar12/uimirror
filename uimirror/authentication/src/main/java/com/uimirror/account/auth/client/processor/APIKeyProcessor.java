@@ -14,8 +14,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.uimirror.account.auth.client.bean.APIKeyAuthentication;
-import com.uimirror.account.auth.client.bean.form.ClientAPIForm;
+import com.uimirror.account.auth.client.APIKeyAuthentication;
+import com.uimirror.account.auth.client.form.ClientAPIForm;
 import com.uimirror.account.auth.controller.AuthenticationProvider;
 import com.uimirror.account.auth.exception.AuthToApplicationExceptionMapper;
 import com.uimirror.core.Processor;

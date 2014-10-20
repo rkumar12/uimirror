@@ -12,8 +12,8 @@ package com.uimirror.account.auth.client.transformer;
 
 import org.springframework.util.Assert;
 
-import com.uimirror.account.auth.client.bean.OAuth2SecretKeyAuthentication;
-import com.uimirror.account.auth.client.bean.form.ClientSecretKeyForm;
+import com.uimirror.account.auth.client.OAuth2SecretKeyAuthentication;
+import com.uimirror.account.auth.client.form.ClientSecretKeyForm;
 import com.uimirror.core.service.TransformerService;
 
 /**

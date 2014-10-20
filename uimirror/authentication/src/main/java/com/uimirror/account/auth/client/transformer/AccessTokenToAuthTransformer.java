@@ -12,7 +12,7 @@ package com.uimirror.account.auth.client.transformer;
 
 import org.springframework.util.Assert;
 
-import com.uimirror.account.auth.client.bean.OAuth2Authentication;
+import com.uimirror.account.auth.client.OAuth2Authentication;
 import com.uimirror.core.bean.form.AuthenticatedHeaderForm;
 import com.uimirror.core.service.TransformerService;
 

@@ -8,54 +8,63 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.account.auth.client.bean.form;
+package com.uimirror.account.auth.client.form;
 
 import javax.ws.rs.QueryParam;
 
 import org.springframework.util.StringUtils;
 
 import com.uimirror.core.auth.AuthConstants;
-import com.uimirror.core.auth.Scope;
 import com.uimirror.core.bean.form.ClientMetaForm;
 import com.uimirror.core.rest.extra.IllegalArgumentException;
 import com.uimirror.core.service.BeanValidatorService;
 
 /**
- * Converts the {@link QueryParam} provided in the GET request for the
- * to get secret key.
- * A standard url will look like /auth?response_type=code&client_id=CLIENT_ID&redirect_uri=REDIRECT_URI&scope=photos&app=rti
- * 
+ * Converts the {@link QueryParam} provided in the POST request to get
+ * a access key.
+ * POST https://api.oauth2server.com/token?grant_type=authorization_code&code=AUTH_CODE_HERE&
+ * redirect_uri=REDIRECT_URI&
+ * client_id=CLIENT_ID&
+ * client_secret=CLIENT_SECRET
  * @author Jay
  */
-public class ClientAPIForm extends ClientMetaForm implements BeanValidatorService{
+public class ClientSecretKeyForm extends ClientMetaForm implements BeanValidatorService{
 
 	private static final long serialVersionUID = -6338697684103708792L;
+
+	@QueryParam(AuthConstants.CLIENT_SECRET_CODE)
+	private String secretCode;
+
+	@QueryParam(AuthConstants.REDIRECT_URI)
+	private String redirectURI;
 
 	@QueryParam(AuthConstants.CLIENT_ID)
 	private String clientId;
 	
-	@QueryParam(AuthConstants.REDIRECT_URI)
-	private String redirectURI;
-	
-	@QueryParam(AuthConstants.SCOPE)
-	private String scope;
-	
-	public String getClientId() {
-		return clientId;
-	}
+	@QueryParam(AuthConstants.CLIENT_SECRET)
+	private String clientSecret;
 
 	public String getRedirectURI() {
 		return redirectURI;
 	}
 
-	public Scope getScope() {
-		return Scope.getEnum(scope);
+	public String getSecretCode() {
+		return secretCode;
 	}
-	
+
+	public String getClientId() {
+		return clientId;
+	}
+
+	public String getClientSecret() {
+		return clientSecret;
+	}
+
 	@Override
 	public String toString() {
-		return "ClientAPIForm [clientId=" + clientId + ", redirectURI="
-				+ redirectURI + ", scope=" + scope + "]";
+		return "ClientAccessCodeForm [code=" + secretCode + ", redirectURI="
+				+ redirectURI + ", clientId=" + clientId + ", clientSecret="
+				+ clientSecret + "]";
 	}
 
 	/* (non-Javadoc)
@@ -76,8 +85,10 @@ public class ClientAPIForm extends ClientMetaForm implements BeanValidatorServic
 			informIllegalArgument("redirect URI should be present");
 		if(!StringUtils.hasText(getClientId()))
 			informIllegalArgument("Client Id Should present");
-		if(!StringUtils.hasText(scope) || Scope.getEnum(scope) != null)
-			informIllegalArgument("Scope Should present");
+		if(!StringUtils.hasText(getClientSecret()))
+			informIllegalArgument("Client Secret Should present");
+		if(!StringUtils.hasText(getSecretCode()))
+			informIllegalArgument("Client Secret Code Should present");
 	}
 	
 	private void informIllegalArgument(String msg){

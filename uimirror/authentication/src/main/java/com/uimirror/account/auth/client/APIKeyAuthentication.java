@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.account.auth.client.bean;
+package com.uimirror.account.auth.client;
 
 import java.util.Map;
 

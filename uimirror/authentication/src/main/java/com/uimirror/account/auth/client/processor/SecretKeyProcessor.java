@@ -14,8 +14,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.uimirror.account.auth.client.bean.OAuth2SecretKeyAuthentication;
-import com.uimirror.account.auth.client.bean.form.ClientSecretKeyForm;
+import com.uimirror.account.auth.client.OAuth2SecretKeyAuthentication;
+import com.uimirror.account.auth.client.form.ClientSecretKeyForm;
 import com.uimirror.account.auth.controller.AuthenticationProvider;
 import com.uimirror.account.auth.core.processor.InvalidateTokenProcessor;
 import com.uimirror.account.auth.exception.AuthToApplicationExceptionMapper;

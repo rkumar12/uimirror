@@ -19,14 +19,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 
 import com.uimirror.account.auth.bean.DefaultAccessToken;
-import com.uimirror.account.auth.client.Client;
-import com.uimirror.account.auth.client.bean.APIKeyAuthentication;
+import com.uimirror.account.auth.client.APIKeyAuthentication;
 import com.uimirror.account.auth.core.AuthenticationException;
 import com.uimirror.account.auth.core.AuthenticationManager;
 import com.uimirror.account.auth.core.LockedException;
 import com.uimirror.account.auth.core.TokenGenerator;
 import com.uimirror.account.auth.dao.ClientStore;
 import com.uimirror.account.auth.exception.AuthExceptionMapper;
+import com.uimirror.account.client.Client;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.AuthConstants;
 import com.uimirror.core.auth.Authentication;

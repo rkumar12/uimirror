@@ -13,8 +13,8 @@ package com.uimirror.account.auth.conf;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.uimirror.account.auth.client.bean.form.ClientAPIForm;
-import com.uimirror.account.auth.client.bean.form.ClientSecretKeyForm;
+import com.uimirror.account.auth.client.form.ClientAPIForm;
+import com.uimirror.account.auth.client.form.ClientSecretKeyForm;
 import com.uimirror.account.auth.client.processor.APIKeyProcessor;
 import com.uimirror.account.auth.client.processor.AccessTokenProcessor;
 import com.uimirror.account.auth.client.processor.SecretKeyProcessor;
