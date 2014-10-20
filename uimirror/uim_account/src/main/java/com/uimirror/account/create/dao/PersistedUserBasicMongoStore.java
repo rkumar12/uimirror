@@ -40,4 +40,13 @@ public class PersistedUserBasicMongoStore extends AbstractMongoStore<BasicUserDe
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	/* (non-Javadoc)
+	 * @see com.uimirror.core.dao.AbstractMongoStore#ensureIndex()
+	 */
+	@Override
+	protected void ensureIndex() {
+		// TODO Auto-generated method stub
+		
+	}
 }
