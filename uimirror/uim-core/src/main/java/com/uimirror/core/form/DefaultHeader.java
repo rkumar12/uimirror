@@ -8,23 +8,28 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.core.bean.form;
+package com.uimirror.core.form;
 
 
 /**
- * Form that will be initiated during any incoming call
- * for any request those should have these things.
+ * This will define the contract that every request should have at minimum
+ * user agent and IP associated with the request.
  * 
  * @author Jay
  */
-public interface AuthenticatedRequestParam{
-	
+public interface DefaultHeader {
+
 	/**
-	 * If a request has the token in the header or query parameter it will detect those
-	 * without a proper token header/query parameter user will not be allowed for the further actions.
-	 * It will apply de-cryption, and return the raw token 
+	 * This gives the client IP, tries to connect 
+	 * this should present in all communication
 	 * @return
 	 */
-	public String getToken();
+	String getIp();
 
+	/**
+	 * Specifies the user browser meta information, from where user tries to get connect
+	 * it should present in all the communication
+	 * @return
+	 */
+	String getUserAgent();
 }

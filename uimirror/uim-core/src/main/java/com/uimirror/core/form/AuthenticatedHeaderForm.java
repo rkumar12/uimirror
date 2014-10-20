@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.core.bean.form;
+package com.uimirror.core.form;
 
 import java.io.Serializable;
 

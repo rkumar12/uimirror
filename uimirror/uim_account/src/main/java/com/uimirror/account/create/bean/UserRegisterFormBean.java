@@ -14,7 +14,7 @@ import javax.ws.rs.FormParam;
 
 import com.uimirror.account.create.RegisterConstants;
 import com.uimirror.core.bean.Gender;
-import com.uimirror.core.bean.form.ClientMetaForm;
+import com.uimirror.core.form.ClientMetaForm;
 import com.uimirror.core.service.BeanValidatorService;
 
 /**
