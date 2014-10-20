@@ -10,6 +10,7 @@
  *******************************************************************************/
 package com.uimirror.account.auth.endpoint;
 
+import javax.inject.Singleton;
 import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -33,6 +34,7 @@ import com.uimirror.core.form.AuthenticatedHeaderForm;
  * @author Jay
  */
 @Path(AuthenticationEndPointConstant.ACCESS_HOME_PATH)
+@Singleton
 public class AccessTokenAuthenticationEndPoint{
 
 	private @Autowired Processor<AuthenticatedHeaderForm> accessTokenProcessor;

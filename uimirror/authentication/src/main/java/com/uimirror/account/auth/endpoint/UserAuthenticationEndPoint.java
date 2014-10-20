@@ -10,6 +10,7 @@
  *******************************************************************************/
 package com.uimirror.account.auth.endpoint;
 
+import javax.inject.Singleton;
 import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -29,7 +30,7 @@ import com.uimirror.core.Processor;
 import com.uimirror.core.auth.AccessToken;
 
 /**
- * This authentication end point will be responsible for the user login {@link #login(RegisterForm)},
+ * This authentication end point will be responsible for the user login {@link #create(RegisterForm)},
  * {@link #unlockScreen(ScreenLockAuthenticationForm)}, {@link #otp(OTPAuthenticationForm)}
  * the result of all this operations will be a token 
  * known as {@link AccessToken}
@@ -37,6 +38,7 @@ import com.uimirror.core.auth.AccessToken;
  * @author Jay
  */
 @Path(AuthenticationEndPointConstant.AUTH)
+@Singleton
 public class UserAuthenticationEndPoint{
 
 	private static Logger LOG = LoggerFactory.getLogger(UserAuthenticationEndPoint.class);

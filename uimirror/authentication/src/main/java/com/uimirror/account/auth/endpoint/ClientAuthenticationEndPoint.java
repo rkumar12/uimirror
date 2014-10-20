@@ -10,6 +10,7 @@
  *******************************************************************************/
 package com.uimirror.account.auth.endpoint;
 
+import javax.inject.Singleton;
 import javax.ws.rs.BeanParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -34,6 +35,7 @@ import com.uimirror.core.form.AuthenticatedHeaderForm;
  * @author Jay
  */
 @Path(AuthenticationEndPointConstant.OUATH2_HOME)
+@Singleton
 public class ClientAuthenticationEndPoint{
 
 	private static Logger LOG = LoggerFactory.getLogger(ClientAuthenticationEndPoint.class);

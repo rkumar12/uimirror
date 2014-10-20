@@ -41,7 +41,7 @@ public class BearerTokenExtractor implements TokenExtractor {
 		// first check the header...
 		String token = extractHeaderToken(header);
 		// bearer type allows a request parameter as well
-		token = token == null ? null : queryParam; 
+		token = (token == null ? queryParam : token); 
 		if (token == null) {
 			LOG.debug("Token not found in request parameters.  Not an OAuth2 request.");
 		}

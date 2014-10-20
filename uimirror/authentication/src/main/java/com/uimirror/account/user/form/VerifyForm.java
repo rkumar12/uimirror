@@ -12,9 +12,7 @@ package com.uimirror.account.user.form;
 
 import javax.ws.rs.FormParam;
 
-import com.uimirror.core.auth.AuthConstants;
-import com.uimirror.core.bean.Gender;
-import com.uimirror.core.form.ClientMetaForm;
+import com.uimirror.core.form.AuthenticatedHeaderForm;
 import com.uimirror.core.rest.extra.IllegalArgumentException;
 import com.uimirror.core.service.BeanValidatorService;
 
@@ -27,58 +25,15 @@ import com.uimirror.core.service.BeanValidatorService;
  * 
  * @author Jay
  */
-public final class RegisterForm extends ClientMetaForm implements BeanValidatorService{
+public final class VerifyForm extends AuthenticatedHeaderForm implements BeanValidatorService{
 
 	private static final long serialVersionUID = -1215523730014366150L;
-
-	@FormParam(AuthConstants.CLIENT_ID)
-	private String clientId;
 	
-	@FormParam(RegisterConstants.FIRST_NAME)
-	private String firstName;
+	@FormParam(VerifyConstants.SOURCE)
+	private String source;
 	
-	@FormParam(RegisterConstants.LAST_NAME)
-	private String lastName;
-	
-	@FormParam(RegisterConstants.EMAIl)
-	private String email;
-	
-	@FormParam(RegisterConstants.PASSWORD)
-	private String password;
-	
-	@FormParam(RegisterConstants.GENDER)
-	private String gender;
-	
-	@FormParam(RegisterConstants.DATE_OF_BIRTH)
-	private String dateOfBirth;
-	
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public Gender getGender() {
-		return Gender.getEnum(gender);
-	}
-
-	public String getDateOfBirth() {
-		return dateOfBirth;
-	}
-
-	public String getClientId() {
-		return clientId;
-	}
+	@FormParam(VerifyConstants.CODE)
+	private String code;
 
 	/* (non-Javadoc)
 	 * @see com.uimirror.core.service.BeanValidatorService#isValid()
@@ -100,14 +55,17 @@ public final class RegisterForm extends ClientMetaForm implements BeanValidatorS
 		throw new IllegalArgumentException(msg);
 	}
 
+	public VerifySource getSource() {
+		return VerifySource.getEnum(source);
+	}
+
+	public String getCode() {
+		return code;
+	}
+
 	@Override
 	public String toString() {
-		return "RegisterForm [clientId=" + clientId + ", firstName="
-				+ firstName + ", lastName=" + lastName + ", email=" + email
-				+ ", password=[*******], gender=" + gender
-				+ ", dateOfBirth=" + dateOfBirth + "]";
+		return "VerifyForm [source=" + source + ", code=" + code + "]";
 	}
-	
-	
 
 }
