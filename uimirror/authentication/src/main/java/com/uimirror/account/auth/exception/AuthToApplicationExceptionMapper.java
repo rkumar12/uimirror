@@ -13,6 +13,7 @@ package com.uimirror.account.auth.exception;
 import com.uimirror.account.auth.core.AuthenticationException;
 import com.uimirror.account.auth.core.BadCredentialsException;
 import com.uimirror.account.auth.core.DisabledException;
+import com.uimirror.account.auth.core.InvalidTokenException;
 import com.uimirror.account.auth.core.LockedException;
 import com.uimirror.core.exceptions.ExceptionMapper;
 import com.uimirror.core.rest.extra.ApplicationException;
@@ -48,6 +49,9 @@ public class AuthToApplicationExceptionMapper implements ExceptionMapper{
 		
 		if(isInternal(exceptionToMap))
 			return translateToInternal();
+
+		if(isInvalidToken(exceptionToMap))
+			return translateToInvalidToken();
 		
 		return translateToInternal();
 	}
@@ -90,5 +94,13 @@ public class AuthToApplicationExceptionMapper implements ExceptionMapper{
 	
 	private ApplicationException translateToInternal(){
 		return new InternalException();
+	}
+	
+	private boolean isInvalidToken(Throwable e){
+		return e instanceof InvalidTokenException;
+	}
+	
+	private ApplicationException translateToInvalidToken(){
+		return new UnAuthorizedException();
 	}
 }

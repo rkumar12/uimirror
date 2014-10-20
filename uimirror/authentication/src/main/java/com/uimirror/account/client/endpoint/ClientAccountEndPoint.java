@@ -21,8 +21,10 @@ import javax.ws.rs.core.MediaType;
 import org.glassfish.jersey.server.JSONP;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.uimirror.account.client.form.RegisterForm;
+import com.uimirror.core.Processor;
 
 /**
  * End point for the various client operation
@@ -34,6 +36,7 @@ import com.uimirror.account.client.form.RegisterForm;
 public class ClientAccountEndPoint{
 
 	private static Logger LOG = LoggerFactory.getLogger(ClientAccountEndPoint.class);
+	private @Autowired Processor<RegisterForm> createClientAccountProcessor;
 	
 	public ClientAccountEndPoint() {
 		//NOP
@@ -74,9 +77,9 @@ public class ClientAccountEndPoint{
 	@Path(ClientEndPointConstant.CREATE)
 	public Object create(@BeanParam RegisterForm form){
 		LOG.info("[ENTRY]- Received requst for Client Creation.");
-		System.out.println(form);
+		Object response = createClientAccountProcessor.invoke(form);
 		LOG.info("[EXIT]- Received requst for Client Creation.");
-		return "Helo";
+		return response;
 	}
 	
 	

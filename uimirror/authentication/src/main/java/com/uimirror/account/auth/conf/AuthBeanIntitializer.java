@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Import;
 
 import com.uimirror.account.auth.controller.AccessTokenProvider;
 import com.uimirror.account.auth.core.PasswordMatcher;
-import com.uimirror.account.auth.core.PersistedAccessTokenMongoProvider;
+import com.uimirror.account.auth.core.PersistedAccessTokenProvider;
 import com.uimirror.core.crypto.CryptoMatcherService;
 import com.uimirror.core.mail.EmailBeanInitializr;
 
@@ -41,7 +41,7 @@ public class AuthBeanIntitializer {
 	//****Access Token providers****
 	@Bean
 	public AccessTokenProvider persistedAccessTokenProvider(){
-		return new PersistedAccessTokenMongoProvider();
+		return new PersistedAccessTokenProvider();
 	}
 	//****Access Token providers end****
 

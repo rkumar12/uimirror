@@ -93,7 +93,7 @@ public class PersistedAccessTokenMongoStore extends AbstractMongoStore<DefaultAc
 	 */
 	private Map<String, Object> buildTimeValidQuery(){
 		Map<String, Object> query = new LinkedHashMap<String, Object>(3);
-		query.put(BasicMongoOperators.LESSTHANEQUEAL, DateTimeUtil.getCurrentUTCTime());
+		query.put(BasicMongoOperators.LESSTHANEQUEAL, DateTimeUtil.getCurrentSystemUTCEpoch());
 		return query;
 	}
 

@@ -226,7 +226,9 @@ public abstract class AbstractMongoStore<T extends BeanBasedDocument<T>> extends
 		//Retrieve max of 20 at a time
 		cursor.batchSize(fetchSize);
 		List<T> results = new ArrayList<T>(fetchSize+(fetchSize+thirtyPercentage));
-		cursor.forEach((result) -> results.add((T)t.initFromMap(result.toMap())));
+		cursor.forEach((result) -> {
+			results.add((T)t.initFromMap(result.toMap()));
+		});
 		if(CollectionUtils.isEmpty(results)){
 			throw new RecordNotFoundException("No Record Found");
 		}
