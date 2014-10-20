@@ -40,7 +40,7 @@ public class TokenDeleteScheduler {
 	 * Delete all the tokens that are not of type {@link TokenType#ACCESS} and expired
 	 * or {@link TokenType#ACCESS} and 30 mins old of expired.
 	 */
-	@Scheduled(fixedDelay=600000)
+	@Scheduled(fixedDelay=600000, initialDelay=200000)
 	public void deleteExpired(){
 		LOG.info("[SCHEDULED-START]- Access Token Delete Operation started.");
 		int numberOfRecord = persistedAccessTokenMongoStore.deleteByQuery(buildQuery());
