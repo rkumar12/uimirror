@@ -22,17 +22,11 @@ import org.glassfish.jersey.server.JSONP;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.uimirror.account.auth.user.form.OTPAuthenticationForm;
-import com.uimirror.account.auth.user.form.ScreenLockAuthenticationForm;
 import com.uimirror.account.user.form.RegisterForm;
 import com.uimirror.account.user.form.VerifyForm;
-import com.uimirror.core.auth.AccessToken;
 
 /**
- * This authentication end point will be responsible for the user login {@link #create(RegisterForm)},
- * {@link #unlockScreen(ScreenLockAuthenticationForm)}, {@link #otp(OTPAuthenticationForm)}
- * the result of all this operations will be a token 
- * known as {@link AccessToken}
+ * End point for the various user basic operations
  * 
  * @author Jay
  */

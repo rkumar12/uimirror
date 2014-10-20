@@ -26,7 +26,9 @@ public class JerssyApplicationInitializer extends ResourceConfig{
 	
 	public JerssyApplicationInitializer(){
 		// Register resources and providers using package-scanning.
-		packages(false, "com.uimirror.account.auth.endpoint","com.uimirror.account.user.endpoint");
+		packages(false, "com.uimirror.account.auth.endpoint"
+				,"com.uimirror.account.user.endpoint"
+				,"com.uimirror.account.client.endpoint");
 		//packages(true, "com.uimirror.account.auth.conf");
 		// Register my custom provider - not needed if it's in my.package.
 //        register(AccessTokenExtractorFilter.class);

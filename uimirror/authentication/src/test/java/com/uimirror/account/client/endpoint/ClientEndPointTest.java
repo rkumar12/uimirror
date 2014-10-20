@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.account.endpoint;
+package com.uimirror.account.client.endpoint;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -38,12 +38,10 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import com.uimirror.account.StartApp;
-import com.uimirror.account.user.endpoint.UserAccountEndPoint;
-import com.uimirror.account.user.form.RegisterConstants;
-import com.uimirror.core.auth.AuthConstants;
+import com.uimirror.account.client.form.RegisterConstants;
 
 /**
- * Integration test case for the {@link UserAccountEndPoint}
+ * Integration test case for the {@link ClientAccountEndPoint}
  * @author Jay
  */
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -51,31 +49,28 @@ import com.uimirror.core.auth.AuthConstants;
 @WebAppConfiguration
 @IntegrationTest
 @DirtiesContext
-public class UserAccountEndPointTest {
-
+public class ClientEndPointTest {
+	
 	@Test
-	public void userRegisterationTest() {
+	public void createClientTest(){
 		MultiValueMap<String, String> param = new LinkedMultiValueMap<String, String>();
-		param.add(RegisterConstants.FIRST_NAME, "Jayaram");
-		param.add(RegisterConstants.LAST_NAME, "Pradhan");
-		param.add(RegisterConstants.EMAIl, "jayaramimca@gmail.com");
-		param.add(RegisterConstants.PASSWORD, "Omm@ssm");
-		param.add(RegisterConstants.GENDER, "m");
-		param.add(RegisterConstants.DATE_OF_BIRTH, "18-09-1988");
-		param.add(AuthConstants.CLIENT_ID, "1234");
+		param.add(RegisterConstants.NAME, "UIM_MOBILE");
+		param.add(RegisterConstants.APP_URL, "http://uimirror.com");
+		param.add(RegisterConstants.REDIRECT_URL, "http://uimirror.com");
 		SimpleClientHttpRequestFactory s = new SimpleClientHttpRequestFactory() {
-		    @Override
-		    protected void prepareConnection(HttpURLConnection connection, String httpMethod) throws IOException {
-			super.prepareConnection(connection, httpMethod);
-			connection.setConnectTimeout(4000);
-			connection.setReadTimeout(4000);
-			connection.setUseCaches(Boolean.TRUE);
-			connection.setRequestProperty("Accept-Encoding", "gzip,deflate");
-			//connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-		    }
+			@Override
+			protected void prepareConnection(HttpURLConnection connection, String httpMethod) throws IOException {
+				super.prepareConnection(connection, httpMethod);
+				connection.setConnectTimeout(4000);
+				connection.setReadTimeout(4000);
+				connection.setUseCaches(Boolean.TRUE);
+				connection.setRequestProperty("Accept-Encoding", "gzip,deflate");
+				//connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+			}
 		};
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+		headers.set("Authorization", "Bearer 1234");
 		List<HttpMessageConverter<?> > messageConverters = new ArrayList< HttpMessageConverter<?> >(2);   
 		messageConverters.add( new StringHttpMessageConverter() );
 		messageConverters.add( new ByteArrayHttpMessageConverter() );
@@ -84,7 +79,7 @@ public class UserAccountEndPointTest {
 		rst.setRequestFactory(s);
 		rst.setMessageConverters(messageConverters);
 		HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(param, headers);
-		ResponseEntity<String> entity = rst.postForEntity("http://127.0.0.1:8080/uim/account/user/create", request, String.class);
+		ResponseEntity<String> entity = rst.postForEntity("http://127.0.0.1:8080/uim/account/client/create", request, String.class);
 		Assert.assertEquals(HttpStatus.OK, entity.getStatusCode());
 	}
 

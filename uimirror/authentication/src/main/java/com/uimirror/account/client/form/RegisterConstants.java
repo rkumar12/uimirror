@@ -8,15 +8,17 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.account.user.endpoint;
+package com.uimirror.account.client.form;
+
+import com.uimirror.core.Parameters;
 
 /**
- * This contains all the URL path for the account end points.
+ * Contains constants for the client register form
  * @author Jay
  */
-public interface AccountEndPointConstant {
-	String HOME = "/";
-	String USER = HOME+"user";
-	String CREATE = "/create";
-	String VERIFY = "/verify";
+public interface RegisterConstants extends Parameters{
+
+	String NAME = "name";
+	String REDIRECT_URL = "redirect_url";
+	String APP_URL = "app_url";
 }
