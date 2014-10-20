@@ -19,7 +19,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import com.mongodb.DBCollection;
-import com.uimirror.account.auth.bean.DefaultAccessToken;
+import com.uimirror.account.auth.DefaultAccessToken;
 import com.uimirror.account.auth.core.AccessTokenFields;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.dao.AbstractMongoStore;

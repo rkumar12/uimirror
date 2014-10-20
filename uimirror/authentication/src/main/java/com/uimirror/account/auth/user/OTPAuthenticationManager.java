@@ -19,7 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
-import com.uimirror.account.auth.bean.DefaultAccessToken;
+import com.uimirror.account.auth.DefaultAccessToken;
 import com.uimirror.account.auth.controller.AccessTokenProvider;
 import com.uimirror.account.auth.core.AuthenticationException;
 import com.uimirror.account.auth.core.AuthenticationManager;

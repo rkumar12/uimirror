@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 
-import com.uimirror.account.auth.bean.DefaultAccessToken;
+import com.uimirror.account.auth.DefaultAccessToken;
 import com.uimirror.account.auth.controller.AccessTokenProvider;
 import com.uimirror.account.auth.core.AuthenticationException;
 import com.uimirror.account.auth.core.AuthenticationManager;
