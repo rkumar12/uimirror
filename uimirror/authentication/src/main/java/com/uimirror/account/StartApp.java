@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.account.auth;
+package com.uimirror.account;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -43,7 +43,7 @@ import com.uimirror.account.auth.conf.WebAppInitializer;
  */
 @Configuration
 @ImportResource("classpath*:applicationContext.xml")
-@ComponentScan(basePackages= {"com.uimirror.account.auth"})
+@ComponentScan(basePackages= {"com.uimirror.account"})
 @Import({
 	AppConfig.class, BeanIntitializer.class, WebAppInitializer.class
 })
@@ -57,7 +57,7 @@ public class StartApp {
 	@Value("${tomcat.sessionTimeout:30}")
 	private int tomcatSessionTimeout;
 
-	@Value("${tomcat.contextPath:/uim}/${application.id:auth}")
+	@Value("${tomcat.contextPath:/uim}/${application.id:account}")
 	private String contextPath;
 	
 	@Bean
