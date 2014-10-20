@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.account.user.endpoint;
+package com.uimirror.account.auth.endpoint;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -38,13 +38,10 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import com.uimirror.account.StartApp;
-import com.uimirror.account.client.endpoint.ClientAccountEndPoint;
-import com.uimirror.account.user.form.RegisterConstants;
-import com.uimirror.account.user.form.VerifyConstants;
 import com.uimirror.core.auth.AuthConstants;
 
 /**
- * Integration test case for the {@link ClientAccountEndPoint}
+ * Integration test case for the {@link UserAuthenticationEndPoint}
  * @author Jay
  */
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -52,77 +49,14 @@ import com.uimirror.core.auth.AuthConstants;
 @WebAppConfiguration
 @IntegrationTest
 @DirtiesContext
-public class UserAccountEndPointTest {
+public class UserAuthenticationEndPointTest {
 
 	@Test
-	public void userRegisterationTest() {
+	public void loginTest() {
 		MultiValueMap<String, String> param = new LinkedMultiValueMap<String, String>();
-		param.add(RegisterConstants.FIRST_NAME, "Jayaram");
-		param.add(RegisterConstants.LAST_NAME, "Pradhan");
-		param.add(RegisterConstants.EMAIl, "jayaramimca@gmail.com");
-		param.add(RegisterConstants.PASSWORD, "Omm@ssm");
-		param.add(RegisterConstants.GENDER, "m");
-		param.add(RegisterConstants.DATE_OF_BIRTH, "18-09-1988");
-		SimpleClientHttpRequestFactory s = new SimpleClientHttpRequestFactory() {
-		    @Override
-		    protected void prepareConnection(HttpURLConnection connection, String httpMethod) throws IOException {
-			super.prepareConnection(connection, httpMethod);
-			connection.setConnectTimeout(4000);
-			connection.setReadTimeout(4000);
-			connection.setUseCaches(Boolean.TRUE);
-			connection.setRequestProperty("Accept-Encoding", "gzip,deflate");
-			//connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-		    }
-		};
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-		List<HttpMessageConverter<?> > messageConverters = new ArrayList< HttpMessageConverter<?> >(2);   
-		messageConverters.add( new StringHttpMessageConverter() );
-		messageConverters.add( new ByteArrayHttpMessageConverter() );
-		messageConverters.add(new FormHttpMessageConverter());
-		TestRestTemplate rst = new TestRestTemplate();
-		rst.setRequestFactory(s);
-		rst.setMessageConverters(messageConverters);
-		HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(param, headers);
-		ResponseEntity<String> entity = rst.postForEntity("http://127.0.0.1:8080/uim/account/user/create?client_id=1234", request, String.class);
-		Assert.assertEquals(HttpStatus.OK, entity.getStatusCode());
-	}
-	
-	@Test
-	public void userVerifyByEmailTest(){
-		MultiValueMap<String, String> param = new LinkedMultiValueMap<String, String>();
-		param.add(VerifyConstants.SOURCE, "E");
-		SimpleClientHttpRequestFactory s = new SimpleClientHttpRequestFactory() {
-		    @Override
-		    protected void prepareConnection(HttpURLConnection connection, String httpMethod) throws IOException {
-			super.prepareConnection(connection, httpMethod);
-			connection.setConnectTimeout(4000);
-			connection.setReadTimeout(4000);
-			connection.setUseCaches(Boolean.TRUE);
-			connection.setRequestProperty("Accept-Encoding", "gzip,deflate");
-			//connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-		    }
-		};
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-		headers.set("Authorization", "Bearer 1234");
-		List<HttpMessageConverter<?> > messageConverters = new ArrayList< HttpMessageConverter<?> >(2);   
-		messageConverters.add( new StringHttpMessageConverter() );
-		messageConverters.add( new ByteArrayHttpMessageConverter() );
-		messageConverters.add(new FormHttpMessageConverter());
-		TestRestTemplate rst = new TestRestTemplate();
-		rst.setRequestFactory(s);
-		rst.setMessageConverters(messageConverters);
-		HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(param, headers);
-		ResponseEntity<String> entity = rst.postForEntity("http://127.0.0.1:8080/uim/account/user/verify", request, String.class);
-		Assert.assertEquals(HttpStatus.OK, entity.getStatusCode());
-	}
-	
-	@Test
-	public void userVerifyByWebTest(){
-		MultiValueMap<String, String> param = new LinkedMultiValueMap<String, String>();
-		param.add(VerifyConstants.SOURCE, "W");
-		param.add(VerifyConstants.CODE, "123");
+		param.add(AuthConstants.USER_ID, "jayaramimca@gmail.com");
+		param.add(AuthConstants.PASSWORD, "Ommtest");
+		param.add(AuthConstants.KEEP_ME_LOGIN, "Y");
 		SimpleClientHttpRequestFactory s = new SimpleClientHttpRequestFactory() {
 			@Override
 			protected void prepareConnection(HttpURLConnection connection, String httpMethod) throws IOException {
@@ -145,7 +79,37 @@ public class UserAccountEndPointTest {
 		rst.setRequestFactory(s);
 		rst.setMessageConverters(messageConverters);
 		HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(param, headers);
-		ResponseEntity<String> entity = rst.postForEntity("http://127.0.0.1:8080/uim/account/user/verify", request, String.class);
+		ResponseEntity<String> entity = rst.postForEntity("http://127.0.0.1:8080/uim/account/auth/login", request, String.class);
+		Assert.assertEquals(HttpStatus.OK, entity.getStatusCode());
+	}
+
+	@Test
+	public void otpTest() {
+		MultiValueMap<String, String> param = new LinkedMultiValueMap<String, String>();
+		param.add(AuthConstants.OTP, "1234");
+		SimpleClientHttpRequestFactory s = new SimpleClientHttpRequestFactory() {
+			@Override
+			protected void prepareConnection(HttpURLConnection connection, String httpMethod) throws IOException {
+				super.prepareConnection(connection, httpMethod);
+				connection.setConnectTimeout(4000);
+				connection.setReadTimeout(4000);
+				connection.setUseCaches(Boolean.TRUE);
+				connection.setRequestProperty("Accept-Encoding", "gzip,deflate");
+				//connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+			}
+		};
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+		headers.set("Authorization", "Bearer 1234");
+		List<HttpMessageConverter<?> > messageConverters = new ArrayList< HttpMessageConverter<?> >(2);   
+		messageConverters.add( new StringHttpMessageConverter() );
+		messageConverters.add( new ByteArrayHttpMessageConverter() );
+		messageConverters.add(new FormHttpMessageConverter());
+		TestRestTemplate rst = new TestRestTemplate();
+		rst.setRequestFactory(s);
+		rst.setMessageConverters(messageConverters);
+		HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(param, headers);
+		ResponseEntity<String> entity = rst.postForEntity("http://127.0.0.1:8080/uim/account/auth/OTP", request, String.class);
 		Assert.assertEquals(HttpStatus.OK, entity.getStatusCode());
 	}
 

@@ -30,7 +30,7 @@ import com.uimirror.core.Processor;
 import com.uimirror.core.auth.AccessToken;
 
 /**
- * This authentication end point will be responsible for the user login {@link #create(RegisterForm)},
+ * This authentication end point will be responsible for the user login {@link #login(LoginForm)},
  * {@link #unlockScreen(ScreenLockAuthenticationForm)}, {@link #otp(OTPAuthenticationForm)}
  * the result of all this operations will be a token 
  * known as {@link AccessToken}
@@ -86,6 +86,7 @@ public class UserAuthenticationEndPoint{
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Path(AuthenticationEndPointConstant.LOGIN_PATH)
 	public Object login(@BeanParam LoginForm loginForm){
+		//TODO Failing exception for the token decryption check that out
 		LOG.info("[ENTRY]- Received requst for user authentication by user name and password");
 		Object response = loginFormAuthProcessor.invoke(loginForm);
 		LOG.info("[EXIT]- Received requst for user authentication by user name and password");
@@ -122,7 +123,7 @@ public class UserAuthenticationEndPoint{
 	@JSONP(queryParam="cb", callback="callback")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Path(AuthenticationEndPointConstant.TWO_FACTO_PATH)
-	public Object otp(OTPAuthenticationForm form){
+	public Object otp(@BeanParam OTPAuthenticationForm form){
 		LOG.info("[ENTRY]- Received request for 2 Factor OTP Authentication");
 		Object response = otpAuthProcessor.invoke(form);
 		LOG.info("[EXIT]- Received request for 2 Factor OTP Authentication");
@@ -140,7 +141,7 @@ public class UserAuthenticationEndPoint{
 	@JSONP(queryParam="cb", callback="callback")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Path(AuthenticationEndPointConstant.UNLOCK_PATH)
-	public Object unlockScreen(ScreenLockAuthenticationForm form){
+	public Object unlockScreen(@BeanParam ScreenLockAuthenticationForm form){
 		LOG.info("[ENTRY]- Received request for unlocking screen");
 		Object response = screenLockAuthProcessor.invoke(form);
 		LOG.info("[EXIT]- Received request for unlocking screen");

@@ -62,7 +62,7 @@ public class ClientAuthenticationEndPoint{
 	@GET
 	@Produces({ "application/x-javascript", MediaType.APPLICATION_JSON })
 	@JSONP(queryParam="cb", callback="callback")
-	@Path(AuthenticationEndPointConstant.OUATH_2_AUTH_PATH)
+	@Path(AuthenticationEndPointConstant.OUATH_2_SECRET_CODE_PATH)
 	public Object getSecretCode(@BeanParam ClientAPIForm form){
 		LOG.info("[ENTRY]- Received request for client Secret Code with the param {}", form);
 		Object response = apiKeyProcessor.invoke(form);

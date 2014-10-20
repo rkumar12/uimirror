@@ -11,6 +11,7 @@
 package com.uimirror.account.user.form;
 
 import javax.ws.rs.FormParam;
+import javax.ws.rs.QueryParam;
 
 import com.uimirror.core.auth.AuthConstants;
 import com.uimirror.core.bean.Gender;
@@ -31,7 +32,7 @@ public final class RegisterForm extends ClientMetaForm implements BeanValidatorS
 
 	private static final long serialVersionUID = -1215523730014366150L;
 
-	@FormParam(AuthConstants.CLIENT_ID)
+	@QueryParam(AuthConstants.CLIENT_ID)
 	private String clientId;
 	
 	@FormParam(RegisterConstants.FIRST_NAME)
