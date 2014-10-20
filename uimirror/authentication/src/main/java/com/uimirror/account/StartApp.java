@@ -32,9 +32,9 @@ import org.springframework.context.annotation.ImportResource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.FileCopyUtils;
 
-import com.uimirror.account.auth.conf.AppConfig;
-import com.uimirror.account.auth.conf.BeanIntitializer;
-import com.uimirror.account.auth.conf.WebAppInitializer;
+import com.uimirror.account.conf.AppConfig;
+import com.uimirror.account.conf.BeanIntitializer;
+import com.uimirror.account.conf.WebAppInitializer;
 
 /**
  * <p>Main Class Where authentication end point will be deployed</p>

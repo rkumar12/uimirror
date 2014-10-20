@@ -19,10 +19,7 @@ import com.uimirror.account.auth.controller.AccessTokenProvider;
 import com.uimirror.account.auth.core.PasswordMatcher;
 import com.uimirror.account.auth.core.PersistedAccessTokenMongoProvider;
 import com.uimirror.core.crypto.CryptoMatcherService;
-import com.uimirror.core.crypto.MatcherServiceImpl;
 import com.uimirror.core.mail.EmailBeanInitializr;
-import com.uimirror.core.rest.extra.JsonResponseTransFormer;
-import com.uimirror.core.rest.extra.ResponseTransFormer;
 
 /**
  * Initialize or configures the service bean getting used for this application
@@ -33,17 +30,7 @@ import com.uimirror.core.rest.extra.ResponseTransFormer;
 	, BeanOfAuthManagers.class, BeanOfAuthProviders.class
 	, BeanOfTransformers.class, EmailBeanInitializr.class
 	, BeanOfBackGroundProcessor.class, BeanOfSchedulers.class})
-public class BeanIntitializer {
-
-	@Bean(name=JsonResponseTransFormer.NAME)
-	public ResponseTransFormer<String> jsonResponseTransFormer(){
-		return new JsonResponseTransFormer();
-	}
-	
-	@Bean
-	public CryptoMatcherService cryptoMatcherService(){
-		return new MatcherServiceImpl();
-	}
+public class AuthBeanIntitializer {
 	
 	@Bean
 	@Autowired

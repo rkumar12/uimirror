@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror. - initial API and implementation
  *******************************************************************************/
-package com.uimirror.account.auth.conf;
+package com.uimirror.account.conf;
 
 import java.util.HashMap;
 import java.util.Map;
