@@ -20,7 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 
-import com.uimirror.account.auth.core.AccessTokenFields;
+import com.uimirror.account.auth.AccessTokenFields;
 import com.uimirror.account.auth.dao.AccessTokenStore;
 import com.uimirror.core.auth.TokenType;
 import com.uimirror.core.mongo.BasicMongoOperators;

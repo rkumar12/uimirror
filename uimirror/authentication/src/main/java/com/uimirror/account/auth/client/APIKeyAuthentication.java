@@ -12,8 +12,8 @@ package com.uimirror.account.auth.client;
 
 import java.util.Map;
 
+import com.uimirror.account.auth.AccessTokenFields;
 import com.uimirror.account.auth.bean.AbstractAuthentication;
-import com.uimirror.account.auth.core.AccessTokenFields;
 import com.uimirror.core.auth.AuthConstants;
 import com.uimirror.core.auth.Scope;
 

@@ -14,7 +14,6 @@ import java.util.Map;
 
 import org.springframework.util.StringUtils;
 
-import com.uimirror.account.auth.core.AccessTokenFields;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.Scope;
 import com.uimirror.core.auth.Token;

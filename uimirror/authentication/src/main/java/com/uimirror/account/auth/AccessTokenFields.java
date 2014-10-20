@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.account.auth.core;
+package com.uimirror.account.auth;
 
 import com.uimirror.core.BasicDBFields;
 

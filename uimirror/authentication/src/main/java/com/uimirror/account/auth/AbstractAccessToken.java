@@ -18,7 +18,6 @@ import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import com.uimirror.account.auth.core.AccessTokenFields;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.Scope;
 import com.uimirror.core.auth.Token;
