@@ -12,6 +12,7 @@ package com.uimirror.account.auth.endpoint;
 
 import javax.inject.Singleton;
 import javax.ws.rs.BeanParam;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -66,6 +67,7 @@ public class AuthenticationExtrasEndPoint{
 	@POST
 	@Produces({ "application/x-javascript", MediaType.APPLICATION_JSON })
 	@JSONP(queryParam="cb", callback="callback")
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	public Object grantAccessToClient(@BeanParam AuthorizeClientAuthenticationForm form){
 		LOG.info("[ENTRY]- Received request for granting access to the client, so that it can use the user data on behalf");
 		Object response = authorizationClientProcessor.invoke(form);

@@ -10,6 +10,7 @@
  *******************************************************************************/
 package com.uimirror.account.auth.client.form;
 
+import javax.ws.rs.FormParam;
 import javax.ws.rs.QueryParam;
 
 import org.springframework.util.StringUtils;
@@ -32,16 +33,16 @@ public class ClientSecretKeyForm extends ClientMetaForm implements BeanValidator
 
 	private static final long serialVersionUID = -6338697684103708792L;
 
-	@QueryParam(AuthConstants.CLIENT_SECRET_CODE)
+	@FormParam(AuthConstants.CLIENT_SECRET_CODE)
 	private String secretCode;
 
-	@QueryParam(AuthConstants.REDIRECT_URI)
+	@FormParam(AuthConstants.REDIRECT_URI)
 	private String redirectURI;
 
-	@QueryParam(AuthConstants.CLIENT_ID)
+	@FormParam(AuthConstants.CLIENT_ID)
 	private String clientId;
 	
-	@QueryParam(AuthConstants.CLIENT_SECRET)
+	@FormParam(AuthConstants.CLIENT_SECRET)
 	private String clientSecret;
 
 	public String getRedirectURI() {

@@ -12,6 +12,7 @@ package com.uimirror.account.auth.endpoint;
 
 import javax.inject.Singleton;
 import javax.ws.rs.BeanParam;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -93,6 +94,7 @@ public class ClientAuthenticationEndPoint{
 	@Produces({ "application/x-javascript", MediaType.APPLICATION_JSON })
 	@JSONP(queryParam="cb", callback="callback")
 	@Path(AuthenticationEndPointConstant.OUATH_2_TOEKEN_PATH)
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	public Object requestAccessToken(@BeanParam ClientSecretKeyForm form){
 		LOG.info("[ENTRY]- Received request for client access toekn");
 		Object response = secretKeyProcessor.invoke(form);
