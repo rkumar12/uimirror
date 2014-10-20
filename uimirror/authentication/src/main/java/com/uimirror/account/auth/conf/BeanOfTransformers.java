@@ -25,10 +25,10 @@ import com.uimirror.account.auth.user.bean.ClientAuthorizationAuthentication;
 import com.uimirror.account.auth.user.bean.LoginAuthentication;
 import com.uimirror.account.auth.user.bean.OTPAuthentication;
 import com.uimirror.account.auth.user.bean.ScreenLockAuthentication;
-import com.uimirror.account.auth.user.bean.form.AuthorizeClientAuthenticationForm;
-import com.uimirror.account.auth.user.bean.form.LoginForm;
-import com.uimirror.account.auth.user.bean.form.OTPAuthenticationForm;
-import com.uimirror.account.auth.user.bean.form.ScreenLockAuthenticationForm;
+import com.uimirror.account.auth.user.form.AuthorizeClientAuthenticationForm;
+import com.uimirror.account.auth.user.form.LoginForm;
+import com.uimirror.account.auth.user.form.OTPAuthenticationForm;
+import com.uimirror.account.auth.user.form.ScreenLockAuthenticationForm;
 import com.uimirror.account.auth.user.transformer.ClientAutorizeFormToAuthTransformer;
 import com.uimirror.account.auth.user.transformer.LoginFormToAuthTransformer;
 import com.uimirror.account.auth.user.transformer.OTPFormToAuthTransformer;
@@ -36,7 +36,7 @@ import com.uimirror.account.auth.user.transformer.ScreenLockFormToAuthTransforme
 import com.uimirror.account.auth.user.transformer.TokenToAuthorizedClientTransformer;
 import com.uimirror.account.user.bean.UserAuthorizedClient;
 import com.uimirror.core.auth.AccessToken;
-import com.uimirror.core.bean.form.AuthenticatedHeaderForm;
+import com.uimirror.core.form.AuthenticatedHeaderForm;
 import com.uimirror.core.service.TransformerService;
 
 /**

@@ -23,10 +23,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.uimirror.account.auth.bean.form.ForgetAClientForm;
-import com.uimirror.account.auth.user.bean.form.AuthorizeClientAuthenticationForm;
+import com.uimirror.account.auth.form.ForgetAClientForm;
+import com.uimirror.account.auth.user.form.AuthorizeClientAuthenticationForm;
 import com.uimirror.core.Processor;
-import com.uimirror.core.bean.form.AuthenticatedHeaderForm;
+import com.uimirror.core.form.AuthenticatedHeaderForm;
 
 /**
  * Controller which will be for the common path, Any client granting access permission

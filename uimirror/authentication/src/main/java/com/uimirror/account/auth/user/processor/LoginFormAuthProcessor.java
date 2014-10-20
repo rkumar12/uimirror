@@ -18,7 +18,7 @@ import com.uimirror.account.auth.controller.AuthenticationProvider;
 import com.uimirror.account.auth.core.processor.InvalidateTokenProcessor;
 import com.uimirror.account.auth.exception.AuthToApplicationExceptionMapper;
 import com.uimirror.account.auth.user.bean.LoginAuthentication;
-import com.uimirror.account.auth.user.bean.form.LoginForm;
+import com.uimirror.account.auth.user.form.LoginForm;
 import com.uimirror.core.Processor;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.Authentication;

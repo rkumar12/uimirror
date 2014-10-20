@@ -8,15 +8,14 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.account.auth.user.bean.form;
+package com.uimirror.account.auth.user.form;
 
 import javax.ws.rs.FormParam;
-import javax.ws.rs.QueryParam;
 
-import com.uimirror.account.auth.user.Approval;
+import org.springframework.util.StringUtils;
+
 import com.uimirror.core.auth.AuthConstants;
-import com.uimirror.core.auth.Scope;
-import com.uimirror.core.bean.form.AuthenticatedHeaderForm;
+import com.uimirror.core.form.AuthenticatedHeaderForm;
 import com.uimirror.core.rest.extra.IllegalArgumentException;
 import com.uimirror.core.service.BeanValidatorService;
 
@@ -29,31 +28,20 @@ import com.uimirror.core.service.BeanValidatorService;
  * 
  * @author Jay
  */
-public final class AuthorizeClientAuthenticationForm extends AuthenticatedHeaderForm implements BeanValidatorService {
+public final class OTPAuthenticationForm extends AuthenticatedHeaderForm implements BeanValidatorService {
 
 	private static final long serialVersionUID = -1215523730014366150L;
 	
-	@QueryParam(AuthConstants.SCOPE)
-	private String scope;
-	@QueryParam(AuthConstants.APPROVAL)
-	private String approval;
+	@FormParam(AuthConstants.OTP)
+	private String otp;
 
-	public Scope getScope() {
-		if(scope != null)
-			return Scope.getEnum(scope);
-		return null;
-	}
-
-	public Approval getApproval() {
-		if(approval != null)
-			return Approval.getEnum(approval);
-		return null;
+	public String getOtp() {
+		return otp;
 	}
 
 	@Override
 	public String toString() {
-		return "AuthorizeClientAuthenticationForm [scope=" + scope
-				+ ", approval=" + approval + "]";
+		return "TwoFactorUserLoginAuthenticationForm [otp= [****]]";
 	}
 
 	/* (non-Javadoc)
@@ -67,10 +55,8 @@ public final class AuthorizeClientAuthenticationForm extends AuthenticatedHeader
 	}
 	
 	private void validate(){
-		if(getScope() == null)
-			informIllegalArgument("Scope of this approval should present");
-		if(getApproval() == null)
-			informIllegalArgument("Approval Flag Should Present");
+		if(!StringUtils.hasText(getOtp()))
+			informIllegalArgument("OTP should be present");
 	}
 	
 	private void informIllegalArgument(String msg){

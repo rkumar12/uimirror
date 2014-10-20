@@ -20,16 +20,16 @@ import com.uimirror.account.auth.client.processor.AccessTokenProcessor;
 import com.uimirror.account.auth.client.processor.SecretKeyProcessor;
 import com.uimirror.account.auth.core.processor.OTPAuthProcessor;
 import com.uimirror.account.auth.core.processor.ScreenLockAuthProcessor;
-import com.uimirror.account.auth.user.bean.form.AuthorizeClientAuthenticationForm;
-import com.uimirror.account.auth.user.bean.form.LoginForm;
-import com.uimirror.account.auth.user.bean.form.OTPAuthenticationForm;
-import com.uimirror.account.auth.user.bean.form.ScreenLockAuthenticationForm;
+import com.uimirror.account.auth.user.form.AuthorizeClientAuthenticationForm;
+import com.uimirror.account.auth.user.form.LoginForm;
+import com.uimirror.account.auth.user.form.OTPAuthenticationForm;
+import com.uimirror.account.auth.user.form.ScreenLockAuthenticationForm;
 import com.uimirror.account.auth.user.processor.AllowClientProcessor;
 import com.uimirror.account.auth.user.processor.AuthorizationClientProcessor;
 import com.uimirror.account.auth.user.processor.LoginFormAuthProcessor;
 import com.uimirror.account.user.bean.UserAuthorizedClient;
 import com.uimirror.core.Processor;
-import com.uimirror.core.bean.form.AuthenticatedHeaderForm;
+import com.uimirror.core.form.AuthenticatedHeaderForm;
 
 /**
  * Contains the bean definition for all the authentication controller process

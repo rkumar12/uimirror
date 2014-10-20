@@ -21,10 +21,10 @@ import org.glassfish.jersey.server.JSONP;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.uimirror.account.auth.bean.form.InvalidateLoginSessionsForm;
-import com.uimirror.account.auth.bean.form.LoginSessionForm;
+import com.uimirror.account.auth.form.InvalidateLoginSessionsForm;
+import com.uimirror.account.auth.form.LoginSessionForm;
 import com.uimirror.core.auth.AccessToken;
-import com.uimirror.core.bean.form.AuthenticatedHeaderForm;
+import com.uimirror.core.form.AuthenticatedHeaderForm;
 
 /**
  * Controller which will be for the common path, any user will try to be get authenticated.

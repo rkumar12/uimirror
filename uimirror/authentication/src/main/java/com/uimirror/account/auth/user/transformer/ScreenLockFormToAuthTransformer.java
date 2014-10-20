@@ -13,7 +13,7 @@ package com.uimirror.account.auth.user.transformer;
 import org.springframework.util.Assert;
 
 import com.uimirror.account.auth.user.bean.ScreenLockAuthentication;
-import com.uimirror.account.auth.user.bean.form.ScreenLockAuthenticationForm;
+import com.uimirror.account.auth.user.form.ScreenLockAuthenticationForm;
 import com.uimirror.core.service.TransformerService;
 
 /**

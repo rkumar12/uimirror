@@ -19,7 +19,7 @@ import com.uimirror.account.auth.core.AuthenticationManager;
 import com.uimirror.account.auth.core.processor.InvalidateTokenProcessor;
 import com.uimirror.account.auth.exception.AuthToApplicationExceptionMapper;
 import com.uimirror.account.auth.user.bean.ClientAuthorizationAuthentication;
-import com.uimirror.account.auth.user.bean.form.AuthorizeClientAuthenticationForm;
+import com.uimirror.account.auth.user.form.AuthorizeClientAuthenticationForm;
 import com.uimirror.core.Processor;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.Authentication;

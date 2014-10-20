@@ -15,8 +15,6 @@ package com.uimirror.account.auth.endpoint;
  * @author Jay
  */
 public interface AuthenticationEndPointConstant {
-
-	String HOME = "/";
 	String AUTH = "/auth";
 	String OUATH2_HOME = AUTH+"/oauth2";
 	String OUATH_2_AUTH_PATH = "/auth";

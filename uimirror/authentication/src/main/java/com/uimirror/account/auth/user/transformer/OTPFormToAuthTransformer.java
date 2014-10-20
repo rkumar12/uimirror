@@ -13,7 +13,7 @@ package com.uimirror.account.auth.user.transformer;
 import org.springframework.util.Assert;
 
 import com.uimirror.account.auth.user.bean.OTPAuthentication;
-import com.uimirror.account.auth.user.bean.form.OTPAuthenticationForm;
+import com.uimirror.account.auth.user.form.OTPAuthenticationForm;
 import com.uimirror.core.service.TransformerService;
 
 /**

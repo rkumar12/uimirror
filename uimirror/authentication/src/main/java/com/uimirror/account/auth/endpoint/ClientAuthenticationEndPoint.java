@@ -25,7 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.uimirror.account.auth.client.form.ClientAPIForm;
 import com.uimirror.account.auth.client.form.ClientSecretKeyForm;
 import com.uimirror.core.Processor;
-import com.uimirror.core.bean.form.AuthenticatedHeaderForm;
+import com.uimirror.core.form.AuthenticatedHeaderForm;
 
 /**
  * Controller which will handle all the client releated request such as 

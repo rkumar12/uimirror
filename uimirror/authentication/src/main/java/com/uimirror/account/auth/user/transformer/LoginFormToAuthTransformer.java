@@ -13,11 +13,11 @@ package com.uimirror.account.auth.user.transformer;
 import org.springframework.util.Assert;
 
 import com.uimirror.account.auth.user.bean.LoginAuthentication;
-import com.uimirror.account.auth.user.bean.form.LoginForm;
+import com.uimirror.account.auth.user.form.LoginForm;
 import com.uimirror.core.service.TransformerService;
 
 /**
- * A transformer implementation which will transform the {@linkplain LoginForm}
+ * A transformer implementation which will transform the {@linkplain RegisterForm}
  * to {@linkplain LoginAuthentication}
  * @author Jay
  */

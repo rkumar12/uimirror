@@ -8,12 +8,12 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.account.auth.bean.form;
+package com.uimirror.account.auth.form;
 
 import javax.ws.rs.QueryParam;
 
 import com.uimirror.core.auth.AuthConstants;
-import com.uimirror.core.bean.form.AuthenticatedHeaderForm;
+import com.uimirror.core.form.AuthenticatedHeaderForm;
 
 /**
  * This is the {@linkplain QueryParam} details for the end point 

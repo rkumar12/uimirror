@@ -8,58 +8,54 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.account.auth.user.bean.form;
+package com.uimirror.account.auth.user.form;
 
 import javax.ws.rs.FormParam;
+import javax.ws.rs.QueryParam;
 
-import org.springframework.util.StringUtils;
-
-import com.uimirror.core.BooleanUtil;
+import com.uimirror.account.auth.user.Approval;
 import com.uimirror.core.auth.AuthConstants;
-import com.uimirror.core.bean.form.AuthenticatedHeaderForm;
+import com.uimirror.core.auth.Scope;
+import com.uimirror.core.form.AuthenticatedHeaderForm;
 import com.uimirror.core.rest.extra.IllegalArgumentException;
 import com.uimirror.core.service.BeanValidatorService;
 
 /**
  * Converts the {@link FormParam} provided in the POST request for the
- * authentication purpose from the login screen.
+ * authentication purpose from the two factor authentication form.
  * 
  * Screen will be directly pushed to the client from the uimirror or 
- * supportive applications
+ * supportive applications or from the client
  * 
  * @author Jay
  */
-public final class LoginForm extends AuthenticatedHeaderForm implements BeanValidatorService{
+public final class AuthorizeClientAuthenticationForm extends AuthenticatedHeaderForm implements BeanValidatorService {
 
 	private static final long serialVersionUID = -1215523730014366150L;
-
-	@FormParam(AuthConstants.USER_ID)
-	private String userId;
 	
-	@FormParam(AuthConstants.PASSWORD)
-	private String password;
-	
-	@FormParam(AuthConstants.KEEP_ME_LOGIN)
-	private String keepMeLogedIn;
+	@QueryParam(AuthConstants.SCOPE)
+	private String scope;
+	@QueryParam(AuthConstants.APPROVAL)
+	private String approval;
 
-	public String getUserId() {
-		return userId;
+	public Scope getScope() {
+		if(scope != null)
+			return Scope.getEnum(scope);
+		return null;
 	}
 
-	public String getPassword() {
-		return password;
-	}
-
-	public boolean getKeepMeLogedIn() {
-		return BooleanUtil.parseBoolean(keepMeLogedIn);
+	public Approval getApproval() {
+		if(approval != null)
+			return Approval.getEnum(approval);
+		return null;
 	}
 
 	@Override
 	public String toString() {
-		return "LoginFormAuthenticationForm [userId=" + userId + ", password= [******], "
-				+ "keepMeLogedIn=" + keepMeLogedIn + "]";
+		return "AuthorizeClientAuthenticationForm [scope=" + scope
+				+ ", approval=" + approval + "]";
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.uimirror.core.service.BeanValidatorService#isValid()
 	 */
@@ -71,14 +67,13 @@ public final class LoginForm extends AuthenticatedHeaderForm implements BeanVali
 	}
 	
 	private void validate(){
-		if(!StringUtils.hasText(getPassword()))
-			informIllegalArgument("Password should be present");
-		if(!StringUtils.hasText(getUserId()))
-			informIllegalArgument("User Id Should present");
+		if(getScope() == null)
+			informIllegalArgument("Scope of this approval should present");
+		if(getApproval() == null)
+			informIllegalArgument("Approval Flag Should Present");
 	}
 	
 	private void informIllegalArgument(String msg){
 		throw new IllegalArgumentException(msg);
 	}
-
 }

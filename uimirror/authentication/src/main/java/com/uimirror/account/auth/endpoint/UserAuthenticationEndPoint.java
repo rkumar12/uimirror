@@ -22,14 +22,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.uimirror.account.auth.user.bean.form.LoginForm;
-import com.uimirror.account.auth.user.bean.form.OTPAuthenticationForm;
-import com.uimirror.account.auth.user.bean.form.ScreenLockAuthenticationForm;
+import com.uimirror.account.auth.user.form.LoginForm;
+import com.uimirror.account.auth.user.form.OTPAuthenticationForm;
+import com.uimirror.account.auth.user.form.ScreenLockAuthenticationForm;
 import com.uimirror.core.Processor;
 import com.uimirror.core.auth.AccessToken;
 
 /**
- * This authentication end point will be responsible for the user login {@link #login(LoginForm)},
+ * This authentication end point will be responsible for the user login {@link #login(RegisterForm)},
  * {@link #unlockScreen(ScreenLockAuthenticationForm)}, {@link #otp(OTPAuthenticationForm)}
  * the result of all this operations will be a token 
  * known as {@link AccessToken}

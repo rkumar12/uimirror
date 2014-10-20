@@ -16,7 +16,7 @@ import org.springframework.util.StringUtils;
 
 import com.uimirror.core.auth.AuthConstants;
 import com.uimirror.core.auth.Scope;
-import com.uimirror.core.bean.form.ClientMetaForm;
+import com.uimirror.core.form.ClientMetaForm;
 import com.uimirror.core.rest.extra.IllegalArgumentException;
 import com.uimirror.core.service.BeanValidatorService;
 

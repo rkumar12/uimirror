@@ -18,7 +18,7 @@ import com.uimirror.account.auth.controller.AuthenticationProvider;
 import com.uimirror.account.auth.core.AuthenticationManager;
 import com.uimirror.account.auth.exception.AuthToApplicationExceptionMapper;
 import com.uimirror.account.auth.user.bean.OTPAuthentication;
-import com.uimirror.account.auth.user.bean.form.OTPAuthenticationForm;
+import com.uimirror.account.auth.user.form.OTPAuthenticationForm;
 import com.uimirror.core.Processor;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.Authentication;
