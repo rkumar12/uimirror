@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.uimirror.account.auth.client.OAuth2Authentication;
 import com.uimirror.account.auth.controller.AuthenticationProvider;
-import com.uimirror.account.auth.core.AuthenticationManager;
 import com.uimirror.account.auth.exception.AuthToApplicationExceptionMapper;
 import com.uimirror.core.Processor;
 import com.uimirror.core.auth.AccessToken;
@@ -24,21 +23,19 @@ import com.uimirror.core.auth.Authentication;
 import com.uimirror.core.extra.MapException;
 import com.uimirror.core.form.AuthenticatedHeaderForm;
 import com.uimirror.core.rest.extra.ApplicationException;
-import com.uimirror.core.rest.extra.ResponseTransFormer;
 import com.uimirror.core.service.TransformerService;
 
 /**
- * Extracts the field, interact with the {@link AuthenticationManager}
- * and respond back to the caller with the valid response.
+ * A processor, that validate the incoming request 
+ * and tries to authenticate the same, if authenticated returns the authenticated principal  
  * 
  * @author Jay
  */
-public class AccessTokenManager implements Processor<AuthenticatedHeaderForm, Object>{
+public class AuthenticateAccessTokenProcessor implements Processor<AuthenticatedHeaderForm, Authentication>{
 
-	protected static final Logger LOG = LoggerFactory.getLogger(AccessTokenManager.class);
+	protected static final Logger LOG = LoggerFactory.getLogger(AuthenticateAccessTokenProcessor.class);
 	
 	private @Autowired TransformerService<AuthenticatedHeaderForm, OAuth2Authentication> accessTokenToAuthTransformer;
-	private @Autowired ResponseTransFormer<String> jsonResponseTransFormer;
 	private @Autowired AuthenticationProvider accessKeyAuthProvider;
 	
 	/* (non-Javadoc)
@@ -46,18 +43,17 @@ public class AccessTokenManager implements Processor<AuthenticatedHeaderForm, Ob
 	 */
 	@Override
 	@MapException(use=AuthToApplicationExceptionMapper.NAME)
-	public Object invoke(AuthenticatedHeaderForm param) throws ApplicationException{
-		LOG.debug("[START]- Authenticating the user and trying to to get the authentication details");
+	public Authentication invoke(AuthenticatedHeaderForm param) throws ApplicationException{
+		LOG.debug("[START]- Authenticating the access token");
 		//Step 1- Transform the bean to Authentication
 		Authentication auth = getTransformedObject(param);
 		//Let GC take this ASAP
 		param = null;
 		//Step 2- Authenticate and issue a token
-		Authentication authPrincipal = authenticateAndIssueToken(auth);
-		AccessToken token = (AccessToken)authPrincipal.getPrincipal();
-		LOG.debug("[END]- Authenticating the user and trying to to get the authentication details {}", auth);
+		Authentication authPrincipal = authenticate(auth);
+		LOG.debug("[END]- Authenticating the access token");
 		//Remove Unnecessary information from the accessToken Before Sending to the user
-		return jsonResponseTransFormer.doTransForm(token);
+		return authPrincipal;
 	}
 	
 	/**
@@ -76,7 +72,7 @@ public class AccessTokenManager implements Processor<AuthenticatedHeaderForm, Ob
 	 * @param auth
 	 * @return
 	 */
-	private Authentication authenticateAndIssueToken(Authentication auth){
+	private Authentication authenticate(Authentication auth){
 		return accessKeyAuthProvider.authenticate(auth);
 	}
 

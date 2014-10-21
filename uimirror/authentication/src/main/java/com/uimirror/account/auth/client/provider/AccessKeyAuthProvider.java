@@ -17,10 +17,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.uimirror.account.auth.client.OAuth2Authentication;
-import com.uimirror.account.auth.controller.AccessTokenProvider;
 import com.uimirror.account.auth.controller.AuthenticationProvider;
 import com.uimirror.account.auth.core.AuthenticationManager;
-import com.uimirror.account.auth.dao.AccessTokenStore;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.Authentication;
 
@@ -34,7 +32,6 @@ public class AccessKeyAuthProvider implements AuthenticationProvider{
 
 	private static final Logger LOG = LoggerFactory.getLogger(AccessKeyAuthProvider.class);
 	private @Autowired AuthenticationManager accessKeyAuthManager;
-	private @Autowired AccessTokenProvider persistedAccessTokenProvider;
 
 	/* (non-Javadoc)
 	 * @see com.uimirror.core.auth.controller.AuthenticationProvider#getAuthenticateToken(com.uimirror.core.auth.bean.Authentication)
@@ -44,11 +41,8 @@ public class AccessKeyAuthProvider implements AuthenticationProvider{
 		LOG.debug("[START]- Authenticating, generating and storing token");
 		//Step 1- get the authenticated principal
 		Authentication authDetails = getAuthenticatedDetails(authentication);
-		//Step 2- Store principal
-		storeAuthenticatedPrincipal((AccessToken)authDetails.getPrincipal());
-		//Step 3- generate a authentication which has a access token
 		LOG.debug("[END]- Authenticating, generating and storing token");
-		return cleanAuthentication(authDetails);
+		return authDetails;
 	}
 
 	/**
@@ -61,21 +55,13 @@ public class AccessKeyAuthProvider implements AuthenticationProvider{
 	}
 	
 	/**
-	 * Stores the {@link AccessToken} using {@link AccessTokenStore}
-	 * @param token
-	 */
-	private void storeAuthenticatedPrincipal(AccessToken token){
-		persistedAccessTokenProvider.store(token);
-	}
-	
-	/**
 	 * It should generate a access token and tries to encapsulate the accesstoken to the
 	 * {@link Authentication}
 	 * 
 	 * @param auth an authenticated principal that indicate the principal clearly.
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
+	//TODO remove this after everything complete
 	private Authentication cleanAuthentication(Authentication auth){
 		//Clean the Authentication principal
 		AccessToken accessToken = (AccessToken)auth.getPrincipal();
