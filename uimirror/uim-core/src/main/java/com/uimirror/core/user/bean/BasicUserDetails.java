@@ -70,8 +70,8 @@ public class BasicUserDetails extends BeanBasedDocument<BasicUserDetails> implem
 	 */
 	@Override
 	public String getFirstName() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return firstName;
 	}
 
 	/* (non-Javadoc)
@@ -79,8 +79,7 @@ public class BasicUserDetails extends BeanBasedDocument<BasicUserDetails> implem
 	 */
 	@Override
 	public String getLastName() {
-		// TODO Auto-generated method stub
-		return null;
+		return lastName;
 	}
 
 	/* (non-Javadoc)
@@ -88,8 +87,7 @@ public class BasicUserDetails extends BeanBasedDocument<BasicUserDetails> implem
 	 */
 	@Override
 	public String getEmail() {
-		// TODO Auto-generated method stub
-		return null;
+		return email;
 	}
 
 	/* (non-Javadoc)
@@ -97,8 +95,7 @@ public class BasicUserDetails extends BeanBasedDocument<BasicUserDetails> implem
 	 */
 	@Override
 	public String getDateOfBirth() {
-		// TODO Auto-generated method stub
-		return null;
+		return dateOfBirth;
 	}
 
 	/* (non-Javadoc)
@@ -106,8 +103,7 @@ public class BasicUserDetails extends BeanBasedDocument<BasicUserDetails> implem
 	 */
 	@Override
 	public Gender getGender() {
-		// TODO Auto-generated method stub
-		return null;
+		return gender;
 	}
 
 	/* (non-Javadoc)
@@ -115,8 +111,7 @@ public class BasicUserDetails extends BeanBasedDocument<BasicUserDetails> implem
 	 */
 	@Override
 	public AccountStatus getAccountStatus() {
-		// TODO Auto-generated method stub
-		return null;
+		return accountStatus;
 	}
 
 	/* (non-Javadoc)

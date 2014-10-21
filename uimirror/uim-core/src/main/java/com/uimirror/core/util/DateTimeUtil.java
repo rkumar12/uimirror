@@ -23,6 +23,10 @@ import org.apache.commons.validator.routines.DateValidator;
  * @author Jay
  */
 public class DateTimeUtil {
+	
+
+	private static final String DATE_FORMAT= "dd-MM-yyyy";
+	private static final int AGE_LIMIT = 18;
 
 	/**
 	 * Gets the system time w.r.t to UTC in EPOCH
@@ -63,16 +67,21 @@ public class DateTimeUtil {
 	}
 	
 	
-	
-	
-	private static final String DATE_FORMAT= "dd-MM-yyyy";
-	private static final int AGE_LIMIT = 18;
-	
+	/**
+	 * validates date to dd-MM-yyyy format
+	 * @param date
+	 * @return boolean
+	 */
 	public static boolean isAValidDate(String date) {
 		DateValidator validator = DateValidator.getInstance();
 		return validator.isValid(date, DATE_FORMAT);
     }
 	
+	/**
+	 * Validates if age is above 18 based on dob.
+	 * @param dob
+	 * @return boolean
+	 */
 	public static boolean isAgeAboveEighteen(String dob) {
 		boolean result = Boolean.FALSE;
 		LocalDate birthDay=LocalDate.parse(dob, DateTimeFormatter.ofPattern(DATE_FORMAT));
