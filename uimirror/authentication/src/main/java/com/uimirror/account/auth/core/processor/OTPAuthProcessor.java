@@ -45,7 +45,7 @@ import com.uimirror.core.util.thread.BackgroundProcessorFactory;
  * </ol>
  * @author Jay
  */
-public class OTPAuthProcessor implements Processor<OTPAuthenticationForm>{
+public class OTPAuthProcessor implements Processor<OTPAuthenticationForm, String>{
 
 	protected static final Logger LOG = LoggerFactory.getLogger(OTPAuthProcessor.class);
 	
@@ -59,7 +59,7 @@ public class OTPAuthProcessor implements Processor<OTPAuthenticationForm>{
 	 */
 	@Override
 	@MapException(use=AuthToApplicationExceptionMapper.NAME)
-	public Object invoke(OTPAuthenticationForm param) throws ApplicationException{
+	public String invoke(OTPAuthenticationForm param) throws ApplicationException{
 		LOG.debug("[START]- Generating a new accesstoken based on the previous accesstoken and OTP for the 2FA");
 		String prevToken = param.getToken();
 		//Step 1- Transform the bean to Authentication

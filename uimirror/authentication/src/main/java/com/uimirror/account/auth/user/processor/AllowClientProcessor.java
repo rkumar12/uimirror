@@ -29,7 +29,7 @@ import com.uimirror.core.Processor;
  * </ol> 
  * @author Jay
  */
-public class AllowClientProcessor implements Processor<UserAuthorizedClient>{
+public class AllowClientProcessor implements Processor<UserAuthorizedClient, Object>{
 
 	protected static final Logger LOG = LoggerFactory.getLogger(AllowClientProcessor.class);
 	

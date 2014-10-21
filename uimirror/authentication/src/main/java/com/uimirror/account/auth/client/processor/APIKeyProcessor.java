@@ -36,7 +36,7 @@ import com.uimirror.core.service.TransformerService;
  * 
  * @author Jay
  */
-public class APIKeyProcessor implements Processor<ClientAPIForm>{
+public class APIKeyProcessor implements Processor<ClientAPIForm, String>{
 
 	protected static final Logger LOG = LoggerFactory.getLogger(APIKeyProcessor.class);
 	
@@ -49,7 +49,7 @@ public class APIKeyProcessor implements Processor<ClientAPIForm>{
 	 */
 	@Override
 	@MapException(use=AuthToApplicationExceptionMapper.NAME)
-	public Object invoke(ClientAPIForm param) throws ApplicationException{
+	public String invoke(ClientAPIForm param) throws ApplicationException{
 		LOG.debug("[START]- Authenticating the client API KEY");
 		//Step 1- Transform the bean to Authentication
 		Authentication auth = getTransformedObject(param);

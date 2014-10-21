@@ -16,7 +16,7 @@ import com.uimirror.core.rest.extra.ApplicationException;
  * Bridge between the service end point and application service response 
  * @author Jay
  */
-public interface Processor<P> {
+public interface Processor<P, R> {
 
 	/**
 	 * This will process the defined type of parameters and run the business logic to 
@@ -25,6 +25,6 @@ public interface Processor<P> {
 	 * @return
 	 * @throws ApplicationException
 	 */
-	Object invoke(P param) throws ApplicationException;
+	R invoke(P param) throws ApplicationException;
 
 }

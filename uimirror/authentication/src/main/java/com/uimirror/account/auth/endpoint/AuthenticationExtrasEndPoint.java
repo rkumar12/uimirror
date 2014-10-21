@@ -41,7 +41,7 @@ import com.uimirror.core.form.AuthenticatedHeaderForm;
 public class AuthenticationExtrasEndPoint{
 
 	private static Logger LOG = LoggerFactory.getLogger(AuthenticationExtrasEndPoint.class);
-	private @Autowired Processor<AuthorizeClientAuthenticationForm> authorizationClientProcessor;
+	private @Autowired Processor<AuthorizeClientAuthenticationForm, String> authorizationClientProcessor;
 
 	/**
 	 * This will make sure, user is granting access to the client for using user information on behalf.

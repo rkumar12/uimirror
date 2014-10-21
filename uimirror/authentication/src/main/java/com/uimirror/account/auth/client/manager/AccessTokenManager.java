@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.account.auth.client.processor;
+package com.uimirror.account.auth.client.manager;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,9 +33,9 @@ import com.uimirror.core.service.TransformerService;
  * 
  * @author Jay
  */
-public class AccessTokenProcessor implements Processor<AuthenticatedHeaderForm, String>{
+public class AccessTokenManager implements Processor<AuthenticatedHeaderForm, Object>{
 
-	protected static final Logger LOG = LoggerFactory.getLogger(AccessTokenProcessor.class);
+	protected static final Logger LOG = LoggerFactory.getLogger(AccessTokenManager.class);
 	
 	private @Autowired TransformerService<AuthenticatedHeaderForm, OAuth2Authentication> accessTokenToAuthTransformer;
 	private @Autowired ResponseTransFormer<String> jsonResponseTransFormer;
@@ -46,7 +46,7 @@ public class AccessTokenProcessor implements Processor<AuthenticatedHeaderForm, 
 	 */
 	@Override
 	@MapException(use=AuthToApplicationExceptionMapper.NAME)
-	public String invoke(AuthenticatedHeaderForm param) throws ApplicationException{
+	public Object invoke(AuthenticatedHeaderForm param) throws ApplicationException{
 		LOG.debug("[START]- Authenticating the user and trying to to get the authentication details");
 		//Step 1- Transform the bean to Authentication
 		Authentication auth = getTransformedObject(param);

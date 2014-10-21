@@ -36,7 +36,7 @@ public class AllowAuthorizationClientProcessor extends AbstractBackgroundProcess
 	
 	public static final String NAME = "AACP";
 	private @Autowired TransformerService<AccessToken, UserAuthorizedClient> tokenToAuthorizedClientTransformer;
-	private @Autowired Processor<UserAuthorizedClient> allowClientprocessor;
+	private @Autowired Processor<UserAuthorizedClient, Object> allowClientprocessor;
 
 	public AllowAuthorizationClientProcessor(){
 		super(1);

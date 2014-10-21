@@ -37,7 +37,7 @@ import com.uimirror.core.form.AuthenticatedHeaderForm;
 @Singleton
 public class AccessTokenAuthenticationEndPoint{
 
-	private @Autowired Processor<AuthenticatedHeaderForm> accessTokenProcessor;
+	private @Autowired Processor<AuthenticatedHeaderForm, String> accessTokenProcessor;
 	private static Logger LOG = LoggerFactory.getLogger(AccessTokenAuthenticationEndPoint.class);
 	public AccessTokenAuthenticationEndPoint() {
 	}

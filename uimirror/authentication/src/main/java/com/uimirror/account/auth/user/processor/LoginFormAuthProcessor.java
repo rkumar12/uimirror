@@ -39,7 +39,7 @@ import com.uimirror.core.util.thread.BackgroundProcessorFactory;
  * 
  * @author Jay
  */
-public class LoginFormAuthProcessor implements Processor<LoginForm>{
+public class LoginFormAuthProcessor implements Processor<LoginForm, String>{
 
 	protected static final Logger LOG = LoggerFactory.getLogger(LoginFormAuthProcessor.class);
 	
@@ -54,7 +54,7 @@ public class LoginFormAuthProcessor implements Processor<LoginForm>{
 	 */
 	@Override
 	@MapException(use=AuthToApplicationExceptionMapper.NAME)
-	public Object invoke(LoginForm param) throws ApplicationException{
+	public String invoke(LoginForm param) throws ApplicationException{
 		LOG.debug("[START]- Authenticating the user.");
 		//Step 1- Transform the bean to Authentication
 		String prevToken = param.getToken();

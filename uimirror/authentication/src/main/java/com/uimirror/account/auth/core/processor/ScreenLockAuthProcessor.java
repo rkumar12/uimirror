@@ -36,7 +36,7 @@ import com.uimirror.core.service.TransformerService;
  * the screen unlock password
  * @author Jay
  */
-public class ScreenLockAuthProcessor implements Processor<ScreenLockAuthenticationForm>{
+public class ScreenLockAuthProcessor implements Processor<ScreenLockAuthenticationForm, String>{
 
 	protected static final Logger LOG = LoggerFactory.getLogger(ScreenLockAuthProcessor.class);
 	
@@ -49,7 +49,7 @@ public class ScreenLockAuthProcessor implements Processor<ScreenLockAuthenticati
 	 */
 	@Override
 	@MapException(use=AuthToApplicationExceptionMapper.NAME)
-	public Object invoke(ScreenLockAuthenticationForm param) throws ApplicationException{
+	public String invoke(ScreenLockAuthenticationForm param) throws ApplicationException{
 		LOG.debug("[START]- Generating a new accesstoken based on the previous accesstoken and password for screen unlock");
 		//Step 1- Extract authentication details
 		Authentication auth = getTransformedObject(param);
