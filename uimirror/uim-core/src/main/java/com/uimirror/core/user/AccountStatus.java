@@ -17,7 +17,7 @@ package com.uimirror.core.user;
  */
 public enum AccountStatus {
 
-	ACTIEVE("A"),
+	ACTIVE("A"),
 	BLOCKED("B");
 	
 	private final String status;
