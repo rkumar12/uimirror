@@ -13,8 +13,10 @@ package com.uimirror.account.conf;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.uimirror.account.auth.user.processor.VerifyActivateUserAccountProcessor;
 import com.uimirror.account.client.form.RegisterForm;
 import com.uimirror.account.client.processor.CreateClientAccountProcessor;
+import com.uimirror.account.user.form.VerifyForm;
 import com.uimirror.core.Processor;
 
 /**
@@ -25,9 +27,14 @@ import com.uimirror.core.Processor;
 @Configuration
 public class BeanOfProcessor {
 
-	@Bean
-	public Processor<RegisterForm, String> createClientAccountProcessor(){
-		return new CreateClientAccountProcessor();
-	}
+  @Bean
+  public Processor<RegisterForm, String> createClientAccountProcessor() {
+    return new CreateClientAccountProcessor();
+  }
+
+  @Bean
+  public Processor<VerifyForm, String> verifyActivateUserAccountProcessor() {
+    return new VerifyActivateUserAccountProcessor();
+  }
 
 }
