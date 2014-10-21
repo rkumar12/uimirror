@@ -37,7 +37,7 @@ public class OTPMailProcessor extends AbstractBackgroundProcessor<AccessToken, O
 	
 	public static final String NAME = "OTPMP";
 	private @Autowired TransformerService<AccessToken, UserAuthorizedClient> tokenToAuthorizedClientTransformer;
-	private @Autowired Processor<UserAuthorizedClient> allowClientprocessor;
+	private @Autowired Processor<UserAuthorizedClient, Object> allowClientprocessor;
 
 	public OTPMailProcessor(){
 		super(1);

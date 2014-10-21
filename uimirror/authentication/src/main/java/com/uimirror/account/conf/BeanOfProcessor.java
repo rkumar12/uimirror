@@ -26,7 +26,7 @@ import com.uimirror.core.Processor;
 public class BeanOfProcessor {
 
 	@Bean
-	public Processor<RegisterForm> createClientAccountProcessor(){
+	public Processor<RegisterForm, String> createClientAccountProcessor(){
 		return new CreateClientAccountProcessor();
 	}
 

@@ -42,9 +42,9 @@ import com.uimirror.core.auth.AccessToken;
 public class UserAuthenticationEndPoint{
 
 	private static Logger LOG = LoggerFactory.getLogger(UserAuthenticationEndPoint.class);
-	private @Autowired Processor<LoginForm> loginFormAuthProcessor;
-	private @Autowired Processor<ScreenLockAuthenticationForm> screenLockAuthProcessor;
-	private @Autowired Processor<OTPAuthenticationForm> otpAuthProcessor;
+	private @Autowired Processor<LoginForm, String> loginFormAuthProcessor;
+	private @Autowired Processor<ScreenLockAuthenticationForm, String> screenLockAuthProcessor;
+	private @Autowired Processor<OTPAuthenticationForm, String> otpAuthProcessor;
 	
 	public UserAuthenticationEndPoint() {
 		//NOP

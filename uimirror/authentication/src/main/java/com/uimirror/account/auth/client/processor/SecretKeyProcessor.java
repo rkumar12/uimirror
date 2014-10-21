@@ -42,7 +42,7 @@ import com.uimirror.core.util.thread.BackgroundProcessorFactory;
  * 
  * @author Jay
  */
-public class SecretKeyProcessor implements Processor<ClientSecretKeyForm>{
+public class SecretKeyProcessor implements Processor<ClientSecretKeyForm, String>{
 
 	protected static final Logger LOG = LoggerFactory.getLogger(SecretKeyProcessor.class);
 	
@@ -56,7 +56,7 @@ public class SecretKeyProcessor implements Processor<ClientSecretKeyForm>{
 	 */
 	@Override
 	@MapException(use=AuthToApplicationExceptionMapper.NAME)
-	public Object invoke(ClientSecretKeyForm param) throws ApplicationException{
+	public String invoke(ClientSecretKeyForm param) throws ApplicationException{
 		LOG.debug("[START]- Issuing a new access token.");
 		String prevToken = param.getSecretCode();
 		//Step 1- Transform the bean to Authentication

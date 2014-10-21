@@ -33,7 +33,7 @@ import com.uimirror.core.rest.extra.ApplicationException;
  * @author Jay
  */
 //TODO write some Access Token processor, which will validate the access token and if required try to regenrate and send back
-public class CreateClientAccountProcessor implements Processor<RegisterForm>{
+public class CreateClientAccountProcessor implements Processor<RegisterForm, String>{
 
 	protected static final Logger LOG = LoggerFactory.getLogger(CreateClientAccountProcessor.class);
 	private @Autowired AccessTokenProvider persistedAccessTokenProvider;
@@ -46,7 +46,7 @@ public class CreateClientAccountProcessor implements Processor<RegisterForm>{
 	 * @see com.uimirror.core.Processor#invoke(java.lang.Object)
 	 */
 	@Override
-	public Object invoke(RegisterForm param) throws ApplicationException {
+	public String invoke(RegisterForm param) throws ApplicationException {
 		LOG.info("[START]- Registering a new Client.");
 		AccessToken token = getValidToken(param.getToken());
 		LOG.info("[END]- Registering a new Client.");

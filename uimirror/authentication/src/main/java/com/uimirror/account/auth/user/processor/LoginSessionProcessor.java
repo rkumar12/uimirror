@@ -21,9 +21,9 @@ import com.uimirror.core.rest.extra.ApplicationException;
 /**
  * @author Jay
  */
-public class LoginSessionProcessor implements Processor<LoginSessionForm>{
+public class LoginSessionProcessor implements Processor<LoginSessionForm, Object>{
 
-	private @Autowired Processor<AuthenticatedHeaderForm> accessTokenExtraProcessor;
+	private @Autowired Processor<AuthenticatedHeaderForm, Object> accessTokenExtraProcessor;
 	
 	/**
 	 * 

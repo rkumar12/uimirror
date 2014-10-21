@@ -36,7 +36,7 @@ import com.uimirror.core.Processor;
 public class ClientAccountEndPoint{
 
 	private static Logger LOG = LoggerFactory.getLogger(ClientAccountEndPoint.class);
-	private @Autowired Processor<RegisterForm> createClientAccountProcessor;
+	private @Autowired Processor<RegisterForm, String> createClientAccountProcessor;
 	
 	public ClientAccountEndPoint() {
 		//NOP

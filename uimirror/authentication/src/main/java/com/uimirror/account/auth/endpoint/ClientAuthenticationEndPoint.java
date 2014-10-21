@@ -41,9 +41,9 @@ public class ClientAuthenticationEndPoint{
 
 	private static Logger LOG = LoggerFactory.getLogger(ClientAuthenticationEndPoint.class);
 	
-	private @Autowired Processor<ClientSecretKeyForm> secretKeyProcessor;
-	private @Autowired Processor<ClientAPIForm> apiKeyProcessor;
-	private @Autowired Processor<AuthenticatedHeaderForm> accessTokenProcessor;
+	private @Autowired Processor<ClientSecretKeyForm, String> secretKeyProcessor;
+	private @Autowired Processor<ClientAPIForm, String> apiKeyProcessor;
+	private @Autowired Processor<AuthenticatedHeaderForm, String> accessTokenProcessor;
 	
 	/**
 	 * Handles for the incoming request that needs validate the client,

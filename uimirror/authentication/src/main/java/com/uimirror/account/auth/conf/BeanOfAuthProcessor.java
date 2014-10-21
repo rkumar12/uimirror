@@ -40,42 +40,42 @@ import com.uimirror.core.form.AuthenticatedHeaderForm;
 public class BeanOfAuthProcessor {
 	
 	@Bean
-	public Processor<LoginForm> loginFormAuthProcessor(){
+	public Processor<LoginForm, String> loginFormAuthProcessor(){
 		return new LoginFormAuthProcessor();
 	}
 	
 	@Bean
-	public Processor<OTPAuthenticationForm> otpAuthProcessor(){
+	public Processor<OTPAuthenticationForm, String> otpAuthProcessor(){
 		return new OTPAuthProcessor();
 	}
 	
 	@Bean
-	public Processor<ScreenLockAuthenticationForm> screenLockAuthProcessor(){
+	public Processor<ScreenLockAuthenticationForm, String> screenLockAuthProcessor(){
 		return new ScreenLockAuthProcessor();
 	}
 	
 	@Bean
-	public Processor<ClientSecretKeyForm> secretKeyProcessor(){
+	public Processor<ClientSecretKeyForm, String> secretKeyProcessor(){
 		return new SecretKeyProcessor();
 	}
 	
 	@Bean
-	public Processor<ClientAPIForm> apiKeyProcessor(){
+	public Processor<ClientAPIForm, String> apiKeyProcessor(){
 		return new APIKeyProcessor();
 	}
 
 	@Bean
-	public Processor<AuthenticatedHeaderForm> accessTokenProcessor(){
+	public Processor<AuthenticatedHeaderForm, String> accessTokenProcessor(){
 		return new AccessTokenProcessor();
 	}
 
 	@Bean
-	public Processor<AuthorizeClientAuthenticationForm> authorizationClientProcessor(){
+	public Processor<AuthorizeClientAuthenticationForm, String> authorizationClientProcessor(){
 		return new AuthorizationClientProcessor();
 	}
 
 	@Bean
-	public Processor<UserAuthorizedClient> allowClientprocessor(){
+	public Processor<UserAuthorizedClient, Object> allowClientprocessor(){
 		return new AllowClientProcessor();
 	}
 

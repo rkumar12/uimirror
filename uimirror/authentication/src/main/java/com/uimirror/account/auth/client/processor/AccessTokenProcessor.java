@@ -33,7 +33,7 @@ import com.uimirror.core.service.TransformerService;
  * 
  * @author Jay
  */
-public class AccessTokenProcessor implements Processor<AuthenticatedHeaderForm>{
+public class AccessTokenProcessor implements Processor<AuthenticatedHeaderForm, String>{
 
 	protected static final Logger LOG = LoggerFactory.getLogger(AccessTokenProcessor.class);
 	
@@ -46,7 +46,7 @@ public class AccessTokenProcessor implements Processor<AuthenticatedHeaderForm>{
 	 */
 	@Override
 	@MapException(use=AuthToApplicationExceptionMapper.NAME)
-	public Object invoke(AuthenticatedHeaderForm param) throws ApplicationException{
+	public String invoke(AuthenticatedHeaderForm param) throws ApplicationException{
 		LOG.debug("[START]- Authenticating the user and trying to to get the authentication details");
 		//Step 1- Transform the bean to Authentication
 		Authentication auth = getTransformedObject(param);

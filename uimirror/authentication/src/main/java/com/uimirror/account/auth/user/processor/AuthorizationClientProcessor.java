@@ -44,7 +44,7 @@ import com.uimirror.core.util.thread.BackgroundProcessorFactory;
  * 
  * @author Jay
  */
-public class AuthorizationClientProcessor implements Processor<AuthorizeClientAuthenticationForm>{
+public class AuthorizationClientProcessor implements Processor<AuthorizeClientAuthenticationForm, String>{
 
 	protected static final Logger LOG = LoggerFactory.getLogger(AuthorizationClientProcessor.class);
 	
@@ -58,7 +58,7 @@ public class AuthorizationClientProcessor implements Processor<AuthorizeClientAu
 	 */
 	@Override
 	@MapException(use=AuthToApplicationExceptionMapper.NAME)
-	public Object invoke(AuthorizeClientAuthenticationForm param) throws ApplicationException{
+	public String invoke(AuthorizeClientAuthenticationForm param) throws ApplicationException{
 		LOG.debug("[START]- Generating a new accesstoken based on the previous accesstoken and Client Authorization by user");
 		String prevToken = param.getToken();
 		//Step 1- Transform the bean to Authentication
