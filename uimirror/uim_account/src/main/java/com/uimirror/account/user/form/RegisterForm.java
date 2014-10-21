@@ -27,7 +27,7 @@ import com.uimirror.core.bean.Gender;
 import com.uimirror.core.form.ClientMetaForm;
 import com.uimirror.core.rest.extra.IllegalArgumentException;
 import com.uimirror.core.service.BeanValidatorService;
-import com.uimirror.core.util.DateUtil;
+import com.uimirror.core.util.DateTimeUtil;
 import com.uimirror.core.util.MessageUtil;
 
 /**
@@ -126,9 +126,9 @@ public final class RegisterForm extends ClientMetaForm implements BeanValidatorS
 			fields.add(RegisterConstants.EMAIl);
 		if(!StringUtils.hasText(getGender().toString()))
 			fields.add(RegisterConstants.GENDER);
-		if(!StringUtils.hasText(getDateOfBirth()) || !DateUtil.isAValidDate(getDateOfBirth()))
+		if(!StringUtils.hasText(getDateOfBirth()) || !DateTimeUtil.isAValidDate(getDateOfBirth()))
 			fields.add(RegisterConstants.DATE_OF_BIRTH);
-		else if  (!DateUtil.isAgeAboveEighteen(getDateOfBirth()))
+		else if  (!DateTimeUtil.isAgeAboveEighteen(getDateOfBirth()))
 			ageLimitMessage=MessageUtil.getAgeLimitMessage();
 				
 		if(fields.size() > 0 ){
@@ -140,10 +140,6 @@ public final class RegisterForm extends ClientMetaForm implements BeanValidatorS
 			errors.put(MESSAGE, errorMessage);
 			informIllegalArgument(errors);
 		}
-	}
-	
-	public static void main(String[] args) {
-		DateUtil.isAgeAboveEighteen(null);
 	}
 	
 	/**
@@ -166,7 +162,7 @@ public final class RegisterForm extends ClientMetaForm implements BeanValidatorS
 	}
 	
 	/**
-	 * Throws the exception map onject
+	 * Throws the exception map object
 	 * @param msg
 	 */
 	private void informIllegalArgument(Map<String, Object> msg){
