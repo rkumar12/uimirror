@@ -43,7 +43,7 @@ public class ClientAuthenticationEndPoint{
 	
 	private @Autowired Processor<ClientSecretKeyForm, String> secretKeyProcessor;
 	private @Autowired Processor<ClientAPIForm, String> apiKeyProcessor;
-	private @Autowired Processor<AuthenticatedHeaderForm, String> accessTokenProcessor;
+	private @Autowired Processor<AuthenticatedHeaderForm, String> refreshAbleAccessTokenProcessor;
 	
 	/**
 	 * Handles for the incoming request that needs validate the client,
@@ -105,17 +105,17 @@ public class ClientAuthenticationEndPoint{
 	/**
 	 * This will be a internal call by the different internal applications
 	 * for resource level security to make sure the requesting client 
-	 * Represents a valid user
+	 * Represents a valid caller
 	 * 
 	 * @return
-	 *///TODO review pending
+	 */
 	@GET
 	@Produces({ "application/x-javascript", MediaType.APPLICATION_JSON })
 	@JSONP(queryParam="cb", callback="callback")
 	@Path(AuthenticationEndPointConstant.OUATH_2_TOEKEN_VALIDATE_REFRESH_PATH)
 	public Object validateAndRefreshAccessKey(@BeanParam AuthenticatedHeaderForm form){
 		LOG.info("[ENTRY]- Received request for client AcessToken Validation and re generation iff necessary");
-		Object response = accessTokenProcessor.invoke(form);
+		Object response = refreshAbleAccessTokenProcessor.invoke(form);
 		LOG.info("[EXIT]- Received request for client AcessToken Validation and re generation iff necessary");
 		return response;
 	}

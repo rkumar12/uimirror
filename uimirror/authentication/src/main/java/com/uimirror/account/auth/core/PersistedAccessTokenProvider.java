@@ -14,13 +14,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.uimirror.account.auth.client.manager.RefreshAccessTokenProcessor;
 import com.uimirror.account.auth.controller.AccessTokenProvider;
 import com.uimirror.account.auth.dao.AccessTokenStore;
-import com.uimirror.account.auth.exception.AuthToApplicationExceptionMapper;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.Authentication;
 import com.uimirror.core.dao.RecordNotFoundException;
-import com.uimirror.core.extra.MapException;
 
 /**
  * Common Mongo DB bridge to persist and retrieve the {@link AccessToken}
@@ -36,7 +35,7 @@ public class PersistedAccessTokenProvider implements AccessTokenProvider{
 
 	/**
 	 * This will generate a new {@linkplain AccessToken} using
-	 * {@linkplain AccessTokenManager#generateToken(Authentication, AuthenticatedDetails)}
+	 * {@linkplain RefreshAccessTokenProcessor#generateToken(Authentication, AuthenticatedDetails)}
 	 * 
 	 * @param auth
 	 * @param authDetails
@@ -55,7 +54,6 @@ public class PersistedAccessTokenProvider implements AccessTokenProvider{
 	 * @return
 	 */
 	@Override
-	@MapException(use=AuthToApplicationExceptionMapper.NAME)
 	public AccessToken getValid(String token){
 		LOG.debug("[SINGLE]- Validating the details provided for the accesstoken");
 		try{

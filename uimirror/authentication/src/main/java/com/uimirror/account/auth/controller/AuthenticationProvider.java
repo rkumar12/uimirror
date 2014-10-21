@@ -18,7 +18,7 @@ import com.uimirror.core.auth.Authentication;
 /**
  * Handles the authentication request, and process the authentication
  * using {@linkplain AuthenticationManager#authenticate(Authentication)}
- * or using {@linkplain AccessTokenManager}
+ * or using {@linkplain RefreshAccessTokenProcessor}
  * on successful authentication a {@linkplain AccessToken} get issued to the 
  * client/user
  *   
