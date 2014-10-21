@@ -63,12 +63,12 @@ public class RefreshAccessTokenProcessor implements Processor<AuthenticatedHeade
 		Authentication auth = authenticateAccessTokenProcessor.invoke(param);
 		//Let GC take this ASAP
 		param = null;
-		//Step 2- Authenticate and issue a token if required
+		//Step 2- Authenticate and issue a token if required and store the same
 		Authentication authPrincipal = renewIfRequired(auth);
-		LOG.debug("[END]- Authenticating the user and trying to to get the authentication details {}", auth);
-		return authPrincipal;
+		LOG.debug("[END]- Authenticating the user and trying to to get the authentication details.");
+		return clean(authPrincipal);
 	}
-	
+
 	/**
 	 * This will check if the {@link AccessToken} expire is below 5 mins, it will try to renew a new one,
 	 * after renewing it will store and invalidate the previous token.
@@ -147,4 +147,12 @@ public class RefreshAccessTokenProcessor implements Processor<AuthenticatedHeade
 		return expires;
 	}
 
+	/**
+	 * @param authPrincipal
+	 * @return
+	 */
+	private Authentication clean(Authentication authPrincipal) {
+		AccessToken token = (AccessToken)authPrincipal.getPrincipal();
+		return new OAuth2Authentication(token.eraseEsential());
+	}
 }

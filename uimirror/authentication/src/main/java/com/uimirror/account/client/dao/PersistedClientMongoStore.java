@@ -18,7 +18,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
+import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
+import com.mongodb.DBObject;
 import com.uimirror.account.client.ClientDBFields;
 import com.uimirror.account.client.bean.Client;
 import com.uimirror.core.dao.AbstractMongoStore;
@@ -33,13 +35,14 @@ import com.uimirror.core.user.AccountStatus;
 @Repository
 public class PersistedClientMongoStore extends AbstractMongoStore<Client> implements ClientStore{
 	
+	private final static String CLIENT_BASIC_SEQ = "cbs";
 	/**
 	 * Assign/ Create collection from the given {@link DBCollection}
 	 * @param collection
 	 */
 	@Autowired
-	public PersistedClientMongoStore(@Qualifier("clientBasicInfoCol") DBCollection collection){
-		super(collection, Client.class);
+	public PersistedClientMongoStore(@Qualifier("clientBasicInfoCol") DBCollection collection, @Qualifier("clientBasicInfoSeqCol") DBCollection seqCollection){
+		super(collection, seqCollection, CLIENT_BASIC_SEQ, Client.class);
 	}
 
 	/* (non-Javadoc)
@@ -107,8 +110,20 @@ public class PersistedClientMongoStore extends AbstractMongoStore<Client> implem
 	 */
 	@Override
 	protected void ensureIndex() {
-		// TODO Auto-generated method stub
-		
+		DBObject obj = new BasicDBObject(ClientDBFields.APP_URL, 1);
+		getCollection().createIndex(obj);;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.uimirror.account.client.dao.ClientStore#findClientByAppUrl(java.lang.String)
+	 */
+	@Override
+	public Client findClientByAppUrl(String url) throws DBException {
+		Map<String, Object> query = new LinkedHashMap<String, Object>(3);
+		query.put(ClientDBFields.APP_URL, url);
+		Map<String, Object> fields = new LinkedHashMap<String, Object>(3);
+		fields.put(ClientDBFields.ID, 1);
+		return queryFirstRecord(query, fields);
 	}
 	
 }

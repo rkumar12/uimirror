@@ -17,9 +17,6 @@ package com.uimirror.ws.api.security.common;
  */
 public interface SecurityFieldConstants {
 
-	//MONGO Commands
-	public static final String _SET = "$set";
-	public static final String _GRETER = "$gt";
 	//Common Fields
 	public static final String _ID = "_id";
 	public static final String _TIME_ZONE = "tz";

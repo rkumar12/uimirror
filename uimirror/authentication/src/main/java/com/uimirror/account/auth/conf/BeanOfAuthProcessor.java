@@ -67,11 +67,6 @@ public class BeanOfAuthProcessor {
 	public Processor<ClientAPIForm, String> apiKeyProcessor(){
 		return new APIKeyProcessor();
 	}
-
-	@Bean
-	public Processor<AuthenticatedHeaderForm, String> accessTokenProcessor(){
-		return new ValidateAccessTokenProcessor();
-	}
 	
 	@Bean
 	public Processor<AuthenticatedHeaderForm, Authentication> refreshAccessTokenProcessor(){
@@ -81,6 +76,11 @@ public class BeanOfAuthProcessor {
 	@Bean
 	public Processor<AuthenticatedHeaderForm, String> refreshAbleAccessTokenProcessor(){
 		return new RefreshAbleAccessTokenProcessor();
+	}
+	
+	@Bean
+	public Processor<AuthenticatedHeaderForm, String> validateAccessTokenProcessor(){
+		return new ValidateAccessTokenProcessor();
 	}
 
 	@Bean

@@ -57,4 +57,21 @@ public interface ClientStore {
 	 * @return
 	 */
 	Client findActieveClientById(String clientId) throws DBException;
+	
+	/**
+	 * Finds Client by App URL
+	 * Make sure, it only retrieves the app URL and name of the client
+	 * @param url
+	 * @return
+	 * @throws DBException
+	 */
+	Client findClientByAppUrl(String url) throws DBException;
+	
+	/**
+	 * Stores client in document
+	 * @param client
+	 * @throws DBException
+	 */
+	Client store(Client client) throws DBException;
+	
 }

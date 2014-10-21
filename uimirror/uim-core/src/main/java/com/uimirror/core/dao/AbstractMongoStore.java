@@ -50,6 +50,7 @@ public abstract class AbstractMongoStore<T extends BeanBasedDocument<T>> extends
 
 	protected static final Logger LOG = LoggerFactory.getLogger(AbstractMongoStore.class);
 	private T t;
+	private String seqName;
 	/**
 	 * Assign/ Create collection from the given {@link Mongo}
 	 * @param mongo
@@ -80,6 +81,20 @@ public abstract class AbstractMongoStore<T extends BeanBasedDocument<T>> extends
 		setTargetClass(claz);
 	}
 	
+	public AbstractMongoStore(DB db, String collectionName,
+			String seqCollectionName, String seqName, Class<? extends BeanBasedDocument<T>> claz) {
+		super(db, collectionName, seqCollectionName);
+		setTargetClass(claz);
+		this.seqName = seqName;
+	}
+
+	public AbstractMongoStore(DBCollection collection,
+			DBCollection seqCollection, String seqName, Class<? extends BeanBasedDocument<T>> claz) {
+		super(collection, seqCollection);
+		setTargetClass(claz);
+		this.seqName = seqName;
+	}
+
 	/**
 	 * Initialize the type of serialization of the class
 	 * @param claz
@@ -100,14 +115,19 @@ public abstract class AbstractMongoStore<T extends BeanBasedDocument<T>> extends
 	 */
 	@Override
 	@MapException(use=MongoExceptionMapper.NAME)
-	public void store(T doc) throws DBException {
+	public T store(T doc) throws DBException {
 		LOG.debug("[START]- Storing the object");
 		Assert.notNull(doc, "Object To store can't be empty");
 		Map<String, Object> document = doc.toMap();
 		if(CollectionUtils.isEmpty(document))
 			throw new IllegalArgumentException("Object To store can't be empty");
+		//If Sequence Name present then put the sequence name as well 
+		if(getSeqName() != null)
+			document.put(BasicDBFields.ID, getNextSequence());
 		getCollection().save(convertToDBObject(document));
 		LOG.debug("[END]- Storing the object");
+		ensureIndex();
+		return t.initFromMap(document);
 	}
 
 
@@ -317,5 +337,28 @@ public abstract class AbstractMongoStore<T extends BeanBasedDocument<T>> extends
 	 * Should have give the implementation to make sure, document has the enough index
 	 */
 	protected abstract void ensureIndex();
+	
+	/* (non-Javadoc)
+	 * @see com.uimirror.core.dao.BasicStore#getNextSequence(java.lang.String)
+	 */
+	public String getNextSequence() {
+		if(getSeqName() == null)
+			return null;
+		// this object represents your "query", its analogous to a WHERE clause in SQL
+	    DBObject query = new BasicDBObject(1);
+	    query.put(BasicDBFields.ID, seqName); // where _id = the input sequence name
+	 
+	    // this object represents the "update" or the SET blah=blah in SQL
+	    DBObject change = new BasicDBObject("seq", 1);
+	    DBObject update = new BasicDBObject(BasicMongoOperators.INCREAMENT, change); // the $inc here is a mongodb command for increment
+	 
+	    // Atomically updates the sequence field and returns the value for you
+	    DBObject res = getSeqCollection().findAndModify(query, new BasicDBObject(), new BasicDBObject(), false, update, true, true);
+	    return res.get("seq").toString();
+	}
+	
+	private String getSeqName(){
+		return seqName;
+	}
 
 }

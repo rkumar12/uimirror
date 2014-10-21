@@ -10,10 +10,11 @@
  *******************************************************************************/
 package com.uimirror.account.auth.controller;
 
-import com.uimirror.account.auth.core.AuthenticationException;
 import com.uimirror.account.auth.core.AuthenticationManager;
+import com.uimirror.account.auth.token.processor.RefreshAccessTokenProcessor;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.Authentication;
+import com.uimirror.ws.api.security.exception.AuthenticationException;
 
 /**
  * Handles the authentication request, and process the authentication

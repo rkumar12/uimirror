@@ -25,20 +25,41 @@ import com.mongodb.MongoException;
 public abstract class MongoInitializer {
 
 	private final DBCollection collection;
+	private final DBCollection seqCollection;
+	
+	public MongoInitializer(Mongo mongo, String dbName, String collectionName, String seqCollectionName) {
+		checkValidity(mongo, dbName, collectionName);
+		this.collection = mongo.getDB(dbName).getCollection(collectionName);
+		this.seqCollection = mongo.getDB(dbName).getCollection(seqCollectionName);
+	}
 	
 	public MongoInitializer(Mongo mongo, String dbName, String collectionName) {
 		checkValidity(mongo, dbName, collectionName);
 		this.collection = mongo.getDB(dbName).getCollection(collectionName);
+		this.seqCollection = null;
 	}
 	
+	public MongoInitializer(DB db, String collectionName, String seqCollectionName) {
+		checkValidity(db, collectionName);
+		this.collection = db.getCollection(collectionName);
+		this.seqCollection = db.getCollection(seqCollectionName);
+	}
+
 	public MongoInitializer(DB db, String collectionName) {
 		checkValidity(db, collectionName);
 		this.collection = db.getCollection(collectionName);
+		this.seqCollection = null;
 	}
 	
+	public MongoInitializer(DBCollection collection, DBCollection seqCollection) {
+		checkValidity(collection);
+		this.collection = collection;
+		this.seqCollection = seqCollection;
+	}
 	public MongoInitializer(DBCollection collection) {
 		checkValidity(collection);
 		this.collection = collection;
+		this.seqCollection = null;
 	}
 
 	public DBCollection getCollection() {
@@ -65,6 +86,10 @@ public abstract class MongoInitializer {
 	 */
 	public void mapException(MongoException e){
 		
+	}
+
+	public DBCollection getSeqCollection() {
+		return seqCollection;
 	}
 
 }

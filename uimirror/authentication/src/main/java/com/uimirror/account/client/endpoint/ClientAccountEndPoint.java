@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.uimirror.account.client.form.RegisterForm;
 import com.uimirror.core.Processor;
+import com.uimirror.ws.api.security.annotation.PreAuthorize;
 
 /**
  * End point for the various client operation
@@ -37,6 +38,7 @@ public class ClientAccountEndPoint{
 
 	private static Logger LOG = LoggerFactory.getLogger(ClientAccountEndPoint.class);
 	private @Autowired Processor<RegisterForm, String> createClientAccountProcessor;
+	
 	
 	public ClientAccountEndPoint() {
 		//NOP
@@ -75,6 +77,7 @@ public class ClientAccountEndPoint{
 	@JSONP(queryParam="cb", callback="callback")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Path(ClientEndPointConstant.CREATE)
+	@PreAuthorize
 	public Object create(@BeanParam RegisterForm form){
 		LOG.info("[ENTRY]- Received requst for Client Creation.");
 		Object response = createClientAccountProcessor.invoke(form);

@@ -293,7 +293,6 @@ public abstract class AbstractAccessToken<T> extends BeanBasedDocument<T> implem
 	@Override
 	public Map<String, Object> toResponseMap() {
 		Map<String, Object> rs = new LinkedHashMap<String, Object>(15);
-		Token token = this.getToken().getEncrypted();
 		rs.put(AccessTokenFields.TOKEN, token.getToken());
 		if(StringUtils.hasText(token.getParaphrase()))
 			rs.put(AccessTokenFields.ENCRYPT_STARTEGY, token.getParaphrase());

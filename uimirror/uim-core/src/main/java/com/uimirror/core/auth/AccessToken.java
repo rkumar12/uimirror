@@ -95,6 +95,7 @@ public interface AccessToken extends Principal, Serializable{
 	/**
 	 * Should remove the un-necessary info from the token details
 	 * This should be called when response being sent to the client, shouldn't be before
+	 * This will encrypt the token and send back
 	 * @return
 	 */
 	AccessToken eraseEsential();

@@ -20,6 +20,7 @@ import com.uimirror.account.auth.token.processor.RefreshAccessTokenProcessor;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.Authentication;
 import com.uimirror.core.dao.RecordNotFoundException;
+import com.uimirror.ws.api.security.exception.InvalidTokenException;
 
 /**
  * Common Mongo DB bridge to persist and retrieve the {@link AccessToken}

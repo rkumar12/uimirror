@@ -19,13 +19,13 @@ import org.springframework.util.Assert;
 
 import com.uimirror.account.auth.client.OAuth2Authentication;
 import com.uimirror.account.auth.controller.AccessTokenProvider;
-import com.uimirror.account.auth.core.AuthenticationException;
 import com.uimirror.account.auth.core.AuthenticationManager;
 import com.uimirror.account.auth.exception.AuthExceptionMapper;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.AuthConstants;
 import com.uimirror.core.auth.Authentication;
 import com.uimirror.core.extra.MapException;
+import com.uimirror.ws.api.security.exception.AuthenticationException;
 
 /**
  * Implementation of {@link AuthenticationManager#authenticate(Authentication)}

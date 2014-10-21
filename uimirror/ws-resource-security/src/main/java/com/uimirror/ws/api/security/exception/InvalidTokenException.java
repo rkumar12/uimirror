@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.account.auth.core;
+package com.uimirror.ws.api.security.exception;
 
 import com.uimirror.core.ErrorCodes;
 

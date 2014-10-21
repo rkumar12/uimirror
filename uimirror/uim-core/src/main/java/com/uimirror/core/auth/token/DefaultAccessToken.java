@@ -73,7 +73,7 @@ public class DefaultAccessToken extends AbstractAccessToken<DefaultAccessToken>{
 	 */
 	@Override
 	public AccessToken eraseEsential() {
-		return new DefaultAccessToken(this.getToken(), this.getOwner(), this.getClient(), this.getExpire(), this.getType(), this.getScope());
+		return new DefaultAccessToken(this.getToken().getEncrypted(), this.getOwner(), this.getClient(), this.getExpire(), this.getType(), this.getScope());
 	}
 	
 	/* (non-Javadoc)

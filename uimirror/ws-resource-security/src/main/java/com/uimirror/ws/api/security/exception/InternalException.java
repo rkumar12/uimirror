@@ -13,18 +13,20 @@ package com.uimirror.ws.api.security.exception;
 import com.uimirror.core.ErrorCodes;
 
 /**
- * <p>Contains all the error message and associated error code if any</p>
+ * Thrown if an authentication request is rejected because of some internal error. 
+ * Makes no assertion as to whether or not the credentials were valid.
+ * 
  * @author Jay
  */
-public interface ErrorConstant {
+public class InternalException extends AccountStatusException{
 
-	//Token Details not found
-	public static final int TOKEN_NOT_FOUND = ErrorCodes._404;
-	//Token has been expired
-	public static final int TOKEN_EXPIRED = ErrorCodes._419;
-	//MONGO data base error
-	public static final int MONGO_ERROR = ErrorCodes._500;
-	
-	//Client Not found
-	public static final int CLIENT_NOT_FOUND = ErrorCodes._404;
+	private static final long serialVersionUID = 5345459135563382789L;
+
+	/**
+	 * This might because of account details are not accessible to validate because of some reason.
+	 */
+	public InternalException() {
+		super(ErrorCodes._500, "Internal error, while authenticating user");
+	}
+
 }

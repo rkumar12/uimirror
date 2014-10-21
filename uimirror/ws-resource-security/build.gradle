@@ -39,7 +39,6 @@ dependencies {
 		//exclude module: 'jersey-server'
 		
 	}
-	compile group: 'com.uimirror.mongo', name: 'mongo-factory', version: 1.0
 	//Logging
 	compile ([group: 'org.slf4j', name: 'slf4j-api', version: slf4jVersion],
 			)

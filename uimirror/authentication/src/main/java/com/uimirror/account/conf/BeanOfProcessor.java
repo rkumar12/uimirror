@@ -10,14 +10,20 @@
  *******************************************************************************/
 package com.uimirror.account.conf;
 
+import javax.ws.rs.container.ContainerRequestContext;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.uimirror.account.auth.token.processor.AccessTokenProcessor;
 import com.uimirror.account.auth.user.processor.VerifyActivateUserAccountProcessor;
+import com.uimirror.account.client.bean.Client;
 import com.uimirror.account.client.form.RegisterForm;
 import com.uimirror.account.client.processor.CreateClientAccountProcessor;
+import com.uimirror.account.client.provider.CreateClientAccountProvider;
 import com.uimirror.account.user.form.VerifyForm;
 import com.uimirror.core.Processor;
+import com.uimirror.core.auth.AccessToken;
 
 /**
  * Contains the bean definition for all the authentication controller process
@@ -33,8 +39,18 @@ public class BeanOfProcessor {
   }
 
   @Bean
+  public Processor<RegisterForm, Client> createClientAccountProvider() {
+	  return new CreateClientAccountProvider();
+  }
+
+  @Bean
   public Processor<VerifyForm, String> verifyActivateUserAccountProcessor() {
     return new VerifyActivateUserAccountProcessor();
+  }
+  
+  @Bean
+  public Processor<ContainerRequestContext, AccessToken> accessTokenProcessor(){
+	  return new AccessTokenProcessor();
   }
 
 }

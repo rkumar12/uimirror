@@ -19,12 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 
 import com.uimirror.account.auth.controller.AccessTokenProvider;
-import com.uimirror.account.auth.core.AuthenticationException;
 import com.uimirror.account.auth.core.AuthenticationManager;
-import com.uimirror.account.auth.core.BadCredentialsException;
-import com.uimirror.account.auth.core.InvalidTokenException;
-import com.uimirror.account.auth.core.LockedException;
-import com.uimirror.account.auth.core.NotVerifiedException;
 import com.uimirror.account.auth.core.PasswordMatcher;
 import com.uimirror.account.auth.core.TokenGenerator;
 import com.uimirror.account.auth.exception.AuthExceptionMapper;
@@ -47,6 +42,11 @@ import com.uimirror.core.user.AccountState;
 import com.uimirror.core.user.AccountStatus;
 import com.uimirror.core.util.DateTimeUtil;
 import com.uimirror.core.util.thread.BackgroundProcessorFactory;
+import com.uimirror.ws.api.security.exception.AuthenticationException;
+import com.uimirror.ws.api.security.exception.BadCredentialsException;
+import com.uimirror.ws.api.security.exception.InvalidTokenException;
+import com.uimirror.ws.api.security.exception.LockedException;
+import com.uimirror.ws.api.security.exception.NotVerifiedException;
 
 /**
  * Implementation of {@link AuthenticationManager#authenticate(Authentication)}

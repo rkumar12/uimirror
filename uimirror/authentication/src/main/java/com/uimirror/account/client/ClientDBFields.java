@@ -21,6 +21,7 @@ public interface ClientDBFields extends BasicDBFields{
 	String NAME = "name";
 	String SECRET = "secret";
 	String REDIRECT_URI = "redirect_uri";
+	String APP_URL = "app_uri";
 	String STATUS = "status";
 	String API_KEY = "api_key";
 	String REGISTERED_ON = "registered_on";

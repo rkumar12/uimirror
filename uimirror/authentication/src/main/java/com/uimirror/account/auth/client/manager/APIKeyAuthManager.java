@@ -19,9 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 
 import com.uimirror.account.auth.client.APIKeyAuthentication;
-import com.uimirror.account.auth.core.AuthenticationException;
 import com.uimirror.account.auth.core.AuthenticationManager;
-import com.uimirror.account.auth.core.LockedException;
 import com.uimirror.account.auth.core.TokenGenerator;
 import com.uimirror.account.auth.exception.AuthExceptionMapper;
 import com.uimirror.account.client.bean.Client;
@@ -35,6 +33,8 @@ import com.uimirror.core.auth.TokenType;
 import com.uimirror.core.auth.token.DefaultAccessToken;
 import com.uimirror.core.extra.MapException;
 import com.uimirror.core.user.AccountStatus;
+import com.uimirror.ws.api.security.exception.AuthenticationException;
+import com.uimirror.ws.api.security.exception.LockedException;
 
 /**
  * Implementation of {@link AuthenticationManager#authenticate(Authentication)}

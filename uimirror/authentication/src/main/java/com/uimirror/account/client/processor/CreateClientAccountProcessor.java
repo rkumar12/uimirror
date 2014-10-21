@@ -10,15 +10,21 @@
  *******************************************************************************/
 package com.uimirror.account.client.processor;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.uimirror.account.auth.controller.AccessTokenProvider;
+import com.uimirror.account.client.ClientDBFields;
+import com.uimirror.account.client.bean.Client;
 import com.uimirror.account.client.form.RegisterForm;
 import com.uimirror.core.Processor;
-import com.uimirror.core.auth.AccessToken;
+import com.uimirror.core.exceptions.ApplicationExceptionMapper;
+import com.uimirror.core.extra.MapException;
 import com.uimirror.core.rest.extra.ApplicationException;
+import com.uimirror.core.rest.extra.ResponseTransFormer;
 
 /**
  * Processor for the client account creation, it will first check for the client existence
@@ -32,11 +38,11 @@ import com.uimirror.core.rest.extra.ApplicationException;
  * 
  * @author Jay
  */
-//TODO write some Access Token processor, which will validate the access token and if required try to regenrate and send back
 public class CreateClientAccountProcessor implements Processor<RegisterForm, String>{
 
 	protected static final Logger LOG = LoggerFactory.getLogger(CreateClientAccountProcessor.class);
-	private @Autowired AccessTokenProvider persistedAccessTokenProvider;
+	private @Autowired Processor<RegisterForm, Client> createClientAccountProvider;
+	private @Autowired ResponseTransFormer<String> jsonResponseTransFormer;
 
 	public CreateClientAccountProcessor() {
 		// NOP
@@ -46,15 +52,24 @@ public class CreateClientAccountProcessor implements Processor<RegisterForm, Str
 	 * @see com.uimirror.core.Processor#invoke(java.lang.Object)
 	 */
 	@Override
+	@MapException(use=ApplicationExceptionMapper.NAME)
 	public String invoke(RegisterForm param) throws ApplicationException {
 		LOG.info("[START]- Registering a new Client.");
-		AccessToken token = getValidToken(param.getToken());
+		Client client =createClientAccountProvider.invoke(param);
 		LOG.info("[END]- Registering a new Client.");
-		return null;
+		return jsonResponseTransFormer.doTransForm(cleanClient(client));
 	}
 	
-	private AccessToken getValidToken(String token){
-		return persistedAccessTokenProvider.getValid(token);
+	/**
+	 * Creates the final response map that will be respond back to the client
+	 * @param client
+	 * @return
+	 */
+	private Map<String, Object> cleanClient(Client client){
+		Map<String, Object> map = new LinkedHashMap<String, Object>();
+		map.put(ClientDBFields.API_KEY, client.getApiKey());
+		map.put(ClientDBFields.SECRET, client.getSecret());
+		return map;
 	}
 
 }

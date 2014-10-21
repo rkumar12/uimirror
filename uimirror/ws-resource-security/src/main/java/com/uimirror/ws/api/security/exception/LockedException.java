@@ -8,24 +8,19 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.account.auth.core;
+package com.uimirror.ws.api.security.exception;
 
 import com.uimirror.core.ErrorCodes;
 
 /**
- * Thrown if an authentication request is rejected because the account is newly created and not yet verified.
- * 
  * @author Jay
  */
-public class NotVerifiedException extends AccountStatusException{
+public class LockedException extends AccountStatusException{
 
-	private static final long serialVersionUID = -7623018440294937442L;
+	private static final long serialVersionUID = -2474116394867889066L;
 
-	/**
-	 * This might because of account has been disabled due to some reason.
-	 */
-	public NotVerifiedException() {
-		super(ErrorCodes._428, "Account has not yet verified");
+	public LockedException() {
+		super(ErrorCodes._423, "Account has been locked temporarly");
 	}
 
 }

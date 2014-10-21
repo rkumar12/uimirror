@@ -17,6 +17,7 @@ import org.springframework.context.annotation.Configuration;
 import com.uimirror.account.auth.exception.AuthExceptionMapper;
 import com.uimirror.account.auth.exception.AuthToApplicationExceptionMapper;
 import com.uimirror.core.dao.MongoExceptionMapper;
+import com.uimirror.core.exceptions.ApplicationExceptionMapper;
 import com.uimirror.core.exceptions.ExceptionMapper;
 import com.uimirror.core.exceptions.ExceptionMapperFactory;
 import com.uimirror.core.extra.MapExceptionAspect;
@@ -48,6 +49,11 @@ public class BeanOfExceptionIntitializer {
 	@Bean(name=MongoExceptionMapper.NAME)
 	public ExceptionMapper mongoExceptionMapper(){
 		return new MongoExceptionMapper();
+	}
+	
+	@Bean(name=ApplicationExceptionMapper.NAME)
+	public ExceptionMapper applicationExceptionMapper(){
+		return new ApplicationExceptionMapper();
 	}
 	
 	@Bean

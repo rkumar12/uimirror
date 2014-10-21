@@ -8,19 +8,23 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.account.auth.core;
+package com.uimirror.ws.api.security.annotation;
 
-import com.uimirror.core.ErrorCodes;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
+import java.lang.annotation.Documented;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
 
 /**
+ * Specifies if access token needs to populate or not.
  * @author Jay
  */
-public class LockedException extends AccountStatusException{
-
-	private static final long serialVersionUID = -2474116394867889066L;
-
-	public LockedException() {
-		super(ErrorCodes._423, "Account has been locked temporarly");
-	}
-
+@Documented
+@Retention (RUNTIME)
+@Target({TYPE, METHOD})
+public @interface PreAuthorize {
+	
 }

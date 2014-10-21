@@ -38,7 +38,7 @@ import com.uimirror.core.form.AuthenticatedHeaderForm;
 @Singleton
 public class AccessTokenAuthenticationEndPoint{
 
-	private @Autowired Processor<AuthenticatedHeaderForm, String> accessTokenProcessor;
+	private @Autowired Processor<AuthenticatedHeaderForm, String> validateAccessTokenProcessor;
 	private @Autowired Processor<AuthenticatedHeaderForm, String> refreshAbleAccessTokenProcessor;
 	
 	private static Logger LOG = LoggerFactory.getLogger(AccessTokenAuthenticationEndPoint.class);
@@ -56,14 +56,14 @@ public class AccessTokenAuthenticationEndPoint{
 	 * @param form
 	 * @return
 	 */
-	@POST
+	@GET
 	@Produces({ "application/x-javascript", MediaType.APPLICATION_JSON })
 	@JSONP(queryParam="cb", callback="callback")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Path(AuthenticationEndPointConstant.ACCESS_TOKEN_VALIDATION_PATH)
 	public Object doValidate(@BeanParam AuthenticatedHeaderForm form){
 		LOG.info("[ENTRY]- Received requst for access key validation");
-		Object response = accessTokenProcessor.invoke(form);
+		Object response = validateAccessTokenProcessor.invoke(form);
 		LOG.info("[EXIT]- Received requst for access key validation");
 		return response;
 	}
@@ -75,9 +75,10 @@ public class AccessTokenAuthenticationEndPoint{
 	 * 
 	 * @return
 	 */
-	@GET
+	@POST
 	@Produces({ "application/x-javascript", MediaType.APPLICATION_JSON })
 	@JSONP(queryParam="cb", callback="callback")
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Path(AuthenticationEndPointConstant.OUATH_2_TOEKEN_VALIDATE_REFRESH_PATH)
 	public Object validateAndRefreshAccessKey(@BeanParam AuthenticatedHeaderForm form){
 		LOG.info("[ENTRY]- Received request for client AcessToken Validation and re generation iff necessary");

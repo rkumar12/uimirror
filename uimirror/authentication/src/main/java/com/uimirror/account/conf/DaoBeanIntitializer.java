@@ -37,6 +37,7 @@ public class DaoBeanIntitializer {
 	protected @Value("${auth.usr.client.col.name:usr_auth_client}") String userAuthorizedClientCollection;
 	protected @Value("${client.db.name:uim_client}") String clientDb;
 	protected @Value("${client.col.name:basic_info}") String clientBasicInfoCollection;
+	protected @Value("${client.seq.col.name:basic_info_seq}") String clientBasicInfoSeqCollection;
 	
 	@Bean
 	public Mongo mongo() throws UnknownHostException{
@@ -66,13 +67,19 @@ public class DaoBeanIntitializer {
 	@Bean
 	@Autowired
 	public DB clientDB(Mongo mongo) throws UnknownHostException{
-		return MongoDbFactory.getDB(mongo, this.authDb);
+		return MongoDbFactory.getDB(mongo, this.clientDb);
 	}
 	
 	@Bean
 	@Autowired
 	public DBCollection clientBasicInfoCol(DB clientDB) throws UnknownHostException{
 		return DBCollectionUtil.getCollection(clientDB, this.clientBasicInfoCollection);
+	}
+	
+	@Bean
+	@Autowired
+	public DBCollection clientBasicInfoSeqCol(DB clientDB) throws UnknownHostException{
+		return DBCollectionUtil.getCollection(clientDB, this.clientBasicInfoSeqCollection);
 	}
 
 }

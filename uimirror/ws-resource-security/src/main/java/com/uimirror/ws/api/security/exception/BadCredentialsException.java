@@ -8,14 +8,19 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.ws.api.security.repo;
+package com.uimirror.ws.api.security.exception;
+
+import com.uimirror.core.ErrorCodes;
 
 /**
- * <p>This will get the user details from the user db</p>
  * @author Jay
  */
-public interface UserDao {
-	public static final String USER_DB = "uim_user";
-	public static final String ACCESS_TOKEN_COLLECTION = "accesstoken";
+public class BadCredentialsException extends AccountStatusException{
+
+	private static final long serialVersionUID = 551191787946467768L;
+
+	public BadCredentialsException() {
+		super(ErrorCodes._401, "Credentials are not valid");
+	}
 
 }

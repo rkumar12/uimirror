@@ -10,7 +10,6 @@
  *******************************************************************************/
 package com.uimirror.core.exceptions;
 
-import com.mongodb.BulkWriteException;
 import com.uimirror.core.rest.extra.ApplicationException;
 import com.uimirror.core.rest.extra.InternalException;
 
@@ -26,15 +25,16 @@ public class ApplicationExceptionMapper implements ExceptionMapper{
 	 */
 	@Override
 	public Throwable mapIt(Throwable exceptionToMap) {
+		if(isSkipable(exceptionToMap))
+			return exceptionToMap;
 		if(isInvalidInput(exceptionToMap))
 			return translateToInvalidInput();
-		if(isOthers(exceptionToMap))
+		if(!isSkipable(exceptionToMap))
 			return translateToOthers();
 		return exceptionToMap;
 	}
 	
 	/**
-	 * Checks if it is a {@link BulkWriteException}
 	 * 
 	 * @param e
 	 * @return
@@ -47,12 +47,12 @@ public class ApplicationExceptionMapper implements ExceptionMapper{
 		return new com.uimirror.core.rest.extra.IllegalArgumentException();
 	}
 	
-	private boolean isOthers(Throwable e){
-		return !(e instanceof ApplicationException);
-	}
-	
 	private ApplicationException translateToOthers(){
 		return new InternalException();
+	}
+	
+	private boolean isSkipable(Throwable e){
+		return e instanceof ApplicationException;
 	}
 	
 }

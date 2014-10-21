@@ -30,13 +30,21 @@ import com.uimirror.core.mongo.feature.MongoDocumentSerializer;
  * @author Jay
  */
 public interface BasicStore<T extends BeanBasedDocument<T>> {
+	
+	/**
+	 * Gets the Sequence for the document
+	 * @param seqName
+	 * @return
+	 */
+	String getNextSequence();
 
 	/**
 	 * Stores the document by calling 
 	 * {@linkplain MongoDocumentSerializer#toMap()}
 	 * @param doc
+	 * @return T
 	 */
-	void store(T doc) throws DBException;
+	T store(T doc) throws DBException;
 	
 	/**
 	 * Defines the contract of the delete by ID

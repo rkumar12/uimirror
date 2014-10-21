@@ -1,16 +1,13 @@
 package com.uimirror.account.auth.user.processor;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.uimirror.account.auth.controller.AccessTokenProvider;
-import com.uimirror.account.auth.core.InvalidTokenException;
 import com.uimirror.account.auth.core.TokenGenerator;
 import com.uimirror.account.auth.core.processor.InvalidateTokenProcessor;
-import com.uimirror.account.auth.dao.PersistedAccessTokenMongoStore;
-import com.uimirror.account.user.dao.PersistedUserCredentialMongoStore;
+import com.uimirror.account.user.dao.UserCredentialsStore;
 import com.uimirror.account.user.form.VerifyForm;
 import com.uimirror.account.user.form.VerifySource;
 import com.uimirror.core.Processor;
@@ -24,11 +21,9 @@ import com.uimirror.core.rest.extra.ApplicationException;
 import com.uimirror.core.rest.extra.ResponseTransFormer;
 import com.uimirror.core.util.DateTimeUtil;
 import com.uimirror.core.util.thread.BackgroundProcessorFactory;
+import com.uimirror.ws.api.security.exception.InvalidTokenException;
 
 public class VerifyActivateUserAccountProcessor implements Processor<VerifyForm, String> {
-
-  @Autowired
-  private PersistedAccessTokenMongoStore accessStore;
 
   @Autowired
   private AccessTokenProvider persistedAccessTokenProvider;
@@ -38,7 +33,7 @@ public class VerifyActivateUserAccountProcessor implements Processor<VerifyForm,
   private ResponseTransFormer<String> jsonResponseTransFormer;
 
   @Autowired
-  private PersistedUserCredentialMongoStore userCredentialStore;
+  private UserCredentialsStore userCredentialStore;
 
   @Override
   public String invoke(VerifyForm param) throws ApplicationException {
@@ -50,13 +45,13 @@ public class VerifyActivateUserAccountProcessor implements Processor<VerifyForm,
     AccessToken newAccessToken = null;
     AccessToken prevAccessToken = null;
     if (VerifySource.MAIL == accountActivationSource) {
-      prevAccessToken = accessStore.get(prevToken);
+      prevAccessToken = persistedAccessTokenProvider.get(prevToken);
       if (prevAccessToken == null) {
         throw new InvalidTokenException();
       }
 
     } else {
-      prevAccessToken = accessStore.getValid(prevToken);
+      prevAccessToken = persistedAccessTokenProvider.getValid(prevToken);
       if (prevAccessToken == null) {
         throw new InvalidTokenException();
       }

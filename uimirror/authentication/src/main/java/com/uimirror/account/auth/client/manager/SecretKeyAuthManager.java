@@ -22,9 +22,7 @@ import org.springframework.util.StringUtils;
 import com.uimirror.account.auth.client.APIKeyAuthentication;
 import com.uimirror.account.auth.client.OAuth2Authentication;
 import com.uimirror.account.auth.controller.AccessTokenProvider;
-import com.uimirror.account.auth.core.AuthenticationException;
 import com.uimirror.account.auth.core.AuthenticationManager;
-import com.uimirror.account.auth.core.BadCredentialsException;
 import com.uimirror.account.auth.core.TokenGenerator;
 import com.uimirror.account.auth.exception.AuthExceptionMapper;
 import com.uimirror.account.client.bean.Client;
@@ -39,6 +37,8 @@ import com.uimirror.core.auth.token.DefaultAccessToken;
 import com.uimirror.core.extra.MapException;
 import com.uimirror.core.service.MatcherService;
 import com.uimirror.core.util.DateTimeUtil;
+import com.uimirror.ws.api.security.exception.AuthenticationException;
+import com.uimirror.ws.api.security.exception.BadCredentialsException;
 
 /**
  * Implementation of {@link AuthenticationManager#authenticate(Authentication)}

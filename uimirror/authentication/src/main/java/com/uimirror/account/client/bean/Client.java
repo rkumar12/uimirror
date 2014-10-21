@@ -32,6 +32,7 @@ public class Client extends BeanBasedDocument<Client> implements BeanValidatorSe
 	private String name;
 	private String secret;
 	private String redirectURI;
+	private String appURL;
 	private AccountStatus status;
 	private String apiKey;
 	private long registeredOn;
@@ -57,13 +58,14 @@ public class Client extends BeanBasedDocument<Client> implements BeanValidatorSe
 	 * @param registeredBy
 	 * @param details
 	 */
-	public Client(String id, String name, String secret, String redirectURI,
+	public Client(String id, String name, String secret, String redirectURI, String appUrl,
 			AccountStatus status, String apiKey, long registeredOn,
 			String registeredBy, Map<String, Object> details) {
 		super(id);
 		this.name = name;
 		this.secret = secret;
 		this.redirectURI = redirectURI;
+		this.appURL = appUrl;
 		this.status = status;
 		this.apiKey = apiKey;
 		this.registeredOn = registeredOn;
@@ -109,6 +111,9 @@ public class Client extends BeanBasedDocument<Client> implements BeanValidatorSe
 		return details == null ? new LinkedHashMap<String, Object>(5) : this.details;
 	}
 	
+	public String getAppURL() {
+		return appURL;
+	}
 	/**
 	 * Update the provided details, if any new details to add,
 	 * it will create a new instance and returned
@@ -120,10 +125,9 @@ public class Client extends BeanBasedDocument<Client> implements BeanValidatorSe
 			return this;
 			
 		details.putAll(this.getDetails());
-		return new Client(this.getId(), this.name, this.secret, this.redirectURI, this.status, this.apiKey, this.registeredOn, this.registeredBy, details);
+		return new Client(this.getId(), this.name, this.secret, this.redirectURI, this.appURL, this.status, this.apiKey, this.registeredOn, this.registeredBy, details);
 		
 	}
-	
 
 	/* (non-Javadoc)
 	 * @see com.uimirror.core.mongo.feature.MongoDocumentSerializer#initFromMap(java.util.Map)
@@ -144,6 +148,7 @@ public class Client extends BeanBasedDocument<Client> implements BeanValidatorSe
 		String name = (String)src.get(ClientDBFields.NAME);
 		String secret = (String)src.get(ClientDBFields.SECRET);
 		String redirectURI = (String)src.get(ClientDBFields.REDIRECT_URI);
+		String appURL = (String)src.get(ClientDBFields.APP_URL);
 		String st = (String)src.get(ClientDBFields.STATUS);
 		AccountStatus status = st == null ? null : AccountStatus.getEnum(st);
 		String apiKey = (String)src.get(ClientDBFields.API_KEY);
@@ -153,7 +158,7 @@ public class Client extends BeanBasedDocument<Client> implements BeanValidatorSe
 			registeredOn = (long)src.get(ClientDBFields.REGISTERED_ON);
 		}
 		Map<String, Object> details = (Map<String, Object>)src.get(ClientDBFields.DETAILS);
-		return new Client(id, name, secret, redirectURI, status, apiKey, registeredOn, registeredBy, details);
+		return new Client(id, name, secret, redirectURI, appURL, status, apiKey, registeredOn, registeredBy, details);
 	}
 
 	/** 
@@ -163,8 +168,6 @@ public class Client extends BeanBasedDocument<Client> implements BeanValidatorSe
 	@Override
 	public boolean isValid() {
 		boolean valid = Boolean.TRUE;
-		if(!StringUtils.hasText(getId()))
-			valid = Boolean.FALSE;
 		if(!StringUtils.hasText(getName()))
 			valid = Boolean.FALSE;
 		if(!StringUtils.hasText(getSecret()))
@@ -199,11 +202,13 @@ public class Client extends BeanBasedDocument<Client> implements BeanValidatorSe
 	 */
 	public Map<String, Object> serailize(){
 		Map<String, Object> state = new LinkedHashMap<String, Object>(16);
-		state.put(ClientDBFields.ID, getId());
+		if(StringUtils.hasText(getId()))
+			state.put(ClientDBFields.ID, getId());
 		state.put(ClientDBFields.NAME, getName());
 		state.put(ClientDBFields.SECRET, getSecret());
 		state.put(ClientDBFields.STATUS, getStatus().getStatus());
 		state.put(ClientDBFields.REDIRECT_URI, getRedirectURI());
+		state.put(ClientDBFields.APP_URL, getAppURL());
 		state.put(ClientDBFields.API_KEY, getApiKey());
 		state.put(ClientDBFields.REGISTERED_BY, getRegisteredBy());
 		state.put(ClientDBFields.REGISTERED_ON, getRegisteredOn());

@@ -25,4 +25,5 @@ public interface BasicMongoOperators {
 	String NOT = "$not";
 	String NOT_EQUAL = "$ne";
 	String OR = "$or";
+	String INCREAMENT = "$inc";
 }

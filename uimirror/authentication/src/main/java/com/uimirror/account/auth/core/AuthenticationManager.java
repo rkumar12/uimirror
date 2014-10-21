@@ -11,6 +11,10 @@
 package com.uimirror.account.auth.core;
 
 import com.uimirror.core.auth.Authentication;
+import com.uimirror.ws.api.security.exception.AuthenticationException;
+import com.uimirror.ws.api.security.exception.BadCredentialsException;
+import com.uimirror.ws.api.security.exception.DisabledException;
+import com.uimirror.ws.api.security.exception.LockedException;
 
 
 /**

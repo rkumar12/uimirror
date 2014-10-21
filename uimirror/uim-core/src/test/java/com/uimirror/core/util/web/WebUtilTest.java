@@ -17,7 +17,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.uimirror.core.util.LoadExternalJson;
-import com.uimirror.core.util.web.WebUtil;
 
 /**
  * <p>Test Cases for all the web util api
@@ -56,6 +55,40 @@ public class WebUtilTest {
 		for(Map<String, Object> data : dataSets){
 			Assert.assertEquals((boolean)data.get(OUTPUT), WebUtil.isValidUrl(data.get(INPUT) != null ? data.get(INPUT).toString() : null));
 		}
+	}
+	
+	@Test
+	public void testUrlRegex(){
+		String url = "http://127.0.0.1/asas";
+		Assert.assertEquals("http://127.0.0.1", WebUtil.getURLDomain(url));
+	}
+	
+	@Test
+	public void testAppURLAndRedirectURLAreNotSame(){
+		String url = "http://127.0.0.1/asas";
+		String redirectUrl = "http://account.uimirror.com/asas";
+		Assert.assertEquals(Boolean.FALSE, WebUtil.isValidAppAndRedirectURL(url, redirectUrl));
+	}
+
+	@Test
+	public void testAppURLAndRedirectURLSame(){
+		String url = "http://account.uimirror.com/test/test";
+		String redirectUrl = "http://account.uimirror.com/asas";
+		Assert.assertEquals(Boolean.TRUE, WebUtil.isValidAppAndRedirectURL(url, redirectUrl));
+	}
+
+	@Test
+	public void testAppURLAndRedirectURLAreLocalHost(){
+		String url = "http://127.0.0.1:8080/test/test";
+		String redirectUrl = "http://127.0.0.1:8080/asas";
+		Assert.assertEquals(Boolean.FALSE, WebUtil.isValidAppAndRedirectURL(url, redirectUrl));
+	}
+
+	@Test
+	public void testAppURLAndRedirectURLAreLocalHostAndDiff(){
+		String url = "http://127.0.0.1/test/test";
+		String redirectUrl = "http://127.0.0.1/asas";
+		Assert.assertEquals(Boolean.FALSE, WebUtil.isValidAppAndRedirectURL(url, redirectUrl));
 	}
 
 }

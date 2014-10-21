@@ -8,19 +8,25 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.account.auth.core;
+package com.uimirror.ws.api.security.exception;
 
 import com.uimirror.core.ErrorCodes;
 
 /**
+ * Thrown if an authentication request is rejected because the account is disabled. Makes no assertion as to
+ * whether or not the credentials were valid.
+ * 
  * @author Jay
  */
-public class BadCredentialsException extends AccountStatusException{
+public class DisabledException extends AccountStatusException{
 
-	private static final long serialVersionUID = 551191787946467768L;
+	private static final long serialVersionUID = -7623018440294937442L;
 
-	public BadCredentialsException() {
-		super(ErrorCodes._401, "Credentials are not valid");
+	/**
+	 * This might because of account has been disabled due to some reason.
+	 */
+	public DisabledException() {
+		super(ErrorCodes._451, "Account has been temporaly disabled");
 	}
 
 }

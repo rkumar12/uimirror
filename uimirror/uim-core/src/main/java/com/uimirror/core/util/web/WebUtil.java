@@ -12,6 +12,8 @@ package com.uimirror.core.util.web;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.springframework.util.StringUtils;
 
@@ -21,6 +23,8 @@ import org.springframework.util.StringUtils;
  */
 public class WebUtil {
 
+	private static final Pattern URL_PATTERN = Pattern.compile("(htt[p|ps])(://)(.[^/]+)");
+	private static final Pattern LOCAL_HOST_PATTERN = Pattern.compile("(localhost|127.0.0.1)");
     /**
      * <p>Converts a String into URL.</p>
      *
@@ -57,5 +61,44 @@ public class WebUtil {
 		}catch(IllegalArgumentException e){
 			return Boolean.FALSE;
 		}
+	}
+	
+	/**
+	 * Find a Domain name from the URL
+	 * i.e for http://account.uimirror.com/abc it will extract http://account.uimirror.com
+	 * @param url
+	 * @return
+	 */
+	public static String getURLDomain(String url){
+		Matcher m = URL_PATTERN.matcher(url);
+		if(m.find())
+			return m.group(0);
+		return null;
+	}
+	
+	/**
+	 * Checks if the URL is a local host
+	 * @param url
+	 * @return
+	 */
+	public static boolean isLoaclHostURL(String url){
+		Matcher m = LOCAL_HOST_PATTERN.matcher(url);
+		return m.find();
+	}
+	
+	/**
+	 * Checks if the app URL and redirect URL are same or not
+	 * @param appURL
+	 * @param redirectURL
+	 * @return
+	 */
+	public static boolean isValidAppAndRedirectURL(String appURL, String redirectURL){
+		if(!StringUtils.hasText(appURL))
+			return Boolean.FALSE;
+		String url1 = getURLDomain(appURL);
+		if(url1 != null && !isLoaclHostURL(url1)){
+			return url1.equals(getURLDomain(redirectURL));
+		}
+		return Boolean.FALSE;
 	}
 }

@@ -25,7 +25,9 @@ import com.uimirror.core.rest.extra.ResponseTransFormer;
  * @author Jay
  */
 @Configuration
-@Import({AuthBeanIntitializer.class, DaoBeanIntitializer.class, BeanOfProcessor.class})
+@Import({AuthBeanIntitializer.class, DaoBeanIntitializer.class
+	, BeanOfProcessor.class, BeanOfTransformer.class
+	, BeanOfValidator.class})
 public class BeanIntitializer {
 
 	@Bean(name=JsonResponseTransFormer.NAME)

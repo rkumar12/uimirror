@@ -10,16 +10,15 @@
  *******************************************************************************/
 package com.uimirror.account.auth.exception;
 
-import com.uimirror.account.auth.core.AuthenticationException;
-import com.uimirror.account.auth.core.BadCredentialsException;
-import com.uimirror.account.auth.core.DisabledException;
-import com.uimirror.account.auth.core.InvalidTokenException;
-import com.uimirror.account.auth.core.LockedException;
 import com.uimirror.core.exceptions.ExceptionMapper;
 import com.uimirror.core.rest.extra.ApplicationException;
 import com.uimirror.core.rest.extra.IllegalArgumentException;
 import com.uimirror.core.rest.extra.InternalException;
 import com.uimirror.core.rest.extra.UnAuthorizedException;
+import com.uimirror.ws.api.security.exception.BadCredentialsException;
+import com.uimirror.ws.api.security.exception.DisabledException;
+import com.uimirror.ws.api.security.exception.InvalidTokenException;
+import com.uimirror.ws.api.security.exception.LockedException;
 
 /**
  * This translate authentication DB exception to 
@@ -89,7 +88,7 @@ public class AuthToApplicationExceptionMapper implements ExceptionMapper{
 	}
 	
 	private boolean isInternal(Throwable e){
-		return e instanceof com.uimirror.account.auth.core.InternalException; 
+		return e instanceof com.uimirror.ws.api.security.exception.InternalException; 
 	}
 	
 	private ApplicationException translateToInternal(){

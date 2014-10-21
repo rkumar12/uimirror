@@ -10,13 +10,10 @@
  *******************************************************************************/
 package com.uimirror.account.user.form;
 
-import java.util.Map;
-
 import javax.ws.rs.FormParam;
 
 import org.springframework.util.StringUtils;
 
-import com.uimirror.account.auth.core.InvalidTokenException;
 import com.uimirror.core.form.AuthenticatedHeaderForm;
 import com.uimirror.core.rest.extra.IllegalArgumentException;
 import com.uimirror.core.service.BeanValidatorService;

@@ -18,6 +18,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 
+import com.uimirror.ws.api.security.filter.feature.PreAuthorizeDynamicFeature;
+
 public class JerssyApplicationInitializer extends ResourceConfig{
 	protected static final Logger LOG = LoggerFactory.getLogger(JerssyApplicationInitializer.class);
 	
@@ -37,6 +39,7 @@ public class JerssyApplicationInitializer extends ResourceConfig{
 //        register(RolesAllowedDynamicFeature.class);
 //        register(UserLicenseAllowedDynamicFeature.class);
 //        register(ClientLicenseAllowedDynamicFeature.class);
+		register(PreAuthorizeDynamicFeature.class);
         register(UriConnegFilter.class);
         property(ServerProperties.LANGUAGE_MAPPINGS, "english : en");
         property(ServerProperties.APPLICATION_NAME, appName);

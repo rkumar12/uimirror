@@ -10,11 +10,20 @@
  *******************************************************************************/
 package com.uimirror.account.client.form;
 
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Set;
+
 import javax.ws.rs.FormParam;
 
-import com.uimirror.core.form.AuthenticatedHeaderForm;
+import org.springframework.util.StringUtils;
+
+import com.uimirror.account.endpoint.AuthenticatedEndPoint;
+import com.uimirror.core.Constants;
 import com.uimirror.core.rest.extra.IllegalArgumentException;
 import com.uimirror.core.service.BeanValidatorService;
+import com.uimirror.core.util.web.WebUtil;
 
 /**
  * Converts the {@link FormParam} provided in the POST request for 
@@ -25,7 +34,7 @@ import com.uimirror.core.service.BeanValidatorService;
  * 
  * @author Jay
  */
-public final class RegisterForm extends AuthenticatedHeaderForm implements BeanValidatorService{
+public final class RegisterForm extends AuthenticatedEndPoint implements BeanValidatorService{
 
 	private static final long serialVersionUID = -1215523730014366150L;
 	
@@ -47,7 +56,7 @@ public final class RegisterForm extends AuthenticatedHeaderForm implements BeanV
 	}
 
 	public String getAppURL() {
-		return appURL;
+		return WebUtil.getURLDomain(appURL);
 	}
 
 	/* (non-Javadoc)
@@ -60,14 +69,27 @@ public final class RegisterForm extends AuthenticatedHeaderForm implements BeanV
 	}
 	
 	private void validate(){
-//		if(!StringUtils.hasText(getPassword()))
-//			informIllegalArgument("Password should be present");
-//		if(!StringUtils.hasText(getUserId()))
-//			informIllegalArgument("User Id Should present");
+		Set<String> fields = new HashSet<String>();
+		Map<String, Object> errors = new LinkedHashMap<String, Object>(5);
+		if(!StringUtils.hasText(getName()))
+			fields.add(RegisterConstants.NAME);
+		if(!StringUtils.hasText(getRedirectURL()))
+			fields.add(RegisterConstants.REDIRECT_URL);
+		if(!StringUtils.hasText(getAppURL()))
+			fields.add(RegisterConstants.APP_URL);
+		if(!WebUtil.isValidAppAndRedirectURL(getAppURL(), getRedirectURL())){
+			fields.add(RegisterConstants.APP_URL);
+			fields.add(RegisterConstants.REDIRECT_URL);
+		}
+		if(fields.size() > 0){
+			errors.put(Constants.FIELDS, fields);
+			errors.put(Constants.MESSAGE, "Invalid Input");
+			informIllegalArgument(errors);
+		}
 	}
 	
-	private void informIllegalArgument(String msg){
-		throw new IllegalArgumentException(msg);
+	private void informIllegalArgument(Map<String, Object> errors){
+		throw new IllegalArgumentException(errors);
 	}
 
 	@Override

@@ -8,25 +8,24 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.account.auth.core;
+package com.uimirror.ws.api.security.exception;
 
 import com.uimirror.core.ErrorCodes;
 
 /**
- * Thrown if an authentication request is rejected because of some internal error. 
- * Makes no assertion as to whether or not the credentials were valid.
+ * Thrown if an authentication request is rejected because the account is newly created and not yet verified.
  * 
  * @author Jay
  */
-public class InternalException extends AccountStatusException{
+public class NotVerifiedException extends AccountStatusException{
 
-	private static final long serialVersionUID = 5345459135563382789L;
+	private static final long serialVersionUID = -7623018440294937442L;
 
 	/**
-	 * This might because of account details are not accessible to validate because of some reason.
+	 * This might because of account has been disabled due to some reason.
 	 */
-	public InternalException() {
-		super(ErrorCodes._500, "Internal error, while authenticating user");
+	public NotVerifiedException() {
+		super(ErrorCodes._428, "Account has not yet verified");
 	}
 
 }
