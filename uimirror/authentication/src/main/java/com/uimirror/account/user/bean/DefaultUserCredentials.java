@@ -160,7 +160,7 @@ public class DefaultUserCredentials extends BeanBasedDocument<DefaultUserCredent
 		Map<String, Object> instructions = (Map<String, Object>)raw.get(UserAuthDBFields.ACCOUNT_INSTRUCTION);
 		String statVal = (String)raw.get(UserAuthDBFields.ACCOUNT_STATUS);
 		String stateVal = (String)raw.get(UserAuthDBFields.ACCOUNT_STATE);
-		AccountStatus accountStatus = StringUtils.hasText(statVal) ? AccountStatus.getEnum(statVal) : AccountStatus.ACTIEVE;
+		AccountStatus accountStatus = StringUtils.hasText(statVal) ? AccountStatus.getEnum(statVal) : AccountStatus.ACTIVE;
 		AccountState accountState = StringUtils.hasText(stateVal) ? AccountState.getEnum(stateVal) : AccountState.ENABLED;
 		return new DefaultUserCredentials(id, userNames, password, screenPassword, accountState, accountStatus, encryptionStratgy, instructions);
 	}

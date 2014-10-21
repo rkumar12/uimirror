@@ -21,7 +21,7 @@ import org.glassfish.jersey.server.JSONP;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.uimirror.account.create.bean.UserRegisterFormBean;
+import com.uimirror.account.user.form.RegisterForm;
 
 /**
  * Controller which will be for the common path, any 
@@ -50,7 +50,7 @@ public class RegistrationEndPoint{
 	@JSONP(queryParam="cb", callback="callback")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Path(EndPointConstant.REGISTER)
-	public Object register(@BeanParam UserRegisterFormBean form){
+	public Object register(@BeanParam RegisterForm form){
 		LOG.info("[ENTRY]- Received requst for access key validation");
 		LOG.info("[EXIT]- Received requst for access key validation");
 		return null;

@@ -12,27 +12,32 @@ package com.uimirror.account.create.transformer;
 
 import org.springframework.util.Assert;
 
-import com.uimirror.account.create.bean.UserRegisterFormBean;
+import com.uimirror.account.user.form.RegisterForm;
 import com.uimirror.core.service.TransformerService;
+import com.uimirror.core.user.AccountState;
+import com.uimirror.core.user.AccountStatus;
 import com.uimirror.core.user.bean.BasicUserDetails;
 
 /**
  * @author Jay
  */
 //TODO update java doc
-public class RegisterFormToRegisterTransformer implements TransformerService<UserRegisterFormBean, BasicUserDetails>{
+public class RegisterFormToRegisterTransformer implements TransformerService<RegisterForm, BasicUserDetails>{
 
 
+	
 	/* (non-Javadoc)
 	 * @see com.uimirror.core.service.TransformerService#transform(java.lang.Object)
+	 * Transforms the RegisterForm object to BasicUserDetails
 	 */
 	@Override
-	public BasicUserDetails transform(UserRegisterFormBean src) {
+	public BasicUserDetails transform(RegisterForm src) {
 		Assert.notNull(src, "Source Can't be empty");
-		//Validate the form
+		/*Validate the form fields*/
 		src.isValid();
 		//Update proper object of BasicUserDetails
-		return null;
+		//TODO: check the accountstatus ,accountstate fields and details
+		return new BasicUserDetails(src.getFirstName(), src.getLastName(), src.getEmail(), src.getGender(), src.getDateOfBirth(), AccountStatus.ACTIVE, AccountState.NEW, null);
 	}
 
 }

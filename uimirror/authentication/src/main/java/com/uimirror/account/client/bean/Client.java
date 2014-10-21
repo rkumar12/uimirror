@@ -82,7 +82,7 @@ public class Client extends BeanBasedDocument<Client> implements BeanValidatorSe
 	}
 
 	public AccountStatus getStatus() {
-		return status == null ? AccountStatus.ACTIEVE : this.status;
+		return status == null ? AccountStatus.ACTIVE : this.status;
 	}
 	
 	public String getName() {

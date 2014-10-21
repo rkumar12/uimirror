@@ -14,7 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.uimirror.account.create.bean.UserRegisterFormBean;
+import com.uimirror.account.user.form.RegisterForm;
 import com.uimirror.core.Processor;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.rest.extra.ResponseTransFormer;
@@ -25,24 +25,26 @@ import com.uimirror.core.user.bean.BasicUserDetails;
  * @author Jay
  */
 //TODO update java doc 
-public class UserRegistrationProcessor implements Processor<UserRegisterFormBean>{
+public class UserRegistrationProcessor implements Processor<RegisterForm,Object>{
 
 	protected static final Logger LOG = LoggerFactory.getLogger(UserRegistrationProcessor.class);
-	private @Autowired TransformerService<UserRegisterFormBean, BasicUserDetails> userRegisterFormToRegisterTransformer;
+	private @Autowired TransformerService<RegisterForm, BasicUserDetails> userRegisterFormToRegisterTransformer;
 	private @Autowired ResponseTransFormer<String> jsonResponseTransFormer;
 	
 	/* (non-Javadoc)
 	 * @see com.uimirror.auth.controller.BackgroundProcessor#invoke(java.lang.Object)
 	 */
 	@Override
-	public Object invoke(UserRegisterFormBean param){
+	public Object invoke(RegisterForm param){
 		LOG.debug("[START]- Regestering a User");
 		//Step 1- Transform the bean to Authentication
 		BasicUserDetails basicUser = getTransformedObject(param);
 		//Let GC take this ASAP
 		param = null;
 		//Step 2- Validate against DB Create a basic Profile
+		
 		//Step 3- Send Mail in background
+		
 		//Step 4- Generate a temporarily access token if validation is success
 		LOG.debug("[END]- Regestering a user");
 		//
@@ -53,7 +55,7 @@ public class UserRegistrationProcessor implements Processor<UserRegisterFormBean
 	 * @param param
 	 * @return
 	 */
-	private BasicUserDetails getTransformedObject(UserRegisterFormBean param) {
+	private BasicUserDetails getTransformedObject(RegisterForm param) {
 		return userRegisterFormToRegisterTransformer.transform(param);
 	}
 	
