@@ -23,7 +23,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.uimirror.account.auth.user.processor.VerifyActivateUserAccountProcessor;
 import com.uimirror.account.user.form.RegisterForm;
 import com.uimirror.account.user.form.VerifyForm;
 import com.uimirror.core.Processor;

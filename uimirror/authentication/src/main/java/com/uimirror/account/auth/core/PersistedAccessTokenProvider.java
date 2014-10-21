@@ -73,7 +73,11 @@ public class PersistedAccessTokenProvider implements AccessTokenProvider{
 	@Override
 	public AccessToken get(String token){
 		LOG.debug("[SINGLE]- Validating the details provided for the accesstoken");
-		return persistedAccessTokenMongoStore.get(token);
+		try{
+			return persistedAccessTokenMongoStore.get(token);
+		}catch(RecordNotFoundException e){
+			throw new InvalidTokenException();
+		}
 	}
 	
 

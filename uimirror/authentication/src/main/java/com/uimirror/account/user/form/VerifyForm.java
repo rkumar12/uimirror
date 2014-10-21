@@ -47,30 +47,16 @@ public final class VerifyForm extends AuthenticatedHeaderForm implements BeanVal
   }
 
   private void validate() {
-
-    /*
-     * try { this.getSource(); } catch (Exception e) { throw new
-     * IllegalArgumentException("Invalid Source"); }
-     */
-    String source = this.source;
-    if (!VerifySource.MAIL.getSource().equalsIgnoreCase(source)
-        && !VerifySource.WEB.getSource().equalsIgnoreCase(source)) {
-      throw new IllegalArgumentException("Invalid Source");
+    if (!VerifySource.MAIL.getSource().equalsIgnoreCase(this.source)
+        && !VerifySource.WEB.getSource().equalsIgnoreCase(this.source)) {
+    	throw new IllegalArgumentException("Invalid Source");
     }
-    String token = this.getToken();
-    if (StringUtils.isEmpty(token)) {
+    if (StringUtils.isEmpty(getToken())) 
       informIllegalArgument("Invalid Token");
-    }
-
-    String code = this.getCode();
-    if (StringUtils.isEmpty(code)) {
-      informIllegalArgument("Invalid Code");
-    }
-
-    // if(!StringUtils.hasText(getPassword()))
-    // informIllegalArgument("Password should be present");
-    // if(!StringUtils.hasText(getUserId()))
-    // informIllegalArgument("User Id Should present");
+    
+    if (VerifySource.WEB.getSource().equalsIgnoreCase(this.source) && !StringUtils.hasText(getCode())) 
+    	informIllegalArgument("Invalid Code");
+    
   }
 
   private void informIllegalArgument(String msg) {
