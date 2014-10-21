@@ -34,15 +34,15 @@ public abstract class ExceptionInJson extends ApplicationException{
 	 * @param status
 	 * @param msg
 	 */
-	public ExceptionInJson(Status status, String msg) {
+	public ExceptionInJson(Status status, Object msg) {
 		super(responseBuilder(status, msg));
 	}
 	/**
 	 * <p>Builds invalid Response message</p>
 	 * @return
 	 */
-	private static Response responseBuilder(Status status, String msg) {
-		Map<String, String> rs = new LinkedHashMap<String, String>();
+	private static Response responseBuilder(Status status, Object msg) {
+		Map<String, Object> rs = new LinkedHashMap<String, Object>();
 		rs.put(Constants.ERROR, msg);
 		return buildResponse(status, rs);
 	}

@@ -10,6 +10,8 @@
  *******************************************************************************/
 package com.uimirror.core.rest.extra;
 
+import java.util.Map;
+
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
@@ -41,6 +43,13 @@ public class IllegalArgumentException extends ExceptionInJson{
 		super(CODE, message);
 	}
 	
+	/**
+	 * <p>Construct the response with user provided message</p>
+	 * @param message
+	 */
+	public IllegalArgumentException(Map<String, Object> message) {
+		super(CODE, message);
+	}
 	
 
 }
