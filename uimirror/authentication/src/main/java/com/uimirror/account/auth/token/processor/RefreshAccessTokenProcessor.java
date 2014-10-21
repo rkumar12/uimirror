@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.account.auth.client.manager;
+package com.uimirror.account.auth.token.processor;
 
 import java.util.Map;
 
@@ -16,7 +16,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.uimirror.account.auth.DefaultAccessToken;
 import com.uimirror.account.auth.client.OAuth2Authentication;
 import com.uimirror.account.auth.controller.AccessTokenProvider;
 import com.uimirror.account.auth.core.TokenGenerator;
@@ -28,6 +27,9 @@ import com.uimirror.core.auth.Authentication;
 import com.uimirror.core.auth.Scope;
 import com.uimirror.core.auth.Token;
 import com.uimirror.core.auth.TokenType;
+import com.uimirror.core.auth.token.DefaultAccessToken;
+import com.uimirror.core.exceptions.ApplicationExceptionMapper;
+import com.uimirror.core.extra.MapException;
 import com.uimirror.core.form.AuthenticatedHeaderForm;
 import com.uimirror.core.rest.extra.ApplicationException;
 import com.uimirror.core.service.TransformerService;
@@ -54,6 +56,7 @@ public class RefreshAccessTokenProcessor implements Processor<AuthenticatedHeade
 	 * @see com.uimirror.account.auth.controller.AuthenticationController#getAccessToken(javax.ws.rs.core.MultivaluedMap)
 	 */
 	@Override
+	@MapException(use=ApplicationExceptionMapper.NAME)
 	public Authentication invoke(AuthenticatedHeaderForm param) throws ApplicationException{
 		LOG.debug("[START]- Authenticating the user and trying to to get the authentication details");
 		//Step 1- Authenticate the provided details

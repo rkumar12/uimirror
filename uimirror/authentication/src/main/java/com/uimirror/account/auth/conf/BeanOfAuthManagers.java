@@ -16,6 +16,7 @@ import org.springframework.context.annotation.Configuration;
 import com.uimirror.account.auth.client.manager.APIKeyAuthManager;
 import com.uimirror.account.auth.client.manager.SecretKeyAuthManager;
 import com.uimirror.account.auth.core.AuthenticationManager;
+import com.uimirror.account.auth.token.AccessKeyAuthManager;
 import com.uimirror.account.auth.user.ClientAuthorizationAuthenticationManager;
 import com.uimirror.account.auth.user.LoginFormAuthenticationManager;
 import com.uimirror.account.auth.user.OTPAuthenticationManager;
@@ -55,8 +56,7 @@ public class BeanOfAuthManagers {
 	}
 	@Bean
 	public AuthenticationManager accessKeyAuthManager(){
-		//TODO change to appropriate bean
-		return new LoginFormAuthenticationManager();
+		return new AccessKeyAuthManager();
 	}
 	//****Authentication managers end****
 }

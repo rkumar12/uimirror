@@ -13,6 +13,7 @@ package com.uimirror.account.auth.endpoint;
 import javax.inject.Singleton;
 import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -38,8 +39,12 @@ import com.uimirror.core.form.AuthenticatedHeaderForm;
 public class AccessTokenAuthenticationEndPoint{
 
 	private @Autowired Processor<AuthenticatedHeaderForm, String> accessTokenProcessor;
+	private @Autowired Processor<AuthenticatedHeaderForm, String> refreshAbleAccessTokenProcessor;
+	
 	private static Logger LOG = LoggerFactory.getLogger(AccessTokenAuthenticationEndPoint.class);
+	
 	public AccessTokenAuthenticationEndPoint() {
+		//NOP
 	}
 	
 	/**
@@ -60,6 +65,24 @@ public class AccessTokenAuthenticationEndPoint{
 		LOG.info("[ENTRY]- Received requst for access key validation");
 		Object response = accessTokenProcessor.invoke(form);
 		LOG.info("[EXIT]- Received requst for access key validation");
+		return response;
+	}
+	
+	/**
+	 * This will be a internal call by the different internal applications
+	 * for resource level security to make sure the requesting client 
+	 * Represents a valid caller
+	 * 
+	 * @return
+	 */
+	@GET
+	@Produces({ "application/x-javascript", MediaType.APPLICATION_JSON })
+	@JSONP(queryParam="cb", callback="callback")
+	@Path(AuthenticationEndPointConstant.OUATH_2_TOEKEN_VALIDATE_REFRESH_PATH)
+	public Object validateAndRefreshAccessKey(@BeanParam AuthenticatedHeaderForm form){
+		LOG.info("[ENTRY]- Received request for client AcessToken Validation and re generation iff necessary");
+		Object response = refreshAbleAccessTokenProcessor.invoke(form);
+		LOG.info("[EXIT]- Received request for client AcessToken Validation and re generation iff necessary");
 		return response;
 	}
 

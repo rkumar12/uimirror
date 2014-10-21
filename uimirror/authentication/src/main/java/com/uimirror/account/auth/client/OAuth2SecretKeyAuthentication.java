@@ -13,9 +13,9 @@ package com.uimirror.account.auth.client;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import com.uimirror.account.auth.AccessTokenFields;
-import com.uimirror.account.auth.bean.AbstractAuthentication;
+import com.uimirror.account.auth.AbstractAuthentication;
 import com.uimirror.core.auth.AuthConstants;
+import com.uimirror.core.auth.token.AccessTokenFields;
 
 /**
  * Client Accesstoken for <code>Authentication</code> objects.

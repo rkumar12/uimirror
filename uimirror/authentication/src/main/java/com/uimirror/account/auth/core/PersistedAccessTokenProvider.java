@@ -14,9 +14,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.uimirror.account.auth.client.manager.RefreshAccessTokenProcessor;
 import com.uimirror.account.auth.controller.AccessTokenProvider;
 import com.uimirror.account.auth.dao.AccessTokenStore;
+import com.uimirror.account.auth.token.processor.RefreshAccessTokenProcessor;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.Authentication;
 import com.uimirror.core.dao.RecordNotFoundException;

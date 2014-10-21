@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.account.auth;
+package com.uimirror.core.auth.token;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

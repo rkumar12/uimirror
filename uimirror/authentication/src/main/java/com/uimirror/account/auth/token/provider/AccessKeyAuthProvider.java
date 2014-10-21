@@ -8,9 +8,7 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.account.auth.client.provider;
-
-import java.util.Map;
+package com.uimirror.account.auth.token.provider;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.uimirror.account.auth.client.OAuth2Authentication;
 import com.uimirror.account.auth.controller.AuthenticationProvider;
 import com.uimirror.account.auth.core.AuthenticationManager;
-import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.Authentication;
 
 /**
@@ -38,10 +35,10 @@ public class AccessKeyAuthProvider implements AuthenticationProvider{
 	 */
 	@Override
 	public Authentication authenticate(Authentication authentication) {
-		LOG.debug("[START]- Authenticating, generating and storing token");
+		LOG.debug("[START]- Authenticating the provided details.");
 		//Step 1- get the authenticated principal
 		Authentication authDetails = getAuthenticatedDetails(authentication);
-		LOG.debug("[END]- Authenticating, generating and storing token");
+		LOG.debug("[END]- Authenticating the provided details.");
 		return authDetails;
 	}
 
@@ -52,21 +49,6 @@ public class AccessKeyAuthProvider implements AuthenticationProvider{
 	 */
 	private Authentication getAuthenticatedDetails(Authentication auth){
 		return accessKeyAuthManager.authenticate(auth);
-	}
-	
-	/**
-	 * It should generate a access token and tries to encapsulate the accesstoken to the
-	 * {@link Authentication}
-	 * 
-	 * @param auth an authenticated principal that indicate the principal clearly.
-	 * @return
-	 */
-	//TODO remove this after everything complete
-	private Authentication cleanAuthentication(Authentication auth){
-		//Clean the Authentication principal
-		AccessToken accessToken = (AccessToken)auth.getPrincipal();
-		accessToken = accessToken.eraseEsential();
-		return new OAuth2Authentication(accessToken, (Map<String, Object>)auth.getDetails());
 	}
 
 	/* (non-Javadoc)

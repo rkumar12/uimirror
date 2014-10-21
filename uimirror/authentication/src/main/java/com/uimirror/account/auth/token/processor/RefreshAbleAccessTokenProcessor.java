@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.account.auth.client.processor;
+package com.uimirror.account.auth.token.processor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +18,8 @@ import com.uimirror.account.auth.core.AuthenticationManager;
 import com.uimirror.core.Processor;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.Authentication;
+import com.uimirror.core.exceptions.ApplicationExceptionMapper;
+import com.uimirror.core.extra.MapException;
 import com.uimirror.core.form.AuthenticatedHeaderForm;
 import com.uimirror.core.rest.extra.ApplicationException;
 import com.uimirror.core.rest.extra.ResponseTransFormer;
@@ -41,6 +43,7 @@ public class RefreshAbleAccessTokenProcessor implements Processor<AuthenticatedH
 	 * @see com.uimirror.account.auth.controller.AuthenticationController#getAccessToken(javax.ws.rs.core.MultivaluedMap)
 	 */
 	@Override
+	@MapException(use=ApplicationExceptionMapper.NAME)
 	public String invoke(AuthenticatedHeaderForm param) throws ApplicationException{
 		LOG.debug("[START]- Authenticating the user and trying to to get the authentication details");
 		//Step 1- get authenticated token principal

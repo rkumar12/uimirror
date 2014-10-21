@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.account.auth.client.transformer;
+package com.uimirror.account.auth.token.transformer;
 
 import org.springframework.util.Assert;
 

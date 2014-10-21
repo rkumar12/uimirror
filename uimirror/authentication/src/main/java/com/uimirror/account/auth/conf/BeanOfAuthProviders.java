@@ -14,9 +14,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.uimirror.account.auth.client.provider.APIKeyAuthProvider;
-import com.uimirror.account.auth.client.provider.AccessKeyAuthProvider;
 import com.uimirror.account.auth.client.provider.SecretCodeAuthProvider;
 import com.uimirror.account.auth.controller.AuthenticationProvider;
+import com.uimirror.account.auth.token.provider.AccessKeyAuthProvider;
 import com.uimirror.account.auth.user.provider.ClientAuthorizationAuthProvider;
 import com.uimirror.account.auth.user.provider.LoginFormAuthProvider;
 import com.uimirror.account.auth.user.provider.OTPAuthProvider;

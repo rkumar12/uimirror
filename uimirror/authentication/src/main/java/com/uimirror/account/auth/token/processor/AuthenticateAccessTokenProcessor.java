@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.account.auth.client.manager;
+package com.uimirror.account.auth.token.processor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

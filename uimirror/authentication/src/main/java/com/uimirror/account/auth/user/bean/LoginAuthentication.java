@@ -12,9 +12,9 @@ package com.uimirror.account.auth.user.bean;
 
 import java.util.Map;
 
-import com.uimirror.account.auth.AccessTokenFields;
 import com.uimirror.account.auth.client.OAuth2Authentication;
 import com.uimirror.core.auth.AuthConstants;
+import com.uimirror.core.auth.token.AccessTokenFields;
 
 /**
  * AccessToken <code>Authentication</code> objects.

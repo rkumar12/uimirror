@@ -22,11 +22,11 @@ public interface AuthenticationEndPointConstant {
 	String LOGIN_PATH = "/login";
 	String GRANT_ACCESS_TO_CLIENT_PATH = AUTH+"/clint/permit";
 	String OUATH_2_TOEKEN_PATH = "/token";
-	String OUATH_2_TOEKEN_VALIDATE_REFRESH_PATH = "/token/refresh";
-	String ACCESS_TOKEN_VALIDATION_PATH = "/token/validate";
+	String OUATH_2_TOEKEN_VALIDATE_REFRESH_PATH = "/refresh";
+	String ACCESS_TOKEN_VALIDATION_PATH = "/validate";
+	String ACCESS_HOME_PATH = "/access";
 
 	String UNLOCK_PATH = "/unlock/screen";
-	String ACCESS_HOME_PATH = "/access";
 	String LOGIN_SESSION_PATH = AUTH+"/session";
 	String LOGIN_SESSION_INVALID_PATH = "/invalid";
 	String LOGIN_SESSION_INVALID_ALL_PATH = LOGIN_SESSION_INVALID_PATH+"/all";

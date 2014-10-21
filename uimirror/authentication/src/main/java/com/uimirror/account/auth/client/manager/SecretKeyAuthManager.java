@@ -19,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
-import com.uimirror.account.auth.DefaultAccessToken;
 import com.uimirror.account.auth.client.APIKeyAuthentication;
 import com.uimirror.account.auth.client.OAuth2Authentication;
 import com.uimirror.account.auth.controller.AccessTokenProvider;
@@ -36,6 +35,7 @@ import com.uimirror.core.auth.Authentication;
 import com.uimirror.core.auth.Scope;
 import com.uimirror.core.auth.Token;
 import com.uimirror.core.auth.TokenType;
+import com.uimirror.core.auth.token.DefaultAccessToken;
 import com.uimirror.core.extra.MapException;
 import com.uimirror.core.service.MatcherService;
 import com.uimirror.core.util.DateTimeUtil;
