@@ -76,7 +76,7 @@ public class PersistedClientMongoStore extends AbstractMongoStore<Client> implem
 	@Override
 	public Client findActieveClientByApiKey(String apiKey) throws DBException{
 		Map<String, Object> apiKeyQuery = getApiKeyQuery(apiKey);
-		apiKeyQuery.put(ClientDBFields.STATUS, AccountStatus.ACTIEVE.getStatus());
+		apiKeyQuery.put(ClientDBFields.STATUS, AccountStatus.ACTIVE.getStatus());
 		return queryFirstRecord(apiKeyQuery);
 	}
 
@@ -86,7 +86,7 @@ public class PersistedClientMongoStore extends AbstractMongoStore<Client> implem
 	@Override
 	public Client findActieveClientById(String clientId) throws DBException{
 		Map<String, Object> idQuery = getIdMap(clientId);
-		idQuery.put(ClientDBFields.STATUS, AccountStatus.ACTIEVE.getStatus());
+		idQuery.put(ClientDBFields.STATUS, AccountStatus.ACTIVE.getStatus());
 		return queryFirstRecord(idQuery);
 	}
 	
