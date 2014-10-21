@@ -18,6 +18,9 @@ import java.util.List;
 public class MessageUtil {
 	private static final String COMMA =" , ";
 	private static final String AMPERSAND = " & ";
+	private static final String SINGLE_FIELD_MESSAGE = "is invalid.";
+	private static final String MULTIPLE_FIELD_MESSAGE = "have invalid values.";
+	
 
 	private MessageUtil() {
 	}
@@ -37,6 +40,12 @@ public class MessageUtil {
 			}
 
 		}
+		if(size > 1){
+			sb.append(SINGLE_FIELD_MESSAGE);
+		}else{
+			sb.append(MULTIPLE_FIELD_MESSAGE);
+		}
+		
 		return sb.toString();
 	}
 }
