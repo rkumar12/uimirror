@@ -116,6 +116,8 @@ public final class RegisterForm extends ClientMetaForm implements BeanValidatorS
 	 */
 	private void validate(){
 		List<String> fields = new ArrayList<String>();
+		String ageLimitMessage = null;
+		String errorMessage = null;
 		if(!StringUtils.hasText(getFirstName()) || !isAValidName(getFirstName()))
 			fields.add(RegisterConstants.FIRST_NAME);
 		if(!StringUtils.hasText(getLastName()) || !isAValidName(getFirstName()))
@@ -124,17 +126,25 @@ public final class RegisterForm extends ClientMetaForm implements BeanValidatorS
 			fields.add(RegisterConstants.EMAIl);
 		if(!StringUtils.hasText(getGender().toString()))
 			fields.add(RegisterConstants.GENDER);
-		if(!StringUtils.hasText(getDateOfBirth()) || !DateUtil.isAValidDate(getDateOfBirth()) || !DateUtil.isAgeAboveEighteen(getDateOfBirth()))
+		if(!StringUtils.hasText(getDateOfBirth()) || !DateUtil.isAValidDate(getDateOfBirth()))
 			fields.add(RegisterConstants.DATE_OF_BIRTH);
-		
+		else if  (!DateUtil.isAgeAboveEighteen(getDateOfBirth()))
+			ageLimitMessage=MessageUtil.getAgeLimitMessage();
+				
 		if(fields.size() > 0 ){
 			Map<String, Object> errors = new LinkedHashMap<String, Object>(9);
 			errors.put(FIELDS, fields);
-			errors.put(MESSAGE, MessageUtil.getErrorMessage(fields));
+			errorMessage = MessageUtil.getErrorMessage(fields);
+			if(ageLimitMessage != null)
+				errorMessage+= ageLimitMessage;
+			errors.put(MESSAGE, errorMessage);
 			informIllegalArgument(errors);
 		}
 	}
 	
+	public static void main(String[] args) {
+		DateUtil.isAgeAboveEighteen(null);
+	}
 	
 	/**
 	 * Validates name pattern

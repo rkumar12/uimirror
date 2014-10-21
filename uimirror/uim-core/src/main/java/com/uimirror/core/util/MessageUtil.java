@@ -18,8 +18,9 @@ import java.util.List;
 public class MessageUtil {
 	private static final String COMMA =" , ";
 	private static final String AMPERSAND = " & ";
-	private static final String SINGLE_FIELD_MESSAGE = "is invalid.";
-	private static final String MULTIPLE_FIELD_MESSAGE = "have invalid values.";
+	private static final String SINGLE_FIELD_MESSAGE = "is invalid. ";
+	private static final String MULTIPLE_FIELD_MESSAGE = "have invalid values. ";
+	private static final String AGE_LIMIT_MESSAGE = "you are below 18 and not eligible for registration.";
 	
 
 	private MessageUtil() {
@@ -47,5 +48,9 @@ public class MessageUtil {
 		}
 		
 		return sb.toString();
+	}
+	
+	public static String getAgeLimitMessage(){
+		return AGE_LIMIT_MESSAGE;
 	}
 }
