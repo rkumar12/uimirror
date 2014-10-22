@@ -1,0 +1,140 @@
+/*******************************************************************************
+ * Copyright (c) 2014 Uimirror.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Uimirror license
+ * which accompanies this distribution, and is available at
+ * http://www.uimirror.com/legal
+ *
+ * Contributors:
+ * Uimirror Team
+ *******************************************************************************/
+package com.uimirror.account.user.bean;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
+
+import com.uimirror.account.user.UserAccountDBFields;
+import com.uimirror.core.mongo.feature.BeanBasedDocument;
+import com.uimirror.core.service.BeanValidatorService;
+
+/**
+ * User's account logs statement such as when account created,
+ * when modified, if any history needs to maintain then can be done here
+ * @author Jay
+ */
+public class UserAccountLogs extends BeanBasedDocument<UserAccountLogs> implements BeanValidatorService {
+	
+	private static final long serialVersionUID = -6504474875834652281L;
+	private long createdOn;
+	private long modifiedOn;
+	private Map<String,Object> details;
+	
+	//Don't Use this until it has specific requirement
+	public UserAccountLogs() {
+		super();
+	}
+	
+	public UserAccountLogs(Map<String, Object> details) {
+		super(details);
+	}
+
+	public UserAccountLogs(String id,long createdOn, long modifiedOn, Map<String, Object> details) {
+		super(id);
+		this.createdOn = createdOn;
+		this.modifiedOn = modifiedOn;
+		this.details = details;
+	}
+	
+	public String getProfileId(){
+		return getId();
+	}
+	
+	public long getCreatedOn() {
+		return createdOn;
+	}
+
+	public long getModifiedOn() {
+		return modifiedOn;
+	}
+
+	public Map<String, Object> getDetails() {
+		return details;
+	}
+	
+	public UserAccountLogs updateProfileId(String profileId){
+		return new UserAccountLogs(profileId, this.createdOn, this.modifiedOn, this.details);
+	}
+	
+	@Override
+	public Map<String, Object> toMap() {
+		// First check if it represents a valid state then can be serialized
+		if (!isValid())
+			throw new IllegalStateException("Can't be serailized the state of the object");
+		return serailize();
+	}
+	
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.uimirror.core.service.BeanValidatorService#isValid()
+	 */
+	@Override
+	public boolean isValid() {
+		boolean valid = Boolean.TRUE;
+		if(!StringUtils.hasText(getId()))
+			valid = Boolean.FALSE;
+		if(getCreatedOn() <= 0l)
+			valid = Boolean.FALSE;
+		return valid;
+	}
+
+	@Override
+	public UserAccountLogs initFromMap(Map<String, Object> src) {
+		// Validate the source shouldn't be empty
+		validateSource(src);
+		// Initialize the state
+		return init(src);
+	}
+	
+	/**
+	 * converts a map that comes from DB into UserAccountLogs object.
+	 * 
+	 * @param raw
+	 * @return {@link UserAccountLogs}
+	 */
+	@SuppressWarnings("unchecked")
+	private UserAccountLogs init(Map<String, Object> raw) {
+		String id = (String) raw.get(UserAccountDBFields.ID);
+		long creatOn = 0l;
+		long modifiedOn = 0l;
+		if(raw.get(UserAccountDBFields.CREATED_ON) != null){
+			creatOn = (long) raw.get(UserAccountDBFields.CREATED_ON);
+		}
+		if(raw.get(UserAccountDBFields.MODIFIED_ON) != null){
+			modifiedOn = (long) raw.get(UserAccountDBFields.MODIFIED_ON);
+		}
+		Map<String,Object> details =  (Map<String, Object>) raw.get(UserAccountDBFields.DETAILS);
+		return new UserAccountLogs(id,creatOn,modifiedOn,details);
+	}
+	
+	/**
+	 * Serialize the current state that needs to be persisted to the system.
+	 * 
+	 * @return
+	 */
+	public Map<String, Object> serailize() {
+		Map<String, Object> state = new LinkedHashMap<String, Object>(9);
+		state.put(UserAccountDBFields.ID, getId());
+		state.put(UserAccountDBFields.CREATED_ON, getCreatedOn());
+		if(getModifiedOn() > 0l)
+			state.put(UserAccountDBFields.MODIFIED_ON, getModifiedOn());
+		if(!CollectionUtils.isEmpty(getDetails()))
+			state.put(UserAccountDBFields.DETAILS, getDetails());
+		return state;
+	}
+	
+}
