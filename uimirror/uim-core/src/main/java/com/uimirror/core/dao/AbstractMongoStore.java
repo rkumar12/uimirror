@@ -225,19 +225,53 @@ public abstract class AbstractMongoStore<T extends BeanBasedDocument<T>> extends
 	 * @see com.uimirror.core.dao.BasicStore#updateByQuery(java.util.Map, java.util.Map)
 	 */
 	@Override
-	@MapException(use=MongoExceptionMapper.NAME)
 	public int updateByQuery(Map<String, Object> query, Map<String, Object> toUpdate) throws DBException {
-		return getNumberOfDocumentAffected(update(query, toUpdate));
+		return getNumberOfDocumentAffected(update(query, toUpdate, Boolean.FALSE, Boolean.FALSE));
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.uimirror.core.dao.BasicStore#updateByIdInsertWhenNoMatchWithMulti(java.lang.Object, java.util.Map)
+	 */
+	@Override
+	public int updateByIdInsertWhenNoMatchWithMulti(Object id, Map<String, Object> toUpdate) throws DBException {
+		return getNumberOfDocumentAffected(update(getIdMap(id), toUpdate, Boolean.TRUE, Boolean.TRUE));
+	}
+
+	/* (non-Javadoc)
+	 * @see com.uimirror.core.dao.BasicStore#updateByIdInsertWhenNoMatchWithOutMulti(java.lang.Object, java.util.Map)
+	 */
+	@Override
+	public int updateByIdInsertWhenNoMatchWithOutMulti(Object id, Map<String, Object> toUpdate) throws DBException {
+		return getNumberOfDocumentAffected(update(getIdMap(id), toUpdate, Boolean.TRUE, Boolean.FALSE));
+	}
+
+	/* (non-Javadoc)
+	 * @see com.uimirror.core.dao.BasicStore#updateByQueryInsertWhenNoMatchWithMulti(java.util.Map, java.util.Map)
+	 */
+	@Override
+	public int updateByQueryInsertWhenNoMatchWithMulti(Map<String, Object> query, Map<String, Object> toUpdate) throws DBException {
+		return getNumberOfDocumentAffected(update(query, toUpdate, Boolean.TRUE, Boolean.TRUE));
+	}
+
+	/* (non-Javadoc)
+	 * @see com.uimirror.core.dao.BasicStore#updateByQueryInsertWhenNoMatchWithOutMulti(java.util.Map, java.util.Map)
+	 */
+	@Override
+	public int updateByQueryInsertWhenNoMatchWithOutMulti(Map<String, Object> query, Map<String, Object> toUpdate) throws DBException {
+		return getNumberOfDocumentAffected(update(query, toUpdate, Boolean.TRUE, Boolean.FALSE));
 	}
 	
 	/**
 	 * Updates to the document
 	 * @param q
 	 * @param u
+	 * @param nomatchInsert
+	 * @param multi
 	 * @return
 	 */
-	protected WriteResult update(Map<String, Object> q, Map<String, Object> u){
-		return getCollection().update(convertToDBObject(q), convertToDBObject(u));
+	@MapException(use=MongoExceptionMapper.NAME)
+	protected WriteResult update(Map<String, Object> q, Map<String, Object> u, boolean nomatchInsert, boolean multi){
+		return getCollection().update(convertToDBObject(q), convertToDBObject(u), nomatchInsert, multi);
 	}
 	
 	/**

@@ -10,7 +10,7 @@
  *******************************************************************************/
 package com.uimirror.account.create.dao;
 
-import com.uimirror.core.user.BasicUserInfo;
+import com.uimirror.core.user.BasicInfo;
 
 /**
  * @author Jay
@@ -18,7 +18,7 @@ import com.uimirror.core.user.BasicUserInfo;
 //TODO update java doc
 public interface BasicUserStore {
 
-	BasicUserInfo findByEmail(String email);
+	BasicInfo findByEmail(String email);
 	
-	BasicUserInfo store(BasicUserInfo details);
+	BasicInfo store(BasicInfo details);
 }

@@ -16,7 +16,7 @@ import com.uimirror.account.user.form.RegisterForm;
 import com.uimirror.core.service.TransformerService;
 import com.uimirror.core.user.AccountState;
 import com.uimirror.core.user.AccountStatus;
-import com.uimirror.core.user.BasicUserInfo;
+import com.uimirror.core.user.BasicInfo;
 
 /**
  * @author Jay
@@ -28,7 +28,7 @@ public class RegisterFormToRegisterTransformer implements TransformerService<Reg
 	
 	/* (non-Javadoc)
 	 * @see com.uimirror.core.service.TransformerService#transform(java.lang.Object)
-	 * Transforms the RegisterForm object to BasicUserDetails
+	 * Transforms the RegisterForm object to BasicDetails
 	 */
 	@Override
 	public Object transform(RegisterForm src) {

@@ -13,8 +13,6 @@ package com.uimirror.core.user;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.springframework.util.StringUtils;
-
 import com.uimirror.core.DOB;
 import com.uimirror.core.Location;
 import com.uimirror.core.mongo.feature.BeanBasedDocument;
@@ -24,7 +22,7 @@ import com.uimirror.core.service.BeanValidatorService;
  * Contains the User details of the user
  * @author Jay
  */
-public class BasicUserDetails extends BeanBasedDocument<BasicUserDetails> implements BeanValidatorService {
+public class BasicDetails extends BeanBasedDocument<BasicDetails> implements BeanValidatorService {
 
 	private static final long serialVersionUID = -5282406171053226490L;
 
@@ -34,15 +32,15 @@ public class BasicUserDetails extends BeanBasedDocument<BasicUserDetails> implem
 	private Map<String, Object> details;
 
 	// DOn't Use this until it has specific requirement
-	public BasicUserDetails() {
+	public BasicDetails() {
 		super();
 	}
 
-	public BasicUserDetails(Map<String, Object> map) {
+	public BasicDetails(Map<String, Object> map) {
 		super(map);
 	}
 	
-	public BasicUserDetails(String profileId, Location presentAddress, Location permanetAddress, DOB dateOfBirth, Map<String, Object> details) {
+	public BasicDetails(String profileId, Location presentAddress, Location permanetAddress, DOB dateOfBirth, Map<String, Object> details) {
 		super(profileId);
 		this.presentAddress = presentAddress;
 		this.permanetAddress = permanetAddress;
@@ -67,7 +65,7 @@ public class BasicUserDetails extends BeanBasedDocument<BasicUserDetails> implem
 	public Map<String, Object> serailize() {
 		Map<String, Object> state = new LinkedHashMap<String, Object>(16);
 		state.put(UserDBFields.ID, getId());
-		state.put(UserDBFields.DATE_OF_BIRTH, dateOfBirth);
+		state.put(UserDBFields.DATE_OF_BIRTH, dateOfBirth.toMap());
 		//state.put(UserDBFields.ADDRESS, address);
 		return state;
 	}
@@ -80,8 +78,6 @@ public class BasicUserDetails extends BeanBasedDocument<BasicUserDetails> implem
 	@Override
 	public boolean isValid() {
 		boolean valid = Boolean.TRUE;
-		if (!StringUtils.hasText(getId()))
-			valid = Boolean.FALSE;
 		if(getDateOfBirth() == null)
 			valid = Boolean.FALSE;
 		return valid;
@@ -94,7 +90,7 @@ public class BasicUserDetails extends BeanBasedDocument<BasicUserDetails> implem
 	 * .util.Map)
 	 */
 	@Override
-	public BasicUserDetails initFromMap(Map<String, Object> src) {
+	public BasicDetails initFromMap(Map<String, Object> src) {
 		// Validate the source shouldn't be empty
 		validateSource(src);
 		// Initialize the state
@@ -102,21 +98,18 @@ public class BasicUserDetails extends BeanBasedDocument<BasicUserDetails> implem
 	}
 
 	/**
-	 * converts a map that comes from DB into BasicUserDetails object.
+	 * converts a map that comes from DB into BasicDetails object.
 	 * 
 	 * @param raw
-	 * @return {@link BasicUserDetails}
+	 * @return {@link BasicDetails}
 	 */
 	@SuppressWarnings("unchecked")
-	private BasicUserDetails init(Map<String, Object> raw) {
+	private BasicDetails init(Map<String, Object> raw) {
 		String id = (String) raw.get(UserDBFields.ID);
 		Map<String, Object> dateOfBirth = (Map<String, Object>) raw.get(UserDBFields.DATE_OF_BIRTH);
 		DOB dob = DOB.initFromMap(dateOfBirth);
-		Map<String, Object> presentAddress = (Map<String, Object>) raw.get(UserDBFields.PRESENT_ADDRESS);
-		Map<String, Object> permanetAddress = (Map<String, Object>) raw.get(UserDBFields.PRESENT_ADDRESS);
-		Map<String, Object> details = (Map<String, Object>) raw.get(UserDBFields.DETAILS);
-		//return new BasicUserDetails(id,address,dateOfBirth);
-		return null;
+		//TODO other parts also 
+		return new BasicDetails(id,null, null ,dob, null);
 	}
 
 	public String getProfileId() {
@@ -141,7 +134,7 @@ public class BasicUserDetails extends BeanBasedDocument<BasicUserDetails> implem
 
 	@Override
 	public String toString() {
-		return "BasicUserDetails [presentAddress=" + presentAddress
+		return "BasicDetails [presentAddress=" + presentAddress
 				+ ", permanetAddress=" + permanetAddress + ", dateOfBirth="
 				+ dateOfBirth + ", details=" + details + "]";
 	}

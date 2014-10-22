@@ -24,7 +24,7 @@ import com.uimirror.core.service.BeanValidatorService;
  * This has the basic user Info for the user such as email, name etc
  * @author Jay
  */
-public class BasicUserInfo extends BeanBasedDocument<BasicUserInfo> implements BeanValidatorService {
+public class BasicInfo extends BeanBasedDocument<BasicInfo> implements BeanValidatorService {
 
 	private static final long serialVersionUID = -5282406171053226490L;
 	private String firstName;
@@ -35,15 +35,15 @@ public class BasicUserInfo extends BeanBasedDocument<BasicUserInfo> implements B
 	private AccountState accountState;
 
 	// DOn't Use this until it has specific requirement
-	public BasicUserInfo() {
+	public BasicInfo() {
 		super();
 	}
 
-	public BasicUserInfo(Map<String, Object> map) {
+	public BasicInfo(Map<String, Object> map) {
 		super(map);
 	}
 
-	public BasicUserInfo(String id,String firstName, String lastName, String email, Gender gender,  AccountStatus accountStatus, AccountState accountState) {
+	public BasicInfo(String id,String firstName, String lastName, String email, Gender gender,  AccountStatus accountStatus, AccountState accountState) {
 		super(id);
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -68,15 +68,11 @@ public class BasicUserInfo extends BeanBasedDocument<BasicUserInfo> implements B
 	@Override
 	public boolean isValid() {
 		boolean valid = Boolean.TRUE;
-		if (StringUtils.hasText(getFirstName()))
+		if (!StringUtils.hasText(getFirstName()))
 			valid = Boolean.FALSE;
 		if (!StringUtils.hasText(getEmail()))
 			valid = Boolean.FALSE;
-		if (getGender() != null)
-			valid = Boolean.FALSE;
-		if (getAccountState() != null)
-			valid = Boolean.FALSE;
-		if (getAccountState() == null)
+		if (getGender() == null)
 			valid = Boolean.FALSE;
 		return valid;
 
@@ -109,7 +105,7 @@ public class BasicUserInfo extends BeanBasedDocument<BasicUserInfo> implements B
 	 * .util.Map)
 	 */
 	@Override
-	public BasicUserInfo initFromMap(Map<String, Object> src) {
+	public BasicInfo initFromMap(Map<String, Object> src) {
 		// Validate the source shouldn't be empty
 		validateSource(src);
 		// Initialize the state
@@ -118,11 +114,11 @@ public class BasicUserInfo extends BeanBasedDocument<BasicUserInfo> implements B
 	}
 
 	/**
-	 * converts a map that comes from DB into BasicUserInfo object.
+	 * converts a map that comes from DB into BasicInfo object.
 	 * @param raw
-	 * @return {@link BasicUserInfo}
+	 * @return {@link BasicInfo}
 	 */
-	private BasicUserInfo init(Map<String, Object> raw) {
+	private BasicInfo init(Map<String, Object> raw) {
 		String id = (String) raw.get(UserDBFields.ID);
 		String firstName = (String) raw.get(UserDBFields.FIRST_NAME);
 		String lastName = (String) raw.get(UserDBFields.LAST_NAME);
@@ -133,7 +129,7 @@ public class BasicUserInfo extends BeanBasedDocument<BasicUserInfo> implements B
 		String stateVal = (String) raw.get(UserDBFields.ACCOUNT_STATE);
 		AccountStatus accountStatus = StringUtils.hasText(statVal) ? AccountStatus.getEnum(statVal): null;
 		AccountState accountState = StringUtils.hasText(stateVal) ? AccountState.getEnum(stateVal): null;
-		return new BasicUserInfo(id,firstName, lastName, email, genderVal,  accountStatus, accountState);
+		return new BasicInfo(id,firstName, lastName, email, genderVal,  accountStatus, accountState);
 	}
 	
 	public String getFirstName() {

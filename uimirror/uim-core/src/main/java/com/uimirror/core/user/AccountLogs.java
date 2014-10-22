@@ -14,7 +14,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
 
 import com.uimirror.core.mongo.feature.BeanBasedDocument;
 import com.uimirror.core.service.BeanValidatorService;
@@ -24,7 +23,7 @@ import com.uimirror.core.service.BeanValidatorService;
  * when modified, if any history needs to maintain then can be done here
  * @author Jay
  */
-public class DefaultUserAccountLogs extends BeanBasedDocument<DefaultUserAccountLogs> implements BeanValidatorService {
+public class AccountLogs extends BeanBasedDocument<AccountLogs> implements BeanValidatorService {
 	
 	private static final long serialVersionUID = -6504474875834652281L;
 	private long createdOn;
@@ -32,15 +31,15 @@ public class DefaultUserAccountLogs extends BeanBasedDocument<DefaultUserAccount
 	private Map<String,Object> details;
 	
 	//Don't Use this until it has specific requirement
-	public DefaultUserAccountLogs() {
+	public AccountLogs() {
 		super();
 	}
 	
-	public DefaultUserAccountLogs(Map<String, Object> details) {
+	public AccountLogs(Map<String, Object> details) {
 		super(details);
 	}
 
-	public DefaultUserAccountLogs(String id,long createdOn, long modifiedOn, Map<String, Object> details) {
+	public AccountLogs(String id,long createdOn, long modifiedOn, Map<String, Object> details) {
 		super(id);
 		this.createdOn = createdOn;
 		this.modifiedOn = modifiedOn;
@@ -63,8 +62,8 @@ public class DefaultUserAccountLogs extends BeanBasedDocument<DefaultUserAccount
 		return details;
 	}
 	
-	public DefaultUserAccountLogs updateProfileId(String profileId){
-		return new DefaultUserAccountLogs(profileId, this.createdOn, this.modifiedOn, this.details);
+	public AccountLogs updateProfileId(String profileId){
+		return new AccountLogs(profileId, this.createdOn, this.modifiedOn, this.details);
 	}
 	
 	@Override
@@ -84,15 +83,13 @@ public class DefaultUserAccountLogs extends BeanBasedDocument<DefaultUserAccount
 	@Override
 	public boolean isValid() {
 		boolean valid = Boolean.TRUE;
-		if(!StringUtils.hasText(getId()))
-			valid = Boolean.FALSE;
 		if(getCreatedOn() <= 0l)
 			valid = Boolean.FALSE;
 		return valid;
 	}
 
 	@Override
-	public DefaultUserAccountLogs initFromMap(Map<String, Object> src) {
+	public AccountLogs initFromMap(Map<String, Object> src) {
 		// Validate the source shouldn't be empty
 		validateSource(src);
 		// Initialize the state
@@ -100,13 +97,13 @@ public class DefaultUserAccountLogs extends BeanBasedDocument<DefaultUserAccount
 	}
 	
 	/**
-	 * converts a map that comes from DB into DefaultUserAccountLogs object.
+	 * converts a map that comes from DB into AccountLogs object.
 	 * 
 	 * @param raw
-	 * @return {@link DefaultUserAccountLogs}
+	 * @return {@link AccountLogs}
 	 */
 	@SuppressWarnings("unchecked")
-	private DefaultUserAccountLogs init(Map<String, Object> raw) {
+	private AccountLogs init(Map<String, Object> raw) {
 		String id = (String) raw.get(UserDBFields.ID);
 		long creatOn = 0l;
 		long modifiedOn = 0l;
@@ -117,7 +114,7 @@ public class DefaultUserAccountLogs extends BeanBasedDocument<DefaultUserAccount
 			modifiedOn = (long) raw.get(UserDBFields.MODIFIED_ON);
 		}
 		Map<String,Object> details =  (Map<String, Object>) raw.get(UserDBFields.DETAILS);
-		return new DefaultUserAccountLogs(id,creatOn,modifiedOn,details);
+		return new AccountLogs(id,creatOn,modifiedOn,details);
 	}
 	
 	/**

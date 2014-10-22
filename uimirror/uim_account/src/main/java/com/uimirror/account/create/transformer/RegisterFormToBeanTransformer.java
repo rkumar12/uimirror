@@ -25,7 +25,7 @@ public class RegisterFormToBeanTransformer implements TransformerService<Registe
 	
 	/* (non-Javadoc)
 	 * @see com.uimirror.core.service.TransformerService#transform(java.lang.Object)
-	 * Transforms the RegisterForm object to BasicUserDetails
+	 * Transforms the RegisterForm object to BasicDetails
 	 */
 	@Override
 	public Object transform(RegisterForm src) {

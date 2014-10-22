@@ -27,6 +27,7 @@ public interface AuthConstants extends Parameters{
 	String TOKEN_ENCRYPTION_STARTEGY = "pp";
 	String PASSWORD = "pwd";
 	String OTP = "otp";
+	String WEB_VERIFY_TOKEN = "wotp";
 	String KEEP_ME_LOGIN = "keepmelogin";
 	String REDIRECT_URI = "redirect_uri";
 	String SCOPE = "scope";
@@ -56,5 +57,6 @@ public interface AuthConstants extends Parameters{
 	String INST_NEXT_CLIENT_AUTHORIZATION = "client_authorization";
 	String INST_NEXT_ACCESS_TOKEN = "access";
 	String INST_RESTORE_REQUIRED = "restore";
+	String INST_NEXT_ACCOUNT_VERIFY = "verify_acount";
 	
 }

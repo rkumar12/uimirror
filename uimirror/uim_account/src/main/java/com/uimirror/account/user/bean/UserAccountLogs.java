@@ -85,10 +85,10 @@ public class UserAccountLogs extends BeanBasedDocument<UserAccountLogs> implemen
 	}
 	
 	/**
-	 * converts a map that comes from DB into UserAccountLogs object.
+	 * converts a map that comes from DB into AccountLogs object.
 	 * 
 	 * @param raw
-	 * @return {@link UserAccountLogs}
+	 * @return {@link AccountLogs}
 	 */
 	@SuppressWarnings("unchecked")
 	private UserAccountLogs init(Map<String, Object> raw) {

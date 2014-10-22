@@ -10,19 +10,32 @@
  *******************************************************************************/
 package com.uimirror.core.user;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import com.uimirror.core.mongo.feature.BeanBasedDocument;
+import com.uimirror.core.service.BeanValidatorService;
+
 
 /**
  * A Default User representing the UIM System 
  * @author Jay
  */
-public class DefaultUser{
+public class DefaultUser extends BeanBasedDocument<DefaultUser> implements BeanValidatorService{
 
-	private BasicUserInfo userInfo;
-	private UserCredentials userCredentials;
-	private BasicUserDetails userDetails;
-	private DefaultUserAccountLogs userAccountLogs;
+	private static final long serialVersionUID = 3920171901998649548L;
+	
+	private BasicInfo userInfo;
+	private Credentials userCredentials;
+	private BasicDetails userDetails;
+	private AccountLogs userAccountLogs;
+	
+	//Don't Use It untill it has some special requirment
+	public DefaultUser() {
+		super();
+	}
 
-	public DefaultUser(BasicUserInfo userInfo, UserCredentials userCredentials, BasicUserDetails userDetails, DefaultUserAccountLogs userAccountLogs) {
+	public DefaultUser(BasicInfo userInfo, Credentials userCredentials, BasicDetails userDetails, AccountLogs userAccountLogs) {
 		super();
 		this.userInfo = userInfo;
 		this.userCredentials = userCredentials;
@@ -35,7 +48,7 @@ public class DefaultUser{
 	 * @param userInfo
 	 * @return
 	 */
-	public DefaultUser updateInfo(BasicUserInfo userInfo){
+	public DefaultUser updateInfo(BasicInfo userInfo){
 		return new DefaultUser(userInfo, this.userCredentials, this.userDetails, this.userAccountLogs);
 	}
 	
@@ -44,7 +57,7 @@ public class DefaultUser{
 	 * @param userInfo
 	 * @return
 	 */
-	public DefaultUser updateCredentials(UserCredentials userCredentials){
+	public DefaultUser updateCredentials(Credentials userCredentials){
 		return new DefaultUser(this.userInfo, userCredentials, this.userDetails, this.userAccountLogs);
 	}
 	
@@ -53,7 +66,7 @@ public class DefaultUser{
 	 * @param userInfo
 	 * @return
 	 */
-	public DefaultUser updateDetails(BasicUserDetails userDetails){
+	public DefaultUser updateDetails(BasicDetails userDetails){
 		return new DefaultUser(this.userInfo, this.userCredentials, userDetails, this.userAccountLogs);
 	}
 	
@@ -62,24 +75,87 @@ public class DefaultUser{
 	 * @param userInfo
 	 * @return
 	 */
-	public DefaultUser updateLogs(DefaultUserAccountLogs userAccountLogs){
+	public DefaultUser updateLogs(AccountLogs userAccountLogs){
 		return new DefaultUser(this.userInfo, this.userCredentials, this.userDetails, userAccountLogs);
 	}
 
-	public BasicUserInfo getUserInfo() {
+	public BasicInfo getUserInfo() {
 		return this.userInfo;
 	}
 
-	public UserCredentials getCredentials() {
+	public Credentials getCredentials() {
 		return this.userCredentials;
 	}
 
-	public BasicUserDetails getBasicDetails() {
+	public BasicDetails getBasicDetails() {
 		return this.userDetails;
 	}
 
-	public DefaultUserAccountLogs getLogs() {
+	public AccountLogs getLogs() {
 		return this.userAccountLogs;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.uimirror.core.service.BeanValidatorService#isValid()
+	 */
+	@Override
+	public boolean isValid() {
+		boolean valid = Boolean.TRUE;
+		if(!getUserInfo().isValid())
+			valid = Boolean.FALSE;
+		if(!getCredentials().isValid())
+			valid = Boolean.FALSE;
+		if(!getBasicDetails().isValid())
+			valid = Boolean.FALSE;
+		if(!getLogs().isValid())
+			valid = Boolean.FALSE;
+		return valid;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.uimirror.core.mongo.feature.MongoDocumentSerializer#initFromMap(java.util.Map)
+	 */
+	@Override
+	public DefaultUser initFromMap(Map<String, Object> src) {
+		// Validate the source shouldn't be empty
+		validateSource(src);
+		// Initialize the state
+		return init(src);
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.uimirror.core.mongo.feature.MongoDocumentSerializer#toMap()
+	 */
+	@Override
+	public Map<String, Object> toMap() {
+		return serailize();
+	}
+	
+	/**
+	 * Serialize the current state that needs to be persisted to the system.
+	 * 
+	 * @return
+	 */
+	public Map<String, Object> serailize() {
+		Map<String, Object> state = new LinkedHashMap<String, Object>(20);
+		state.putAll(getUserInfo().toMap());
+		state.putAll(getCredentials().toMap());
+		state.putAll(getBasicDetails().toMap());
+		state.putAll(getLogs().toMap());
+		return state;
+	}
+	
+	/**
+	 * converts a map that comes from DB into BasicInfo object.
+	 * @param raw
+	 * @return {@link BasicInfo}
+	 */
+	private DefaultUser init(Map<String, Object> raw) {
+		BasicInfo userInfo = new BasicInfo().initFromMap(raw);
+		Credentials userCredentials = new Credentials().initFromMap(raw);
+		BasicDetails userDetails = new BasicDetails().initFromMap(raw);
+		AccountLogs userAccountLogs = new AccountLogs().initFromMap(raw);
+		return new DefaultUser(userInfo,userCredentials, userDetails, userAccountLogs);
 	}
 
 }

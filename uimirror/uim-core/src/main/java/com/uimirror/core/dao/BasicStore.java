@@ -103,6 +103,27 @@ public interface BasicStore<T extends BeanBasedDocument<T>> {
 	int updateById(Object id, Map<String, Object> toUpdate) throws DBException;
 	
 	/**
+	 * Updates the document on the available specific id
+	 * The update map should have the proper $SET commands
+	 * This will insert when no match found with multi option as true.
+	 * 
+	 * @param id
+	 * @param toUpdate
+	 * @return number of record got updated
+	 */
+	int updateByIdInsertWhenNoMatchWithMulti(Object id, Map<String, Object> toUpdate) throws DBException;
+	/**
+	 * Updates the document on the available specific id
+	 * The update map should have the proper $SET commands
+	 * This will insert when no match found with multi option as false.
+	 * 
+	 * @param id
+	 * @param toUpdate
+	 * @return number of record got updated
+	 */
+	int updateByIdInsertWhenNoMatchWithOutMulti(Object id, Map<String, Object> toUpdate) throws DBException;
+	
+	/**
 	 * Update the document based on the query specified.
 	 * The update map should have the proper $SET commands
 	 * @param query
@@ -111,5 +132,26 @@ public interface BasicStore<T extends BeanBasedDocument<T>> {
 	 * @throws DBException
 	 */
 	int updateByQuery(Map<String, Object> query, Map<String, Object> toUpdate) throws DBException;
+	
+	/**
+	 * Update the document based on the query specified.
+	 * The update map should have the proper $SET commands
+	 * This will insert when no match found with multi option as true.
+	 * @param query
+	 * @param toUpdate
+	 * @return
+	 * @throws DBException
+	 */
+	int updateByQueryInsertWhenNoMatchWithMulti(Map<String, Object> query, Map<String, Object> toUpdate) throws DBException;
+	/**
+	 * Update the document based on the query specified.
+	 * The update map should have the proper $SET commands
+	 * This will insert when no match found with multi option as false.
+	 * @param query
+	 * @param toUpdate
+	 * @return
+	 * @throws DBException
+	 */
+	int updateByQueryInsertWhenNoMatchWithOutMulti(Map<String, Object> query, Map<String, Object> toUpdate) throws DBException;
 	
 }

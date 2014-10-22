@@ -24,7 +24,7 @@ import com.uimirror.core.service.BeanValidatorService;
  * A Basic User Credentials Object
  * @author Jay
  */
-public class UserCredentials extends BeanBasedDocument<UserCredentials> implements BeanValidatorService{
+public class Credentials extends BeanBasedDocument<Credentials> implements BeanValidatorService{
 
 	private static final long serialVersionUID = -8054579659925533437L;
 	private List<String> userNames;
@@ -36,14 +36,14 @@ public class UserCredentials extends BeanBasedDocument<UserCredentials> implemen
 	private Map<String, Object> instructions;
 	
 	//DOn't Use this until it has specific requirement
-	public UserCredentials(){
+	public Credentials(){
 		super();
 	}
 	
 	/**
 	 * @param raw
 	 */
-	public UserCredentials(Map<String, Object> raw) {
+	public Credentials(Map<String, Object> raw) {
 		super(raw);
 	}
 
@@ -57,7 +57,7 @@ public class UserCredentials extends BeanBasedDocument<UserCredentials> implemen
 	 * @param encryptionStratgy
 	 * @param instructions
 	 */
-	public UserCredentials(String profileId, List<String> userNames, String password,
+	public Credentials(String profileId, List<String> userNames, String password,
 			String screenPassword, AccountState accountState,
 			AccountStatus accountStatus, String encryptionStratgy,
 			Map<String, Object> instructions) {
@@ -71,15 +71,15 @@ public class UserCredentials extends BeanBasedDocument<UserCredentials> implemen
 		this.instructions = instructions;
 	}
 	
-	public UserCredentials updateProfileId(String profileId) {
-		return new UserCredentials(profileId, userNames, password, screenPassword, accountState, accountStatus, encryptionStratgy, instructions);
+	public Credentials updateProfileId(String profileId) {
+		return new Credentials(profileId, userNames, password, screenPassword, accountState, accountStatus, encryptionStratgy, instructions);
 	}
 
 	/* (non-Javadoc)
 	 * @see com.uimirror.core.mongo.feature.MongoDocumentSerializer#initFromMap(java.util.Map)
 	 */
 	@Override
-	public UserCredentials initFromMap(Map<String, Object> src) {
+	public Credentials initFromMap(Map<String, Object> src) {
 		//Validate the source shouldn't be empty
 		validateSource(src);
 		//Initialize the state
@@ -87,7 +87,7 @@ public class UserCredentials extends BeanBasedDocument<UserCredentials> implemen
 	}
 	
 	@SuppressWarnings("unchecked")
-	private UserCredentials init(Map<String, Object> raw){
+	private Credentials init(Map<String, Object> raw){
 		String id = (String)raw.get(UserAuthDBFields.ID);
 		List<String> userNames = (List<String>) raw.get(UserAuthDBFields.USER_ID);
 		String password = (String)raw.get(UserAuthDBFields.PASSWORD);
@@ -98,7 +98,7 @@ public class UserCredentials extends BeanBasedDocument<UserCredentials> implemen
 		String stateVal = (String)raw.get(UserAuthDBFields.ACCOUNT_STATE);
 		AccountStatus accountStatus = StringUtils.hasText(statVal) ? AccountStatus.getEnum(statVal) : AccountStatus.ACTIVE;
 		AccountState accountState = StringUtils.hasText(stateVal) ? AccountState.getEnum(stateVal) : AccountState.ENABLED;
-		return new UserCredentials(id, userNames, password, screenPassword, accountState, accountStatus, encryptionStratgy, instructions);
+		return new Credentials(id, userNames, password, screenPassword, accountState, accountStatus, encryptionStratgy, instructions);
 	}
 	
 	/** 
@@ -108,8 +108,6 @@ public class UserCredentials extends BeanBasedDocument<UserCredentials> implemen
 	@Override
 	public boolean isValid() {
 		boolean valid = Boolean.TRUE;
-		if(!StringUtils.hasText(getId()))
-			valid = Boolean.FALSE;
 		if(CollectionUtils.isEmpty(getUserId()))
 			valid = Boolean.FALSE;
 		if(!StringUtils.hasText(getPassword()))

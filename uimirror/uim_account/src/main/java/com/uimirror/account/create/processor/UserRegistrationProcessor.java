@@ -19,7 +19,7 @@ import com.uimirror.core.Processor;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.rest.extra.ResponseTransFormer;
 import com.uimirror.core.service.TransformerService;
-import com.uimirror.core.user.BasicUserInfo;
+import com.uimirror.core.user.BasicInfo;
 
 /**
  * @author Jay
@@ -28,7 +28,7 @@ import com.uimirror.core.user.BasicUserInfo;
 public class UserRegistrationProcessor implements Processor<RegisterForm,Object>{
 
 	protected static final Logger LOG = LoggerFactory.getLogger(UserRegistrationProcessor.class);
-	private @Autowired TransformerService<RegisterForm, BasicUserInfo> userRegisterFormToRegisterTransformer;
+	private @Autowired TransformerService<RegisterForm, BasicInfo> userRegisterFormToRegisterTransformer;
 	private @Autowired ResponseTransFormer<String> jsonResponseTransFormer;
 	
 	/* (non-Javadoc)
@@ -38,7 +38,7 @@ public class UserRegistrationProcessor implements Processor<RegisterForm,Object>
 	public Object invoke(RegisterForm param){
 		LOG.debug("[START]- Regestering a User");
 		//Step 1- Transform the bean to Authentication
-		BasicUserInfo basicUser = getTransformedObject(param);
+		BasicInfo basicUser = getTransformedObject(param);
 		//Let GC take this ASAP
 		param = null;
 		//Step 2- Validate against DB Create a basic Profile
@@ -57,7 +57,7 @@ public class UserRegistrationProcessor implements Processor<RegisterForm,Object>
 	 * @param param
 	 * @return
 	 */
-	private BasicUserInfo getTransformedObject(RegisterForm param) {
+	private BasicInfo getTransformedObject(RegisterForm param) {
 		return userRegisterFormToRegisterTransformer.transform(param);
 	}
 	
