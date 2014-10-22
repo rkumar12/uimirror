@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.account.user;
+package com.uimirror.core.user;
 
 import java.util.List;
 import java.util.Map;

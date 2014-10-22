@@ -10,8 +10,8 @@
  *******************************************************************************/
 package com.uimirror.account.user.dao;
 
-import com.uimirror.account.user.UserCredentials;
 import com.uimirror.core.dao.DBException;
+import com.uimirror.core.user.UserCredentials;
 
 /**
  * Store the credentials in the DB 

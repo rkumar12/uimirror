@@ -21,13 +21,13 @@ import org.springframework.util.Assert;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
-import com.uimirror.account.user.UserCredentials;
 import com.uimirror.account.user.bean.DefaultUserCredentials;
 import com.uimirror.core.dao.AbstractMongoStore;
 import com.uimirror.core.dao.DBException;
 import com.uimirror.core.mongo.BasicMongoOperators;
 import com.uimirror.core.user.AccountState;
 import com.uimirror.core.user.UserAuthDBFields;
+import com.uimirror.core.user.UserCredentials;
 import com.uimirror.core.user.UserDBFields;
 
 /**
