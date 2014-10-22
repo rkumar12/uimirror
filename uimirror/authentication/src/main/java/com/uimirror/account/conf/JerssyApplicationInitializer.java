@@ -18,6 +18,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 
+import com.uimirror.ws.api.filter.PoweredByResponseFilter;
+import com.uimirror.ws.api.filter.UimCORSFilter;
 import com.uimirror.ws.api.security.filter.AccessTokenResponseFilter;
 import com.uimirror.ws.api.security.filter.feature.PreAuthorizeDynamicFeature;
 
@@ -42,6 +44,8 @@ public class JerssyApplicationInitializer extends ResourceConfig{
 //        register(ClientLicenseAllowedDynamicFeature.class);
 		register(PreAuthorizeDynamicFeature.class);
 		register(AccessTokenResponseFilter.class);
+		register(PoweredByResponseFilter.class);
+		register(UimCORSFilter.class);
         register(UriConnegFilter.class);
         property(ServerProperties.LANGUAGE_MAPPINGS, "english : en");
         property(ServerProperties.APPLICATION_NAME, appName);

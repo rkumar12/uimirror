@@ -43,6 +43,10 @@
 						<id>org.eclipse.ui.ide.multiFilter</id>
 						<arguments>1.0-projectRelativePath-equals-true-false-uim_account</arguments>
 					</matcher>
+					<matcher>
+						<id>org.eclipse.ui.ide.multiFilter</id>
+						<arguments>1.0-projectRelativePath-equals-true-false-ws-filters</arguments>
+					</matcher>
 				</arguments>
 			</matcher>
 		</filter>
