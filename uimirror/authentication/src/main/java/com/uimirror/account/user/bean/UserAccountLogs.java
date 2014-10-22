@@ -16,7 +16,7 @@ import java.util.Map;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import com.uimirror.account.user.UserAccountDBFields;
+import com.uimirror.account.user.UserDBFields;
 import com.uimirror.core.mongo.feature.BeanBasedDocument;
 import com.uimirror.core.service.BeanValidatorService;
 
@@ -108,16 +108,16 @@ public class UserAccountLogs extends BeanBasedDocument<UserAccountLogs> implemen
 	 */
 	@SuppressWarnings("unchecked")
 	private UserAccountLogs init(Map<String, Object> raw) {
-		String id = (String) raw.get(UserAccountDBFields.ID);
+		String id = (String) raw.get(UserDBFields.ID);
 		long creatOn = 0l;
 		long modifiedOn = 0l;
-		if(raw.get(UserAccountDBFields.CREATED_ON) != null){
-			creatOn = (long) raw.get(UserAccountDBFields.CREATED_ON);
+		if(raw.get(UserDBFields.CREATED_ON) != null){
+			creatOn = (long) raw.get(UserDBFields.CREATED_ON);
 		}
-		if(raw.get(UserAccountDBFields.MODIFIED_ON) != null){
-			modifiedOn = (long) raw.get(UserAccountDBFields.MODIFIED_ON);
+		if(raw.get(UserDBFields.MODIFIED_ON) != null){
+			modifiedOn = (long) raw.get(UserDBFields.MODIFIED_ON);
 		}
-		Map<String,Object> details =  (Map<String, Object>) raw.get(UserAccountDBFields.DETAILS);
+		Map<String,Object> details =  (Map<String, Object>) raw.get(UserDBFields.DETAILS);
 		return new UserAccountLogs(id,creatOn,modifiedOn,details);
 	}
 	
@@ -128,12 +128,12 @@ public class UserAccountLogs extends BeanBasedDocument<UserAccountLogs> implemen
 	 */
 	public Map<String, Object> serailize() {
 		Map<String, Object> state = new LinkedHashMap<String, Object>(9);
-		state.put(UserAccountDBFields.ID, getId());
-		state.put(UserAccountDBFields.CREATED_ON, getCreatedOn());
+		state.put(UserDBFields.ID, getId());
+		state.put(UserDBFields.CREATED_ON, getCreatedOn());
 		if(getModifiedOn() > 0l)
-			state.put(UserAccountDBFields.MODIFIED_ON, getModifiedOn());
+			state.put(UserDBFields.MODIFIED_ON, getModifiedOn());
 		if(!CollectionUtils.isEmpty(getDetails()))
-			state.put(UserAccountDBFields.DETAILS, getDetails());
+			state.put(UserDBFields.DETAILS, getDetails());
 		return state;
 	}
 	
