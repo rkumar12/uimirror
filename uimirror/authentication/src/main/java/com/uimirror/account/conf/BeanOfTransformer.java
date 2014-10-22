@@ -14,9 +14,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.uimirror.account.client.bean.Client;
-import com.uimirror.account.client.form.RegisterForm;
 import com.uimirror.account.client.transformer.ClientRegisterFormToClientTransformer;
+import com.uimirror.account.user.form.RegisterForm;
+import com.uimirror.account.user.transformer.RegisterFormToUserTransformer;
 import com.uimirror.core.service.TransformerService;
+import com.uimirror.core.user.DefaultUser;
 
 /**
  * Contains the bean definition for all the authentication controller process
@@ -27,8 +29,13 @@ import com.uimirror.core.service.TransformerService;
 public class BeanOfTransformer {
 
 	@Bean
-	public TransformerService<RegisterForm, Client> clientRegisterFormToClientTransformer(){
+	public TransformerService<com.uimirror.account.client.form.RegisterForm, Client> clientRegisterFormToClientTransformer(){
 		return new ClientRegisterFormToClientTransformer();
+	}
+	
+	@Bean
+	public TransformerService<RegisterForm, DefaultUser> registerFormToUser(){
+		return new RegisterFormToUserTransformer();
 	}
 
 }

@@ -65,7 +65,7 @@ public class ClientAuthorizationAuthenticationManager implements AuthenticationM
 	}
 
 	/**
-	 * Gets the {@link UserCredentials} object from the {@link Authentication}
+	 * Gets the {@link Credentials} object from the {@link Authentication}
 	 * @param authentication
 	 * @return
 	 */

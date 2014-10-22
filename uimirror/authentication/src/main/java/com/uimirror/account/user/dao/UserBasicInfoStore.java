@@ -10,7 +10,7 @@
  *******************************************************************************/
 package com.uimirror.account.user.dao;
 
-import com.uimirror.core.user.BasicUserInfo;
+import com.uimirror.core.user.BasicInfo;
 
 /**
  * Store the User account Basic Info in the DB 
@@ -24,7 +24,7 @@ public interface UserBasicInfoStore {
 	 * @param profileId
 	 * @return
 	 */
-	BasicUserInfo getUserInfoByProfileId(String profileId);
+	BasicInfo getUserInfoByProfileId(String profileId);
 
 	/**
 	 * Delete all the logs present for the user in his log
@@ -60,5 +60,5 @@ public interface UserBasicInfoStore {
 	 * @param user
 	 * @return
 	 */
-	BasicUserInfo store(BasicUserInfo user);
+	BasicInfo store(BasicInfo user);
 }

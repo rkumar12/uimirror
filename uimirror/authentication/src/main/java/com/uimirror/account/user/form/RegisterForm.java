@@ -78,7 +78,7 @@ public final class RegisterForm extends ClientAPIForm implements BeanValidatorSe
 	}
 
 	public Password getPassword() {
-		return new Password(password, null);
+		return new Password(password, null).getEncrypted();
 	}
 
 	public Gender getGender() {

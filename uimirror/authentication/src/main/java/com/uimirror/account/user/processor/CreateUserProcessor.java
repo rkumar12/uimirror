@@ -14,16 +14,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.uimirror.account.client.bean.Client;
-import com.uimirror.account.user.dao.UserBasicInfoStore;
+import com.uimirror.account.user.dao.DefaultUserStore;
 import com.uimirror.account.user.form.RegisterForm;
 import com.uimirror.core.Processor;
-import com.uimirror.core.auth.Authentication;
 import com.uimirror.core.rest.extra.ApplicationException;
 import com.uimirror.core.service.TransformerService;
-import com.uimirror.core.user.BasicUserInfo;
 import com.uimirror.core.user.DefaultUser;
-import com.uimirror.core.user.UserCredentials;
+import com.uimirror.core.util.thread.BackgroundProcessorFactory;
 
 /**
  * Processor for the user account creation, it will first check for the user existence
@@ -41,10 +38,9 @@ import com.uimirror.core.user.UserCredentials;
 public class CreateUserProcessor implements Processor<RegisterForm, DefaultUser>{
 
 	protected static final Logger LOG = LoggerFactory.getLogger(CreateUserProcessor.class);
-	private @Autowired Processor<Authentication, Client> apiKeyAuthenticateProcessor;
 	private @Autowired TransformerService<RegisterForm, DefaultUser> registerFormToUser;
-	private @Autowired UserBasicInfoStore persistedUserBasicInfoMongoStore;
-	
+	private @Autowired DefaultUserStore persistedDefaultUserMongoStore;
+	private @Autowired BackgroundProcessorFactory<DefaultUser, Object> backgroundProcessorFactory; 
 
 	public CreateUserProcessor() {
 		// NOP
@@ -57,32 +53,26 @@ public class CreateUserProcessor implements Processor<RegisterForm, DefaultUser>
 	public DefaultUser invoke(RegisterForm param) throws ApplicationException {
 		LOG.info("[START]- Registering a new User.");
 		DefaultUser user = registerFormToUser.transform(param);
-		BasicUserInfo userInfo = createUerBasic(user.getUserInfo());
-		String profileId = userInfo.getProfileId();
-		UserCredentials credentials = storeCredentials(user.getCredentials(), profileId);
+		//Step 1- Create a flat user in temp collection first
+		user = createUerBasic(user);
+		//Step 2- Invoke a background process which will create user in different different collection separately
+		createUserInBackGround(user);
 		LOG.info("[END]- Registering a new User.");
-		return null;
+		return user;
 	}
 
+	private void createUserInBackGround(DefaultUser user){
+		backgroundProcessorFactory.getProcessor(BackGroundCreateUserProcessor.NAME).invoke(user);
+	}
 
 	/**
 	 * Create Basic Profile and get the updated user
-	 * @param userInfo
+	 * @param user
 	 * @return
 	 */
-	private BasicUserInfo createUerBasic(BasicUserInfo userInfo) {
-		BasicUserInfo basicUser =  persistedUserBasicInfoMongoStore.store(userInfo);
-		return basicUser;
+	private DefaultUser createUerBasic(DefaultUser user) {
+		DefaultUser tempUser =  persistedDefaultUserMongoStore.store(user);
+		return tempUser;
 	}
 
-	/**
-	 * update the profile id and store the details
-	 * @param credentials
-	 * @return
-	 */
-	private UserCredentials storeCredentials(UserCredentials credentials, String profileId) {
-		credentials = credentials.updateProfileId(profileId);
-		
-		return credentials;
-	}
 }

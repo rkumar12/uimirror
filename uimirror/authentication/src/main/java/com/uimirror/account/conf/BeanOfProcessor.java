@@ -22,8 +22,11 @@ import com.uimirror.account.client.form.RegisterForm;
 import com.uimirror.account.client.processor.CreateClientAccountProcessor;
 import com.uimirror.account.client.provider.CreateClientAccountProvider;
 import com.uimirror.account.user.form.VerifyForm;
+import com.uimirror.account.user.processor.CreateUserProcessor;
+import com.uimirror.account.user.processor.UserRegistrationProcessor;
 import com.uimirror.core.Processor;
 import com.uimirror.core.auth.AccessToken;
+import com.uimirror.core.user.DefaultUser;
 
 /**
  * Contains the bean definition for all the authentication controller process
@@ -51,6 +54,16 @@ public class BeanOfProcessor {
   @Bean
   public Processor<ContainerRequestContext, AccessToken> accessTokenProcessor(){
 	  return new AccessTokenProcessor();
+  }
+
+  @Bean
+  public Processor<com.uimirror.account.user.form.RegisterForm, DefaultUser> createUserProcessor(){
+	  return new CreateUserProcessor();
+  }
+
+  @Bean
+  public Processor<com.uimirror.account.user.form.RegisterForm, String> userRegistrationProcessor(){
+	  return new UserRegistrationProcessor();
   }
 
 }

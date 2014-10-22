@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Configuration;
 
 import com.uimirror.account.auth.client.form.ClientAPIForm;
 import com.uimirror.account.auth.client.form.ClientSecretKeyForm;
+import com.uimirror.account.auth.client.processor.APIKeyAuthenticateProcessor;
 import com.uimirror.account.auth.client.processor.APIKeyProcessor;
 import com.uimirror.account.auth.client.processor.SecretKeyProcessor;
 import com.uimirror.account.auth.core.processor.OTPAuthProcessor;
@@ -30,6 +31,7 @@ import com.uimirror.account.auth.user.form.ScreenLockAuthenticationForm;
 import com.uimirror.account.auth.user.processor.AllowClientProcessor;
 import com.uimirror.account.auth.user.processor.AuthorizationClientProcessor;
 import com.uimirror.account.auth.user.processor.LoginFormAuthProcessor;
+import com.uimirror.account.client.bean.Client;
 import com.uimirror.account.user.UserAuthorizedClient;
 import com.uimirror.core.Processor;
 import com.uimirror.core.auth.Authentication;
@@ -96,6 +98,12 @@ public class BeanOfAuthProcessor {
 	@Bean
 	public Processor<UserAuthorizedClient, Object> allowClientprocessor(){
 		return new AllowClientProcessor();
+	}
+
+	
+	@Bean
+	public Processor<Authentication, Client> apiKeyAuthenticateProcessor(){
+		return new APIKeyAuthenticateProcessor();
 	}
 
 }

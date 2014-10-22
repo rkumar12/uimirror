@@ -26,7 +26,7 @@ import com.uimirror.core.dao.DBException;
 import com.uimirror.core.mongo.BasicMongoOperators;
 import com.uimirror.core.user.AccountState;
 import com.uimirror.core.user.UserAuthDBFields;
-import com.uimirror.core.user.UserCredentials;
+import com.uimirror.core.user.Credentials;
 import com.uimirror.core.user.UserDBFields;
 
 /**
@@ -34,7 +34,7 @@ import com.uimirror.core.user.UserDBFields;
  * @author Jay
  */
 @Repository
-public class PersistedUserCredentialMongoStore extends AbstractMongoStore<UserCredentials> implements UserCredentialsStore {
+public class PersistedUserCredentialMongoStore extends AbstractMongoStore<Credentials> implements UserCredentialsStore {
 	
 	/**
 	 * Assign/ Create collection from the given {@link DBCollection}
@@ -42,14 +42,14 @@ public class PersistedUserCredentialMongoStore extends AbstractMongoStore<UserCr
 	 */
 	@Autowired
 	public PersistedUserCredentialMongoStore(@Qualifier("usrAuthCol") DBCollection collection){
-		super(collection, UserCredentials.class);
+		super(collection, Credentials.class);
 	}
 
 	/* (non-Javadoc)
 	 * @see com.uimirror.core.auth.dao.CredentialsStore#getCredentials(java.lang.Object)
 	 */
 	@Override
-	public UserCredentials getCredentialsByUserName(String identifier) throws DBException {
+	public Credentials getCredentialsByUserName(String identifier) throws DBException {
 		return queryFirstRecord(getUserIdQuery(identifier));
 	}
 	
@@ -69,7 +69,7 @@ public class PersistedUserCredentialMongoStore extends AbstractMongoStore<UserCr
 	 * @see com.uimirror.account.auth.dao.UserCredentialsStore#getCredentialsByProfileId(java.lang.String)
 	 */
 	@Override
-	public UserCredentials getCredentialsByProfileId(String identifier) throws DBException {
+	public Credentials getCredentialsByProfileId(String identifier) throws DBException {
 		return getById(identifier);
 	}
 

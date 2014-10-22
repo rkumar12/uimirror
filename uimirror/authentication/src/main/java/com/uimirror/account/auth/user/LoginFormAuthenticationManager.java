@@ -39,7 +39,7 @@ import com.uimirror.core.extra.MapException;
 import com.uimirror.core.user.AccountState;
 import com.uimirror.core.user.AccountStatus;
 import com.uimirror.core.user.UserAuthDBFields;
-import com.uimirror.core.user.UserCredentials;
+import com.uimirror.core.user.Credentials;
 import com.uimirror.core.util.DateTimeUtil;
 import com.uimirror.core.util.thread.BackgroundProcessorFactory;
 import com.uimirror.ws.api.security.exception.AuthenticationException;
@@ -87,7 +87,7 @@ public class LoginFormAuthenticationManager implements AuthenticationManager{
 	}
 
 	/**
-	 * Gets the {@link UserCredentials} object from the {@link Authentication}
+	 * Gets the {@link Credentials} object from the {@link Authentication}
 	 * @param authentication
 	 * @return
 	 */
@@ -99,7 +99,7 @@ public class LoginFormAuthenticationManager implements AuthenticationManager{
 		//Step 1- Get the previous Token
 		AccessToken prevToken = getPreviousToken(credentials);
 		//Step 2- Get the user credentials
-		UserCredentials userCredentials = getUserCredentials((String)details.get(AuthConstants.USER_ID));
+		Credentials userCredentials = getUserCredentials((String)details.get(AuthConstants.USER_ID));
 		//Step 3- Check the account status as well password match
 		doAuthenticate(credentials.get(AuthConstants.PASSWORD), userCredentials);
 		//Step 4- Generate a new Token
@@ -130,7 +130,7 @@ public class LoginFormAuthenticationManager implements AuthenticationManager{
 	 * @param userId
 	 * @return
 	 */
-	private UserCredentials getUserCredentials(String userId){
+	private Credentials getUserCredentials(String userId){
 		return userCredentialStore.getCredentialsByUserName(userId);
 	}
 	
@@ -141,7 +141,7 @@ public class LoginFormAuthenticationManager implements AuthenticationManager{
 	 * @return <code>true</code> if successfully authenticated else <code>false</code>
 	 * or appropriate {@link AuthenticationException}
 	 */
-	private boolean doAuthenticate(String providedPassword, UserCredentials userCredentials){
+	private boolean doAuthenticate(String providedPassword, Credentials userCredentials){
 		if(AccountState.NEW.equals(userCredentials.getAccountState())){
 			throw new NotVerifiedException();
 		}
@@ -161,7 +161,7 @@ public class LoginFormAuthenticationManager implements AuthenticationManager{
 	 * @param authentication
 	 * @return
 	 */
-	private AccessToken issueNewToken(AccessToken prevToken, UserCredentials userCredentials, Authentication authentication) {
+	private AccessToken issueNewToken(AccessToken prevToken, Credentials userCredentials, Authentication authentication) {
 		@SuppressWarnings("unchecked")
 		Map<String, Object> details = (Map<String, Object>)authentication.getDetails();
 		TokenType tokenType = getTokenType(userCredentials, prevToken);
@@ -180,7 +180,7 @@ public class LoginFormAuthenticationManager implements AuthenticationManager{
 	 * @param prevTokn
 	 * @return
 	 */
-	private TokenType getTokenType(UserCredentials userCredentials, AccessToken prevTokn){
+	private TokenType getTokenType(Credentials userCredentials, AccessToken prevTokn){
 		TokenType type = isOTPRequired(userCredentials) ? TokenType._2FA :  TokenType.SECRET;
 		if(TokenType.SECRET.equals(type) && !isClientAuthorized(userCredentials.getProfileId(), prevTokn.getClient(), prevTokn.getScope().getScope())){
 			type = TokenType.USER_PERMISSION;
@@ -265,7 +265,7 @@ public class LoginFormAuthenticationManager implements AuthenticationManager{
 	 * @param userCredentials
 	 * @return
 	 */
-	private boolean isOTPRequired(UserCredentials userCredentials){
+	private boolean isOTPRequired(Credentials userCredentials){
 		Map<String, Object> instructions = userCredentials.getInstructions();
 		if(instructions.get(UserAuthDBFields.ACC_INS_2FA) != null)
 			return Boolean.TRUE;
@@ -308,7 +308,7 @@ public class LoginFormAuthenticationManager implements AuthenticationManager{
 	 * it will try to restore the user account to normal state in background
 	 * @param userCredentials
 	 */
-	private void doAccountRestoreIfRequired(UserCredentials userCredentials){
+	private void doAccountRestoreIfRequired(Credentials userCredentials){
 		if(isAccountRestoreRequired(userCredentials))
 			backgroundProcessorFactory.getProcessor(UserRestoreProcessor.NAME).invoke(userCredentials.getProfileId());
 	}
@@ -319,7 +319,7 @@ public class LoginFormAuthenticationManager implements AuthenticationManager{
 	 * @param userCredentials
 	 * @return
 	 */
-	private boolean isAccountRestoreRequired(UserCredentials userCredentials){
+	private boolean isAccountRestoreRequired(Credentials userCredentials){
 		boolean restore = Boolean.FALSE;
 		restore = AccountState.DISABLED.equals(userCredentials.getAccountState()) ? Boolean.TRUE : Boolean.FALSE;
 		return restore;

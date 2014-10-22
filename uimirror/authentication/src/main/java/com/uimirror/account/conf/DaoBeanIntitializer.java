@@ -36,6 +36,8 @@ public class DaoBeanIntitializer {
 	protected @Value("${auth.usr.col.name:usr_auth}") String userAuthCollection;
 	//For User DB
 	protected @Value("${user.db.name:uim_usr}") String userDb;
+	//Stores the User Temp Store
+	protected @Value("${user.temp.col.name:users}") String userTempCollection;
 	//Stores the User Logs only
 	protected @Value("${user.logs.col.name:logs}") String userLogsCollection;
 	//Stores the User Basic Info only
@@ -98,6 +100,11 @@ public class DaoBeanIntitializer {
 		return MongoDbFactory.getDB(mongo, this.userDb);
 	}
 	
+	@Bean
+	@Autowired
+	public DBCollection userTempCol(DB userDB) throws UnknownHostException{
+		return DBCollectionUtil.getCollection(userDB, this.userTempCollection);
+	}
 	@Bean
 	@Autowired
 	public DBCollection userLogsCol(DB userDB) throws UnknownHostException{

@@ -23,7 +23,7 @@ import com.mongodb.DBObject;
 import com.uimirror.core.dao.AbstractMongoStore;
 import com.uimirror.core.user.AccountState;
 import com.uimirror.core.user.AccountStatus;
-import com.uimirror.core.user.BasicUserInfo;
+import com.uimirror.core.user.BasicInfo;
 import com.uimirror.core.user.UserDBFields;
 
 /**
@@ -31,24 +31,22 @@ import com.uimirror.core.user.UserDBFields;
  * @author Jay
  */
 @Repository
-public class PersistedUserBasicInfoMongoStore extends AbstractMongoStore<BasicUserInfo> implements UserBasicInfoStore {
-	
-	private final static String USER_BASIC_INFO_SEQ = "ubis";
+public class PersistedUserBasicInfoMongoStore extends AbstractMongoStore<BasicInfo> implements UserBasicInfoStore {
 	
 	/**
 	 * Assign/ Create collection from the given {@link DBCollection}
 	 * @param collection
 	 */
 	@Autowired
-	public PersistedUserBasicInfoMongoStore(@Qualifier("userBasicInfoCol") DBCollection collection, @Qualifier("userBasicInfoSeqCol") DBCollection seqCollection){
-		super(collection, seqCollection,USER_BASIC_INFO_SEQ,BasicUserInfo.class);
+	public PersistedUserBasicInfoMongoStore(@Qualifier("userBasicInfoCol") DBCollection collection){
+		super(collection, BasicInfo.class);
 	}
 
 	/* (non-Javadoc)
 	 * @see com.uimirror.account.user.dao.UserBasicInfoStore#getUserInfoByProfileId(java.lang.String)
 	 */
 	@Override
-	public BasicUserInfo getUserInfoByProfileId(String profileId) {
+	public BasicInfo getUserInfoByProfileId(String profileId) {
 		return getById(profileId);
 	}
 

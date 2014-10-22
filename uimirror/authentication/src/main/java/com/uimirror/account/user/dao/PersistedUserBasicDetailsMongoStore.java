@@ -18,7 +18,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.uimirror.core.dao.AbstractMongoStore;
-import com.uimirror.core.user.BasicUserDetails;
+import com.uimirror.core.user.BasicDetails;
 import com.uimirror.core.user.UserDBFields;
 
 /**
@@ -26,7 +26,7 @@ import com.uimirror.core.user.UserDBFields;
  * @author Jay
  */
 @Repository
-public class PersistedUserBasicDetailsMongoStore extends AbstractMongoStore<BasicUserDetails> implements UserBasicDetailsStore {
+public class PersistedUserBasicDetailsMongoStore extends AbstractMongoStore<BasicDetails> implements UserBasicDetailsStore {
 	
 	/**
 	 * Assign/ Create collection from the given {@link DBCollection}
@@ -34,14 +34,14 @@ public class PersistedUserBasicDetailsMongoStore extends AbstractMongoStore<Basi
 	 */
 	@Autowired
 	public PersistedUserBasicDetailsMongoStore(@Qualifier("userDetailsCol") DBCollection collection){
-		super(collection, BasicUserDetails.class);
+		super(collection, BasicDetails.class);
 	}
 
 	/* (non-Javadoc)
 	 * @see com.uimirror.account.user.dao.UserBasicInfoStore#getUserInfoByProfileId(java.lang.String)
 	 */
 	@Override
-	public BasicUserDetails getUserInfoByProfileId(String profileId) {
+	public BasicDetails getUserInfoByProfileId(String profileId) {
 		return getById(profileId);
 	}
 

@@ -42,7 +42,7 @@ public class AllowClientProcessor implements Processor<UserAuthorizedClient, Obj
 	public Object invoke(UserAuthorizedClient param){
 		LOG.info("[BACKGOUND-START]- Authorizing a Client");
 		//Validate the requested parameters
-		if(param != null && param.isValid()){
+		if(param != null && !param.isValid()){
 			LOG.info("[BACKGROUND-STOP]- Process of authroizing client can't be processed as provided details are not valid");
 		}else{
 			//First Remove the client if found

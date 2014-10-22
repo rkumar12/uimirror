@@ -37,9 +37,8 @@ import com.uimirror.core.Processor;
 public class UserAccountEndPoint {
 
   private static Logger LOG = LoggerFactory.getLogger(UserAccountEndPoint.class);
-
-  @Autowired
-  private Processor<VerifyForm, String> verifyActivateUserAccountProcessor;
+  private @Autowired Processor<VerifyForm, String> verifyActivateUserAccountProcessor;
+  private @Autowired Processor<RegisterForm, String> userRegistrationProcessor;
 
   public UserAccountEndPoint() {
     // NOP
@@ -67,9 +66,9 @@ public class UserAccountEndPoint {
   @Path(AccountEndPointConstant.CREATE)
   public Object create(@BeanParam RegisterForm form) {
     LOG.info("[ENTRY]- Received requst for User Creation.");
-    System.out.println(form);
+    Object response = userRegistrationProcessor.invoke(form);
     LOG.info("[EXIT]- Received requst for User Creation.");
-    return "Helo";
+    return response;
   }
 
   /**

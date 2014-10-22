@@ -48,7 +48,8 @@ public class PersistedAccessTokenMongoStore extends AbstractMongoStore<DefaultAc
 	 */
 	@Override
 	public void store(AccessToken token) throws DBException {
-		store(token);
+		DefaultAccessToken  tkn = (DefaultAccessToken) token;
+		store(tkn);
 	}
 	
 	/* (non-Javadoc)

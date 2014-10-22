@@ -10,7 +10,7 @@
  *******************************************************************************/
 package com.uimirror.account.user.dao;
 
-import com.uimirror.core.user.DefaultUserAccountLogs;
+import com.uimirror.core.user.AccountLogs;
 
 /**
  * Store the User account logs in the DB 
@@ -24,11 +24,17 @@ public interface UserAccountLogStore {
 	 * @param profileId
 	 * @return
 	 */
-	DefaultUserAccountLogs getLogsByProfileId(String profileId);
+	AccountLogs getLogsByProfileId(String profileId);
 
 	/**
 	 * Delete all the logs present for the user in his log
 	 * @param profileId
 	 */
 	void deleteByprofileId(String profileId);
+	
+	/**
+	 * @param logs
+	 * @return
+	 */
+	AccountLogs store(AccountLogs logs);
 }

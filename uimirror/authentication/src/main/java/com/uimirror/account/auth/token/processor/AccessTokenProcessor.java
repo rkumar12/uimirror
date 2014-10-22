@@ -92,7 +92,7 @@ public class AccessTokenProcessor implements Processor<ContainerRequestContext, 
 //			AccessToken new_token = getNewToken(token);
 //			persistedAccessTokenProvider.store(new_token);
 //			//Invalidate the previous Token
-//			backgroundProcessorFactory.getProcessor(InvalidateTokenProcessor.NAME).invoke(token.getToken().getToken());
+//			backgroundProcessorFactory.getProcessor(BackGroundCreateUserProcessor.NAME).invoke(token.getToken().getToken());
 //			token = new_token;
 //		}
 //		return token;

@@ -85,7 +85,7 @@ public class ClientAuthorizedScope implements BeanValidatorService{
 	public Map<String, Object> toMap(){
 		Map<String, Object> clients = new LinkedHashMap<String, Object>(5);
 		clients.put(UserAuthorizedClientDBFields.CLIENT_ID, getClientId());
-		clients.put(UserAuthorizedClientDBFields.SCOPE, getScope());
+		clients.put(UserAuthorizedClientDBFields.SCOPE, getScope().getScope());
 		clients.put(UserAuthorizedClientDBFields.ON, getOn());
 		return clients;
 	}

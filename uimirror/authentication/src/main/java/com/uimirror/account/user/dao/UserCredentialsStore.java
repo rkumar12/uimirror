@@ -11,7 +11,7 @@
 package com.uimirror.account.user.dao;
 
 import com.uimirror.core.dao.DBException;
-import com.uimirror.core.user.UserCredentials;
+import com.uimirror.core.user.Credentials;
 
 /**
  * Store the credentials in the DB 
@@ -26,7 +26,7 @@ public interface UserCredentialsStore {
 	 * @return
 	 * @throws DBException
 	 */
-	UserCredentials getCredentialsByUserName(String identifier) throws DBException;
+	Credentials getCredentialsByUserName(String identifier) throws DBException;
 	
 	/**
 	 * Retrieves the document by id
@@ -34,7 +34,7 @@ public interface UserCredentialsStore {
 	 * @return
 	 * @throws DBException
 	 */
-	UserCredentials getCredentialsByProfileId(String identifier) throws DBException;
+	Credentials getCredentialsByProfileId(String identifier) throws DBException;
 	
 	/**
 	 * This will change the account state as enabled
@@ -48,5 +48,5 @@ public interface UserCredentialsStore {
 	 * @param credentials
 	 * @return
 	 */
-	UserCredentials store(UserCredentials credentials);
+	Credentials store(Credentials credentials);
 }

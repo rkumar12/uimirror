@@ -89,4 +89,12 @@ public class Password {
 		return cd;
 	}
 
+	public String getPassword() {
+		return password;
+	}
+
+	public String getParaphrase() {
+		return paraphrase;
+	}
+
 }

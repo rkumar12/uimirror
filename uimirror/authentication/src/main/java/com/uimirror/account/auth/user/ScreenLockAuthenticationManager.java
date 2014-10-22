@@ -32,7 +32,7 @@ import com.uimirror.core.auth.Token;
 import com.uimirror.core.auth.TokenType;
 import com.uimirror.core.auth.token.DefaultAccessToken;
 import com.uimirror.core.extra.MapException;
-import com.uimirror.core.user.UserCredentials;
+import com.uimirror.core.user.Credentials;
 import com.uimirror.core.util.DateTimeUtil;
 import com.uimirror.ws.api.security.exception.AuthenticationException;
 import com.uimirror.ws.api.security.exception.BadCredentialsException;
@@ -77,7 +77,7 @@ public class ScreenLockAuthenticationManager implements AuthenticationManager{
 		//Step 1- Get the previous Token
 		AccessToken prevToken = getPreviousToken(credentials);
 		//Step 2- Get the user credentials
-		UserCredentials userCredentials = getUserCredentials(prevToken.getOwner());
+		Credentials userCredentials = getUserCredentials(prevToken.getOwner());
 		//Step 3- Check the account status as well password match
 		doAuthenticate(credentials.get(AuthConstants.PASSWORD), userCredentials);
 		//Step 4- Generate a new Token
@@ -105,7 +105,7 @@ public class ScreenLockAuthenticationManager implements AuthenticationManager{
 	 * @param userId
 	 * @return
 	 */
-	private UserCredentials getUserCredentials(String userId){
+	private Credentials getUserCredentials(String userId){
 		return userCredentialStore.getCredentialsByUserName(userId);
 	}
 	
@@ -116,7 +116,7 @@ public class ScreenLockAuthenticationManager implements AuthenticationManager{
 	 * @return <code>true</code> if successfully authenticated else <code>false</code>
 	 * or appropriate {@link AuthenticationException}
 	 */
-	private boolean doAuthenticate(String providedPassword, UserCredentials userCredentials){
+	private boolean doAuthenticate(String providedPassword, Credentials userCredentials){
 		if(!passwordMatcher.match(providedPassword, userCredentials.getScreenPassword(), userCredentials.getEncryptionStratgy()))
 			throw new BadCredentialsException();
 		
@@ -131,7 +131,7 @@ public class ScreenLockAuthenticationManager implements AuthenticationManager{
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	private AccessToken issueNewToken(AccessToken prevToken, UserCredentials userCredentials, Authentication authentication) {
+	private AccessToken issueNewToken(AccessToken prevToken, Credentials userCredentials, Authentication authentication) {
 		Map<String, Object> instructions = (Map<String, Object>)prevToken.getInstructions();
 		Map<String, Object> details = (Map<String, Object>)authentication.getDetails();
 		Token token = TokenGenerator.getNewOneWithOutPharse();

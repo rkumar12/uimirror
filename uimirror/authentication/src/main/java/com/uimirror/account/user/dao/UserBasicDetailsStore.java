@@ -10,7 +10,7 @@
  *******************************************************************************/
 package com.uimirror.account.user.dao;
 
-import com.uimirror.core.user.BasicUserDetails;
+import com.uimirror.core.user.BasicDetails;
 
 
 /**
@@ -25,12 +25,17 @@ public interface UserBasicDetailsStore {
 	 * @param profileId
 	 * @return
 	 */
-	BasicUserDetails getUserInfoByProfileId(String profileId);
+	BasicDetails getUserInfoByProfileId(String profileId);
 
 	/**
 	 * Delete details by profile id
 	 * @param profileId
 	 */
 	void deleteByprofileId(String profileId);
+	
+	/**
+	 * @param details
+	 */
+	BasicDetails store(BasicDetails details);
 	
 }

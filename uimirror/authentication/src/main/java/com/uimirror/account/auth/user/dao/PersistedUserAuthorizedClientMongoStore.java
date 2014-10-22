@@ -138,7 +138,7 @@ public class PersistedUserAuthorizedClientMongoStore extends AbstractMongoStore<
 	@Override
 	public int authorizeClient(UserAuthorizedClient userAuthorizedClient) {
 		Assert.notNull(userAuthorizedClient, "Client To Update can't be invalid");
-		return updateById(userAuthorizedClient.getProfileId(), prepareClientEachAddToSetMap(convertToListOfClient(userAuthorizedClient.getClients())));
+		return updateByIdInsertWhenNoMatchWithOutMulti(userAuthorizedClient.getProfileId(), prepareClientEachAddToSetMap(convertToListOfClient(userAuthorizedClient.getClients())));
 	}
 	
 	/**
@@ -164,10 +164,11 @@ public class PersistedUserAuthorizedClientMongoStore extends AbstractMongoStore<
 	 */
 	private Map<String, Object> prepareClientEachAddToSetMap(List<Map<String, Object>> clientDocs){
 		Map<String, Object> eachMap = new LinkedHashMap<String, Object>(3);
-		eachMap.put(BasicMongoOperators.EACH, clientDocs);
-		Map<String, Object> clientsMap = getClientsMap(eachMap);
+		//eachMap.put(BasicMongoOperators.EACH, clientDocs);
+		eachMap.put(UserAuthorizedClientDBFields.CLIENTS, clientDocs.get(0));
+		//Map<String, Object> clientsMap = getClientsMap(clientDocs);
 		Map<String, Object> addToSetMap = new LinkedHashMap<String, Object>(3);
-		addToSetMap.put(BasicMongoOperators.ADD_TO_SET, clientsMap);
+		addToSetMap.put(BasicMongoOperators.ADD_TO_SET, eachMap);
 		return addToSetMap;
 	}
 	
