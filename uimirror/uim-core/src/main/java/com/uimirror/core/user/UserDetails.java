@@ -10,31 +10,16 @@
  *******************************************************************************/
 package com.uimirror.core.user;
 
-import java.util.Map;
-
-import com.uimirror.core.bean.Gender;
-
 /**
- * @author Jay
+ * Interface to define user details methods.
+ * @author damart1
+ *
  */
-//TODO add java doc
 public interface UserDetails {
-
 	String getProfileId();
-	
-	String getFirstName();
-	
-	String getLastName();
-	
-	String getEmail();
-	
+
+	String getAddress();
+
 	String getDateOfBirth();
-	
-	Gender getGender();
-	
-	AccountStatus getAccountStatus();
-	
-	AccountState getAccountState();
-	
-	Map<String, Object> getDetails();
+
 }

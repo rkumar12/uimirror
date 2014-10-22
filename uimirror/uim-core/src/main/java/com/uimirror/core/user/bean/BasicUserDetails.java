@@ -10,161 +10,132 @@
  *******************************************************************************/
 package com.uimirror.core.user.bean;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.UUID;
 
-import com.uimirror.core.bean.Gender;
+import org.springframework.util.StringUtils;
+
 import com.uimirror.core.mongo.feature.BeanBasedDocument;
 import com.uimirror.core.service.BeanValidatorService;
-import com.uimirror.core.user.AccountState;
-import com.uimirror.core.user.AccountStatus;
+import com.uimirror.core.user.UserDBFields;
 import com.uimirror.core.user.UserDetails;
 
 /**
  * @author Jay
  */
-//TODO check Client.java and do the necessary changes
-//TODO implement the Store for this
-public class BasicUserDetails extends BeanBasedDocument<BasicUserDetails> implements UserDetails, BeanValidatorService{
+public class BasicUserDetails extends BeanBasedDocument<BasicUserDetails> implements UserDetails, BeanValidatorService {
 
 	private static final long serialVersionUID = -5282406171053226490L;
-	
-	private String profileId;
-	private String firstName;
-	private String lastName;
-	private String email;
-	private Gender gender;
+
+	private String address;
 	private String dateOfBirth;
-	private AccountStatus accountStatus;
-	private AccountState accountState;
-	private Map<String, Object> details;
 
-	public BasicUserDetails(String firstName, String lastName, String email, Gender gender, String dateOfBirth, AccountStatus accountStatus, AccountState accountState, Map<String, Object> details) {
-		super(UUID.randomUUID().toString());
-		this.profileId = getId();
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.email = email;
-		this.gender = gender;
+	// DOn't Use this until it has specific requirement
+	public BasicUserDetails() {
+		super();
+	}
+
+	public BasicUserDetails(Map<String, Object> map) {
+		super(map);
+	}
+
+	public BasicUserDetails(String id,String address,String dateOfBirth) {
+		super(id);
+		this.address = address;
 		this.dateOfBirth = dateOfBirth;
-		this.accountStatus = accountStatus;
-		this.accountState = accountState;
-		this.details = details;
 	}
+
 	
-	public BasicUserDetails(String firstName, String lastName, String email, Gender gender, String dateOfBirth, String accountStatus, String accountState, Map<String, Object> details) {
-		super(UUID.randomUUID().toString());
-		this.profileId = getId();
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.email = email;
-		this.gender = gender;
-		this.dateOfBirth = dateOfBirth;
-		this.accountStatus = AccountStatus.getEnum(accountStatus);
-		this.accountState = AccountState.getEnum(accountState);
-		this.details = details;
-	}
-
-	/* (non-Javadoc)
-	 * @see com.uimirror.core.user.UserDetails#getFirstName()
-	 */
-	@Override
-	public String getFirstName() {
-		
-		return firstName;
-	}
-
-	/* (non-Javadoc)
-	 * @see com.uimirror.core.user.UserDetails#getLastName()
-	 */
-	@Override
-	public String getLastName() {
-		return lastName;
-	}
-
-	/* (non-Javadoc)
-	 * @see com.uimirror.core.user.UserDetails#getEmail()
-	 */
-	@Override
-	public String getEmail() {
-		return email;
-	}
-
-	/* (non-Javadoc)
-	 * @see com.uimirror.core.user.UserDetails#getDateOfBirth()
-	 */
-	@Override
-	public String getDateOfBirth() {
-		return dateOfBirth;
-	}
-
-	/* (non-Javadoc)
-	 * @see com.uimirror.core.user.UserDetails#getGender()
-	 */
-	@Override
-	public Gender getGender() {
-		return gender;
-	}
-
-	/* (non-Javadoc)
-	 * @see com.uimirror.core.user.UserDetails#getAccountStatus()
-	 */
-	@Override
-	public AccountStatus getAccountStatus() {
-		return accountStatus;
-	}
-
-	/* (non-Javadoc)
-	 * @see com.uimirror.core.service.BeanValidatorService#isValid()
-	 */
-	@Override
-	public boolean isValid() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	/* (non-Javadoc)
-	 * @see com.uimirror.core.mongo.feature.MongoDocumentSerializer#initFromMap(java.util.Map)
-	 */
-	@Override
-	public BasicUserDetails initFromMap(Map<String, Object> src) {
-		// TODO Auto-generated method stub
-		//First check map is valid
-		//take reference from Client
-		return null;
-	}
-
-	/* (non-Javadoc)
-	 * @see com.uimirror.core.user.UserDetails#getAccountState()
-	 */
-	@Override
-	public AccountState getAccountState() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/* (non-Javadoc)
-	 * @see com.uimirror.core.user.UserDetails#getDetails()
-	 */
-	@Override
-	public Map<String, Object> getDetails() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
-	@Override
-	public Map<String, Object> toMap(){
-		//TODO make sure no null value going to DB
-		return null;
-	}
-
 	/* (non-Javadoc)
 	 * @see com.uimirror.core.user.UserDetails#getProfileId()
 	 */
 	@Override
 	public String getProfileId() {
-		// TODO Auto-generated method stub
-		return null;
+		return getId();
 	}
+	
+	@Override
+	public String getAddress() {
+		return address;
+	}
+
+	@Override
+	public String getDateOfBirth() {
+		return dateOfBirth;
+	}
+
+	@Override
+	public Map<String, Object> toMap() {
+		// First check if it represents a valid state then can be serialized
+		if (!isValid())
+			throw new IllegalStateException("Can't be serailized the state of the object");
+		return serailize();
+	}
+
+	/**
+	 * Serialize the current state that needs to be persisted to the system.
+	 * 
+	 * @return
+	 */
+	public Map<String, Object> serailize() {
+		Map<String, Object> state = new LinkedHashMap<String, Object>(16);
+		state.put(UserDBFields.ID, getId());
+		state.put(UserDBFields.DATE_OF_BIRTH, dateOfBirth);
+		state.put(UserDBFields.ADDRESS, address);
+		return state;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.uimirror.core.service.BeanValidatorService#isValid()
+	 */
+	@Override
+	public boolean isValid() {
+		boolean valid = Boolean.TRUE;
+		if (!StringUtils.hasText(getId()))
+			valid = Boolean.FALSE;
+		if (!StringUtils.hasText(getAddress()))
+			valid = Boolean.FALSE;
+		if (!StringUtils.hasText(getDateOfBirth()))
+			valid = Boolean.FALSE;
+
+		return valid;
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.uimirror.core.mongo.feature.MongoDocumentSerializer#initFromMap(java
+	 * .util.Map)
+	 */
+	@Override
+	public BasicUserDetails initFromMap(Map<String, Object> src) {
+		// Validate the source shouldn't be empty
+		validateSource(src);
+		// Initialize the state
+		return init(src);
+
+	}
+
+	/**
+	 * converts a map that comes from DB into BasicUserDetails object.
+	 * 
+	 * @param raw
+	 * @return {@link BasicUserDetails}
+	 */
+	private BasicUserDetails init(Map<String, Object> raw) {
+
+		String id = (String) raw.get(UserDBFields.ID);
+		String address = (String) raw.get(UserDBFields.ADDRESS);
+		String dateOfBirth = (String) raw.get(UserDBFields.DATE_OF_BIRTH);
+
+		return new BasicUserDetails(id,address,dateOfBirth);
+	}
+
+	
 
 }
