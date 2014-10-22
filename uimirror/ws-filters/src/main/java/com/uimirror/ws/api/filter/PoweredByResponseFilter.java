@@ -41,7 +41,6 @@ public class PoweredByResponseFilter implements ContainerResponseFilter{
 		//Append other details if present else don't
 		MediaType contentType = cResponse.getMediaType();
 		if (contentType != null){
-			System.out.println(contentType.getParameters());
 			cResponse.getHeaders().putSingle(CONTENT_TYPE, contentType.toString() + CHAR_SET);
 		}
 		LOG.info("[END]-Adding the response body details to send back to the caller");
