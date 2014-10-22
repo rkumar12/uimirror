@@ -21,10 +21,14 @@ import javax.ws.rs.core.FeatureContext;
 
 import org.glassfish.jersey.server.model.AnnotatedMethod;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 
 import com.uimirror.core.Priorities;
 import com.uimirror.core.Processor;
 import com.uimirror.core.auth.AccessToken;
+import com.uimirror.core.auth.AuthConstants;
+import com.uimirror.core.auth.SecurityConstants;
+import com.uimirror.core.auth.Token;
 import com.uimirror.core.rest.extra.UnAuthorizedException;
 import com.uimirror.ws.api.security.annotation.PreAuthorize;
 
@@ -64,6 +68,22 @@ public class PreAuthorizeDynamicFeature implements DynamicFeature{
         	AccessToken token = accessTokenProcessor.invoke(requestContext);
         	if(token == null)
         		throw new UnAuthorizedException();
+        	putBackNewToken(requestContext, token);
+        }
+        
+        /**
+         * Put Back The Authorization token into the header.
+         * @param requestContext
+         * @param accessToken
+         */
+        public void putBackNewToken(ContainerRequestContext requestContext, AccessToken accessToken){
+        	Token token = accessToken.getToken();
+        	String accessKey = SecurityConstants.BEARER+" "+token.getToken();
+        	String pharse = token.getParaphrase();
+        	requestContext.getHeaders().remove(AuthConstants.AUTHORIZATION_TOKEN);
+        	requestContext.getHeaders().add(AuthConstants.AUTHORIZATION_TOKEN, accessKey);
+        	if(StringUtils.hasText(pharse))
+        		requestContext.getHeaders().add(AuthConstants.TOKEN_ENCRYPTION_STARTEGY, pharse);
         }
     }
 

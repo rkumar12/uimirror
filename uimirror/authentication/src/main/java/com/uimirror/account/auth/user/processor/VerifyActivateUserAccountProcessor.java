@@ -91,7 +91,7 @@ public class VerifyActivateUserAccountProcessor implements Processor<VerifyForm,
 		// Invalidate the previous Token
 		backgroundProcessorFactory.getProcessor(InvalidateTokenProcessor.NAME).invoke(prevToken);
 		LOG.info("[END]- Verifying the Newly created user.");
-		return jsonResponseTransFormer.doTransForm(newAccessToken.toResponseMap());
+		return jsonResponseTransFormer.doTransForm(newAccessToken.eraseEsential().toResponseMap());
 	}
 
 	/**

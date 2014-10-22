@@ -39,6 +39,7 @@ import org.springframework.util.MultiValueMap;
 
 import com.uimirror.account.StartApp;
 import com.uimirror.account.client.form.RegisterConstants;
+import com.uimirror.core.auth.AuthConstants;
 
 /**
  * Integration test case for the {@link ClientAccountEndPoint}
@@ -61,8 +62,8 @@ public class ClientEndPointTest {
 			@Override
 			protected void prepareConnection(HttpURLConnection connection, String httpMethod) throws IOException {
 				super.prepareConnection(connection, httpMethod);
-				connection.setConnectTimeout(4000);
-				connection.setReadTimeout(4000);
+				//connection.setConnectTimeout(4000);
+				//connection.setReadTimeout(4000);
 				connection.setUseCaches(Boolean.TRUE);
 				connection.setRequestProperty("Accept-Encoding", "gzip,deflate");
 				//connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
@@ -70,7 +71,7 @@ public class ClientEndPointTest {
 		};
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-		headers.set("Authorization", "Bearer 1234");
+		headers.set("Authorization", "Bearer adf");
 		List<HttpMessageConverter<?> > messageConverters = new ArrayList< HttpMessageConverter<?> >(2);   
 		messageConverters.add( new StringHttpMessageConverter() );
 		messageConverters.add( new ByteArrayHttpMessageConverter() );
@@ -80,6 +81,7 @@ public class ClientEndPointTest {
 		rst.setMessageConverters(messageConverters);
 		HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(param, headers);
 		ResponseEntity<String> entity = rst.postForEntity("http://127.0.0.1:8080/uim/account/client/create", request, String.class);
+		System.out.println(entity.getHeaders().get(AuthConstants.AUTHORIZATION_TOKEN));
 		Assert.assertEquals(HttpStatus.OK, entity.getStatusCode());
 	}
 

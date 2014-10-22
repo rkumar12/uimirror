@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 
+import com.uimirror.ws.api.security.filter.AccessTokenResponseFilter;
 import com.uimirror.ws.api.security.filter.feature.PreAuthorizeDynamicFeature;
 
 public class JerssyApplicationInitializer extends ResourceConfig{
@@ -35,11 +36,12 @@ public class JerssyApplicationInitializer extends ResourceConfig{
 		// Register my custom provider - not needed if it's in my.package.
 //        register(AccessTokenExtractorFilter.class);
 //        register(AccessTokenValidationFilter.class);
-//        register(PoweredByResponseFilter.class);
+//        register(AccessTokenResponseFilter.class);
 //        register(RolesAllowedDynamicFeature.class);
 //        register(UserLicenseAllowedDynamicFeature.class);
 //        register(ClientLicenseAllowedDynamicFeature.class);
 		register(PreAuthorizeDynamicFeature.class);
+		register(AccessTokenResponseFilter.class);
         register(UriConnegFilter.class);
         property(ServerProperties.LANGUAGE_MAPPINGS, "english : en");
         property(ServerProperties.APPLICATION_NAME, appName);

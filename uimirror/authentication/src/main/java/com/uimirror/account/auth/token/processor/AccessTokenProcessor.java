@@ -71,6 +71,7 @@ public class AccessTokenProcessor implements Processor<ContainerRequestContext, 
 		//AccessToken authPrincipal = renewIfRequired((AccessToken)auth.getPrincipal());
 		LOG.debug("[END]- Authenticating the user and trying to to get the authentication details.");
 		AccessToken token = new DefaultAccessToken(new Token("123",null), "12", "123", 123, TokenType.ACCESS, Scope.READ);;
+		token = token.eraseEsential();
 		SecurityContext context = new DefaultSecurityContext(token);
 		param.setSecurityContext(context);
 		return token;
