@@ -20,6 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
@@ -118,16 +119,22 @@ public abstract class AbstractMongoStore<T extends BeanBasedDocument<T>> extends
 	public T store(T doc) throws DBException {
 		LOG.debug("[START]- Storing the object");
 		Assert.notNull(doc, "Object To store can't be empty");
+		//Serialize the states
 		Map<String, Object> document = doc.toMap();
 		if(CollectionUtils.isEmpty(document))
 			throw new IllegalArgumentException("Object To store can't be empty");
-		//If Sequence Name present then put the sequence name as well 
-		if(getSeqName() != null)
+		
+		//If ID null and Sequence Name present then put the sequence name as well 
+		if(!StringUtils.hasText(doc.getId()) && getSeqName() != null)
 			document.put(BasicDBFields.ID, getNextSequence());
+		
 		getCollection().save(convertToDBObject(document));
+		
 		LOG.debug("[END]- Storing the object");
+		LOG.debug("[START]- Create Index");
 		ensureIndex();
-		return t.initFromMap(document);
+		LOG.debug("[END]- Create Index");
+		return StringUtils.hasText(doc.getId()) ? doc : t.initFromMap(document);
 	}
 
 
