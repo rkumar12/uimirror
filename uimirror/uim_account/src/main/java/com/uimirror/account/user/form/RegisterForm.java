@@ -120,9 +120,17 @@ public final class RegisterForm extends ClientMetaForm implements BeanValidatorS
 		String errorMessage = null;
 		if(!StringUtils.hasText(getFirstName()) || !isAValidName(getFirstName()))
 			fields.add(RegisterConstants.FIRST_NAME);
-		if(!StringUtils.hasText(getLastName()) || !isAValidName(getFirstName()))
-			fields.add(RegisterConstants.LAST_NAME);
-		if(!StringUtils.hasText(getEmail()) || ! isAValidEmail(getEmail()))
+		
+		if(!StringUtils.hasText(getLastName())){
+			if(StringUtils.hasText(getFirstName())){
+				if(!isAValidName(getLastName())){
+					fields.add(RegisterConstants.LAST_NAME);
+				}
+			}
+			
+		}
+		
+		if(!StringUtils.hasText(getEmail()) || !isAValidEmail(getEmail()))
 			fields.add(RegisterConstants.EMAIl);
 		if(!StringUtils.hasText(getGender().toString()))
 			fields.add(RegisterConstants.GENDER);
