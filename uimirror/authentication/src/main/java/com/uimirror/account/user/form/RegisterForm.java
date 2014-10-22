@@ -16,16 +16,14 @@ import java.util.List;
 import java.util.Map;
 
 import javax.ws.rs.FormParam;
-import javax.ws.rs.QueryParam;
 
 import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.util.StringUtils;
 
+import com.uimirror.account.auth.client.form.ClientAPIForm;
 import com.uimirror.account.auth.user.Password;
 import com.uimirror.core.Constants;
-import com.uimirror.core.auth.AuthConstants;
 import com.uimirror.core.bean.Gender;
-import com.uimirror.core.form.ClientMetaForm;
 import com.uimirror.core.rest.extra.IllegalArgumentException;
 import com.uimirror.core.service.BeanValidatorService;
 import com.uimirror.core.util.DateTimeUtil;
@@ -41,12 +39,9 @@ import com.uimirror.core.util.StringRegexUtil;
  * 
  * @author Jay
  */
-public final class RegisterForm extends ClientMetaForm implements BeanValidatorService{
+public final class RegisterForm extends ClientAPIForm implements BeanValidatorService{
 
 	private static final long serialVersionUID = -1215523730014366150L;
-
-	@QueryParam(AuthConstants.CLIENT_ID)
-	private String clientId;
 	
 	@FormParam(RegisterConstants.FIRST_NAME)
 	private String firstName;
@@ -92,10 +87,6 @@ public final class RegisterForm extends ClientMetaForm implements BeanValidatorS
 
 	public String getDateOfBirth() {
 		return dateOfBirth;
-	}
-
-	public String getClientId() {
-		return clientId;
 	}
 
 	/* (non-Javadoc)
@@ -172,12 +163,10 @@ public final class RegisterForm extends ClientMetaForm implements BeanValidatorS
 
 	@Override
 	public String toString() {
-		return "RegisterForm [clientId=" + clientId + ", firstName="
+		return "RegisterForm [firstName="
 				+ firstName + ", lastName=" + lastName + ", email=" + email
 				+ ", password=[*******], gender=" + gender
 				+ ", dateOfBirth=" + dateOfBirth + "]";
 	}
-	
-	
 
 }

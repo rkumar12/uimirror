@@ -25,7 +25,7 @@ import org.apache.commons.validator.routines.DateValidator;
 public class DateTimeUtil {
 	
 
-	private static final String DATE_FORMAT= "dd-MM-yyyy";
+	private static final String DOB_FORMAT= "dd-MM-yyyy";
 	private static final int AGE_LIMIT = 18;
 
 	/**
@@ -74,7 +74,7 @@ public class DateTimeUtil {
 	 */
 	public static boolean isAValidDate(String date) {
 		DateValidator validator = DateValidator.getInstance();
-		return validator.isValid(date, DATE_FORMAT);
+		return validator.isValid(date, DOB_FORMAT);
     }
 	
 	/**
@@ -84,7 +84,7 @@ public class DateTimeUtil {
 	 */
 	public static boolean isAgeAboveEighteen(String dob) {
 		boolean result = Boolean.FALSE;
-		LocalDate birthDay=LocalDate.parse(dob, DateTimeFormatter.ofPattern(DATE_FORMAT));
+		LocalDate birthDay=LocalDate.parse(dob, DateTimeFormatter.ofPattern(DOB_FORMAT));
 		Period period = Period.between(birthDay, getCurrentSystemUTCDate());
 		
 		if(period.getYears() >= AGE_LIMIT){

@@ -10,25 +10,26 @@
  *******************************************************************************/
 package com.uimirror.account.user.dao;
 
-import com.uimirror.account.user.bean.DefaultUserAccountLogs;
+import com.uimirror.core.user.UserDetails;
 
 /**
- * Store the User account logs in the DB 
+ * Store the User account Basic details in the DB 
  * 
  * @author Jay
  */
-public interface UserAccountLogStore {
+public interface UserBasicDetailsStore {
 
 	/**
 	 * Retrieves the document based on the profile id
 	 * @param profileId
 	 * @return
 	 */
-	DefaultUserAccountLogs getLogsByProfileId(String profileId);
+	UserDetails getUserInfoByProfileId(String profileId);
 
 	/**
-	 * Delete all the logs present for the user in his log
+	 * Delete details by profile id
 	 * @param profileId
 	 */
 	void deleteByprofileId(String profileId);
+	
 }

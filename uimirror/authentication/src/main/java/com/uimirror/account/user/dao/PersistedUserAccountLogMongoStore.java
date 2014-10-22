@@ -17,7 +17,7 @@ import org.springframework.stereotype.Repository;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
-import com.uimirror.account.user.bean.UserAccountLogs;
+import com.uimirror.account.user.bean.DefaultUserAccountLogs;
 import com.uimirror.core.dao.AbstractMongoStore;
 import com.uimirror.core.user.UserDBFields;
 
@@ -26,7 +26,7 @@ import com.uimirror.core.user.UserDBFields;
  * @author Jay
  */
 @Repository
-public class PersistedUserAccountLogMongoStore extends AbstractMongoStore<UserAccountLogs> implements UserAccountLogStore {
+public class PersistedUserAccountLogMongoStore extends AbstractMongoStore<DefaultUserAccountLogs> implements UserAccountLogStore {
 	
 	/**
 	 * Assign/ Create collection from the given {@link DBCollection}
@@ -34,14 +34,14 @@ public class PersistedUserAccountLogMongoStore extends AbstractMongoStore<UserAc
 	 */
 	@Autowired
 	public PersistedUserAccountLogMongoStore(@Qualifier("userLogsCol") DBCollection collection){
-		super(collection, UserAccountLogs.class);
+		super(collection, DefaultUserAccountLogs.class);
 	}
 
 	/* (non-Javadoc)
 	 * @see com.uimirror.account.user.dao.UserAccountLogStore#getLogsByProfileId(java.lang.String)
 	 */
 	@Override
-	public UserAccountLogs getLogsByProfileId(String profileId) {
+	public DefaultUserAccountLogs getLogsByProfileId(String profileId) {
 		return getById(profileId);
 	}
 

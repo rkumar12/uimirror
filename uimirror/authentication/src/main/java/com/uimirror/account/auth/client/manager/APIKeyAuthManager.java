@@ -21,9 +21,8 @@ import org.springframework.util.Assert;
 import com.uimirror.account.auth.client.APIKeyAuthentication;
 import com.uimirror.account.auth.core.AuthenticationManager;
 import com.uimirror.account.auth.core.TokenGenerator;
-import com.uimirror.account.auth.exception.AuthExceptionMapper;
 import com.uimirror.account.client.bean.Client;
-import com.uimirror.account.client.dao.ClientStore;
+import com.uimirror.core.Processor;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.AuthConstants;
 import com.uimirror.core.auth.Authentication;
@@ -31,10 +30,7 @@ import com.uimirror.core.auth.Scope;
 import com.uimirror.core.auth.Token;
 import com.uimirror.core.auth.TokenType;
 import com.uimirror.core.auth.token.DefaultAccessToken;
-import com.uimirror.core.extra.MapException;
-import com.uimirror.core.user.AccountStatus;
 import com.uimirror.ws.api.security.exception.AuthenticationException;
-import com.uimirror.ws.api.security.exception.LockedException;
 
 /**
  * Implementation of {@link AuthenticationManager#authenticate(Authentication)}
@@ -57,20 +53,17 @@ public class APIKeyAuthManager implements AuthenticationManager{
 	
 	protected static final Logger LOG = LoggerFactory.getLogger(APIKeyAuthManager.class);
 	
-	private @Autowired ClientStore persistedClientStore;
+	private @Autowired Processor<Authentication, Client> apiKeyAuthenticateProcessor;
 
 	/* (non-Javadoc)
 	 * @see com.uimirror.core.auth.AuthenticationManager#authenticate(com.uimirror.core.auth.Authentication)
 	 */
 	@Override
-	@MapException(use=AuthExceptionMapper.NAME)
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 		LOG.info("[START]- Authenticating Client");
 		Assert.notNull(authentication, "Authention Request Object can't be empty");
 		//Step 1-Get the Client Details
-		Client client = getClientDetails(authentication);
-		//Step 2-Check the client for its account state and status
-		doCheck(client);
+		Client client = getAuthenticatedClientDetails(authentication);
 		//Step 3- Generate Token
 		AccessToken token = generateToken(authentication, client);
 		Authentication authenticated = getAuthenticatedDetails(authentication, token);
@@ -83,29 +76,11 @@ public class APIKeyAuthManager implements AuthenticationManager{
 	 * @param authentication
 	 * @return
 	 */
-	private Client getClientDetails(Authentication authentication){
-		LOG.debug("[START]- Reteriving acteive Client By api Key");
-		Client client = reteriveClient(authentication.getName());
-		LOG.debug("[END]- Reteriving acteive Client By api Key");
+	private Client getAuthenticatedClientDetails(Authentication authentication){
+		LOG.debug("[START]- Authenticate the provided details and reterive client.");
+		Client client = apiKeyAuthenticateProcessor.invoke(authentication);
+		LOG.debug("[END]- Authenticate the provided details and reterive client.");
 		return client;
-	}
-	
-	/**
-	 * Retrieves the client based on the client apiKey
-	 * @param apiKey
-	 * @return
-	 */
-	private Client reteriveClient(String apiKey){
-		return persistedClientStore.findClientByApiKey(apiKey);
-	}
-	
-	/**
-	 * Check the current client status
-	 * @param client
-	 */
-	private void doCheck(Client client) {
-		if(AccountStatus.BLOCKED.equals(client.getStatus()))
-			throw new LockedException();
 	}
 	
 	/**

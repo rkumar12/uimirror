@@ -13,9 +13,6 @@ package com.uimirror.core.user;
 import java.util.List;
 import java.util.Map;
 
-import com.uimirror.core.user.AccountState;
-import com.uimirror.core.user.AccountStatus;
-
 
 /**
  * A Basic Credentials object which needs to be implemented by various authentications 
@@ -68,5 +65,16 @@ public interface UserCredentials {
 	 * @return
 	 */
 	Map<String, Object> getInstructions();
+	
+	/**
+	 * @param raw
+	 * @return
+	 */
+	UserCredentials initFromMap(Map<String, Object> raw);
+	
+	/**
+	 * @return
+	 */
+	Map<String, Object> toMap();
 
 }

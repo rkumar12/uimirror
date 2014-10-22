@@ -8,27 +8,44 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.account.user.dao;
+package com.uimirror.core.user;
 
-import com.uimirror.account.user.bean.DefaultUserAccountLogs;
+import java.util.Map;
 
 /**
- * Store the User account logs in the DB 
- * 
  * @author Jay
  */
-public interface UserAccountLogStore {
+public interface UserAccountLogs {
 
 	/**
-	 * Retrieves the document based on the profile id
-	 * @param profileId
+	 * @param raw
 	 * @return
 	 */
-	DefaultUserAccountLogs getLogsByProfileId(String profileId);
-
+	UserAccountLogs initFromMap(Map<String, Object> raw);
+	
 	/**
-	 * Delete all the logs present for the user in his log
-	 * @param profileId
+	 * @return
 	 */
-	void deleteByprofileId(String profileId);
+	Map<String, Object> toMap();
+	
+	/**
+	 * @return
+	 */
+	long getCreatedOn();
+	
+	/**
+	 * @return
+	 */
+	long getModifiedOn();
+	
+	/**
+	 * @return
+	 */
+	Map<String, Object> getDetails();
+	
+	/**
+	 * @return
+	 */
+	String getProfileId();
+	
 }

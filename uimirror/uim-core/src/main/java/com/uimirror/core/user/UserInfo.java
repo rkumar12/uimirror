@@ -10,6 +10,8 @@
  *******************************************************************************/
 package com.uimirror.core.user;
 
+import java.util.Map;
+
 import com.uimirror.core.bean.Gender;
 
 /**
@@ -67,5 +69,16 @@ public interface UserInfo {
 	 * @return
 	 */
 	AccountState getAccountState();
+	
+	/**
+	 * @param raw
+	 * @return
+	 */
+	UserInfo initFromMap(Map<String, Object> raw);
+	
+	/**
+	 * @return
+	 */
+	Map<String, Object> toMap();
 	
 }

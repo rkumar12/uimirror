@@ -15,18 +15,23 @@ import java.util.Map;
 
 import org.springframework.util.StringUtils;
 
+import com.uimirror.core.DOB;
+import com.uimirror.core.Location;
 import com.uimirror.core.mongo.feature.BeanBasedDocument;
 import com.uimirror.core.service.BeanValidatorService;
 
 /**
+ * Contains the User details of the user
  * @author Jay
  */
 public class BasicUserDetails extends BeanBasedDocument<BasicUserDetails> implements UserDetails, BeanValidatorService {
 
 	private static final long serialVersionUID = -5282406171053226490L;
 
-	private String address;
-	private String dateOfBirth;
+	private Location presentAddress;
+	private Location permanetAddress;
+	private DOB dateOfBirth;
+	private Map<String, Object> details;
 
 	// DOn't Use this until it has specific requirement
 	public BasicUserDetails() {
@@ -36,32 +41,15 @@ public class BasicUserDetails extends BeanBasedDocument<BasicUserDetails> implem
 	public BasicUserDetails(Map<String, Object> map) {
 		super(map);
 	}
-
-	public BasicUserDetails(String id,String address,String dateOfBirth) {
-		super(id);
-		this.address = address;
+	
+	public BasicUserDetails(String profileId, Location presentAddress, Location permanetAddress, DOB dateOfBirth, Map<String, Object> details) {
+		super(profileId);
+		this.presentAddress = presentAddress;
+		this.permanetAddress = permanetAddress;
 		this.dateOfBirth = dateOfBirth;
+		this.details = details;
 	}
 
-	
-	
-	/* (non-Javadoc)
-	 * @see com.uimirror.core.user.UserDetails#getProfileId()
-	 */
-	@Override
-	public String getProfileId() {
-		return getId();
-	}
-	
-	@Override
-	public String getAddress() {
-		return address;
-	}
-
-	@Override
-	public String getDateOfBirth() {
-		return dateOfBirth;
-	}
 
 	@Override
 	public Map<String, Object> toMap() {
@@ -80,7 +68,7 @@ public class BasicUserDetails extends BeanBasedDocument<BasicUserDetails> implem
 		Map<String, Object> state = new LinkedHashMap<String, Object>(16);
 		state.put(UserDBFields.ID, getId());
 		state.put(UserDBFields.DATE_OF_BIRTH, dateOfBirth);
-		state.put(UserDBFields.ADDRESS, address);
+		//state.put(UserDBFields.ADDRESS, address);
 		return state;
 	}
 
@@ -94,15 +82,10 @@ public class BasicUserDetails extends BeanBasedDocument<BasicUserDetails> implem
 		boolean valid = Boolean.TRUE;
 		if (!StringUtils.hasText(getId()))
 			valid = Boolean.FALSE;
-		if (!StringUtils.hasText(getAddress()))
+		if(getDateOfBirth() == null)
 			valid = Boolean.FALSE;
-		if (!StringUtils.hasText(getDateOfBirth()))
-			valid = Boolean.FALSE;
-
 		return valid;
-
 	}
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -116,7 +99,6 @@ public class BasicUserDetails extends BeanBasedDocument<BasicUserDetails> implem
 		validateSource(src);
 		// Initialize the state
 		return init(src);
-
 	}
 
 	/**
@@ -125,15 +107,48 @@ public class BasicUserDetails extends BeanBasedDocument<BasicUserDetails> implem
 	 * @param raw
 	 * @return {@link BasicUserDetails}
 	 */
+	@SuppressWarnings("unchecked")
 	private BasicUserDetails init(Map<String, Object> raw) {
-
 		String id = (String) raw.get(UserDBFields.ID);
-		String address = (String) raw.get(UserDBFields.ADDRESS);
-		String dateOfBirth = (String) raw.get(UserDBFields.DATE_OF_BIRTH);
-
-		return new BasicUserDetails(id,address,dateOfBirth);
+		Map<String, Object> dateOfBirth = (Map<String, Object>) raw.get(UserDBFields.DATE_OF_BIRTH);
+		DOB dob = DOB.initFromMap(dateOfBirth);
+		Map<String, Object> presentAddress = (Map<String, Object>) raw.get(UserDBFields.PRESENT_ADDRESS);
+		Map<String, Object> permanetAddress = (Map<String, Object>) raw.get(UserDBFields.PRESENT_ADDRESS);
+		Map<String, Object> details = (Map<String, Object>) raw.get(UserDBFields.DETAILS);
+		//return new BasicUserDetails(id,address,dateOfBirth);
+		return null;
 	}
 
-	
+	@Override
+	public String getProfileId() {
+		return getId();
+	}
+
+	@Override
+	public DOB getDateOfBirth() {
+		return this.dateOfBirth;
+	}
+
+	@Override
+	public Object getDetails() {
+		return this.details;
+	}
+
+	@Override
+	public Location getPresentAddress() {
+		return this.presentAddress;
+	}
+
+	@Override
+	public Location getPermanetAddress() {
+		return this.permanetAddress;
+	}
+
+	@Override
+	public String toString() {
+		return "BasicUserDetails [presentAddress=" + presentAddress
+				+ ", permanetAddress=" + permanetAddress + ", dateOfBirth="
+				+ dateOfBirth + ", details=" + details + "]";
+	}
 
 }

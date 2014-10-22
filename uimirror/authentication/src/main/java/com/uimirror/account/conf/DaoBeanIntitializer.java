@@ -38,6 +38,12 @@ public class DaoBeanIntitializer {
 	protected @Value("${user.db.name:uim_usr}") String userDb;
 	//Stores the User Logs only
 	protected @Value("${user.logs.col.name:logs}") String userLogsCollection;
+	//Stores the User Basic Info only
+	protected @Value("${user.basic.col.name:basicinfo}") String userBasicInfoCollection;
+	//Stores the User Basic Sequence for the profile id
+	protected @Value("${user.seq.col.name:basic_info_seq}") String userBasicInfoSeqCollection;
+	//Stores the User Basic details
+	protected @Value("${user.basic.details.col.name:details}") String userDetailsCollection;
 	protected @Value("${auth.usr.client.col.name:usr_auth_client}") String userAuthorizedClientCollection;
 	protected @Value("${client.db.name:uim_client}") String clientDb;
 	protected @Value("${client.col.name:basic_info}") String clientBasicInfoCollection;
@@ -96,6 +102,23 @@ public class DaoBeanIntitializer {
 	@Autowired
 	public DBCollection userLogsCol(DB userDB) throws UnknownHostException{
 		return DBCollectionUtil.getCollection(userDB, this.userLogsCollection);
+	}
+
+	@Bean
+	@Autowired
+	public DBCollection userBasicInfoCol(DB userDB) throws UnknownHostException{
+		return DBCollectionUtil.getCollection(userDB, this.userBasicInfoCollection);
+	}
+	@Bean
+	@Autowired
+	public DBCollection userDetailsCol(DB userDB) throws UnknownHostException{
+		return DBCollectionUtil.getCollection(userDB, this.userDetailsCollection);
+	}
+
+	@Bean
+	@Autowired
+	public DBCollection userBasicInfoSeqCol(DB userDB) throws UnknownHostException{
+		return DBCollectionUtil.getCollection(userDB, this.userBasicInfoSeqCollection);
 	}
 
 }

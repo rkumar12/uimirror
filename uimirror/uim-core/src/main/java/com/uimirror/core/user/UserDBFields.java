@@ -1,7 +1,7 @@
 package com.uimirror.core.user;
 
 
-public interface UserDBFields extends UserAuthDBFields, UserAccountLogDBFields{
+public interface UserDBFields extends UserAuthDBFields, UserAccountLogDBFields, DOBDBFields, AddressDBFields{
 	 
 	 String FIRST_NAME="first_name";
 	 String LAST_NAME="last_name";
@@ -10,6 +10,5 @@ public interface UserDBFields extends UserAuthDBFields, UserAccountLogDBFields{
 	 String DATE_OF_BIRTH="dob";
 	 String ACCOUNT_STATUS="account_status";
 	 String ACCOUNT_STATE="account_state";
-	 String ADDRESS = "address";
 
 }

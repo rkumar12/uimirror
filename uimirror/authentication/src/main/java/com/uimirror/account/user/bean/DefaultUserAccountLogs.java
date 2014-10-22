@@ -18,6 +18,7 @@ import org.springframework.util.StringUtils;
 
 import com.uimirror.core.mongo.feature.BeanBasedDocument;
 import com.uimirror.core.service.BeanValidatorService;
+import com.uimirror.core.user.UserAccountLogs;
 import com.uimirror.core.user.UserDBFields;
 
 /**
@@ -25,7 +26,7 @@ import com.uimirror.core.user.UserDBFields;
  * when modified, if any history needs to maintain then can be done here
  * @author Jay
  */
-public class UserAccountLogs extends BeanBasedDocument<UserAccountLogs> implements BeanValidatorService {
+public class DefaultUserAccountLogs extends BeanBasedDocument<DefaultUserAccountLogs> implements BeanValidatorService, UserAccountLogs {
 	
 	private static final long serialVersionUID = -6504474875834652281L;
 	private long createdOn;
@@ -33,15 +34,15 @@ public class UserAccountLogs extends BeanBasedDocument<UserAccountLogs> implemen
 	private Map<String,Object> details;
 	
 	//Don't Use this until it has specific requirement
-	public UserAccountLogs() {
+	public DefaultUserAccountLogs() {
 		super();
 	}
 	
-	public UserAccountLogs(Map<String, Object> details) {
+	public DefaultUserAccountLogs(Map<String, Object> details) {
 		super(details);
 	}
 
-	public UserAccountLogs(String id,long createdOn, long modifiedOn, Map<String, Object> details) {
+	public DefaultUserAccountLogs(String id,long createdOn, long modifiedOn, Map<String, Object> details) {
 		super(id);
 		this.createdOn = createdOn;
 		this.modifiedOn = modifiedOn;
@@ -64,8 +65,8 @@ public class UserAccountLogs extends BeanBasedDocument<UserAccountLogs> implemen
 		return details;
 	}
 	
-	public UserAccountLogs updateProfileId(String profileId){
-		return new UserAccountLogs(profileId, this.createdOn, this.modifiedOn, this.details);
+	public DefaultUserAccountLogs updateProfileId(String profileId){
+		return new DefaultUserAccountLogs(profileId, this.createdOn, this.modifiedOn, this.details);
 	}
 	
 	@Override
@@ -93,7 +94,7 @@ public class UserAccountLogs extends BeanBasedDocument<UserAccountLogs> implemen
 	}
 
 	@Override
-	public UserAccountLogs initFromMap(Map<String, Object> src) {
+	public DefaultUserAccountLogs initFromMap(Map<String, Object> src) {
 		// Validate the source shouldn't be empty
 		validateSource(src);
 		// Initialize the state
@@ -101,13 +102,13 @@ public class UserAccountLogs extends BeanBasedDocument<UserAccountLogs> implemen
 	}
 	
 	/**
-	 * converts a map that comes from DB into UserAccountLogs object.
+	 * converts a map that comes from DB into DefaultUserAccountLogs object.
 	 * 
 	 * @param raw
-	 * @return {@link UserAccountLogs}
+	 * @return {@link DefaultUserAccountLogs}
 	 */
 	@SuppressWarnings("unchecked")
-	private UserAccountLogs init(Map<String, Object> raw) {
+	private DefaultUserAccountLogs init(Map<String, Object> raw) {
 		String id = (String) raw.get(UserDBFields.ID);
 		long creatOn = 0l;
 		long modifiedOn = 0l;
@@ -118,7 +119,7 @@ public class UserAccountLogs extends BeanBasedDocument<UserAccountLogs> implemen
 			modifiedOn = (long) raw.get(UserDBFields.MODIFIED_ON);
 		}
 		Map<String,Object> details =  (Map<String, Object>) raw.get(UserDBFields.DETAILS);
-		return new UserAccountLogs(id,creatOn,modifiedOn,details);
+		return new DefaultUserAccountLogs(id,creatOn,modifiedOn,details);
 	}
 	
 	/**
