@@ -15,12 +15,12 @@ import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.mongodb.DBCollection;
 import com.uimirror.core.dao.AbstractMongoStore;
-import com.uimirror.core.user.bean.BasicUserDetails;
+import com.uimirror.core.user.bean.BasicUserInfo;
 
 /**
  * @author Jay
  */
-public class PersistedUserBasicMongoStore extends AbstractMongoStore<BasicUserDetails> implements BasicUserStore{
+public class PersistedUserBasicMongoStore extends AbstractMongoStore<BasicUserInfo> implements BasicUserStore{
 
 
 	/**
@@ -29,14 +29,14 @@ public class PersistedUserBasicMongoStore extends AbstractMongoStore<BasicUserDe
 	 */
 	@Autowired
 	public PersistedUserBasicMongoStore(@Qualifier("userBasicInfoCol") DBCollection collection){
-		super(collection, BasicUserDetails.class);
+		super(collection, BasicUserInfo.class);
 	}
 
 	/* (non-Javadoc)
 	 * @see com.uimirror.account.create.dao.BasicUserStore#findByEmail(java.lang.String)
 	 */
 	@Override
-	public BasicUserDetails findByEmail(String email) {
+	public BasicUserInfo findByEmail(String email) {
 		// TODO Auto-generated method stub
 		return null;
 	}

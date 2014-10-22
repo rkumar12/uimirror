@@ -16,13 +16,13 @@ import com.uimirror.account.user.form.RegisterForm;
 import com.uimirror.core.service.TransformerService;
 import com.uimirror.core.user.AccountState;
 import com.uimirror.core.user.AccountStatus;
-import com.uimirror.core.user.bean.BasicUserDetails;
+import com.uimirror.core.user.bean.BasicUserInfo;
 
 /**
  * @author Jay
  */
 //TODO update java doc
-public class RegisterFormToRegisterTransformer implements TransformerService<RegisterForm, BasicUserDetails>{
+public class RegisterFormToRegisterTransformer implements TransformerService<RegisterForm, Object>{
 
 
 	
@@ -31,13 +31,15 @@ public class RegisterFormToRegisterTransformer implements TransformerService<Reg
 	 * Transforms the RegisterForm object to BasicUserDetails
 	 */
 	@Override
-	public BasicUserDetails transform(RegisterForm src) {
+	public Object transform(RegisterForm src) {
 		Assert.notNull(src, "Source Can't be empty");
 		/*Validate the form fields*/
 		src.isValid();
-		//Update proper object of BasicUserDetails
 		//TODO: check the accountstatus ,accountstate fields and details
-		return new BasicUserDetails(src.getFirstName(), src.getLastName(), src.getEmail(), src.getGender(), src.getDateOfBirth(), AccountStatus.ACTIVE, AccountState.NEW, null);
+		//
+		
+		
+		return null;
 	}
 
 }

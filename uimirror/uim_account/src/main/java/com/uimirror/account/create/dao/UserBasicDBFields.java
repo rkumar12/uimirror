@@ -16,5 +16,6 @@ import com.uimirror.core.BasicDBFields;
  * @author Jay
  */
 public interface UserBasicDBFields extends BasicDBFields{
+	
 
 }

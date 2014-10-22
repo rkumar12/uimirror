@@ -8,17 +8,32 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.account.create.dao;
+package com.uimirror.core.user;
 
-import com.uimirror.core.user.bean.BasicUserInfo;
+import com.uimirror.core.bean.Gender;
+
+
 
 /**
- * @author Jay
+ * Interface to define user information methods.
+ * 
+ * @author damart1
+ *
  */
-//TODO update java doc
-public interface BasicUserStore {
+public interface UserInfo {
 
-	BasicUserInfo findByEmail(String email);
+	String getProfileId();
 	
-	BasicUserInfo store(BasicUserInfo details);
+	String getFirstName();
+	
+	String getLastName();
+	
+	String getEmail();
+	
+	Gender getGender();
+	
+	AccountStatus getAccountStatus();
+	
+	AccountState getAccountState();
+	
 }
