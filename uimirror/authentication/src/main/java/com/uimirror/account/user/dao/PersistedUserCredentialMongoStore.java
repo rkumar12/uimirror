@@ -21,7 +21,6 @@ import org.springframework.util.Assert;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
-import com.uimirror.account.user.bean.DefaultUserCredentials;
 import com.uimirror.core.dao.AbstractMongoStore;
 import com.uimirror.core.dao.DBException;
 import com.uimirror.core.mongo.BasicMongoOperators;
@@ -35,7 +34,7 @@ import com.uimirror.core.user.UserDBFields;
  * @author Jay
  */
 @Repository
-public class PersistedUserCredentialMongoStore extends AbstractMongoStore<DefaultUserCredentials> implements UserCredentialsStore {
+public class PersistedUserCredentialMongoStore extends AbstractMongoStore<UserCredentials> implements UserCredentialsStore {
 	
 	/**
 	 * Assign/ Create collection from the given {@link DBCollection}
@@ -43,7 +42,7 @@ public class PersistedUserCredentialMongoStore extends AbstractMongoStore<Defaul
 	 */
 	@Autowired
 	public PersistedUserCredentialMongoStore(@Qualifier("usrAuthCol") DBCollection collection){
-		super(collection, DefaultUserCredentials.class);
+		super(collection, UserCredentials.class);
 	}
 
 	/* (non-Javadoc)

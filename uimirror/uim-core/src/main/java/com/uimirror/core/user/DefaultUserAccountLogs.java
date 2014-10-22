@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.account.user.bean;
+package com.uimirror.core.user;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -18,15 +18,13 @@ import org.springframework.util.StringUtils;
 
 import com.uimirror.core.mongo.feature.BeanBasedDocument;
 import com.uimirror.core.service.BeanValidatorService;
-import com.uimirror.core.user.UserAccountLogs;
-import com.uimirror.core.user.UserDBFields;
 
 /**
  * User's account logs statement such as when account created,
  * when modified, if any history needs to maintain then can be done here
  * @author Jay
  */
-public class DefaultUserAccountLogs extends BeanBasedDocument<DefaultUserAccountLogs> implements BeanValidatorService, UserAccountLogs {
+public class DefaultUserAccountLogs extends BeanBasedDocument<DefaultUserAccountLogs> implements BeanValidatorService {
 	
 	private static final long serialVersionUID = -6504474875834652281L;
 	private long createdOn;

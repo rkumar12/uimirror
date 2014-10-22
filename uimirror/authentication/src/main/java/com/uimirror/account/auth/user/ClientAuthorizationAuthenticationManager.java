@@ -31,7 +31,6 @@ import com.uimirror.core.auth.Token;
 import com.uimirror.core.auth.TokenType;
 import com.uimirror.core.auth.token.DefaultAccessToken;
 import com.uimirror.core.extra.MapException;
-import com.uimirror.core.user.UserCredentials;
 import com.uimirror.core.util.DateTimeUtil;
 import com.uimirror.ws.api.security.exception.AuthenticationException;
 import com.uimirror.ws.api.security.exception.InvalidTokenException;

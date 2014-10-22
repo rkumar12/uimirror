@@ -15,7 +15,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.mongodb.DBCollection;
 import com.uimirror.core.dao.AbstractMongoStore;
-import com.uimirror.core.user.bean.BasicUserInfo;
+import com.uimirror.core.user.BasicUserInfo;
 
 /**
  * @author Jay

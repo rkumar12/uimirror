@@ -8,26 +8,21 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.account.user.bean;
+package com.uimirror.core.user;
 
-import com.uimirror.core.user.User;
-import com.uimirror.core.user.UserAccountLogs;
-import com.uimirror.core.user.UserCredentials;
-import com.uimirror.core.user.UserDetails;
-import com.uimirror.core.user.UserInfo;
 
 /**
  * A Default User representing the UIM System 
  * @author Jay
  */
-public class DefaultUser implements User{
+public class DefaultUser{
 
-	private UserInfo userInfo;
+	private BasicUserInfo userInfo;
 	private UserCredentials userCredentials;
-	private UserDetails userDetails;
-	private UserAccountLogs userAccountLogs;
+	private BasicUserDetails userDetails;
+	private DefaultUserAccountLogs userAccountLogs;
 
-	public DefaultUser(UserInfo userInfo, UserCredentials userCredentials, UserDetails userDetails, UserAccountLogs userAccountLogs) {
+	public DefaultUser(BasicUserInfo userInfo, UserCredentials userCredentials, BasicUserDetails userDetails, DefaultUserAccountLogs userAccountLogs) {
 		super();
 		this.userInfo = userInfo;
 		this.userCredentials = userCredentials;
@@ -40,7 +35,7 @@ public class DefaultUser implements User{
 	 * @param userInfo
 	 * @return
 	 */
-	public User updateInfo(UserInfo userInfo){
+	public DefaultUser updateInfo(BasicUserInfo userInfo){
 		return new DefaultUser(userInfo, this.userCredentials, this.userDetails, this.userAccountLogs);
 	}
 	
@@ -49,7 +44,7 @@ public class DefaultUser implements User{
 	 * @param userInfo
 	 * @return
 	 */
-	public User updateCredentials(UserCredentials userCredentials){
+	public DefaultUser updateCredentials(UserCredentials userCredentials){
 		return new DefaultUser(this.userInfo, userCredentials, this.userDetails, this.userAccountLogs);
 	}
 	
@@ -58,7 +53,7 @@ public class DefaultUser implements User{
 	 * @param userInfo
 	 * @return
 	 */
-	public User updateDetails(UserDetails userDetails){
+	public DefaultUser updateDetails(BasicUserDetails userDetails){
 		return new DefaultUser(this.userInfo, this.userCredentials, userDetails, this.userAccountLogs);
 	}
 	
@@ -67,39 +62,23 @@ public class DefaultUser implements User{
 	 * @param userInfo
 	 * @return
 	 */
-	public User updateLogs(UserAccountLogs userAccountLogs){
+	public DefaultUser updateLogs(DefaultUserAccountLogs userAccountLogs){
 		return new DefaultUser(this.userInfo, this.userCredentials, this.userDetails, userAccountLogs);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.uimirror.core.user.User#getUserInfo()
-	 */
-	@Override
-	public UserInfo getUserInfo() {
+	public BasicUserInfo getUserInfo() {
 		return this.userInfo;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.uimirror.core.user.User#getCredentials()
-	 */
-	@Override
 	public UserCredentials getCredentials() {
 		return this.userCredentials;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.uimirror.core.user.User#getBasicDetails()
-	 */
-	@Override
-	public UserDetails getBasicDetails() {
+	public BasicUserDetails getBasicDetails() {
 		return this.userDetails;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.uimirror.core.user.User#getLogs()
-	 */
-	@Override
-	public UserAccountLogs getLogs() {
+	public DefaultUserAccountLogs getLogs() {
 		return this.userAccountLogs;
 	}
 

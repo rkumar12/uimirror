@@ -30,7 +30,7 @@ import com.uimirror.account.auth.user.form.ScreenLockAuthenticationForm;
 import com.uimirror.account.auth.user.processor.AllowClientProcessor;
 import com.uimirror.account.auth.user.processor.AuthorizationClientProcessor;
 import com.uimirror.account.auth.user.processor.LoginFormAuthProcessor;
-import com.uimirror.account.user.bean.UserAuthorizedClient;
+import com.uimirror.account.user.UserAuthorizedClient;
 import com.uimirror.core.Processor;
 import com.uimirror.core.auth.Authentication;
 import com.uimirror.core.form.AuthenticatedHeaderForm;

@@ -16,7 +16,7 @@ import com.uimirror.account.user.form.RegisterForm;
 import com.uimirror.core.service.TransformerService;
 import com.uimirror.core.user.AccountState;
 import com.uimirror.core.user.AccountStatus;
-import com.uimirror.core.user.bean.BasicUserInfo;
+import com.uimirror.core.user.BasicUserInfo;
 
 /**
  * @author Jay

@@ -34,7 +34,7 @@ import com.uimirror.account.auth.user.transformer.LoginFormToAuthTransformer;
 import com.uimirror.account.auth.user.transformer.OTPFormToAuthTransformer;
 import com.uimirror.account.auth.user.transformer.ScreenLockFormToAuthTransformer;
 import com.uimirror.account.auth.user.transformer.TokenToAuthorizedClientTransformer;
-import com.uimirror.account.user.bean.UserAuthorizedClient;
+import com.uimirror.account.user.UserAuthorizedClient;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.form.AuthenticatedHeaderForm;
 import com.uimirror.core.service.TransformerService;

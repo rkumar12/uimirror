@@ -10,7 +10,7 @@
  *******************************************************************************/
 package com.uimirror.account.user.dao;
 
-import com.uimirror.account.user.bean.DefaultUserAccountLogs;
+import com.uimirror.core.user.DefaultUserAccountLogs;
 
 /**
  * Store the User account logs in the DB 

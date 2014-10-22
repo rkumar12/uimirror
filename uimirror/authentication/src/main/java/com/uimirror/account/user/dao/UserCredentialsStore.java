@@ -43,4 +43,10 @@ public interface UserCredentialsStore {
 	 * @throws DBException
 	 */
 	int enableAccount(String profileId) throws DBException;
+	
+	/**
+	 * @param credentials
+	 * @return
+	 */
+	UserCredentials store(UserCredentials credentials);
 }

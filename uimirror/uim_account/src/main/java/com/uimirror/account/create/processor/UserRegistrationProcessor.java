@@ -19,7 +19,7 @@ import com.uimirror.core.Processor;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.rest.extra.ResponseTransFormer;
 import com.uimirror.core.service.TransformerService;
-import com.uimirror.core.user.bean.BasicUserInfo;
+import com.uimirror.core.user.BasicUserInfo;
 
 /**
  * @author Jay

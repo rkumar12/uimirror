@@ -14,17 +14,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.uimirror.account.auth.client.APIKeyAuthentication;
-import com.uimirror.account.auth.client.form.ClientAPIForm;
 import com.uimirror.account.client.bean.Client;
+import com.uimirror.account.user.dao.UserBasicInfoStore;
 import com.uimirror.account.user.form.RegisterForm;
 import com.uimirror.core.Processor;
 import com.uimirror.core.auth.Authentication;
-import com.uimirror.core.exceptions.ApplicationExceptionMapper;
-import com.uimirror.core.extra.MapException;
 import com.uimirror.core.rest.extra.ApplicationException;
 import com.uimirror.core.service.TransformerService;
+import com.uimirror.core.user.BasicUserInfo;
 import com.uimirror.core.user.DefaultUser;
+import com.uimirror.core.user.UserCredentials;
 
 /**
  * Processor for the user account creation, it will first check for the user existence
@@ -39,13 +38,15 @@ import com.uimirror.core.user.DefaultUser;
  * 
  * @author Jay
  */
-public class UserRegistrationProcessor implements Processor<RegisterForm, String>{
+public class CreateUserProcessor implements Processor<RegisterForm, DefaultUser>{
 
-	protected static final Logger LOG = LoggerFactory.getLogger(UserRegistrationProcessor.class);
+	protected static final Logger LOG = LoggerFactory.getLogger(CreateUserProcessor.class);
 	private @Autowired Processor<Authentication, Client> apiKeyAuthenticateProcessor;
-	private @Autowired TransformerService<ClientAPIForm, APIKeyAuthentication> apiKeyToAuthTransformer;
+	private @Autowired TransformerService<RegisterForm, DefaultUser> registerFormToUser;
+	private @Autowired UserBasicInfoStore persistedUserBasicInfoMongoStore;
+	
 
-	public UserRegistrationProcessor() {
+	public CreateUserProcessor() {
 		// NOP
 	}
 
@@ -53,18 +54,35 @@ public class UserRegistrationProcessor implements Processor<RegisterForm, String
 	 * @see com.uimirror.core.Processor#invoke(java.lang.Object)
 	 */
 	@Override
-	@MapException(use=ApplicationExceptionMapper.NAME)
-	public String invoke(RegisterForm param) throws ApplicationException {
+	public DefaultUser invoke(RegisterForm param) throws ApplicationException {
 		LOG.info("[START]- Registering a new User.");
-		Client client = authenticateAndGetClient(param);
+		DefaultUser user = registerFormToUser.transform(param);
+		BasicUserInfo userInfo = createUerBasic(user.getUserInfo());
+		String profileId = userInfo.getProfileId();
+		UserCredentials credentials = storeCredentials(user.getCredentials(), profileId);
 		LOG.info("[END]- Registering a new User.");
 		return null;
 	}
-	
-	private Client authenticateAndGetClient(RegisterForm param){
-		Authentication auth = apiKeyToAuthTransformer.transform(param);
-		Client client = apiKeyAuthenticateProcessor.invoke(auth);
-		return client;
+
+
+	/**
+	 * Create Basic Profile and get the updated user
+	 * @param userInfo
+	 * @return
+	 */
+	private BasicUserInfo createUerBasic(BasicUserInfo userInfo) {
+		BasicUserInfo basicUser =  persistedUserBasicInfoMongoStore.store(userInfo);
+		return basicUser;
 	}
 
+	/**
+	 * update the profile id and store the details
+	 * @param credentials
+	 * @return
+	 */
+	private UserCredentials storeCredentials(UserCredentials credentials, String profileId) {
+		credentials = credentials.updateProfileId(profileId);
+		
+		return credentials;
+	}
 }

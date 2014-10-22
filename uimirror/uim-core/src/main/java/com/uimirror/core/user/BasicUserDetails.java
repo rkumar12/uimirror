@@ -24,7 +24,7 @@ import com.uimirror.core.service.BeanValidatorService;
  * Contains the User details of the user
  * @author Jay
  */
-public class BasicUserDetails extends BeanBasedDocument<BasicUserDetails> implements UserDetails, BeanValidatorService {
+public class BasicUserDetails extends BeanBasedDocument<BasicUserDetails> implements BeanValidatorService {
 
 	private static final long serialVersionUID = -5282406171053226490L;
 
@@ -119,27 +119,22 @@ public class BasicUserDetails extends BeanBasedDocument<BasicUserDetails> implem
 		return null;
 	}
 
-	@Override
 	public String getProfileId() {
 		return getId();
 	}
 
-	@Override
 	public DOB getDateOfBirth() {
 		return this.dateOfBirth;
 	}
 
-	@Override
 	public Object getDetails() {
 		return this.details;
 	}
 
-	@Override
 	public Location getPresentAddress() {
 		return this.presentAddress;
 	}
 
-	@Override
 	public Location getPermanetAddress() {
 		return this.permanetAddress;
 	}

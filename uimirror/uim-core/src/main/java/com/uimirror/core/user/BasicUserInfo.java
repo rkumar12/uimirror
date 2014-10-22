@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.account.user.bean;
+package com.uimirror.core.user;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -19,16 +19,12 @@ import com.uimirror.core.Constants;
 import com.uimirror.core.bean.Gender;
 import com.uimirror.core.mongo.feature.BeanBasedDocument;
 import com.uimirror.core.service.BeanValidatorService;
-import com.uimirror.core.user.AccountState;
-import com.uimirror.core.user.AccountStatus;
-import com.uimirror.core.user.UserDBFields;
-import com.uimirror.core.user.UserInfo;
 
 /**
  * This has the basic user Info for the user such as email, name etc
  * @author Jay
  */
-public class BasicUserInfo extends BeanBasedDocument<BasicUserInfo> implements UserInfo, BeanValidatorService {
+public class BasicUserInfo extends BeanBasedDocument<BasicUserInfo> implements BeanValidatorService {
 
 	private static final long serialVersionUID = -5282406171053226490L;
 	private String firstName;
@@ -140,30 +136,14 @@ public class BasicUserInfo extends BeanBasedDocument<BasicUserInfo> implements U
 		return new BasicUserInfo(id,firstName, lastName, email, genderVal,  accountStatus, accountState);
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.uimirror.core.user.UserDetails#getFirstName()
-	 */
-	@Override
 	public String getFirstName() {
 		return firstName;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.uimirror.core.user.UserDetails#getLastName()
-	 */
-	@Override
 	public String getLastName() {
 		return lastName;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.uimirror.core.user.UserInfo#getName()
-	 */
-	@Override
 	public String getName() {
 		if(StringUtils.hasText(lastName) && StringUtils.hasText(firstName))
 			return this.firstName + Constants.SINGLE_SPACE+ this.lastName;
@@ -171,52 +151,22 @@ public class BasicUserInfo extends BeanBasedDocument<BasicUserInfo> implements U
 			return this.firstName;
 		return this.lastName;
 	}
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.uimirror.core.user.UserDetails#getEmail()
-	 */
-	@Override
 	public String getEmail() {
 		return email;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.uimirror.core.user.UserDetails#getGender()
-	 */
-	@Override
 	public Gender getGender() {
 		return gender;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.uimirror.core.user.UserDetails#getAccountStatus()
-	 */
-	@Override
 	public AccountStatus getAccountStatus() {
 		return accountStatus;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.uimirror.core.user.UserDetails#getAccountState()
-	 */
-	@Override
 	public AccountState getAccountState() {
 		return accountState;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.uimirror.core.user.UserDetails#getProfileId()
-	 */
-	@Override
 	public String getProfileId() {
 		return getId();
 	}

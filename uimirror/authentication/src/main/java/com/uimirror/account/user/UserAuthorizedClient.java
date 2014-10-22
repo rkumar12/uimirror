@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.account.user.bean;
+package com.uimirror.account.user;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;

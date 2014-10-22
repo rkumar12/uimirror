@@ -20,7 +20,6 @@ import com.mongodb.DBObject;
 import com.uimirror.core.dao.AbstractMongoStore;
 import com.uimirror.core.user.BasicUserDetails;
 import com.uimirror.core.user.UserDBFields;
-import com.uimirror.core.user.UserDetails;
 
 /**
  * Retrieves the credential store for the user.
@@ -42,7 +41,7 @@ public class PersistedUserBasicDetailsMongoStore extends AbstractMongoStore<Basi
 	 * @see com.uimirror.account.user.dao.UserBasicInfoStore#getUserInfoByProfileId(java.lang.String)
 	 */
 	@Override
-	public UserDetails getUserInfoByProfileId(String profileId) {
+	public BasicUserDetails getUserInfoByProfileId(String profileId) {
 		return getById(profileId);
 	}
 

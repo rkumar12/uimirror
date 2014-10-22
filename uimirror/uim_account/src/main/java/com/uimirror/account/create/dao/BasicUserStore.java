@@ -10,7 +10,7 @@
  *******************************************************************************/
 package com.uimirror.account.create.dao;
 
-import com.uimirror.core.user.bean.BasicUserInfo;
+import com.uimirror.core.user.BasicUserInfo;
 
 /**
  * @author Jay

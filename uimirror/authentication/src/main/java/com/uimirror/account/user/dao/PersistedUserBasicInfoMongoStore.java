@@ -20,12 +20,11 @@ import org.springframework.stereotype.Repository;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
-import com.uimirror.account.user.bean.BasicUserInfo;
 import com.uimirror.core.dao.AbstractMongoStore;
 import com.uimirror.core.user.AccountState;
 import com.uimirror.core.user.AccountStatus;
+import com.uimirror.core.user.BasicUserInfo;
 import com.uimirror.core.user.UserDBFields;
-import com.uimirror.core.user.UserInfo;
 
 /**
  * Retrieves the credential store for the user.
@@ -49,7 +48,7 @@ public class PersistedUserBasicInfoMongoStore extends AbstractMongoStore<BasicUs
 	 * @see com.uimirror.account.user.dao.UserBasicInfoStore#getUserInfoByProfileId(java.lang.String)
 	 */
 	@Override
-	public UserInfo getUserInfoByProfileId(String profileId) {
+	public BasicUserInfo getUserInfoByProfileId(String profileId) {
 		return getById(profileId);
 	}
 
