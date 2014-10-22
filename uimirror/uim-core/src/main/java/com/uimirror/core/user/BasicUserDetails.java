@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.core.user.bean;
+package com.uimirror.core.user;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -17,8 +17,6 @@ import org.springframework.util.StringUtils;
 
 import com.uimirror.core.mongo.feature.BeanBasedDocument;
 import com.uimirror.core.service.BeanValidatorService;
-import com.uimirror.core.user.UserDBFields;
-import com.uimirror.core.user.UserDetails;
 
 /**
  * @author Jay

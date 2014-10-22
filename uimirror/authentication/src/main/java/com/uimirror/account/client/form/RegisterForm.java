@@ -19,11 +19,11 @@ import javax.ws.rs.FormParam;
 
 import org.springframework.util.StringUtils;
 
-import com.uimirror.account.endpoint.AuthenticatedEndPoint;
 import com.uimirror.core.Constants;
 import com.uimirror.core.rest.extra.IllegalArgumentException;
 import com.uimirror.core.service.BeanValidatorService;
 import com.uimirror.core.util.web.WebUtil;
+import com.uimirror.ws.api.security.AuthenticatedPrincipal;
 
 /**
  * Converts the {@link FormParam} provided in the POST request for 
@@ -34,7 +34,7 @@ import com.uimirror.core.util.web.WebUtil;
  * 
  * @author Jay
  */
-public final class RegisterForm extends AuthenticatedEndPoint implements BeanValidatorService{
+public final class RegisterForm extends AuthenticatedPrincipal implements BeanValidatorService{
 
 	private static final long serialVersionUID = -1215523730014366150L;
 	

@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.account.endpoint;
+package com.uimirror.ws.api.security;
 
 import java.io.Serializable;
 
@@ -24,13 +24,13 @@ import com.uimirror.core.form.ClientMetaForm;
  * which will be very much handy for the authentications and owner details
  * @author Jay
  */
-public class AuthenticatedEndPoint extends ClientMetaForm implements Serializable{
+public class AuthenticatedPrincipal extends ClientMetaForm implements Serializable{
 
 	private static final long serialVersionUID = -7775430991569118841L;
 
 	private @Context SecurityContext securityContext;
 
-	public AuthenticatedEndPoint() {
+	public AuthenticatedPrincipal() {
 		//NOP
 	}
 	
