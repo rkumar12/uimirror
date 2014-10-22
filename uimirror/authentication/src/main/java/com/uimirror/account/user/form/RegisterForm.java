@@ -10,14 +10,27 @@
  *******************************************************************************/
 package com.uimirror.account.user.form;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.ws.rs.FormParam;
 import javax.ws.rs.QueryParam;
 
+import org.apache.commons.validator.routines.EmailValidator;
+import org.springframework.util.StringUtils;
+
+import com.uimirror.account.auth.user.Password;
+import com.uimirror.core.Constants;
 import com.uimirror.core.auth.AuthConstants;
 import com.uimirror.core.bean.Gender;
 import com.uimirror.core.form.ClientMetaForm;
 import com.uimirror.core.rest.extra.IllegalArgumentException;
 import com.uimirror.core.service.BeanValidatorService;
+import com.uimirror.core.util.DateTimeUtil;
+import com.uimirror.core.util.MessageUtil;
+import com.uimirror.core.util.StringRegexUtil;
 
 /**
  * Converts the {@link FormParam} provided in the POST request for 
@@ -54,19 +67,23 @@ public final class RegisterForm extends ClientMetaForm implements BeanValidatorS
 	private String dateOfBirth;
 	
 	public String getFirstName() {
-		return firstName;
+		return StringUtils.capitalize(firstName);
 	}
 
 	public String getLastName() {
-		return lastName;
+		return StringUtils.capitalize(lastName);
+	}
+	
+	public String getName(){
+		return getFirstName()+Constants.SINGLE_SPACE+getLastName();
 	}
 
 	public String getEmail() {
 		return email;
 	}
 
-	public String getPassword() {
-		return password;
+	public Password getPassword() {
+		return new Password(password, null);
 	}
 
 	public Gender getGender() {
@@ -90,14 +107,66 @@ public final class RegisterForm extends ClientMetaForm implements BeanValidatorS
 		return Boolean.TRUE;
 	}
 	
+	/**
+	 * Validates the fields for null values, validation for invalid names, 
+	 * invalid email, validation for dob format and validation for age limit.
+	 */
 	private void validate(){
-//		if(!StringUtils.hasText(getPassword()))
-//			informIllegalArgument("Password should be present");
-//		if(!StringUtils.hasText(getUserId()))
-//			informIllegalArgument("User Id Should present");
+		List<String> fields = new ArrayList<String>();
+		String ageLimitMessage = null;
+		String errorMessage = null;
+		//matches the Name first
+		if(!StringUtils.hasText(getFirstName()) || !StringRegexUtil.isValidName(getFirstName()))
+			fields.add(RegisterConstants.FIRST_NAME);
+		//TODO last name logic should be if first name present and last name not then don't do anything
+		if(!StringUtils.hasText(getLastName()))
+			fields.add(RegisterConstants.LAST_NAME);
+		//EMail Match
+		if(!StringUtils.hasText(getEmail()) || ! isAValidEmail(getEmail()))
+			fields.add(RegisterConstants.EMAIl);
+		//Gender match
+		if(!StringUtils.hasText(gender) || getGender() == null)
+			fields.add(RegisterConstants.GENDER);
+		//DOB
+		if(!StringUtils.hasText(getDateOfBirth()) || !DateTimeUtil.isAValidDate(getDateOfBirth()))
+			fields.add(RegisterConstants.DATE_OF_BIRTH);
+			//Check Age limit
+		else if(!DateTimeUtil.isAgeAboveEighteen(getDateOfBirth()))
+			ageLimitMessage=MessageUtil.getAgeLimitMessage();
+		if(!StringUtils.hasText(password))
+			fields.add(RegisterConstants.PASSWORD);
+		else if(!StringRegexUtil.isPasswordFollowingThePolicy(password))
+			fields.add(RegisterConstants.PASSWORD);
+				
+		if(fields.size() > 0 ){
+			Map<String, Object> errors = new LinkedHashMap<String, Object>(9);
+			errors.put(Constants.FIELDS, fields);
+			errorMessage = MessageUtil.getErrorMessage(fields);
+			if(ageLimitMessage != null)
+				errorMessage+= ageLimitMessage;
+			if(fields.contains(RegisterConstants.PASSWORD))
+				errorMessage+= "Password must be 6 Charecter long with out any space.";
+			errors.put(Constants.MESSAGE, errorMessage);
+			informIllegalArgument(errors);
+		}
 	}
 	
-	private void informIllegalArgument(String msg){
+	
+	/**
+	 * Validates an email
+	 * @param email
+	 * @return boolean
+	 */
+	private boolean isAValidEmail(String email) {
+		EmailValidator emailValidator=EmailValidator.getInstance(true);
+		  return emailValidator.isValid(email) ;
+	}
+	
+	/**
+	 * Throws the exception map object
+	 * @param msg
+	 */
+	private void informIllegalArgument(Map<String, Object> msg){
 		throw new IllegalArgumentException(msg);
 	}
 
