@@ -16,9 +16,9 @@ import java.util.Map;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import com.uimirror.account.user.UserDBFields;
 import com.uimirror.core.mongo.feature.BeanBasedDocument;
 import com.uimirror.core.service.BeanValidatorService;
+import com.uimirror.core.user.UserDBFields;
 
 /**
  * User's account logs statement such as when account created,

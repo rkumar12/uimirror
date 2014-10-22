@@ -17,9 +17,9 @@ import org.springframework.stereotype.Repository;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
-import com.uimirror.account.user.UserDBFields;
 import com.uimirror.account.user.bean.UserAccountLogs;
 import com.uimirror.core.dao.AbstractMongoStore;
+import com.uimirror.core.user.UserDBFields;
 
 /**
  * Retrieves the credential store for the user.

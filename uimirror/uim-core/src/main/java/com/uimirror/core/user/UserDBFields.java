@@ -1,8 +1,7 @@
 package com.uimirror.core.user;
 
-import com.uimirror.core.BasicDBFields;
 
-public interface UserDBFields extends BasicDBFields{
+public interface UserDBFields extends UserAuthDBFields, UserAccountLogDBFields{
 	 
 	 String FIRST_NAME="first_name";
 	 String LAST_NAME="last_name";

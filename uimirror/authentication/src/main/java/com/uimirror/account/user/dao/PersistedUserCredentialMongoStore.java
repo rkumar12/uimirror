@@ -18,14 +18,17 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
+import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
-import com.uimirror.account.user.UserAuthDBFields;
+import com.mongodb.DBObject;
 import com.uimirror.account.user.UserCredentials;
 import com.uimirror.account.user.bean.DefaultUserCredentials;
 import com.uimirror.core.dao.AbstractMongoStore;
 import com.uimirror.core.dao.DBException;
 import com.uimirror.core.mongo.BasicMongoOperators;
 import com.uimirror.core.user.AccountState;
+import com.uimirror.core.user.UserAuthDBFields;
+import com.uimirror.core.user.UserDBFields;
 
 /**
  * Retrieves the credential store for the user.
@@ -72,15 +75,6 @@ public class PersistedUserCredentialMongoStore extends AbstractMongoStore<Defaul
 	}
 
 	/* (non-Javadoc)
-	 * @see com.uimirror.core.dao.AbstractMongoStore#ensureIndex()
-	 */
-	@Override
-	protected void ensureIndex() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	/* (non-Javadoc)
 	 * @see com.uimirror.account.auth.dao.UserCredentialsStore#enableAccount(java.lang.String)
 	 */
 	@Override
@@ -98,6 +92,16 @@ public class PersistedUserCredentialMongoStore extends AbstractMongoStore<Defaul
 		Map<String, Object> field = new LinkedHashMap<String, Object>(3);
 		field.put(UserAuthDBFields.ACCOUNT_STATE, state.getState());
 		return field;
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.uimirror.core.dao.AbstractMongoStore#ensureIndex()
+	 */
+	@Override
+	protected void ensureIndex() {
+		//TODO finalize during production what needs to be actual value
+		DBObject obj = new BasicDBObject(UserDBFields.USER_ID, 1);
+		getCollection().createIndex(obj);
 	}
 
 }

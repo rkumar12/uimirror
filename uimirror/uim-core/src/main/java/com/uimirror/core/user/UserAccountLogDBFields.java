@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.account.user;
+package com.uimirror.core.user;
 
 import com.uimirror.core.BasicDBFields;
 
@@ -16,16 +16,9 @@ import com.uimirror.core.BasicDBFields;
  * Contains all the DB fields required for application
  * @author Jay
  */
-public interface UserAuthDBFields extends BasicDBFields{
-	
-	//User Credentials
-	String USER_ID = "uid";
-	String PASSWORD = "pwd";
-	String SCREEN_PASSWORD = "screen_pwd";
-	String ACCOUNT_STATE = "state";
-	String ACCOUNT_STATUS = "status";
-	String ENCRYPTION_PWD = "salt";
-	String ACCOUNT_INSTRUCTION = "sti";
-	//User Account Instructions for 2FA
-	String ACC_INS_2FA = "2fa";
+public interface UserAccountLogDBFields extends BasicDBFields{
+	//User Account logs such as created on etc
+	String CREATED_ON = "created_on";
+	String MODIFIED_ON = "modified_on";
+	String DETAILS = "details";
 }

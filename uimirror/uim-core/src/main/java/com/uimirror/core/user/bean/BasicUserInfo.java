@@ -20,7 +20,6 @@ import com.uimirror.core.mongo.feature.BeanBasedDocument;
 import com.uimirror.core.service.BeanValidatorService;
 import com.uimirror.core.user.AccountState;
 import com.uimirror.core.user.AccountStatus;
-import com.uimirror.core.user.UserDBFields;
 import com.uimirror.core.user.UserInfo;
 
 /**
@@ -143,13 +142,13 @@ public class BasicUserInfo extends BeanBasedDocument<BasicUserInfo> implements U
 	 */
 	public Map<String, Object> serailize() {
 		Map<String, Object> state = new LinkedHashMap<String, Object>(16);
-		state.put(UserDBFields.ID, getId());
-		state.put(UserDBFields.FIRST_NAME, getFirstName());
-		state.put(UserDBFields.LAST_NAME, getLastName());
-		state.put(UserDBFields.EMAIL, getEmail());
-		state.put(UserDBFields.GENDER, getGender().toString());
-		state.put(UserDBFields.ACCOUNT_STATUS, getAccountStatus().getStatus());
-		state.put(UserDBFields.ACCOUNT_STATE, getAccountState().getState());
+//		state.put(UserDBFields.ID, getId());
+//		state.put(UserDBFields.FIRST_NAME, getFirstName());
+//		state.put(UserDBFields.LAST_NAME, getLastName());
+//		state.put(UserDBFields.EMAIL, getEmail());
+//		state.put(UserDBFields.GENDER, getGender().toString());
+//		state.put(UserDBFields.ACCOUNT_STATUS, getAccountStatus().getStatus());
+//		state.put(UserDBFields.ACCOUNT_STATE, getAccountState().getState());
 		return state;
 	}
 
@@ -204,21 +203,22 @@ public class BasicUserInfo extends BeanBasedDocument<BasicUserInfo> implements U
 	 */
 	private BasicUserInfo init(Map<String, Object> raw) {
 
-		String id = (String) raw.get(UserDBFields.ID);
-		String firstName = (String) raw.get(UserDBFields.FIRST_NAME);
-		String lastName = (String) raw.get(UserDBFields.LAST_NAME);
-		String email = (String) raw.get(UserDBFields.EMAIL);
-		String gender = (String) raw.get(UserDBFields.GENDER);
-		// TODO: check about the below conversion
-		Gender genderVal = StringUtils.hasText(gender) ? Gender.getEnum(gender) : Gender.MALE;
-		String statVal = (String) raw.get(UserDBFields.ACCOUNT_STATUS);
-		String stateVal = (String) raw.get(UserDBFields.ACCOUNT_STATE);
-		AccountStatus accountStatus = StringUtils.hasText(statVal) ? AccountStatus.getEnum(statVal)
-				: AccountStatus.ACTIVE;
-		AccountState accountState = StringUtils.hasText(stateVal) ? AccountState.getEnum(stateVal)
-				: AccountState.ENABLED;
+//		String id = (String) raw.get(UserDBFields.ID);
+//		String firstName = (String) raw.get(UserDBFields.FIRST_NAME);
+//		String lastName = (String) raw.get(UserDBFields.LAST_NAME);
+//		String email = (String) raw.get(UserDBFields.EMAIL);
+//		String gender = (String) raw.get(UserDBFields.GENDER);
+//		// TODO: check about the below conversion
+//		Gender genderVal = StringUtils.hasText(gender) ? Gender.getEnum(gender) : Gender.MALE;
+//		String statVal = (String) raw.get(UserDBFields.ACCOUNT_STATUS);
+//		String stateVal = (String) raw.get(UserDBFields.ACCOUNT_STATE);
+//		AccountStatus accountStatus = StringUtils.hasText(statVal) ? AccountStatus.getEnum(statVal)
+//				: AccountStatus.ACTIVE;
+//		AccountState accountState = StringUtils.hasText(stateVal) ? AccountState.getEnum(stateVal)
+//				: AccountState.ENABLED;
 
-		return new BasicUserInfo(id,firstName, lastName, email, genderVal,  accountStatus, accountState);
+		//return new BasicUserInfo(id,firstName, lastName, email, genderVal,  accountStatus, accountState);
+		return null;
 	}
 
 }
