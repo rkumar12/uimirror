@@ -22,7 +22,6 @@ import org.springframework.util.StringUtils;
 
 import com.uimirror.account.auth.client.form.ClientAPIForm;
 import com.uimirror.account.auth.user.Password;
-import com.uimirror.account.create.RegisterConstants;
 import com.uimirror.core.Constants;
 import com.uimirror.core.bean.Gender;
 import com.uimirror.core.rest.extra.IllegalArgumentException;
