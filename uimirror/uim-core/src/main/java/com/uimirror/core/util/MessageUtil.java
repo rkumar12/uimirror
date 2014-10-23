@@ -18,9 +18,10 @@ import java.util.List;
 public class MessageUtil {
 	private static final String COMMA =" , ";
 	private static final String AMPERSAND = " & ";
-	private static final String SINGLE_FIELD_MESSAGE = "is not valid. ";
-	private static final String MULTIPLE_FIELD_MESSAGE = "are not valid. ";
-	private static final String AGE_LIMIT_MESSAGE = "Ohh Boy!!! We don't have any content for you at your age.";
+	private static final String SINGLE_FIELD_MESSAGE = " is not valid. ";
+	private static final String MULTIPLE_FIELD_MESSAGE = " are not valid. ";
+	//TODO: change message based on gender.
+	private static final String AGE_LIMIT_MESSAGE = " Ohh Boy!!! We don't have any content for you at your age.";
 	
 
 	private MessageUtil() {
