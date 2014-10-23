@@ -25,7 +25,7 @@ public class IllegalArgumentException extends ExceptionInJson{
 
 	private static final long serialVersionUID = 2893053632116181333L;
 	
-	private static final String MSG = "provided details are unsuficent";
+	private static final String MSG = "provided details are insufficient";
 	private static final Status CODE = Response.Status.NOT_ACCEPTABLE;
 
 	/**
