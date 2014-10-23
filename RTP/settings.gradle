@@ -1,0 +1,1 @@
+include "rtp-core", "rtp-campaign", "rtp-shop", "rtp-endpoints"

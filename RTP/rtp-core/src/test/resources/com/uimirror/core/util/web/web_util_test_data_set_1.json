@@ -1,0 +1,45 @@
+[
+{
+	"in":"http://127.0.0.1",
+	"out" : "http://127.0.0.1",
+	"isValid": true
+},{
+	"in":"abc.com",
+	"out" : "URL can't be formed, url string is mailformed",
+	"isValid": false
+},
+{
+	"in":"abc.com/test",
+	"out" : "URL can't be formed, url string is mailformed",
+	"isValid": false
+},
+{
+	"in":"http://abc.com/test",
+	"out" : "http://abc.com/test",
+	"isValid": true
+},
+{
+	"in":"https://abc.com/test",
+	"out" : "https://abc.com/test",
+	"isValid": true
+},
+{
+	"in":"",
+	"out" : "URL can't be formed, Correct the input",
+	"isValid": false
+},
+{
+	"in":"     ",
+	"out" : "URL can't be formed, Correct the input",
+	"isValid": false
+},
+{
+	"out" : "URL can't be formed, Correct the input",
+	"isValid": false
+},
+{
+	"in":"abc",
+	"out" : "URL can't be formed, url string is mailformed",
+	"isValid": false
+}
+]

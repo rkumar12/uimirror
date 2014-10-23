@@ -1,0 +1,180 @@
+subprojects {
+    apply plugin: 'eclipse'
+	apply plugin: "java"
+	apply plugin: "maven"
+	apply plugin: 'maven-publish'
+	apply plugin:'application'
+	
+	group = 'com.uimirror.rtp.api'
+	version = '1.0'
+	description = "RTP By UIMIRROR Team."
+	targetCompatibility = "1.8"
+	sourceCompatibility = "1.8"
+	
+	ext {
+		slf4jVersion = "1.7.2"
+		qosLogBackVersion = "1.1.1"
+		jerseyVersion = "2.12"
+		javaeeApiVersion = "7.0"
+		springVersion = "4.1.0.RELEASE"
+		springBootVersion = '1.1.6.RELEASE'
+		junitVersion = '4.11'
+		//gensonVersion = '1.1-RC2'
+		janinoVersion = '2.7.6'
+		mockitoVersion = '1.9.5'
+		uimCoreVersion = '1.0'
+		wsSecurityVersion = '1.0'
+		wsFiltersVersion = '1.0'
+	}
+
+    repositories {
+       mavenCentral()
+	   mavenLocal()
+    }
+	
+	dependencies {
+		//Test jars
+		testCompile group: 'junit', name: 'junit', version: junitVersion
+		testCompile group: 'org.springframework', name: 'spring-test', version: springVersion
+		testCompile group: 'org.mockito', name: 'mockito-core', version: mockitoVersion
+		
+		//Logging
+		compile (group: 'org.slf4j', name: 'jcl-over-slf4j', version: slf4jVersion)
+		compile (group: 'ch.qos.logback', name: 'logback-classic', version: qosLogBackVersion){
+			exclude group: 'org.slf4j', module: 'slf4j-api' //by both name and group
+		}
+		compile (group: 'ch.qos.logback', name: 'logback-core', version: qosLogBackVersion)
+		compile (group: 'org.codehaus.janino', name: 'janino', version: janinoVersion)
+		//Logging End
+		//Spring Start
+		compile (group: 'org.springframework', name: 'spring-core', version: springVersion)
+		compile (group: 'org.springframework', name: 'spring-context', version: springVersion)
+			//[group: 'org.springframework', name: 'spring-web', version: springVersion],
+		compile (group: 'org.springframework', name: 'spring-beans', version: springVersion)
+		compile (group: 'org.springframework', name: 'spring-web', version: springVersion)
+		compile (group: 'org.springframework', name: 'spring-expression', version: springVersion)
+		//Spring End
+	}
+	//Gradle Wrapper genrator
+	task wrapper(type: Wrapper) {
+		gradleVersion = '2.0'
+	}
+	jar {
+		manifest.attributes provider: 'uimirror'
+	}
+	task sourceJar(type: Jar) {
+		classifier "source"
+	}
+	
+	publishing {
+		  publications {
+			  mavenJava(MavenPublication) {
+				  groupId project.group
+				  artifactId project.name
+				  version project.version
+				  from components.java
+				  artifact sourceJar {
+					  classifier "sources"
+				  }
+			  }
+		  }
+	}
+	defaultTasks 'clean', 'build', 'intsall'
+}
+project(':rtp-shop') {
+	configurations {
+		shop
+	}
+	dependencies {
+		compile project(':rtp-core')
+	}
+	task shopJar(type: Jar) {
+		baseName = 'rtp-shop'
+		dependsOn classes
+		from sourceSets.main.output
+		
+	}
+	artifacts {
+		shop shopJar
+	}
+}
+project(':rtp-campaign') {
+	configurations {
+		campaign
+	}
+	dependencies {
+		//UIM-Shop
+		compile project(':rtp-shop')
+	}
+	task campaignJar(type: Jar) {
+		baseName = 'rtp-campaign'
+		dependsOn classes
+		from sourceSets.main.output
+	}
+	artifacts {
+		campaign campaignJar
+	}
+}
+project(':rtp-core') {
+	configurations {
+		core
+	}
+	dependencies {
+		//UIM-Core
+		compile group: 'com.uimirror.core', name: 'uim-core', version: uimCoreVersion
+	}
+	task coreJar(type: Jar) {
+		baseName = 'rtp-core'
+		dependsOn classes
+		from sourceSets.main.output
+	}
+	artifacts {
+		core coreJar
+	}
+}
+project(':rtp-endpoints') {
+	configurations {
+		endpoints
+	}
+	dependencies {
+		//UIM-Shop
+		compile project(':rtp-shop')
+		//UIM-Campaign
+		compile project(':rtp-campaign')
+		//ws-resource-secuirity
+		compile group: 'com.uimirror.ws.api', name: 'ws-resource-security', version: wsSecurityVersion
+		//ws-filters
+		compile group: 'com.uimirror.ws.api', name: 'ws-filters', version: wsFiltersVersion
+		compile group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet', version: jerseyVersion
+		compile group: 'org.glassfish.jersey.ext', name: 'jersey-spring3', version: jerseyVersion
+		compile group: 'org.glassfish.jersey.media', name: 'jersey-media-json-processing', version: jerseyVersion
+		compile (group: 'javax', name: 'javaee-api', version: javaeeApiVersion)
+		compile (group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: springBootVersion){
+			exclude module: 'jackson-databind'
+		 exclude module: 'spring-webmvc'
+		 exclude module: 'spring-web'
+		 exclude module: 'log4j-over-slf4j'
+		 exclude module: 'jboss-logging'
+		 exclude module: 'jul-to-slf4j'
+	  }
+	//Don't use Actuator as it has nested depedancy to fasterxml, think of alternative latter
+	//	   compile (group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: springBootVersion){
+	//		   	exclude module: 'jackson-databind'
+	//		//exclude module: 'spring-web'
+	//		 }
+		
+	//compile("org.springframework.boot:spring-boot-starter-jetty")
+	// end::jetty[]
+	// tag::actuator[]
+	// end::actuator[]
+	testCompile (group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: springBootVersion)
+	}
+	task endpointsJar(type: Jar) {
+		baseName = 'rtp-endpoints'
+		dependsOn classes
+		from sourceSets.main.output
+	}
+	artifacts {
+		endpoints endpointsJar
+	}
+}
