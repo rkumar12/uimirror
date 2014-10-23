@@ -3,6 +3,7 @@ package com.uimirror.rtp.shop.register;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import com.uimirror.account.user.UserAccountDBFields;
@@ -41,10 +42,16 @@ public class ShopBasicInfo extends BeanBasedDocument<ShopBasicInfo> implements B
 
   @Override
   public boolean isValid() {
-    // TODO Auto-generated method stub
-    return true;
+    boolean valid = Boolean.TRUE;
+    if(!StringUtils.hasText(getId()))
+      valid = Boolean.FALSE;
+    if(!StringUtils.hasText(getShopName()))
+      valid = Boolean.FALSE;
+    if((getLocation() == null))
+      valid = Boolean.FALSE;
+    return valid;
   }
-
+  
   @Override
   public ShopBasicInfo initFromMap(Map<String, Object> src) {
     // Validate the source shouldn't be empty
