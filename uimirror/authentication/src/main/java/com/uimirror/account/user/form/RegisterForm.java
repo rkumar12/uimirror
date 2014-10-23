@@ -22,6 +22,7 @@ import org.springframework.util.StringUtils;
 
 import com.uimirror.account.auth.client.form.ClientAPIForm;
 import com.uimirror.account.auth.user.Password;
+import com.uimirror.account.create.RegisterConstants;
 import com.uimirror.core.Constants;
 import com.uimirror.core.bean.Gender;
 import com.uimirror.core.rest.extra.IllegalArgumentException;
@@ -109,9 +110,16 @@ public final class RegisterForm extends ClientAPIForm implements BeanValidatorSe
 		//matches the Name first
 		if(!StringUtils.hasText(getFirstName()) || !StringRegexUtil.isValidName(getFirstName()))
 			fields.add(RegisterConstants.FIRST_NAME);
-		//TODO last name logic should be if first name present and last name not then don't do anything
-		if(!StringUtils.hasText(getLastName()))
-			fields.add(RegisterConstants.LAST_NAME);
+		/*If last name is null then checks for the first name.*/
+		if(StringUtils.hasText(getLastName())){
+			if(!StringRegexUtil.isValidName(getLastName()))
+					fields.add(RegisterConstants.LAST_NAME);
+		}else{
+			if(!StringUtils.hasText(getFirstName())){
+				fields.add(RegisterConstants.LAST_NAME);
+			}
+		}
+		
 		//EMail Match
 		if(!StringUtils.hasText(getEmail()) || ! isAValidEmail(getEmail()))
 			fields.add(RegisterConstants.EMAIl);
