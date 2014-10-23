@@ -115,7 +115,7 @@ public final class RegisterForm extends ClientAPIForm implements BeanValidatorSe
 			if(!StringRegexUtil.isValidName(getLastName()))
 					fields.add(RegisterConstants.LAST_NAME);
 		}else{
-			if(!StringUtils.hasText(getFirstName())){
+			if(!fields.contains(RegisterConstants.FIRST_NAME)){
 				fields.add(RegisterConstants.LAST_NAME);
 			}
 		}
