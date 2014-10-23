@@ -10,11 +10,13 @@
  *******************************************************************************/
 package com.uimirror.core.util;
 
+import java.text.SimpleDateFormat;
 import java.time.Clock;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 
 import org.apache.commons.validator.routines.DateValidator;
 
@@ -76,6 +78,15 @@ public class DateTimeUtil {
 		DateValidator validator = DateValidator.getInstance();
 		return validator.isValid(date, DOB_FORMAT);
     }
+	
+	
+	public static String[] splitDOB(String dob){
+		String[] parts=null;
+		if(isAValidDate(dob)){
+			parts = dob.split("-");
+		}
+		return parts;
+	}
 	
 	/**
 	 * Validates if age is above 18 based on dob.

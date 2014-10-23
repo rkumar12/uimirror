@@ -10,12 +10,14 @@
  *******************************************************************************/
 package com.uimirror.core;
 
+import java.time.LocalDate;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.springframework.util.CollectionUtils;
 
 import com.uimirror.core.user.UserDBFields;
+import com.uimirror.core.util.DateTimeUtil;
 
 /**
  * Gets the DOB of the user
@@ -38,7 +40,10 @@ public class DOB {
 	public DOB(String dob) {
 		super();
 		this.dob = dob;
-		//Write logic for the DOB split
+		String[] parts=DateTimeUtil.splitDOB(dob);
+		this.date=Integer.parseInt(parts[0]);
+		this.month=Integer.parseInt(parts[1]);
+		this.year=Integer.parseInt(parts[2]);
 	}
 
 	public int getDate() {
@@ -56,8 +61,10 @@ public class DOB {
 	public String getDob() {
 		return dob;
 	}
-	public DOB getDobInDate() {
-		//TODO form the date here
+	
+	
+	public LocalDate getDobInDate() {
+		//TODO form the date here and return LocalDate
 		return null;
 	}
 	

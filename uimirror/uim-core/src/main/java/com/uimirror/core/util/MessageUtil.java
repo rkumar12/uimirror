@@ -41,12 +41,11 @@ public class MessageUtil {
 				if (i != size - 2) {
 					sb.append(COMMA);
 				} else {
-
 					sb.append(AMPERSAND);
 				}
 			}
 		}
-		if(size >= 1){
+		if(size == 1){
 			sb.append(SINGLE_FIELD_MESSAGE);
 		}else{
 			sb.append(MULTIPLE_FIELD_MESSAGE);
