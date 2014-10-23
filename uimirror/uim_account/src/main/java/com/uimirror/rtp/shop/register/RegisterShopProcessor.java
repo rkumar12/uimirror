@@ -6,15 +6,18 @@ import org.slf4j.LoggerFactory;
 import com.uimirror.core.Processor;
 import com.uimirror.core.rest.extra.ApplicationException;
 
-public class ShopRegistrationProcessor implements Processor<RegisterShopForm, Object> {
+public class RegisterShopProcessor implements Processor<RegisterShopForm, Object> {
 
-  protected static final Logger LOG = LoggerFactory.getLogger(ShopRegistrationProcessor.class);
+  protected static final Logger LOG = LoggerFactory.getLogger(RegisterShopProcessor.class);
 
   @Override
   public Object invoke(RegisterShopForm param) throws ApplicationException {
 
     LOG.debug("[START]- Registering a Shop");
+
+    param.isValid();
     
+    LOG.debug("[EXIT]- Registering a Shop");
     return null;
   }
 
