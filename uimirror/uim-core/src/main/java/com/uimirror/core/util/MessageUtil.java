@@ -45,7 +45,7 @@ public class MessageUtil {
 				}
 			}
 		}
-		if(size > 1){
+		if(size >= 1){
 			sb.append(SINGLE_FIELD_MESSAGE);
 		}else{
 			sb.append(MULTIPLE_FIELD_MESSAGE);
