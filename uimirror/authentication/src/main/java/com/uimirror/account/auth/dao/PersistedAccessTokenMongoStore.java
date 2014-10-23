@@ -20,6 +20,7 @@ import org.springframework.stereotype.Repository;
 
 import com.mongodb.DBCollection;
 import com.uimirror.core.auth.AccessToken;
+import com.uimirror.core.auth.AuthConstants;
 import com.uimirror.core.auth.token.AccessTokenFields;
 import com.uimirror.core.auth.token.DefaultAccessToken;
 import com.uimirror.core.dao.AbstractMongoStore;
@@ -127,4 +128,16 @@ public class PersistedAccessTokenMongoStore extends AbstractMongoStore<DefaultAc
 		
 	}
 
+	/**
+	 * @param profileId
+	 * @return
+	 * @throws DBException
+	 */
+	@Override
+	public AccessToken getUserRegisteredWOTPToken(String profileId)throws DBException {
+		Map<String, Object> query = getIdMap(profileId);
+		query.put(AccessTokenFields.AUTH_TKN_INSTRUCTIONS+"."+AuthConstants.WEB_VERIFY_TOKEN, getExistQuery(Boolean.TRUE));
+		return queryFirstRecord(query);
+	}
+	
 }

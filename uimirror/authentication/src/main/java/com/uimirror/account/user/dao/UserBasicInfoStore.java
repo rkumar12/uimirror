@@ -25,6 +25,13 @@ public interface UserBasicInfoStore {
 	 * @return
 	 */
 	BasicInfo getUserInfoByProfileId(String profileId);
+	
+	/**
+	 * Retrieves the document based on the email
+	 * @param profileId
+	 * @return
+	 */
+	BasicInfo getUserInfoByEmail(String email);
 
 	/**
 	 * Delete all the logs present for the user in his log

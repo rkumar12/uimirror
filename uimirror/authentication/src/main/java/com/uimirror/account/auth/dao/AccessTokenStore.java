@@ -55,6 +55,16 @@ public interface AccessTokenStore {
 	 * @throws DBException
 	 */
 	List<AccessToken> getByOwner(String ownerId) throws DBException;
+
+	/**
+	 * Retrieve any token available for the user, which he tries to register but due 
+	 * to some reason it was unsuccessful.
+	 * returns <code>null</code> if no record found
+	 * @param profileId
+	 * @return
+	 * @throws DBException
+	 */
+	AccessToken getUserRegisteredWOTPToken(String profileId) throws DBException;
 	
 	/**
 	 * Delete documents based on the search criteria

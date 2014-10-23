@@ -39,6 +39,7 @@ import com.uimirror.core.mail.BackgroundMailService;
 import com.uimirror.core.rest.extra.ApplicationException;
 import com.uimirror.core.rest.extra.ResponseTransFormer;
 import com.uimirror.core.service.TransformerService;
+import com.uimirror.core.service.ValidatorService;
 import com.uimirror.core.user.DefaultUser;
 import com.uimirror.core.util.thread.BackgroundProcessorFactory;
 
@@ -65,6 +66,7 @@ public class UserRegistrationProcessor implements Processor<RegisterForm, String
 	private @Autowired BackgroundProcessorFactory<Map<String, Object>, Object> backgroundMailService;
 	private @Autowired BackgroundProcessorFactory<AccessToken, Object> allowAuthorizationClientProcessor;
 	private @Autowired ResponseTransFormer<String> jsonResponseTransFormer;
+	private @Autowired ValidatorService<String> userRegistrationValidationService;
 
 	public UserRegistrationProcessor() {
 		// NOP
@@ -79,7 +81,8 @@ public class UserRegistrationProcessor implements Processor<RegisterForm, String
 		LOG.info("[START]- Registering a new User.");
 		//Step -1 Create Client
 		Client client = authenticateAndGetClient(param);
-		//Step -2 Create user
+		//Step -2 Validate User, If necessary, pull out the previous token and send back to the verify page
+		//userRegistrationValidationService.validate(param.getEmail());
 		DefaultUser user = createUserProcessor.invoke(param);
 		AccessToken token = getNewToken(client, user, param);
 		LOG.info("[END]- Registering a new User.");
@@ -93,7 +96,7 @@ public class UserRegistrationProcessor implements Processor<RegisterForm, String
 	private Client authenticateAndGetClient(RegisterForm param){
 		Authentication auth = apiKeyToAuthTransformer.transform(param);
 		//Client client = apiKeyAuthenticateProcessor.invoke(auth);
-		//TODO fix this
+		//TODO fix this delete this once testing over
 		Client client = new Client("12", null, null, null, null, null, null, 0l, null, null);
 		return client;
 	}

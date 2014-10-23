@@ -19,6 +19,7 @@ import com.uimirror.account.auth.core.processor.OTPMailProcessor;
 import com.uimirror.account.auth.user.processor.AllowAuthorizationClientProcessor;
 import com.uimirror.account.auth.user.processor.DenyAuthorizationClientProcessor;
 import com.uimirror.account.auth.user.processor.UserRestoreProcessor;
+import com.uimirror.account.user.processor.BackGroundCreateMissingUserProcessor;
 import com.uimirror.account.user.processor.BackGroundCreateUserProcessor;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.user.DefaultUser;
@@ -63,10 +64,14 @@ public class BeanOfBackGroundProcessor {
 	public BackgroundProcessor<String, Object> invalidateTokenProcessor(){
 		return new InvalidateTokenProcessor();
 	}
-	
 	@Bean(name=BackGroundCreateUserProcessor.NAME)
 	public BackgroundProcessor<DefaultUser, Object> backGroundCreateUserProcessor(){
 		return new BackGroundCreateUserProcessor();
+	}
+
+	@Bean(name=BackGroundCreateMissingUserProcessor.NAME)
+	public BackgroundProcessor<DefaultUser, Object> backGroundCreateMissingUserProcessor(){
+		return new BackGroundCreateMissingUserProcessor();
 	}
 
 }

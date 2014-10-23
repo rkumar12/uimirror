@@ -20,6 +20,7 @@ public interface BasicMongoOperators {
 	String GREATERTHAN = "$gt";
 	String ELEMENT_MATCH = "$elemMatch";
 	String PULL = "$pull";
+	String EXISTS = "$exists";
 	String EACH = "$each";
 	String ADD_TO_SET = "$addToSet";
 	String NOT = "$not";

@@ -49,6 +49,14 @@ public class PersistedUserBasicInfoMongoStore extends AbstractMongoStore<BasicIn
 	public BasicInfo getUserInfoByProfileId(String profileId) {
 		return getById(profileId);
 	}
+	
+	/* (non-Javadoc)
+	 * @see com.uimirror.account.user.dao.UserBasicInfoStore#getUserInfoByEmail(java.lang.String)
+	 */
+	@Override
+	public BasicInfo getUserInfoByEmail(String email) {
+		return queryFirstRecord(emailMap(email));
+	}
 
 	/* (non-Javadoc)
 	 * @see com.uimirror.account.user.dao.UserBasicInfoStore#deleteByprofileId(java.lang.String)
@@ -111,6 +119,17 @@ public class PersistedUserBasicInfoMongoStore extends AbstractMongoStore<BasicIn
 		update.put(UserDBFields.ACCOUNT_STATE, accountState);
 		return update;
 	}
+	
+	/**
+	 * Creates the email map
+	 * @param email
+	 * @return
+	 */
+	private Map<String, Object> emailMap(String email){
+		Map<String, Object> map = new LinkedHashMap<String, Object>(3);
+		map.put(UserDBFields.EMAIL, email);
+		return map;
+	}
 
 
 	/* (non-Javadoc)
@@ -161,5 +180,6 @@ public class PersistedUserBasicInfoMongoStore extends AbstractMongoStore<BasicIn
 		email.put(UserDBFields.ACCOUNT_STATE, 1);
 		getCollection().createIndex(email);
 	}
+	
 
 }

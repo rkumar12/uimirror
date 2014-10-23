@@ -401,5 +401,16 @@ public abstract class AbstractMongoStore<T extends BeanBasedDocument<T>> extends
 	private String getSeqName(){
 		return seqName;
 	}
+	
+	/**
+	 * Gets the exists map query
+	 * @param flag
+	 * @return
+	 */
+	public Map<String, Object> getExistQuery( boolean flag){
+		Map<String, Object> query = new LinkedHashMap<String, Object>(5);
+		query.put(BasicMongoOperators.EXISTS, flag);
+		return query;
+	}
 
 }
