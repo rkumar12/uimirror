@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.mongodb.DBCollection;
 import com.uimirror.core.dao.AbstractMongoStore;
+import com.uimirror.core.dao.DBException;
 
 public class PersistedRegisterShopOtherInfoMongoStore extends AbstractMongoStore<ShopOtherInfo> implements RegisterShopBasicInfoStore{
 
@@ -23,6 +24,15 @@ public class PersistedRegisterShopOtherInfoMongoStore extends AbstractMongoStore
     // TODO Auto-generated method stub
     
   }
+
+/* (non-Javadoc)
+ * @see com.uimirror.rtp.shop.register.RegisterShopBasicInfoStore#store(com.uimirror.rtp.shop.register.ShopBasicInfo)
+ */
+@Override
+public ShopBasicInfo store(ShopBasicInfo shopBasicInfo) throws DBException {
+	// TODO Auto-generated method stub
+	return null;
+}
   
 
 }

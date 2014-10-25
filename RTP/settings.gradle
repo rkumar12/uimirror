@@ -1,1 +1,1 @@
-include "rtp-core", "rtp-campaign", "rtp-shop", "rtp-endpoints"
+include "rtp-core", "rtp-campaign", "rtp-shop", "reaching-endpoints"
