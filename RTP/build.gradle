@@ -5,7 +5,7 @@ subprojects {
 	apply plugin: 'maven-publish'
 	apply plugin:'application'
 	
-	group = 'com.uimirror.rtp.api'
+	group = 'com.uimirror.rtp'
 	version = '1.0'
 	description = "RTP By UIMIRROR Team."
 	targetCompatibility = "1.8"

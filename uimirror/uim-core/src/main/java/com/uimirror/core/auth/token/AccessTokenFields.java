@@ -10,7 +10,7 @@
  *******************************************************************************/
 package com.uimirror.core.auth.token;
 
-import com.uimirror.core.BasicDBFields;
+import com.uimirror.core.mongo.feature.BasicDBFields;
 
 /**
  * Basic DB fileds for the access token

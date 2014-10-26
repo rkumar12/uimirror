@@ -10,7 +10,7 @@
  *******************************************************************************/
 package com.uimirror.core.user;
 
-import com.uimirror.core.BasicDBFields;
+import com.uimirror.core.mongo.feature.BasicDBFields;
 
 /**
  * Contains all the DB fields required for application

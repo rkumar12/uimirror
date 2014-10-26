@@ -1,0 +1,10 @@
+jar {
+	manifest.attributes provider: 'Uimirror Reaching application for RTP'
+}
+
+description = "A Reaching Module By Uimirror Team."
+
+mainClassName = "com.uimirror.rtp.reaching.api.endpoint.StartApp"
+applicationDefaultJvmArgs = ["-Denv=dev"]
+
+defaultTasks 'clean', 'build', 'intsall'

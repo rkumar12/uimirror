@@ -8,20 +8,19 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.account.auth.user;
-
-import com.uimirror.core.mongo.feature.BasicDBFields;
+package com.uimirror.core;
 
 /**
- * Contains all the DB fields required for user authorized clients
+ * Stores the different type of the GeoJson types supported currently
  * @author Jay
  */
-public interface UserAuthorizedClientDBFields extends BasicDBFields{
-	
-	//User authorized clients mapped fields
-	String CLIENTS = "clients";
-	String CLIENT_ID = "client_id";
-	String SCOPE = "scope";
-	
-	String CLIENT_ARRAY_MATCH_DOC = CLIENTS+".$";
+public interface GeoGsonType {
+	String POINT = "Point";
+	String LINESTRING = "LineString";
+	String POLYGON = "Polygon";
+	String MULTIPOINT = "MultiPoint";
+	String MULTILINESTRING = "MultiLineString";
+	String MULTIPOLYGON = "MultiPolygon";
+	String GEOMETRYCOLLECTION = "GeometryCollection";
+
 }

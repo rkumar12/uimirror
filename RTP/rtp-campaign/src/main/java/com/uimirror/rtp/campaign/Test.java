@@ -8,20 +8,18 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.account.auth.user;
-
-import com.uimirror.core.mongo.feature.BasicDBFields;
+package com.uimirror.rtp.campaign;
 
 /**
- * Contains all the DB fields required for user authorized clients
  * @author Jay
  */
-public interface UserAuthorizedClientDBFields extends BasicDBFields{
-	
-	//User authorized clients mapped fields
-	String CLIENTS = "clients";
-	String CLIENT_ID = "client_id";
-	String SCOPE = "scope";
-	
-	String CLIENT_ARRAY_MATCH_DOC = CLIENTS+".$";
+public class Test {
+
+	/**
+	 * 
+	 */
+	public Test() {
+		// TODO Auto-generated constructor stub
+	}
+
 }
