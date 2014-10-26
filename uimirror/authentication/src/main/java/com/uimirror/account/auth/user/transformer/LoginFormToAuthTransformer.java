@@ -17,7 +17,7 @@ import com.uimirror.account.auth.user.form.LoginForm;
 import com.uimirror.core.service.TransformerService;
 
 /**
- * A transformer implementation which will transform the {@linkplain RegisterForm}
+ * A transformer implementation which will transform the {@linkplain ClientRegisterForm}
  * to {@linkplain LoginAuthentication}
  * @author Jay
  */

@@ -19,6 +19,7 @@ dependencies {
 	compile project(':uim-core')
 	compile project(':ws-resource-security')
 	compile project(':ws-filters')
+	compile project(':uim-oauth-client')
 	//Logging
 	compile (group: 'org.slf4j', name: 'jcl-over-slf4j', version: slf4jVersion)
 	compile (group: 'ch.qos.logback', name: 'logback-classic', version: qosLogBackVersion){

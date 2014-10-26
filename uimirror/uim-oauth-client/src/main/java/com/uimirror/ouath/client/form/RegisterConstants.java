@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.account.client.form;
+package com.uimirror.ouath.client.form;
 
 import com.uimirror.core.Parameters;
 

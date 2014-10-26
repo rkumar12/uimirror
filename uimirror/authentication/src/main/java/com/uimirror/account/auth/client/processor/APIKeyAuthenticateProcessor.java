@@ -17,8 +17,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.uimirror.account.auth.exception.AuthToApplicationExceptionMapper;
-import com.uimirror.account.client.bean.Client;
-import com.uimirror.account.client.dao.ClientStore;
 import com.uimirror.core.Processor;
 import com.uimirror.core.auth.AuthConstants;
 import com.uimirror.core.auth.Authentication;
@@ -26,6 +24,8 @@ import com.uimirror.core.extra.MapException;
 import com.uimirror.core.rest.extra.ApplicationException;
 import com.uimirror.core.service.MatcherService;
 import com.uimirror.core.user.AccountStatus;
+import com.uimirror.ouath.client.Client;
+import com.uimirror.ouath.client.store.ClientStore;
 import com.uimirror.ws.api.security.exception.BadCredentialsException;
 import com.uimirror.ws.api.security.exception.LockedException;
 

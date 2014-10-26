@@ -8,19 +8,19 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.account.client.provider;
+package com.uimirror.ouath.client.provider;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.uimirror.account.client.bean.Client;
-import com.uimirror.account.client.dao.ClientStore;
-import com.uimirror.account.client.form.RegisterForm;
 import com.uimirror.core.Processor;
 import com.uimirror.core.rest.extra.ApplicationException;
 import com.uimirror.core.service.TransformerService;
 import com.uimirror.core.service.ValidatorService;
+import com.uimirror.ouath.client.Client;
+import com.uimirror.ouath.client.form.ClientRegisterForm;
+import com.uimirror.ouath.client.store.ClientStore;
 
 /**
  * Processor for the client account creation, it will first check for the client existence
@@ -33,10 +33,10 @@ import com.uimirror.core.service.ValidatorService;
  * 
  * @author Jay
  */
-public class CreateClientAccountProvider implements Processor<RegisterForm, Client>{
+public class CreateClientAccountProvider implements Processor<ClientRegisterForm, Client>{
 
 	protected static final Logger LOG = LoggerFactory.getLogger(CreateClientAccountProvider.class);
-	private @Autowired TransformerService<RegisterForm, Client> clientRegisterFormToClientTransformer;
+	private @Autowired TransformerService<ClientRegisterForm, Client> clientRegisterFormToClientTransformer;
 	private @Autowired ValidatorService<Client> createClientAccountValidator;
 	private @Autowired ClientStore persistedClientMongoStore;
 
@@ -48,7 +48,7 @@ public class CreateClientAccountProvider implements Processor<RegisterForm, Clie
 	 * @see com.uimirror.core.Processor#invoke(java.lang.Object)
 	 */
 	@Override
-	public Client invoke(RegisterForm param) throws ApplicationException {
+	public Client invoke(ClientRegisterForm param) throws ApplicationException {
 		LOG.info("[START]- Registering a new Client.");
 		//Step -1 Transform to the desired type
 		Client client = transformToClient(param);
@@ -62,12 +62,12 @@ public class CreateClientAccountProvider implements Processor<RegisterForm, Clie
 	
 	
 	/**
-	 * Convert from {@link RegisterForm} to {@link Client}
+	 * Convert from {@link ClientRegisterForm} to {@link Client}
 	 * This will not populate the owner and details map
 	 * @param param
 	 * @return
 	 */
-	private Client transformToClient(RegisterForm param){
+	private Client transformToClient(ClientRegisterForm param){
 		return clientRegisterFormToClientTransformer.transform(param);
 	}
 

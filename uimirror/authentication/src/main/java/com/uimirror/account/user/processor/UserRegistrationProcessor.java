@@ -22,7 +22,6 @@ import com.uimirror.account.auth.client.form.ClientAPIForm;
 import com.uimirror.account.auth.core.TokenGenerator;
 import com.uimirror.account.auth.dao.AccessTokenStore;
 import com.uimirror.account.auth.user.processor.AllowAuthorizationClientProcessor;
-import com.uimirror.account.client.bean.Client;
 import com.uimirror.account.user.form.RegisterForm;
 import com.uimirror.core.Processor;
 import com.uimirror.core.RandomKeyGenerator;
@@ -42,6 +41,7 @@ import com.uimirror.core.service.TransformerService;
 import com.uimirror.core.service.ValidatorService;
 import com.uimirror.core.user.DefaultUser;
 import com.uimirror.core.util.thread.BackgroundProcessorFactory;
+import com.uimirror.ouath.client.Client;
 
 /**
  * Processor for the user account creation, it will first check for the user existence

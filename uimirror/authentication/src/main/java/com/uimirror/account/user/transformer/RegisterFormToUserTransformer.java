@@ -29,7 +29,7 @@ import com.uimirror.core.user.DefaultUser;
 import com.uimirror.core.util.DateTimeUtil;
 
 /**
- * A transformer implementation which will transform the {@linkplain RegisterForm}
+ * A transformer implementation which will transform the {@linkplain ClientRegisterForm}
  * to {@linkplain DefaultUser}
  * @author Jay
  */
@@ -69,7 +69,9 @@ public class RegisterFormToUserTransformer implements TransformerService<Registe
 	}
 	private BasicDetails createDetails(RegisterForm form){
 		DOB dob = new DOB(form.getDateOfBirth());
-		return new BasicDetails(null, null, null, dob, null);
+		//return new BasicDetails(null, null, null, dob, null);
+		//TODO fix me
+		return null;
 	}
 
 }

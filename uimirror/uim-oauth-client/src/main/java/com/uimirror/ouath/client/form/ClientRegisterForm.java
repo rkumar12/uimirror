@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.account.client.form;
+package com.uimirror.ouath.client.form;
 
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -34,7 +34,7 @@ import com.uimirror.ws.api.security.AuthenticatedPrincipal;
  * 
  * @author Jay
  */
-public final class RegisterForm extends AuthenticatedPrincipal implements BeanValidatorService{
+public final class ClientRegisterForm extends AuthenticatedPrincipal implements BeanValidatorService{
 
 	private static final long serialVersionUID = -1215523730014366150L;
 	
@@ -94,7 +94,7 @@ public final class RegisterForm extends AuthenticatedPrincipal implements BeanVa
 
 	@Override
 	public String toString() {
-		return "RegisterForm [name=" + name + ", redirectURL=" + redirectURL
+		return "ClientRegisterForm [name=" + name + ", redirectURL=" + redirectURL
 				+ ", appURL=" + appURL + "]";
 	}
 	

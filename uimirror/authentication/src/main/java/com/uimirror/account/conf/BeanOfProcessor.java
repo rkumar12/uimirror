@@ -17,10 +17,6 @@ import org.springframework.context.annotation.Configuration;
 
 import com.uimirror.account.auth.token.processor.AccessTokenProcessor;
 import com.uimirror.account.auth.user.processor.VerifyActivateUserAccountProcessor;
-import com.uimirror.account.client.bean.Client;
-import com.uimirror.account.client.form.RegisterForm;
-import com.uimirror.account.client.processor.CreateClientAccountProcessor;
-import com.uimirror.account.client.provider.CreateClientAccountProvider;
 import com.uimirror.account.user.form.VerifyForm;
 import com.uimirror.account.user.processor.CreateUserProcessor;
 import com.uimirror.account.user.processor.UserRegistrationProcessor;
@@ -35,16 +31,6 @@ import com.uimirror.core.user.DefaultUser;
  */
 @Configuration
 public class BeanOfProcessor {
-
-  @Bean
-  public Processor<RegisterForm, String> createClientAccountProcessor() {
-    return new CreateClientAccountProcessor();
-  }
-
-  @Bean
-  public Processor<RegisterForm, Client> createClientAccountProvider() {
-	  return new CreateClientAccountProvider();
-  }
 
   @Bean
   public Processor<VerifyForm, String> verifyActivateUserAccountProcessor() {

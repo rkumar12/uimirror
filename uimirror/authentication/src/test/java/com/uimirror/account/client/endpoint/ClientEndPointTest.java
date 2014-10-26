@@ -38,8 +38,8 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import com.uimirror.account.StartApp;
-import com.uimirror.account.client.form.RegisterConstants;
 import com.uimirror.core.auth.AuthConstants;
+import com.uimirror.ouath.client.form.RegisterConstants;
 
 /**
  * Integration test case for the {@link ClientAccountEndPoint}

@@ -25,8 +25,6 @@ import com.uimirror.account.auth.controller.AccessTokenProvider;
 import com.uimirror.account.auth.core.AuthenticationManager;
 import com.uimirror.account.auth.core.TokenGenerator;
 import com.uimirror.account.auth.exception.AuthExceptionMapper;
-import com.uimirror.account.client.bean.Client;
-import com.uimirror.account.client.dao.ClientStore;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.AuthConstants;
 import com.uimirror.core.auth.Authentication;
@@ -37,6 +35,8 @@ import com.uimirror.core.auth.token.DefaultAccessToken;
 import com.uimirror.core.extra.MapException;
 import com.uimirror.core.service.MatcherService;
 import com.uimirror.core.util.DateTimeUtil;
+import com.uimirror.ouath.client.Client;
+import com.uimirror.ouath.client.store.ClientStore;
 import com.uimirror.ws.api.security.exception.AuthenticationException;
 import com.uimirror.ws.api.security.exception.BadCredentialsException;
 

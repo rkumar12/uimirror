@@ -13,8 +13,6 @@ package com.uimirror.account.conf;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.uimirror.account.client.bean.Client;
-import com.uimirror.account.client.validator.CreateClientAccountValidator;
 import com.uimirror.account.user.processor.UserRegistrationValidationService;
 import com.uimirror.core.service.ValidatorService;
 
@@ -25,11 +23,6 @@ import com.uimirror.core.service.ValidatorService;
  */
 @Configuration
 public class BeanOfValidator {
-
-  @Bean
-  public ValidatorService<Client> createClientAccountValidator() {
-    return new CreateClientAccountValidator();
-  }
 
   @Bean
   public ValidatorService<String> userRegistrationValidationService() {

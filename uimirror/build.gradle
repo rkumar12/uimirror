@@ -11,16 +11,22 @@ subprojects {
 //		   url "http://repo.springsource.org/libs-milestone/"
 //       }
     }
+	
+	ext {
+		springVersion = "4.1.0.RELEASE"
+		junitVersion = '4.11'
+		mockitoVersion = '1.9.5'
+	}
 
     dependencies {
-        testCompile 'junit:junit:4.10'
-		testCompile 'org.mockito:mockito-core:1.9.5'
-		testCompile 'org.springframework:spring-test:4.0.6.RELEASE'
+        testCompile group: 'junit', name: 'junit', version: junitVersion
+		testCompile group: 'org.mockito', name: 'mockito-core', version: mockitoVersion
+		testCompile group: 'org.springframework', name: 'spring-test', version: springVersion
     }
 	
 	group = 'com.uimirror.ws.api'
     version = '1.0'
-	description = "Common Utils By Uimirror Team."
+	description = "UIMirror common utility and core endpoints."
 	targetCompatibility = "1.8"
 	sourceCompatibility = "1.8"
 	

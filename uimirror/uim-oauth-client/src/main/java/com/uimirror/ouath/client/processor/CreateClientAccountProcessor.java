@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.account.client.processor;
+package com.uimirror.ouath.client.processor;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -17,14 +17,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.uimirror.account.client.ClientDBFields;
-import com.uimirror.account.client.bean.Client;
-import com.uimirror.account.client.form.RegisterForm;
 import com.uimirror.core.Processor;
 import com.uimirror.core.exceptions.ApplicationExceptionMapper;
 import com.uimirror.core.extra.MapException;
 import com.uimirror.core.rest.extra.ApplicationException;
 import com.uimirror.core.rest.extra.ResponseTransFormer;
+import com.uimirror.ouath.client.Client;
+import com.uimirror.ouath.client.ClientDBFields;
+import com.uimirror.ouath.client.form.ClientRegisterForm;
 
 /**
  * Processor for the client account creation, it will first check for the client existence
@@ -38,10 +38,10 @@ import com.uimirror.core.rest.extra.ResponseTransFormer;
  * 
  * @author Jay
  */
-public class CreateClientAccountProcessor implements Processor<RegisterForm, String>{
+public class CreateClientAccountProcessor implements Processor<ClientRegisterForm, String>{
 
 	protected static final Logger LOG = LoggerFactory.getLogger(CreateClientAccountProcessor.class);
-	private @Autowired Processor<RegisterForm, Client> createClientAccountProvider;
+	private @Autowired Processor<ClientRegisterForm, Client> createClientAccountProvider;
 	private @Autowired ResponseTransFormer<String> jsonResponseTransFormer;
 
 	public CreateClientAccountProcessor() {
@@ -53,7 +53,7 @@ public class CreateClientAccountProcessor implements Processor<RegisterForm, Str
 	 */
 	@Override
 	@MapException(use=ApplicationExceptionMapper.NAME)
-	public String invoke(RegisterForm param) throws ApplicationException {
+	public String invoke(ClientRegisterForm param) throws ApplicationException {
 		LOG.info("[START]- Registering a new Client.");
 		Client client =createClientAccountProvider.invoke(param);
 		LOG.info("[END]- Registering a new Client.");

@@ -14,7 +14,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.uimirror.core.DOB;
-import com.uimirror.core.Location;
 import com.uimirror.core.mongo.feature.BeanBasedDocument;
 import com.uimirror.core.service.BeanValidatorService;
 
@@ -26,8 +25,8 @@ public class BasicDetails extends BeanBasedDocument<BasicDetails> implements Bea
 
 	private static final long serialVersionUID = -5282406171053226490L;
 
-	private Location presentAddress;
-	private Location permanetAddress;
+	private String presentAddress;
+	private String permanetAddress;
 	private DOB dateOfBirth;
 	private Map<String, Object> details;
 
@@ -40,7 +39,7 @@ public class BasicDetails extends BeanBasedDocument<BasicDetails> implements Bea
 		super(map);
 	}
 	
-	public BasicDetails(String profileId, Location presentAddress, Location permanetAddress, DOB dateOfBirth, Map<String, Object> details) {
+	public BasicDetails(String profileId, String presentAddress, String permanetAddress, DOB dateOfBirth, Map<String, Object> details) {
 		super(profileId);
 		this.presentAddress = presentAddress;
 		this.permanetAddress = permanetAddress;
@@ -122,14 +121,6 @@ public class BasicDetails extends BeanBasedDocument<BasicDetails> implements Bea
 
 	public Object getDetails() {
 		return this.details;
-	}
-
-	public Location getPresentAddress() {
-		return this.presentAddress;
-	}
-
-	public Location getPermanetAddress() {
-		return this.permanetAddress;
 	}
 
 	@Override

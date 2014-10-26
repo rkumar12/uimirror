@@ -21,7 +21,6 @@ import org.springframework.util.Assert;
 import com.uimirror.account.auth.client.APIKeyAuthentication;
 import com.uimirror.account.auth.core.AuthenticationManager;
 import com.uimirror.account.auth.core.TokenGenerator;
-import com.uimirror.account.client.bean.Client;
 import com.uimirror.core.Processor;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.AuthConstants;
@@ -30,6 +29,7 @@ import com.uimirror.core.auth.Scope;
 import com.uimirror.core.auth.Token;
 import com.uimirror.core.auth.TokenType;
 import com.uimirror.core.auth.token.DefaultAccessToken;
+import com.uimirror.ouath.client.Client;
 import com.uimirror.ws.api.security.exception.AuthenticationException;
 
 /**

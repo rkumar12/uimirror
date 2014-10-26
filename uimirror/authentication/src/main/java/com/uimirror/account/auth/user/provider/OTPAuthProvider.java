@@ -21,13 +21,13 @@ import com.uimirror.account.auth.controller.AccessTokenProvider;
 import com.uimirror.account.auth.controller.AuthenticationProvider;
 import com.uimirror.account.auth.core.AuthenticationManager;
 import com.uimirror.account.auth.user.bean.OTPAuthentication;
-import com.uimirror.account.client.ClientDBFields;
-import com.uimirror.account.client.bean.Client;
-import com.uimirror.account.client.dao.ClientStore;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.AuthConstants;
 import com.uimirror.core.auth.Authentication;
 import com.uimirror.core.auth.TokenType;
+import com.uimirror.ouath.client.Client;
+import com.uimirror.ouath.client.ClientDBFields;
+import com.uimirror.ouath.client.store.ClientStore;
 
 /**
  * Validates the {@link Authentication} and populate the authenticated principal

@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.account.client.bean;
+package com.uimirror.ouath.client;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -16,7 +16,6 @@ import java.util.Map;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import com.uimirror.account.client.ClientDBFields;
 import com.uimirror.core.mongo.feature.BeanBasedDocument;
 import com.uimirror.core.service.BeanValidatorService;
 import com.uimirror.core.user.AccountStatus;

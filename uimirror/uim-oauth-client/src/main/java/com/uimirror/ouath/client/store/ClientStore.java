@@ -8,10 +8,10 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.account.client.dao;
+package com.uimirror.ouath.client.store;
 
-import com.uimirror.account.client.bean.Client;
 import com.uimirror.core.dao.DBException;
+import com.uimirror.ouath.client.Client;
 
 /**
  * A basic repo for the client 

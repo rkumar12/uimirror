@@ -23,14 +23,14 @@ import com.uimirror.account.auth.core.AuthenticationManager;
 import com.uimirror.account.auth.core.processor.OTPMailProcessor;
 import com.uimirror.account.auth.dao.AccessTokenStore;
 import com.uimirror.account.auth.user.bean.LoginAuthentication;
-import com.uimirror.account.client.ClientDBFields;
-import com.uimirror.account.client.bean.Client;
-import com.uimirror.account.client.dao.ClientStore;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.AuthConstants;
 import com.uimirror.core.auth.Authentication;
 import com.uimirror.core.auth.TokenType;
 import com.uimirror.core.util.thread.BackgroundProcessorFactory;
+import com.uimirror.ouath.client.Client;
+import com.uimirror.ouath.client.ClientDBFields;
+import com.uimirror.ouath.client.store.ClientStore;
 
 /**
  * The step of operations for this processor is defined as below:

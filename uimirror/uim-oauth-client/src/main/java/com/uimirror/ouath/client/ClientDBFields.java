@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.account.client;
+package com.uimirror.ouath.client;
 
 import com.uimirror.core.mongo.feature.BasicDBFields;
 

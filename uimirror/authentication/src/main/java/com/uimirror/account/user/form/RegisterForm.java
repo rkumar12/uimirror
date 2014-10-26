@@ -170,7 +170,7 @@ public final class RegisterForm extends ClientAPIForm implements BeanValidatorSe
 
 	@Override
 	public String toString() {
-		return "RegisterForm [firstName="
+		return "ClientRegisterForm [firstName="
 				+ firstName + ", lastName=" + lastName + ", email=" + email
 				+ ", password=[*******], gender=" + gender
 				+ ", dateOfBirth=" + dateOfBirth + "]";

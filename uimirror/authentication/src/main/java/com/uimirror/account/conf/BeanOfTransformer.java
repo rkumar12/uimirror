@@ -13,8 +13,6 @@ package com.uimirror.account.conf;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.uimirror.account.client.bean.Client;
-import com.uimirror.account.client.transformer.ClientRegisterFormToClientTransformer;
 import com.uimirror.account.user.form.RegisterForm;
 import com.uimirror.account.user.transformer.RegisterFormToUserTransformer;
 import com.uimirror.core.service.TransformerService;
@@ -27,11 +25,6 @@ import com.uimirror.core.user.DefaultUser;
  */
 @Configuration
 public class BeanOfTransformer {
-
-	@Bean
-	public TransformerService<com.uimirror.account.client.form.RegisterForm, Client> clientRegisterFormToClientTransformer(){
-		return new ClientRegisterFormToClientTransformer();
-	}
 	
 	@Bean
 	public TransformerService<RegisterForm, DefaultUser> registerFormToUser(){

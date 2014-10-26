@@ -8,31 +8,29 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.account.client.dao;
+package com.uimirror.ouath.client.store;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
-import com.uimirror.account.client.ClientDBFields;
-import com.uimirror.account.client.bean.Client;
 import com.uimirror.core.dao.AbstractMongoStore;
 import com.uimirror.core.dao.DBException;
 import com.uimirror.core.user.AccountStatus;
+import com.uimirror.ouath.client.Client;
+import com.uimirror.ouath.client.ClientDBFields;
 
 /**
  * This will be the client store In Mongo DB implementations
  * 
  * @author Jay
  */
-@Repository
 public class PersistedClientMongoStore extends AbstractMongoStore<Client> implements ClientStore{
 	
 	private final static String CLIENT_BASIC_SEQ = "cbs";

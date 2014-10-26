@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.account.client.exception;
+package com.uimirror.ouath.client.exception;
 
 import java.util.Map;
 

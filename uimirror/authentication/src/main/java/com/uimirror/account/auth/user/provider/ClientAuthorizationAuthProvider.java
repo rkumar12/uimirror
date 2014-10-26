@@ -24,14 +24,14 @@ import com.uimirror.account.auth.user.bean.ClientAuthorizationAuthentication;
 import com.uimirror.account.auth.user.bean.LoginAuthentication;
 import com.uimirror.account.auth.user.processor.AllowAuthorizationClientProcessor;
 import com.uimirror.account.auth.user.processor.DenyAuthorizationClientProcessor;
-import com.uimirror.account.client.ClientDBFields;
-import com.uimirror.account.client.bean.Client;
-import com.uimirror.account.client.dao.ClientStore;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.Authentication;
 import com.uimirror.core.auth.TokenType;
 import com.uimirror.core.util.thread.BackgroundProcessor;
 import com.uimirror.core.util.thread.BackgroundProcessorFactory;
+import com.uimirror.ouath.client.Client;
+import com.uimirror.ouath.client.ClientDBFields;
+import com.uimirror.ouath.client.store.ClientStore;
 
 /**
  * Validates the {@link Authentication} and populate the authenticated principal

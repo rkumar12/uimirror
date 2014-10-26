@@ -8,17 +8,17 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.account.client.validator;
+package com.uimirror.ouath.client.validator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.uimirror.account.client.bean.Client;
-import com.uimirror.account.client.dao.ClientStore;
-import com.uimirror.account.client.exception.ClientAlreadyExistException;
 import com.uimirror.core.dao.RecordNotFoundException;
 import com.uimirror.core.service.ValidatorService;
+import com.uimirror.ouath.client.Client;
+import com.uimirror.ouath.client.exception.ClientAlreadyExistException;
+import com.uimirror.ouath.client.store.ClientStore;
 
 /**
  * Processor for the client account creation, it will first check for the client existence

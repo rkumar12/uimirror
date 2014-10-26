@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src/main/java"/>
-	<classpathentry kind="src" path="src/main/resources"/>
 	<classpathentry kind="src" path="src/test/java"/>
-	<classpathentry kind="src" path="src/test/resources"/>
 	<classpathentry exported="true" kind="src" path="/uim-core"/>
-	<classpathentry exported="true" kind="src" path="/uim-oauth-client"/>
-	<classpathentry exported="true" kind="src" path="/ws-filters"/>
 	<classpathentry exported="true" kind="src" path="/ws-resource-security"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry exported="true" kind="con" path="org.springsource.ide.eclipse.gradle.classpathcontainer"/>

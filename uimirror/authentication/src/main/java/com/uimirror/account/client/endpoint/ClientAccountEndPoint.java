@@ -23,8 +23,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.uimirror.account.client.form.RegisterForm;
 import com.uimirror.core.Processor;
+import com.uimirror.ouath.client.form.ClientRegisterForm;
 import com.uimirror.ws.api.security.annotation.PreAuthorize;
 
 /**
@@ -37,7 +37,7 @@ import com.uimirror.ws.api.security.annotation.PreAuthorize;
 public class ClientAccountEndPoint{
 
 	private static Logger LOG = LoggerFactory.getLogger(ClientAccountEndPoint.class);
-	private @Autowired Processor<RegisterForm, String> createClientAccountProcessor;
+	private @Autowired Processor<ClientRegisterForm, String> createClientAccountProcessor;
 	
 	
 	public ClientAccountEndPoint() {
@@ -78,7 +78,7 @@ public class ClientAccountEndPoint{
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Path(ClientEndPointConstant.CREATE)
 	@PreAuthorize
-	public Object create(@BeanParam RegisterForm form){
+	public Object create(@BeanParam ClientRegisterForm form){
 		LOG.info("[ENTRY]- Received requst for Client Creation.");
 		Object response = createClientAccountProcessor.invoke(form);
 		LOG.info("[EXIT]- Received requst for Client Creation.");
