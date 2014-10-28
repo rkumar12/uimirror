@@ -20,11 +20,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 
-import com.uimirror.account.auth.dao.AccessTokenStore;
 import com.uimirror.core.auth.TokenType;
 import com.uimirror.core.auth.token.AccessTokenFields;
 import com.uimirror.core.mongo.BasicMongoOperators;
 import com.uimirror.core.util.DateTimeUtil;
+import com.uimirror.sso.token.store.AccessTokenStore;
 
 /**
  * A Scheduler that will run on every 5 mins to delete all the token that are expired

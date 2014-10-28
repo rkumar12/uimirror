@@ -16,12 +16,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.uimirror.account.auth.controller.AccessTokenProvider;
-import com.uimirror.account.auth.controller.AuthenticationProvider;
-import com.uimirror.account.auth.core.AuthenticationManager;
-import com.uimirror.account.auth.user.bean.ScreenLockAuthentication;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.Authentication;
+import com.uimirror.sso.AuthenticationManager;
+import com.uimirror.sso.auth.ScreenLockAuthentication;
+import com.uimirror.sso.auth.provider.AuthenticationProvider;
+import com.uimirror.sso.token.AccessTokenProvider;
 
 /**
  * Will be responsible to generate {@linkplain AccessToken} by validating the existing token,

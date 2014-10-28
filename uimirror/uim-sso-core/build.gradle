@@ -1,0 +1,31 @@
+ext {
+	jerseyVersion = "2.12"
+}
+
+group = "com.uimirror"
+version = 1.0
+
+dependencies {
+	compile project(':uim-core')
+	compile project(':uim-oauth-client')
+	compile group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet', version: jerseyVersion
+}
+
+task sourceJar(type: Jar) {
+    from sourceSets.main.allJava
+}
+publishing {
+	publications {
+		mavenJava(MavenPublication) {
+            groupId project.group
+            artifactId project.name
+            version project.version
+            from components.java
+			artifact sourceJar {
+					classifier "sources"
+			}
+        }
+	}
+}
+
+defaultTasks 'clean', 'build', 'intsall'

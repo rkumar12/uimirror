@@ -10,22 +10,14 @@
  *******************************************************************************/
 package com.uimirror.account.auth.token.processor;
 
-import java.util.Map;
-
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.SecurityContext;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import com.uimirror.account.auth.client.OAuth2Authentication;
-import com.uimirror.account.auth.controller.AccessTokenProvider;
-import com.uimirror.account.auth.core.TokenGenerator;
-import com.uimirror.account.auth.core.processor.InvalidateTokenProcessor;
 import com.uimirror.core.Processor;
 import com.uimirror.core.auth.AccessToken;
-import com.uimirror.core.auth.AuthConstants;
 import com.uimirror.core.auth.Authentication;
 import com.uimirror.core.auth.Scope;
 import com.uimirror.core.auth.Token;
@@ -33,11 +25,7 @@ import com.uimirror.core.auth.TokenType;
 import com.uimirror.core.auth.token.DefaultAccessToken;
 import com.uimirror.core.exceptions.ApplicationExceptionMapper;
 import com.uimirror.core.extra.MapException;
-import com.uimirror.core.form.AuthenticatedHeaderForm;
 import com.uimirror.core.rest.extra.ApplicationException;
-import com.uimirror.core.service.TransformerService;
-import com.uimirror.core.util.DateTimeUtil;
-import com.uimirror.core.util.thread.BackgroundProcessorFactory;
 import com.uimirror.ws.api.security.DefaultSecurityContext;
 
 /**

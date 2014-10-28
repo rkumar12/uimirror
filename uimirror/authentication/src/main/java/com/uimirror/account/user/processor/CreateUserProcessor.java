@@ -14,13 +14,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.uimirror.account.user.dao.DefaultUserStore;
 import com.uimirror.account.user.form.RegisterForm;
 import com.uimirror.core.Processor;
 import com.uimirror.core.rest.extra.ApplicationException;
 import com.uimirror.core.service.TransformerService;
 import com.uimirror.core.user.DefaultUser;
 import com.uimirror.core.util.thread.BackgroundProcessorFactory;
+import com.uimirror.user.processor.BackGroundCreateUserProcessor;
+import com.uimirror.user.store.DefaultUserStore;
 
 /**
  * Processor for the user account creation, it will first check for the user existence

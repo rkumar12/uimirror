@@ -16,10 +16,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.uimirror.account.auth.controller.AccessTokenProvider;
-import com.uimirror.account.auth.core.TokenGenerator;
-import com.uimirror.account.auth.core.processor.InvalidateTokenProcessor;
-import com.uimirror.account.user.dao.UserCredentialsStore;
 import com.uimirror.account.user.form.VerifyForm;
 import com.uimirror.account.user.form.VerifySource;
 import com.uimirror.core.Processor;
@@ -33,6 +29,10 @@ import com.uimirror.core.rest.extra.ApplicationException;
 import com.uimirror.core.rest.extra.ResponseTransFormer;
 import com.uimirror.core.util.DateTimeUtil;
 import com.uimirror.core.util.thread.BackgroundProcessorFactory;
+import com.uimirror.sso.token.AccessTokenProvider;
+import com.uimirror.sso.token.InvalidateTokenProcessor;
+import com.uimirror.sso.token.TokenGenerator;
+import com.uimirror.user.store.UserCredentialsStore;
 import com.uimirror.ws.api.security.exception.InvalidTokenException;
 
 /**

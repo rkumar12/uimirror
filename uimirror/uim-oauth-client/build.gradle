@@ -1,8 +1,5 @@
 ext {
-	jerseyVersion = "2.11"
-	springVersion = "4.0.5.RELEASE"
-	slf4jVersion = "1.7.2"
-	qosLogBackVersion = "1.1.1"
+	jerseyVersion = "2.12"
 }
 
 group = "com.uimirror"

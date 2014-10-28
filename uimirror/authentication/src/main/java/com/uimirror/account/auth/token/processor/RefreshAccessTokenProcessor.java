@@ -16,10 +16,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.uimirror.account.auth.client.OAuth2Authentication;
-import com.uimirror.account.auth.controller.AccessTokenProvider;
-import com.uimirror.account.auth.core.TokenGenerator;
-import com.uimirror.account.auth.core.processor.InvalidateTokenProcessor;
 import com.uimirror.core.Processor;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.AuthConstants;
@@ -35,6 +31,10 @@ import com.uimirror.core.rest.extra.ApplicationException;
 import com.uimirror.core.service.TransformerService;
 import com.uimirror.core.util.DateTimeUtil;
 import com.uimirror.core.util.thread.BackgroundProcessorFactory;
+import com.uimirror.sso.auth.OAuth2Authentication;
+import com.uimirror.sso.token.AccessTokenProvider;
+import com.uimirror.sso.token.InvalidateTokenProcessor;
+import com.uimirror.sso.token.TokenGenerator;
 
 /**
  * A Manager which will validate the incoming request and try to authenticate

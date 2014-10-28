@@ -17,11 +17,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.uimirror.account.user.UserAuthorizedClient;
 import com.uimirror.core.Processor;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.service.TransformerService;
 import com.uimirror.core.util.thread.AbstractBackgroundProcessor;
+import com.uimirror.sso.client.UserAuthorizedClient;
 
 /**
  * Set of operation that needs to be handled for the OTP Mail processing

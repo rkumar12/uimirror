@@ -10,16 +10,11 @@
  *******************************************************************************/
 package com.uimirror.account.auth.conf;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-import com.uimirror.account.auth.controller.AccessTokenProvider;
-import com.uimirror.account.auth.core.PasswordMatcher;
-import com.uimirror.account.auth.core.PersistedAccessTokenProvider;
-import com.uimirror.core.crypto.CryptoMatcherService;
 import com.uimirror.core.mail.EmailBeanInitializr;
+import com.uimirror.sso.conf.SSOBeanInitializer;
 
 /**
  * Initialize or configures the service bean getting used for this application
@@ -29,20 +24,7 @@ import com.uimirror.core.mail.EmailBeanInitializr;
 @Import({BeanOfExceptionIntitializer.class, BeanOfAuthProcessor.class
 	, BeanOfAuthManagers.class, BeanOfAuthProviders.class
 	, BeanOfTransformers.class, EmailBeanInitializr.class
-	, BeanOfBackGroundProcessor.class, BeanOfSchedulers.class})
+	, BeanOfBackGroundProcessor.class, BeanOfSchedulers.class, SSOBeanInitializer.class})
 public class AuthBeanIntitializer {
-	
-	@Bean
-	@Autowired
-	public PasswordMatcher passwordMatcher(CryptoMatcherService cryptoMatcherService){
-		return new PasswordMatcher(cryptoMatcherService);
-	}
-	
-	//****Access Token providers****
-	@Bean
-	public AccessTokenProvider persistedAccessTokenProvider(){
-		return new PersistedAccessTokenProvider();
-	}
-	//****Access Token providers end****
 
 }

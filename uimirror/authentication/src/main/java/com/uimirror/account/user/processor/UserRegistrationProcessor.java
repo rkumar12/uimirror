@@ -17,11 +17,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.uimirror.account.auth.client.APIKeyAuthentication;
-import com.uimirror.account.auth.client.form.ClientAPIForm;
-import com.uimirror.account.auth.core.TokenGenerator;
-import com.uimirror.account.auth.dao.AccessTokenStore;
-import com.uimirror.account.auth.user.processor.AllowAuthorizationClientProcessor;
 import com.uimirror.account.user.form.RegisterForm;
 import com.uimirror.core.Processor;
 import com.uimirror.core.RandomKeyGenerator;
@@ -42,6 +37,11 @@ import com.uimirror.core.service.ValidatorService;
 import com.uimirror.core.user.DefaultUser;
 import com.uimirror.core.util.thread.BackgroundProcessorFactory;
 import com.uimirror.ouath.client.Client;
+import com.uimirror.sso.auth.APIKeyAuthentication;
+import com.uimirror.sso.client.AllowAuthorizationClientProcessor;
+import com.uimirror.sso.form.ClientAPIForm;
+import com.uimirror.sso.token.TokenGenerator;
+import com.uimirror.sso.token.store.AccessTokenStore;
 
 /**
  * Processor for the user account creation, it will first check for the user existence

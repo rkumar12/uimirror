@@ -14,8 +14,6 @@ import org.springframework.beans.factory.config.ServiceLocatorFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.uimirror.account.auth.exception.AuthExceptionMapper;
-import com.uimirror.account.auth.exception.AuthToApplicationExceptionMapper;
 import com.uimirror.core.dao.MongoExceptionMapper;
 import com.uimirror.core.exceptions.ApplicationExceptionMapper;
 import com.uimirror.core.exceptions.ExceptionMapper;
@@ -34,16 +32,6 @@ public class BeanOfExceptionIntitializer {
 		ServiceLocatorFactoryBean sb = new ServiceLocatorFactoryBean();
 		sb.setServiceLocatorInterface(ExceptionMapperFactory.class);
 		return sb;
-	}
-	
-	@Bean(name=AuthToApplicationExceptionMapper.NAME)
-	public ExceptionMapper authToApplicationExceptionMapper(){
-		return new AuthToApplicationExceptionMapper();
-	}
-	
-	@Bean(name=AuthExceptionMapper.NAME)
-	public ExceptionMapper authExceptionMapper(){
-		return new AuthExceptionMapper();
 	}
 	
 	@Bean(name=MongoExceptionMapper.NAME)

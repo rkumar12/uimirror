@@ -20,7 +20,6 @@ import javax.ws.rs.FormParam;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.util.StringUtils;
 
-import com.uimirror.account.auth.client.form.ClientAPIForm;
 import com.uimirror.account.auth.user.Password;
 import com.uimirror.core.Constants;
 import com.uimirror.core.bean.Gender;
@@ -29,6 +28,7 @@ import com.uimirror.core.service.BeanValidatorService;
 import com.uimirror.core.util.DateTimeUtil;
 import com.uimirror.core.util.MessageUtil;
 import com.uimirror.core.util.StringRegexUtil;
+import com.uimirror.sso.form.ClientAPIForm;
 
 /**
  * Converts the {@link FormParam} provided in the POST request for 

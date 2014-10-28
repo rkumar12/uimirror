@@ -14,10 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.uimirror.account.auth.client.APIKeyAuthentication;
-import com.uimirror.account.auth.client.form.ClientAPIForm;
-import com.uimirror.account.auth.controller.AuthenticationProvider;
-import com.uimirror.account.auth.exception.AuthToApplicationExceptionMapper;
 import com.uimirror.core.Processor;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.Authentication;
@@ -25,6 +21,10 @@ import com.uimirror.core.extra.MapException;
 import com.uimirror.core.rest.extra.ApplicationException;
 import com.uimirror.core.rest.extra.ResponseTransFormer;
 import com.uimirror.core.service.TransformerService;
+import com.uimirror.sso.auth.APIKeyAuthentication;
+import com.uimirror.sso.auth.provider.AuthenticationProvider;
+import com.uimirror.sso.exception.AuthToApplicationExceptionMapper;
+import com.uimirror.sso.form.ClientAPIForm;
 
 /**
  * The step of operations for this processor is defined as below:

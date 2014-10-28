@@ -12,9 +12,10 @@ package com.uimirror.account.auth.user.transformer;
 
 import org.springframework.util.Assert;
 
-import com.uimirror.account.auth.user.bean.LoginAuthentication;
 import com.uimirror.account.auth.user.form.LoginForm;
 import com.uimirror.core.service.TransformerService;
+import com.uimirror.ouath.client.form.ClientRegisterForm;
+import com.uimirror.sso.auth.LoginAuthentication;
 
 /**
  * A transformer implementation which will transform the {@linkplain ClientRegisterForm}

@@ -14,10 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.uimirror.account.auth.controller.AuthenticationProvider;
-import com.uimirror.account.auth.core.AuthenticationManager;
-import com.uimirror.account.auth.exception.AuthToApplicationExceptionMapper;
-import com.uimirror.account.auth.user.bean.ScreenLockAuthentication;
 import com.uimirror.account.auth.user.form.ScreenLockAuthenticationForm;
 import com.uimirror.core.Processor;
 import com.uimirror.core.auth.AccessToken;
@@ -26,6 +22,10 @@ import com.uimirror.core.extra.MapException;
 import com.uimirror.core.rest.extra.ApplicationException;
 import com.uimirror.core.rest.extra.ResponseTransFormer;
 import com.uimirror.core.service.TransformerService;
+import com.uimirror.sso.AuthenticationManager;
+import com.uimirror.sso.auth.ScreenLockAuthentication;
+import com.uimirror.sso.auth.provider.AuthenticationProvider;
+import com.uimirror.sso.exception.AuthToApplicationExceptionMapper;
 
 /**
  * Extracts the field, interact with the {@link AuthenticationManager}

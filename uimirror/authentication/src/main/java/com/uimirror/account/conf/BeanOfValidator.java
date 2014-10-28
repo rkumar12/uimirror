@@ -10,11 +10,7 @@
  *******************************************************************************/
 package com.uimirror.account.conf;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import com.uimirror.account.user.processor.UserRegistrationValidationService;
-import com.uimirror.core.service.ValidatorService;
 
 /**
  * Contains the bean definition for all the user and client process
@@ -23,10 +19,5 @@ import com.uimirror.core.service.ValidatorService;
  */
 @Configuration
 public class BeanOfValidator {
-
-  @Bean
-  public ValidatorService<String> userRegistrationValidationService() {
-	  return new UserRegistrationValidationService();
-  }
 
 }

@@ -17,12 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.uimirror.account.auth.controller.AccessTokenProvider;
-import com.uimirror.account.auth.controller.AuthenticationProvider;
-import com.uimirror.account.auth.core.AuthenticationManager;
 import com.uimirror.account.auth.core.processor.OTPMailProcessor;
-import com.uimirror.account.auth.dao.AccessTokenStore;
-import com.uimirror.account.auth.user.bean.LoginAuthentication;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.AuthConstants;
 import com.uimirror.core.auth.Authentication;
@@ -31,6 +26,11 @@ import com.uimirror.core.util.thread.BackgroundProcessorFactory;
 import com.uimirror.ouath.client.Client;
 import com.uimirror.ouath.client.ClientDBFields;
 import com.uimirror.ouath.client.store.ClientStore;
+import com.uimirror.sso.AuthenticationManager;
+import com.uimirror.sso.auth.LoginAuthentication;
+import com.uimirror.sso.auth.provider.AuthenticationProvider;
+import com.uimirror.sso.token.AccessTokenProvider;
+import com.uimirror.sso.token.store.AccessTokenStore;
 
 /**
  * The step of operations for this processor is defined as below:

@@ -12,9 +12,9 @@ package com.uimirror.account.auth.user.transformer;
 
 import org.springframework.util.Assert;
 
-import com.uimirror.account.auth.user.bean.ScreenLockAuthentication;
 import com.uimirror.account.auth.user.form.ScreenLockAuthenticationForm;
 import com.uimirror.core.service.TransformerService;
+import com.uimirror.sso.auth.ScreenLockAuthentication;
 
 /**
  * A transformer implementation which will transform the {@linkplain ScreenLockAuthenticationForm}

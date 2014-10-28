@@ -20,6 +20,7 @@ import com.uimirror.core.crypto.MatcherServiceImpl;
 import com.uimirror.core.rest.extra.JsonResponseTransFormer;
 import com.uimirror.core.rest.extra.ResponseTransFormer;
 import com.uimirror.ouath.client.conf.BeanOfOAuthClient;
+import com.uimirror.user.conf.UserBeanInitializer;
 
 /**
  * Initialize or configures the service bean getting used for this application
@@ -28,7 +29,7 @@ import com.uimirror.ouath.client.conf.BeanOfOAuthClient;
 @Configuration
 @Import({AuthBeanIntitializer.class, DaoBeanIntitializer.class
 	, BeanOfProcessor.class, BeanOfTransformer.class
-	, BeanOfValidator.class, BeanOfOAuthClient.class})
+	, BeanOfValidator.class, BeanOfOAuthClient.class, UserBeanInitializer.class})
 public class BeanIntitializer {
 
 	@Bean(name=JsonResponseTransFormer.NAME)

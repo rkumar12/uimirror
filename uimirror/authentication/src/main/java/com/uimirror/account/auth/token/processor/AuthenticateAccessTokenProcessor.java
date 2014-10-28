@@ -14,9 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.uimirror.account.auth.client.OAuth2Authentication;
-import com.uimirror.account.auth.controller.AuthenticationProvider;
-import com.uimirror.account.auth.exception.AuthToApplicationExceptionMapper;
 import com.uimirror.core.Processor;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.Authentication;
@@ -24,6 +21,9 @@ import com.uimirror.core.extra.MapException;
 import com.uimirror.core.form.AuthenticatedHeaderForm;
 import com.uimirror.core.rest.extra.ApplicationException;
 import com.uimirror.core.service.TransformerService;
+import com.uimirror.sso.auth.OAuth2Authentication;
+import com.uimirror.sso.auth.provider.AuthenticationProvider;
+import com.uimirror.sso.exception.AuthToApplicationExceptionMapper;
 
 /**
  * A processor, that validate the incoming request 

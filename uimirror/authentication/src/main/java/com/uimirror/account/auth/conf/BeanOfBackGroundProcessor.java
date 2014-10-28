@@ -14,15 +14,9 @@ import org.springframework.beans.factory.config.ServiceLocatorFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.uimirror.account.auth.core.processor.InvalidateTokenProcessor;
 import com.uimirror.account.auth.core.processor.OTPMailProcessor;
-import com.uimirror.account.auth.user.processor.AllowAuthorizationClientProcessor;
-import com.uimirror.account.auth.user.processor.DenyAuthorizationClientProcessor;
 import com.uimirror.account.auth.user.processor.UserRestoreProcessor;
-import com.uimirror.account.user.processor.BackGroundCreateMissingUserProcessor;
-import com.uimirror.account.user.processor.BackGroundCreateUserProcessor;
 import com.uimirror.core.auth.AccessToken;
-import com.uimirror.core.user.DefaultUser;
 import com.uimirror.core.util.thread.BackgroundProcessor;
 import com.uimirror.core.util.thread.BackgroundProcessorFactory;
 
@@ -40,16 +34,6 @@ public class BeanOfBackGroundProcessor {
 		return sb;
 	}
 	
-	@Bean(name=AllowAuthorizationClientProcessor.NAME)
-	public BackgroundProcessor<AccessToken, Object> allowAuthorizationClientProcessor(){
-		return new AllowAuthorizationClientProcessor();
-	}
-	
-	@Bean(name=DenyAuthorizationClientProcessor.NAME)
-	public BackgroundProcessor<AccessToken, Object> denyAuthorizationClientProcessor(){
-		return new DenyAuthorizationClientProcessor();
-	}
-	
 	@Bean(name=UserRestoreProcessor.NAME)
 	public BackgroundProcessor<String, Object> userRestoreProcessor(){
 		return new UserRestoreProcessor();
@@ -58,20 +42,6 @@ public class BeanOfBackGroundProcessor {
 	@Bean(name=OTPMailProcessor.NAME)
 	public BackgroundProcessor<AccessToken, Object> otpMailProcessor(){
 		return new OTPMailProcessor();
-	}
-	
-	@Bean(name=InvalidateTokenProcessor.NAME)
-	public BackgroundProcessor<String, Object> invalidateTokenProcessor(){
-		return new InvalidateTokenProcessor();
-	}
-	@Bean(name=BackGroundCreateUserProcessor.NAME)
-	public BackgroundProcessor<DefaultUser, Object> backGroundCreateUserProcessor(){
-		return new BackGroundCreateUserProcessor();
-	}
-
-	@Bean(name=BackGroundCreateMissingUserProcessor.NAME)
-	public BackgroundProcessor<DefaultUser, Object> backGroundCreateMissingUserProcessor(){
-		return new BackGroundCreateMissingUserProcessor();
 	}
 
 }

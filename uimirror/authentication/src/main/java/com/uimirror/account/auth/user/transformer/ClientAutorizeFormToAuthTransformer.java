@@ -12,9 +12,9 @@ package com.uimirror.account.auth.user.transformer;
 
 import org.springframework.util.Assert;
 
-import com.uimirror.account.auth.user.bean.ClientAuthorizationAuthentication;
 import com.uimirror.account.auth.user.form.AuthorizeClientAuthenticationForm;
 import com.uimirror.core.service.TransformerService;
+import com.uimirror.sso.client.ClientAuthorizationAuthentication;
 
 /**
  * A transformer implementation which will transform the {@linkplain AuthorizeClientAuthenticationForm}

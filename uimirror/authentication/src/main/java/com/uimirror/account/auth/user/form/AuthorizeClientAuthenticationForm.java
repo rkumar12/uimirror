@@ -13,12 +13,12 @@ package com.uimirror.account.auth.user.form;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.QueryParam;
 
-import com.uimirror.account.auth.user.Approval;
 import com.uimirror.core.auth.AuthConstants;
 import com.uimirror.core.auth.Scope;
 import com.uimirror.core.form.AuthenticatedHeaderForm;
 import com.uimirror.core.rest.extra.IllegalArgumentException;
 import com.uimirror.core.service.BeanValidatorService;
+import com.uimirror.sso.client.Approval;
 
 /**
  * Converts the {@link FormParam} provided in the POST request for the

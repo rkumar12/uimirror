@@ -14,11 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.uimirror.account.auth.client.OAuth2SecretKeyAuthentication;
-import com.uimirror.account.auth.client.form.ClientSecretKeyForm;
-import com.uimirror.account.auth.controller.AuthenticationProvider;
-import com.uimirror.account.auth.core.processor.InvalidateTokenProcessor;
-import com.uimirror.account.auth.exception.AuthToApplicationExceptionMapper;
 import com.uimirror.core.Processor;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.Authentication;
@@ -27,6 +22,11 @@ import com.uimirror.core.rest.extra.ApplicationException;
 import com.uimirror.core.rest.extra.ResponseTransFormer;
 import com.uimirror.core.service.TransformerService;
 import com.uimirror.core.util.thread.BackgroundProcessorFactory;
+import com.uimirror.sso.auth.OAuth2SecretKeyAuthentication;
+import com.uimirror.sso.auth.provider.AuthenticationProvider;
+import com.uimirror.sso.exception.AuthToApplicationExceptionMapper;
+import com.uimirror.sso.form.ClientSecretKeyForm;
+import com.uimirror.sso.token.InvalidateTokenProcessor;
 
 /**
  * The main steps are as below:

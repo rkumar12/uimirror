@@ -24,9 +24,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.uimirror.account.auth.client.form.ClientAPIForm;
-import com.uimirror.account.auth.client.form.ClientSecretKeyForm;
 import com.uimirror.core.Processor;
+import com.uimirror.sso.form.ClientAPIForm;
+import com.uimirror.sso.form.ClientSecretKeyForm;
 
 /**
  * Controller which will handle all the client releated request such as 
