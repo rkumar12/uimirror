@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.account.user.endpoint;
+package com.uimirror.ws.account.user.endpoint;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -37,11 +37,10 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import com.uimirror.account.StartApp;
-import com.uimirror.account.client.endpoint.ClientAccountEndPoint;
-import com.uimirror.account.user.form.RegisterConstants;
-import com.uimirror.account.user.form.VerifyConstants;
-import com.uimirror.core.auth.AuthConstants;
+import com.uimirror.ws.account.StartApp;
+import com.uimirror.ws.account.endpoint.ClientAccountEndPoint;
+import com.uimirror.ws.account.form.RegisterConstants;
+import com.uimirror.ws.account.form.VerifyConstants;
 
 /**
  * Integration test case for the {@link ClientAccountEndPoint}

@@ -32,8 +32,8 @@ import org.springframework.context.annotation.ImportResource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.FileCopyUtils;
 
+import com.uimirror.account.auth.conf.AuthBeanIntitializer;
 import com.uimirror.account.conf.AppConfig;
-import com.uimirror.account.conf.BeanIntitializer;
 import com.uimirror.account.conf.WebAppInitializer;
 
 /**
@@ -45,7 +45,8 @@ import com.uimirror.account.conf.WebAppInitializer;
 @ImportResource("classpath*:applicationContext.xml")
 @ComponentScan(basePackages= {"com.uimirror.account"})
 @Import({
-	AppConfig.class, BeanIntitializer.class, WebAppInitializer.class
+	AppConfig.class, WebAppInitializer.class
+	, AuthBeanIntitializer.class
 })
 public class StartApp {
 

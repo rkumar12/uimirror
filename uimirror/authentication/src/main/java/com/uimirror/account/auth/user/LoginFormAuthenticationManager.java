@@ -63,6 +63,7 @@ import com.uimirror.ws.api.security.exception.NotVerifiedException;
  * </ol>
  * @author Jay
  */
+//TODO if account restore required try to get the details via webservice call only no depedancy please
 public class LoginFormAuthenticationManager implements AuthenticationManager{
 	
 	protected static final Logger LOG = LoggerFactory.getLogger(LoginFormAuthenticationManager.class);
