@@ -10,11 +10,18 @@
  *******************************************************************************/
 package com.uimirror.account.auth.conf;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
+import com.uimirror.core.crypto.CryptoMatcherService;
+import com.uimirror.core.crypto.MatcherServiceImpl;
 import com.uimirror.core.mail.EmailBeanInitializr;
+import com.uimirror.core.rest.extra.JsonResponseTransFormer;
+import com.uimirror.core.rest.extra.ResponseTransFormer;
+import com.uimirror.ouath.client.conf.BeanOfOAuthClient;
 import com.uimirror.sso.conf.SSOBeanInitializer;
+import com.uimirror.user.conf.UserBeanInitializer;
 
 /**
  * Initialize or configures the service bean getting used for this application
@@ -24,7 +31,18 @@ import com.uimirror.sso.conf.SSOBeanInitializer;
 @Import({BeanOfExceptionIntitializer.class, BeanOfAuthProcessor.class
 	, BeanOfAuthManagers.class, BeanOfAuthProviders.class
 	, BeanOfTransformers.class, EmailBeanInitializr.class
-	, BeanOfBackGroundProcessor.class, BeanOfSchedulers.class, SSOBeanInitializer.class})
+	, BeanOfBackGroundProcessor.class, BeanOfSchedulers.class
+	, SSOBeanInitializer.class, BeanOfOAuthClient.class
+	, UserBeanInitializer.class})
 public class AuthBeanIntitializer {
 
+	@Bean(name=JsonResponseTransFormer.NAME)
+	public ResponseTransFormer<String> jsonResponseTransFormer(){
+		return new JsonResponseTransFormer();
+	}
+	
+	@Bean
+	public CryptoMatcherService cryptoMatcherService(){
+		return new MatcherServiceImpl();
+	}
 }
