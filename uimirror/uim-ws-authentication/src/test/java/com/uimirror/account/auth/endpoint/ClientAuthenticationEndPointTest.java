@@ -37,8 +37,9 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import com.uimirror.account.StartApp;
 import com.uimirror.core.auth.AuthConstants;
+import com.uimirror.ws.auth.StartApp;
+import com.uimirror.ws.auth.endpoint.ClientAuthenticationEndPoint;
 
 /**
  * Integration test case for the {@link ClientAuthenticationEndPoint}

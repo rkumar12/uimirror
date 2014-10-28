@@ -35,7 +35,8 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import com.uimirror.account.StartApp;
+import com.uimirror.ws.auth.StartApp;
+import com.uimirror.ws.auth.endpoint.ClientAuthenticationEndPoint;
 
 /**
  * Integration test case for the {@link ClientAuthenticationEndPoint}

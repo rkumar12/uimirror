@@ -77,7 +77,7 @@
 
 	<logger name="org.springframework.integration" level="debug" />
 	
-	<logger name="com.uimirror.account.auth" level="DEBUG" additivity="false">
+	<logger name="com.uimirror.ws.auth.auth" level="DEBUG" additivity="false">
 		<appender-ref ref="CONSOLE" />
 	</logger>
 	

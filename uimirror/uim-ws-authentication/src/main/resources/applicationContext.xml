@@ -4,6 +4,6 @@
   						http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 	
 	<context:annotation-config />
-	<!-- <context:component-scan base-package="com.uimirror.account.auth" /> -->
+	<!-- <context:component-scan base-package="com.uimirror.ws.auth.auth" /> -->
 	<!-- <context:property-placeholder location="application.properties" /> -->
 </beans>
