@@ -79,7 +79,7 @@ jar {
 
 description = "An Authentication Module By Uimirror Team."
 
-mainClassName = "com.uimirror.ws.auth.auth.StartApp"
+mainClassName = "com.uimirror.ws.auth.StartApp"
 applicationDefaultJvmArgs = ["-Denv=dev"]
 
 defaultTasks 'clean', 'build', 'intsall'
