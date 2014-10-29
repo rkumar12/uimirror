@@ -1,31 +1,45 @@
-subprojects {
-    apply plugin: 'eclipse'
+allprojects  {
+	apply plugin: 'eclipse'
 	apply plugin: "java"
 	apply plugin: "maven"
 	apply plugin: 'maven-publish'
 	apply plugin:'application'
-	
+  
 	group = 'com.uimirror.rtp'
 	version = '1.0'
+	repositories {
+		mavenCentral()
+		mavenLocal()
+ //	   maven{
+ //		   url "http://repo.springsource.org/libs-milestone/"
+ //       }
+	 }
+	 
+	 ext {
+		 springVersion = "4.1.0.RELEASE"
+		 junitVersion = '4.11'
+		 mockitoVersion = '1.9.5'
+	 }
+	 ext {
+		 slf4jVersion = "1.7.2"
+		 qosLogBackVersion = "1.1.1"
+		 jerseyVersion = "2.12"
+		 javaeeApiVersion = "7.0"
+		 springVersion = "4.1.0.RELEASE"
+		 springBootVersion = '1.1.6.RELEASE'
+		 junitVersion = '4.11'
+		 //gensonVersion = '1.1-RC2'
+		 janinoVersion = '2.7.6'
+		 mockitoVersion = '1.9.5'
+		 uimCoreVersion = '1.0'
+		 wsSecurityVersion = '1.0'
+		 wsFiltersVersion = '1.0'
+	 }
+  }
+subprojects {
 	description = "RTP By UIMIRROR Team."
 	targetCompatibility = "1.8"
 	sourceCompatibility = "1.8"
-	
-	ext {
-		slf4jVersion = "1.7.2"
-		qosLogBackVersion = "1.1.1"
-		jerseyVersion = "2.12"
-		javaeeApiVersion = "7.0"
-		springVersion = "4.1.0.RELEASE"
-		springBootVersion = '1.1.6.RELEASE'
-		junitVersion = '4.11'
-		//gensonVersion = '1.1-RC2'
-		janinoVersion = '2.7.6'
-		mockitoVersion = '1.9.5'
-		uimCoreVersion = '1.0'
-		wsSecurityVersion = '1.0'
-		wsFiltersVersion = '1.0'
-	}
 
     repositories {
        mavenCentral()

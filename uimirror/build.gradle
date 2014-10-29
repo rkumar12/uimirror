@@ -1,22 +1,26 @@
-subprojects {
-    apply plugin: 'eclipse'
+allprojects  {
+	apply plugin: 'eclipse'
 	apply plugin: "java"
 	apply plugin: "maven"
 	apply plugin: 'maven-publish'
-
-    repositories {
-       mavenCentral()
-	   mavenLocal()
-//	   maven{
-//		   url "http://repo.springsource.org/libs-milestone/"
-//       }
-    }
-	
-	ext {
-		springVersion = "4.1.0.RELEASE"
-		junitVersion = '4.11'
-		mockitoVersion = '1.9.5'
-	}
+  
+	group = 'com.uimirror.api'
+	version = '1.0'
+	repositories {
+		mavenCentral()
+		mavenLocal()
+ //	   maven{
+ //		   url "http://repo.springsource.org/libs-milestone/"
+ //       }
+	 }
+	 
+	 ext {
+		 springVersion = "4.1.0.RELEASE"
+		 junitVersion = '4.11'
+		 mockitoVersion = '1.9.5'
+	 }
+  }
+subprojects {
 
     dependencies {
         testCompile group: 'junit', name: 'junit', version: junitVersion
@@ -24,8 +28,6 @@ subprojects {
 		testCompile group: 'org.springframework', name: 'spring-test', version: springVersion
     }
 	
-	group = 'com.uimirror.ws.api'
-    version = '1.0'
 	description = "UIMirror common utility and core endpoints."
 	targetCompatibility = "1.8"
 	sourceCompatibility = "1.8"
