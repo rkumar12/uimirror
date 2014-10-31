@@ -8,13 +8,18 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.core.user;
+package com.uimirror.location;
 
+import com.uimirror.core.mongo.feature.BasicDBFields;
 
-public interface AddressDBFields{
+/**
+ * Holds the Location Store Fields, which will be major document structure
+ * <p>Basically has the name, id, type and country its linking to</p>
+ * @author Jay
+ */
+public interface LocationDBFields extends BasicDBFields{
 	 
-	String PRESENT_ADDRESS = "prsent_address";
-	String PERMANET_ADDRESS = "permanet_address";
-	
-
+	String NAME = "name";
+	String COUNTRY_ID = "c_id";
+	String LOCATION_TYPE = "type";
 }

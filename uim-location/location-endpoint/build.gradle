@@ -1,3 +1,47 @@
-dependencies {
-	compile project(':location-core')
+apply plugin:'application'
+
+ext {
+	slf4jVersion = "1.7.2"
+	qosLogBackVersion = "1.1.1"
+	jerseyVersion = "2.12"
+	javaeeApiVersion = "7.0"
+	springVersion = "4.1.0.RELEASE"
+	springBootVersion = '1.1.6.RELEASE'
+	wsFiltersVersion = '1.0'
+	janinoVersion = '2.7.6'
+	wsSecurityVersion = '1.0'
 }
+
+dependencies {
+	compile project(':location-google')
+	compile project(':location-store')
+	//ws-filters
+	compile group: 'com.uimirror.ws.api', name: 'ws-filters', version: wsFiltersVersion
+	//ws-resource-secuirity
+	compile group: 'com.uimirror.ws.api', name: 'ws-resource-security', version: wsSecurityVersion
+	
+	compile group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet', version: jerseyVersion
+	compile group: 'org.glassfish.jersey.ext', name: 'jersey-spring3', version: jerseyVersion
+	compile group: 'org.glassfish.jersey.media', name: 'jersey-media-json-processing', version: jerseyVersion
+	compile (group: 'javax', name: 'javaee-api', version: javaeeApiVersion)
+	compile (group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: springBootVersion){
+		exclude module: 'jackson-databind'
+	 exclude module: 'spring-webmvc'
+	 exclude module: 'spring-web'
+	 exclude module: 'log4j-over-slf4j'
+	 exclude module: 'jboss-logging'
+	 exclude module: 'jul-to-slf4j'
+	}
+	testCompile (group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: springBootVersion)
+}
+
+jar {
+ manifest.attributes provider: 'Uimirror Location Module'
+}
+
+description = "Location Module By Uimirror Team."
+
+mainClassName = "com.uimirror.location.StartApp"
+applicationDefaultJvmArgs = ["-Denv=dev"]
+
+defaultTasks 'clean', 'build', 'intsall'
