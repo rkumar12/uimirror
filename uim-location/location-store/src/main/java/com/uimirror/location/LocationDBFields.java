@@ -22,4 +22,5 @@ public interface LocationDBFields extends BasicDBFields{
 	String NAME = "name";
 	String COUNTRY_ID = "c_id";
 	String LOCATION_TYPE = "type";
+	String LOCATION_ACCURACY_TYPE = "accuracy";
 }

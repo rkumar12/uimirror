@@ -8,17 +8,13 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.core.mongo.feature;
+package com.uimirror.core;
 
 /**
+ * Builder for the constructor to builder pattern
  * @author Jay
  */
-public interface LocationDBField {
+public interface Builder<T> {
 
-	String TYPE = "type";
-	String LATITUDE = "lat";
-	String LONGITUDE = "lng";
-	String COORDINATES = "coordinates";
-	String LOCATION = "loc";
-	String LOCATION_NAME = "loc_name";
+	public T build();
 }

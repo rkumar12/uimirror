@@ -10,8 +10,8 @@
  *******************************************************************************/
 package com.uimirror.location.conf;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.WeakHashMap;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -51,7 +51,7 @@ public class WebAppInitializer extends SpringBootServletInitializer {
     @Bean
     public ServletRegistrationBean dispatcherServletRegistration() {
         ServletRegistrationBean registration = new ServletRegistrationBean(dispatcherServlet());
-        Map<String,String> params = new HashMap<String,String>();
+        Map<String,String> params = new WeakHashMap<String,String>();
         params.put("javax.ws.rs.Application","com.uimirror.location.conf.JerssyApplicationInitializer");
         //params.put("jersey.config.server.provider.classnames","com.uimirror.api.filter.SecurityContextFilter,com.uimirror.challenge.config.filter.UimCORSFilter, com.uimirror.api.filter.PoweredByResponseFilter");
         registration.setInitParameters(params);

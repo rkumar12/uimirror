@@ -41,26 +41,16 @@ public class LocationEndPoint{
 	}
 	
 	/**
-	 * De-serialize the form, tries to validate the earlier token issued to process this request,
-	 * if everything is correct, it will process for OTP validation, if OTP matched, it will generate a new security code
-	 * and send back to the caller
-	 * POST https://api.oauth2server.com/login
-     *	Authorization=authorization_code&
-     *	otp=OTP_HERE&
-     * in case of success validation will issue a new accestoken for this response
+	 * This will process the location search based on the location and parameter specified 
+	 * GET https://location.uimirror.com/location?q=Marathahali&limit=5&exact=false
+     *	
+     * in case of successful location search it will respond with location details
      * 
      * response {
-     *	"token":"RsT5OjbzRn430zqMLgV3Ia",
-     *  "type" : "secret"
-	 *	}
-	 * or
-	 * response {
-	 *	"token":"RsT5OjbzRn430zqMLgV3Ia",
-	 *  "type" : "USER_PERMISSION"
-	 *  "msg" : {
-	 *          "clientname" : "XYZ",
-	 *          "scope"      : "read"
-	 *  	}
+     *	"name":"Marathahali, Bangalore",
+     *  "country" : {"_id" : "1","shortname" : "IN", "name" : "India", "code" :"91" },
+     *  "type"    : "street",
+     *  "cord"    : {"_id" : "1", "lat"   : "-31.876546", "long"    : "0.12345"}
 	 *	}
 	 * @param form
 	 * @return

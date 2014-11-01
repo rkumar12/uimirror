@@ -13,50 +13,28 @@ package com.uimirror.core;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
+
 import com.uimirror.core.mongo.feature.LocationDBField;
+import com.uimirror.core.rest.extra.IllegalArgumentException;
 
 /**
  * Stores the Longitude and latitude for the location coordinate.
+ * It stors the location name as well
+ * below is the format:
+ * loc : { type: "Point", coordinates: [ -73.97, 40.77 ] },
+      name: "Central Park",
  * 
  * @author Jay
  */
-public class GeoLongLat {
+public class GeoLongLat{
 
 	private String location;
 	private double longitude;
 	private double latitude;
 	private String type;
 
-	/**
-	 * Create and initialize a point with given name and (latitude, longitude)
-	 * specified in degrees
-	 * 
-	 * @param longitude
-	 * @param latitude
-	 */
-	public GeoLongLat(String loc, double longitude, double latitude) {
-		super();
-		this.longitude = longitude;
-		this.latitude = latitude;
-		this.location = loc;
-		this.type = GeoGsonType.POINT;
-	}
-	/**
-	 * Create and initialize a point with given name and (latitude, longitude)
-	 * specified in degrees
-	 * 
-	 * @param longitude
-	 * @param latitude
-	 * @param type
-	 */
-	public GeoLongLat(String loc, double longitude, double latitude, String type) {
-		super();
-		this.longitude = longitude;
-		this.latitude = latitude;
-		this.location = loc;
-		this.type = type;
-	}
-	
 	/**
 	 * Converts the location details in to a serialize  map that will be stored in the DB
 	 * @return
@@ -68,22 +46,31 @@ public class GeoLongLat {
 		cord[0] = longitude;
 		cord[1] = latitude;
 		map.put(LocationDBField.COORDINATES, cord);
-		return map;
+		Map<String, Object> locMap = new LinkedHashMap<String, Object>(6);
+		locMap.put(LocationDBField.LOCATION, map);
+		locMap.put(LocationDBField.LOCATION_NAME, location);
+		return locMap;
 	}
 
 	/**
 	 * Converts the serialized map to the bean
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	public static GeoLongLat initFromGeoCordMap(Map<String, Object> map){
+		Map<String, Object> locMap = (Map<String, Object>)map.get(LocationDBField.LOCATION);
+		String locaName = (String) map.get(LocationDBField.LOCATION_NAME);
+		if(locMap == null || CollectionUtils.isEmpty(locMap))
+			throw new IllegalArgumentException("Can't deserailze the location");
+		
 		double[] cord = null;
-		if(map.get(LocationDBField.COORDINATES) != null){
+		if(locMap.get(LocationDBField.COORDINATES) != null){
 			cord = (double[]) map.get(LocationDBField.COORDINATES);
 		}
 		if(cord.length < 2)
 			throw new IllegalStateException("Location Cordinates are invalid");
 		String type = (String)map.get(LocationDBField.TYPE);
-		return new GeoLongLat(null, cord[0], cord[1], type);
+		return new GeoLongLatBuilder(locaName).updateLongitude(cord[0]).updateLatitude(cord[1]).updatePointTypee(type).build();
 	}
 
 	/**
@@ -123,6 +110,52 @@ public class GeoLongLat {
 	}
 	public String getType() {
 		return type;
+	}
+	
+	public static class GeoLongLatBuilder implements Builder<GeoLongLat>{
+
+		private String location;
+		private double longitude;
+		private double latitude;
+		private String type = GeoGsonType.POINT;
+		
+		public GeoLongLatBuilder(String location){
+			this.location = location;
+		}
+		
+		public GeoLongLatBuilder updateLongitude(double longitude){
+			this.longitude = longitude;
+			return this;
+		}
+		
+		public GeoLongLatBuilder updateLatitude(double latitude){
+			this.latitude = latitude;
+			return this;
+		}
+		public GeoLongLatBuilder updatePointTypee(String type){
+			Assert.hasText(type, "Location Cordinate Type should present.");
+			this.type = type;
+			return this;
+		}
+		/* (non-Javadoc)
+		 * @see com.uimirror.core.Builder#build()
+		 */
+		@Override
+		public GeoLongLat build() {
+			return new GeoLongLat(this);
+		}
+		
+	}
+	
+	/**
+	 * Build state from a builder
+	 * @param builder
+	 */
+	private GeoLongLat(GeoLongLatBuilder builder){
+		this.location = builder.location;
+		this.latitude = builder.latitude;
+		this.longitude = builder.longitude;
+		this.type = builder.type;
 	}
 
 }

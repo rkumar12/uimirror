@@ -15,6 +15,7 @@ import java.util.Map;
 
 import org.springframework.util.StringUtils;
 
+import com.uimirror.core.Builder;
 import com.uimirror.core.mongo.feature.BeanBasedDocument;
 import com.uimirror.core.service.BeanValidatorService;
 
@@ -44,19 +45,6 @@ public class Country  extends BeanBasedDocument<Country> implements BeanValidato
 	public Country() {
 	}
 
-	/**
-	 * @param id
-	 * @param shortName
-	 * @param name
-	 * @param code
-	 */
-	public Country(String id, String shortName, String name, int code) {
-		super(id);
-		this.shortName = shortName;
-		this.name = name;
-		this.code = code;
-	}
-
 	/* (non-Javadoc)
 	 * @see com.uimirror.core.mongo.feature.MongoDocumentSerializer#initFromMap(java.util.Map)
 	 */
@@ -80,7 +68,7 @@ public class Country  extends BeanBasedDocument<Country> implements BeanValidato
 		String sh_name = (String)raw.get(CountryDBFields.SHORT_NAME);
 		String name = (String)raw.get(CountryDBFields.NAME);
 		int code = (int)raw.getOrDefault(CountryDBFields.CODE, 0);
-		return new Country(_id, name, sh_name, code);
+		return new CountryBuilder(name).updateId(_id).updateShortName(sh_name).updateCode(code).build();
 	}
 	
 	/* (non-Javadoc)
@@ -180,6 +168,42 @@ public class Country  extends BeanBasedDocument<Country> implements BeanValidato
 		return true;
 	}
 	
+	public static class CountryBuilder implements Builder<Country>{
+		private String shortName;
+		private String name;
+		private int code;
+		private String id;
+		
+		public CountryBuilder(String id){
+			this.id = id;
+		}
+		public CountryBuilder updateId(String id){
+			this.id = id;
+			return this;
+		}
+		
+		public CountryBuilder updateShortName(String name){
+			this.shortName = name;
+			return this;
+		}
+		public CountryBuilder updateCode(int code){
+			this.code = code;
+			return this;
+		}
+		/* (non-Javadoc)
+		 * @see com.uimirror.core.Builder#build()
+		 */
+		@Override
+		public Country build() {
+			return new Country(this);
+		}
+	}
 	
+	private Country(CountryBuilder builder){
+		this.name = builder.name;
+		this.shortName = builder.shortName;
+		this.code = builder.code;
+		super.setId(builder.id);
+	}
 
 }

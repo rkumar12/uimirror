@@ -13,10 +13,14 @@ package com.uimirror.location;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
+import com.uimirror.core.Builder;
+import com.uimirror.core.GeoLongLat;
 import com.uimirror.core.mongo.feature.BeanBasedDocument;
 import com.uimirror.core.service.BeanValidatorService;
+import com.uimirror.location.core.components.AddressComponentType;
 import com.uimirror.location.core.components.LocationType;
 
 /**
@@ -25,41 +29,21 @@ import com.uimirror.location.core.components.LocationType;
  * 
  * This will not mandate the information as such, but it required one location name should be populated.
  * 
- * <p>Country code and country short form is mandetory for every location.</p>
+ * <p>Country code and country short form is mandatory for every location.</p>
  * 
  * @author Jay
  */
 public class DefaultLocation extends BeanBasedDocument<DefaultLocation> implements BeanValidatorService{
 	
 	private static final long serialVersionUID = 2347155622832246734L;
-	private String locName;
+	private GeoLongLat location;
 	private Country country;
-	private LocationType type;
+	private LocationType accuracyType;
+	private AddressComponentType type;
 
 	//Don't Use It untill it has some special requirement
 	public DefaultLocation() {
 		super();
-	}
-
-	/**
-	 * Location details 
-	 * @param id
-	 * @param locName
-	 * @param country
-	 * @param type
-	 */
-	public DefaultLocation(String id, String locName, Country country, LocationType type) {
-		super(id);
-		this.locName = locName;
-		this.country = country;
-		this.type = type;
-	}
-
-	public DefaultLocation(String id, String locName, String countryId, String type) {
-		super(id);
-		this.locName = locName;
-		this.country = new Country(countryId, null, null, 0);
-		this.type = LocationType.getEnum(type);
 	}
 	
 	/* (non-Javadoc)
@@ -92,11 +76,12 @@ public class DefaultLocation extends BeanBasedDocument<DefaultLocation> implemen
 		Map<String, Object> state = new LinkedHashMap<String, Object>(7);
 		if(StringUtils.hasText(getId()))
 			state.put(LocationDBFields.ID, getId());
-		if(StringUtils.hasText(getLocName()))
-			state.put(LocationDBFields.NAME, getLocName());
 		if(getType() != null)
-			state.put(LocationDBFields.LOCATION_TYPE, getType().getLocationType());
+			state.put(LocationDBFields.LOCATION_TYPE, getType().getLocType());
+		if(getAccuracyType() != null)
+			state.put(LocationDBFields.LOCATION_ACCURACY_TYPE, getAccuracyType().getType());
 		state.put(LocationDBFields.COUNTRY_ID, getCountryId());
+		state.putAll(getLocation().toGeoCordMap());
 		return state;
 	}
 
@@ -106,36 +91,110 @@ public class DefaultLocation extends BeanBasedDocument<DefaultLocation> implemen
 	@Override
 	public DefaultLocation initFromMap(Map<String, Object> raw) {
 		String id = (String)raw.get(LocationDBFields.ID);
-		String name = (String)raw.get(LocationDBFields.NAME);
 		String l_type = (String)raw.get(LocationDBFields.LOCATION_TYPE);
+		String accuracy_type = (String)raw.get(LocationDBFields.LOCATION_ACCURACY_TYPE);
 		String country_id = (String)raw.get(LocationDBFields.COUNTRY_ID);
-		return new DefaultLocation(id, name, country_id, l_type);
+		GeoLongLat geoLongLat = GeoLongLat.initFromGeoCordMap(raw);
+		Country country = new Country.CountryBuilder(country_id).build();
+		return new LocationBuilder(id).updateAccuracy(accuracy_type).updateLocationType(l_type).updateCountry(country).updateLongLat(geoLongLat).build();
 	}
 	
 	public String getCountryId(){
 		return getCountry() == null ? null : getCountry().getCountryId();
 	}
 	
-	public String getLocName() {
-		return locName;
-	}
-
 	public Country getCountry() {
 		return country;
 	}
+	
+	public GeoLongLat getLocation() {
+		return location;
+	}
 
-	public LocationType getType() {
+	public LocationType getAccuracyType() {
+		return accuracyType;
+	}
+
+	public AddressComponentType getType() {
 		return type;
 	}
-	
+
 	public String getLocationId(){
 		return getId();
 	}
+	
+	public static class LocationBuilder implements Builder<DefaultLocation>{
+		private String id;
+		private GeoLongLat location;
+		private Country country;
+		private LocationType accuracyType;
+		private AddressComponentType type;
+		
+		public LocationBuilder(GeoLongLat location){
+			this.location = location;
+		}
+		public LocationBuilder(String id){
+			this.id = id;
+		}
+		
+		public LocationBuilder updateId(String id){
+			Assert.hasText(id, "Location ID should present");
+			this.id = id;
+			return this;
+		}
+		public LocationBuilder updateLongLat(GeoLongLat location){
+			Assert.notNull(location, "Location ID should present");
+			this.location = location;
+			return this;
+		}
+		
+		public LocationBuilder updateCountry(Country country){
+			this.country = country;
+			return this;
+		}
+		
+		public LocationBuilder updateCountry(String countryId){
+			this.country = new Country.CountryBuilder(countryId).build();
+			return this;
+		}
+		
+		public LocationBuilder updateAccuracy(String accuracy){
+			Assert.hasText(accuracy, "Location Accuracy should present");
+			this.accuracyType = LocationType.getEnum(accuracy);
+			return this;
+		}
+		public LocationBuilder updateAccuracy(LocationType accuracyType){
+			this.accuracyType = accuracyType;
+			return this;
+		}
+		public LocationBuilder updateLocationType(String type){
+			Assert.hasText(type, "Location Type should present");
+			this.type = AddressComponentType.getEnum(type);
+			return this;
+		}
+		public LocationBuilder updateLocationType(AddressComponentType type){
+			this.type = type;
+			return this;
+		}
 
-	@Override
-	public String toString() {
-		return "DefaultLocation [locName=" + locName + ", country=" + country
-				+ ", type=" + type + "]";
+		/* (non-Javadoc)
+		 * @see com.uimirror.core.Builder#build()
+		 */
+		@Override
+		public DefaultLocation build() {
+			return new DefaultLocation(this);
+		}
+		
+	}
+	/**
+	 * @param builder
+	 */
+	private DefaultLocation(LocationBuilder builder){
+		this.accuracyType = builder.accuracyType;
+		this.country = builder.country;
+		this.location = builder.location;
+		this.type = builder.type;
+		super.setId(builder.id);
 	}
 
 }

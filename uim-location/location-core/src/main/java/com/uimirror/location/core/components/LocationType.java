@@ -35,20 +35,20 @@ public enum LocationType {
 		this.type = type;
 	}
 
-	public String getLocationType() {
+	public String getType() {
 		return type;
 	}
 
 	@Override
     public String toString() {
-    	return this.getLocationType();
+    	return this.getType();
     } 
     
     public static LocationType getEnum(String type) {
     	if(type == null)
     		throw new IllegalArgumentException("Location type can't be empty");
     	for(LocationType v : values())
-    		if(type.equalsIgnoreCase(v.getLocationType())) return v;
+    		if(type.equalsIgnoreCase(v.getType())) return v;
     	return null;
     }
 }
