@@ -52,5 +52,14 @@ public class PersistedLocationMongoStore extends AbstractMongoStore<DefaultLocat
 		DBObject name = new BasicDBObject(LocationDBFields.NAME, 1);
 		getCollection().createIndex(name);
 	}
+
+	/* (non-Javadoc)
+	 * @see com.uimirror.location.store.LocationStore#getByCord(double, double)
+	 */
+	@Override
+	public DefaultLocation getByCord(double longitude, double latitude) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }

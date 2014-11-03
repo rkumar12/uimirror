@@ -22,32 +22,30 @@ import com.uimirror.core.service.BeanValidatorService;
 
 /**
  * Persist the {@link Country}  into the Mongo Store in the format
- * {"country" = {
+ * {"state" = {
  *		"_id" : "1",
- *		"name" : "India",
- *		"sh_name" : "IN",
- *		"code: : 91 
+ *		"name" : "Marathahali",
+ *		"sh_name" : "MA"
  * 	}
  * } 
  * @author Jay
  */
-public class Country  extends BeanBasedDocument<Country> implements BeanValidatorService {
+public class Locality  extends BeanBasedDocument<Locality> implements BeanValidatorService {
 	
 	private static final long serialVersionUID = -5656425279379477707L;
 
 	private String shortName;
 	private String name;
-	private int code;
 
 	//Don't Use It untill it has some special requirment
-	public Country() {
+	public Locality() {
 	}
 
 	/* (non-Javadoc)
 	 * @see com.uimirror.core.mongo.feature.MongoDocumentSerializer#initFromMap(java.util.Map)
 	 */
 	@Override
-	public Country initFromMap(Map<String, Object> src) {
+	public Locality initFromMap(Map<String, Object> src) {
 		// Validate the source shouldn't be empty
 		validateSource(src);
 		// Initialize the state
@@ -57,16 +55,15 @@ public class Country  extends BeanBasedDocument<Country> implements BeanValidato
 	/**
 	 * converts a map that comes from DB into Country object object.
 	 * @param raw
-	 * @return {@link Country}
+	 * @return {@link Locality}
 	 */
-	private Country init(Map<String, Object> raw) {
+	private Locality init(Map<String, Object> raw) {
 		//First validate the source for invalid MAP
 		validateSource(raw);
-		String _id = (String)raw.get(CountryDBFields.ID);
-		String sh_name = (String)raw.get(CountryDBFields.SHORT_NAME);
-		String name = (String)raw.get(CountryDBFields.NAME);
-		int code = (int)raw.getOrDefault(CountryDBFields.CODE, 0);
-		return new CountryBuilder(name).updateName(_id).updateShortName(sh_name).updateCode(code).build();
+		String _id = (String)raw.get(LocalityDBFields.ID);
+		String sh_name = (String)raw.get(LocalityDBFields.SHORT_NAME);
+		String name = (String)raw.get(LocalityDBFields.NAME);
+		return new LocalityBuilder(_id).updateShortName(sh_name).updateName(name).build();
 	}
 	
 	/* (non-Javadoc)
@@ -98,14 +95,12 @@ public class Country  extends BeanBasedDocument<Country> implements BeanValidato
 	 */
 	public Map<String, Object> serailize() {
 		Map<String, Object> state = new LinkedHashMap<String, Object>(7);
-		if(StringUtils.hasText(getCountryId()))
-			state.put(CountryDBFields.ID, getCountryId());
+		if(StringUtils.hasText(getLocalityId()))
+			state.put(CityDBFields.ID, getLocalityId());
 		if(StringUtils.hasText(getShortName()))
-			state.put(CountryDBFields.SHORT_NAME, getShortName());
+			state.put(CityDBFields.SHORT_NAME, getShortName());
 		if(StringUtils.hasText(getName()))
-			state.put(CountryDBFields.NAME, getName());
-		if(getCode() > 0)
-			state.put(CountryDBFields.CODE, getCode());
+			state.put(CityDBFields.NAME, getName());
 		return state;
 	}
 
@@ -116,90 +111,45 @@ public class Country  extends BeanBasedDocument<Country> implements BeanValidato
 	public String getName() {
 		return WordUtils.capitalizeFully(name);
 	}
-
-	public int getCode() {
-		return code;
-	}
 	
-	public String getCountryId(){
+	public String getLocalityId(){
 		return getId();
 	}
-
+	
 	@Override
 	public String toString() {
-		return "Country [shortName=" + shortName + ", name=" + name + ", code="
-				+ code + "]";
+		return "Locality [shortName=" + shortName + ", name=" + name + "]";
 	}
 
-	
-	/** 
-	 * Has code, if code present, else first check for the name otherwise check 
-	 * for the short name
-	 * (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
-	 */
-	//TODO not sure about the hashCode here, come back with proper analysis.
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		if(code <= 0)
-			result = prime * result + code;
-		else if(StringUtils.hasText(getName()))
-			result = prime * result + name.hashCode();
-		else if(StringUtils.hasText(getShortName()))
-			result = prime * result + shortName.hashCode();
-		return result;
-	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Country other = (Country) obj;
-		if (code != other.code)
-			return false;
-		return true;
-	}
-	
-	public static class CountryBuilder implements Builder<Country>{
+	public static class LocalityBuilder implements Builder<Locality>{
 		private String shortName;
 		private String name;
-		private int code;
 		private String id;
 		
-		public CountryBuilder(String id){
+		public LocalityBuilder(String id){
 			this.id = id;
 		}
-		public CountryBuilder updateName(String name){
+		public LocalityBuilder updateName(String name){
 			this.name = name;
 			return this;
 		}
-		public CountryBuilder updateShortName(String name){
-			this.shortName = name;
-			return this;
-		}
-		public CountryBuilder updateCode(int code){
-			this.code = code;
+		public LocalityBuilder updateShortName(String shortName){
+			this.shortName = shortName;
 			return this;
 		}
 		/* (non-Javadoc)
 		 * @see com.uimirror.core.Builder#build()
 		 */
 		@Override
-		public Country build() {
-			return new Country(this);
+		public Locality build() {
+			return new Locality(this);
 		}
 	}
 	
-	private Country(CountryBuilder builder){
+	private Locality(LocalityBuilder builder){
 		this.name = builder.name;
 		this.shortName = builder.shortName;
-		this.code = builder.code;
 		super.setId(builder.id);
 	}
 

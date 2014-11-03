@@ -33,5 +33,14 @@ public interface LocationStore {
 	 * @return
 	 */
 	DefaultLocation getByLocationId(String loc_id);
+	
+	/**
+	 * Gets the location by longitude and latitude
+	 * 
+	 * @param longitude
+	 * @param latitude
+	 * @return
+	 */
+	DefaultLocation getByCord(double longitude, double latitude);
 
 }

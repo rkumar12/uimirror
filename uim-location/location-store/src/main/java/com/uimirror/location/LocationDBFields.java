@@ -20,7 +20,11 @@ import com.uimirror.core.mongo.feature.BasicDBFields;
 public interface LocationDBFields extends BasicDBFields{
 	 
 	String NAME = "name";
-	String COUNTRY_ID = "c_id";
+	String COUNTRY_ID = "country_id";
+	String STATE_ID = "s_id";
+	String CITY_ID = "c_id";
+	String LOCALITY_ID = "l_id";
+	String PIN = "pin";
 	String LOCATION_TYPE = "type";
 	String LOCATION_ACCURACY_TYPE = "accuracy";
 }

@@ -12,6 +12,7 @@ package com.uimirror.location.form;
 
 import javax.ws.rs.QueryParam;
 
+import com.uimirror.core.BooleanUtil;
 import com.uimirror.ws.api.security.AuthenticatedPrincipal;
 
 /**
@@ -42,5 +43,37 @@ public class LocationQueryForm extends AuthenticatedPrincipal{
 	//By Location LOCATION_ID
 	@QueryParam(LocationQueryVariables.LOCATION_ID)
 	private String locationId;
+	
+	//Says if caller want the country, state, locality level information or only location
+	@QueryParam(LocationQueryVariables.EXPANDED)
+	private String expanded;
+
+	public String getLocationName() {
+		return locationName;
+	}
+
+	public boolean getExactSearchFlag() {
+		return BooleanUtil.parseBoolean(exactSearchFlag);
+	}
+
+	public String getLimit() {
+		return limit;
+	}
+
+	public String getLongitude() {
+		return longitude;
+	}
+
+	public String getLatitude() {
+		return latitude;
+	}
+
+	public String getLocationId() {
+		return locationId;
+	}
+	
+	public boolean isExpanded(){
+		return BooleanUtil.parseBoolean(expanded);
+	}
 
 }

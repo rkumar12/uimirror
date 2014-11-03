@@ -59,8 +59,8 @@ public class LocationEndPoint{
 	@Produces({ "application/x-javascript", MediaType.APPLICATION_JSON })
 	@JSONP(queryParam="cb", callback="callback")
 	public Object otp(@BeanParam LocationQueryForm form){
-		LOG.info("[ENTRY]- Received request for 2 Factor OTP Authentication");
-		LOG.info("[EXIT]- Received request for 2 Factor OTP Authentication");
+		LOG.info("[ENTRY]- Received request to search for the location.");
+		LOG.info("[EXIT]- Received request to search for the location.");
 		return "Hello";
 	}
 	

@@ -198,6 +198,18 @@ public enum AddressComponentType {
      * Indicates an first-order civil entity below a locality.
      */
     SUBLOCALITY("SUBLOCALITY"),
+    /**
+     * Indicates an second-order civil entity below a locality.
+     */
+    SUBLOCALITY_LEVEL_1("SUBLOCALITY_LEVEL_1"),
+    /**
+     * Indicates an third-order civil entity below a locality.
+     */
+    SUBLOCALITY_LEVEL_2("SUBLOCALITY_LEVEL_2"),
+    /**
+     * Indicates an fourth-order civil entity below a locality.
+     */
+    SUBLOCALITY_LEVEL_3("SUBLOCALITY_LEVEL_3"),
 
     /**
      * Indicates a first-order entity below a named location, usually a singular building within

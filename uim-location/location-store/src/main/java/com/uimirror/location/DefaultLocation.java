@@ -13,6 +13,7 @@ package com.uimirror.location;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.apache.commons.lang3.text.WordUtils;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
@@ -21,7 +22,6 @@ import com.uimirror.core.GeoLongLat;
 import com.uimirror.core.mongo.feature.BeanBasedDocument;
 import com.uimirror.core.service.BeanValidatorService;
 import com.uimirror.location.core.components.AddressComponentType;
-import com.uimirror.location.core.components.LocationType;
 
 /**
  * Location Bean document which will have location name, short name, 
@@ -36,9 +36,13 @@ import com.uimirror.location.core.components.LocationType;
 public class DefaultLocation extends BeanBasedDocument<DefaultLocation> implements BeanValidatorService{
 	
 	private static final long serialVersionUID = 2347155622832246734L;
+	private String name;
 	private GeoLongLat location;
 	private Country country;
-	private LocationType accuracyType;
+	private State state;
+	private City city;
+	private Locality locality;
+	private String pin;
 	private AddressComponentType type;
 
 	//Don't Use It untill it has some special requirement
@@ -76,12 +80,21 @@ public class DefaultLocation extends BeanBasedDocument<DefaultLocation> implemen
 		Map<String, Object> state = new LinkedHashMap<String, Object>(7);
 		if(StringUtils.hasText(getId()))
 			state.put(LocationDBFields.ID, getId());
+		if(StringUtils.hasText(getName()))
+			state.put(LocationDBFields.NAME, getName());
+		state.putAll(getLocation().toGeoCordMap());
+		if(StringUtils.hasText(getCountryId()))
+			state.put(LocationDBFields.COUNTRY_ID, getCountryId());
+		if(StringUtils.hasText(getStateId()))
+			state.put(LocationDBFields.STATE_ID, getStateId());
+		if(StringUtils.hasText(getCityId()))
+			state.put(LocationDBFields.CITY_ID, getCityId());
+		if(StringUtils.hasText(getLocalityId()))
+			state.put(LocationDBFields.LOCALITY_ID, getLocalityId());
+		if(StringUtils.hasText(getPin()))
+			state.put(LocationDBFields.PIN, getPin());
 		if(getType() != null)
 			state.put(LocationDBFields.LOCATION_TYPE, getType().getLocType());
-		if(getAccuracyType() != null)
-			state.put(LocationDBFields.LOCATION_ACCURACY_TYPE, getAccuracyType().getType());
-		state.put(LocationDBFields.COUNTRY_ID, getCountryId());
-		state.putAll(getLocation().toGeoCordMap());
 		return state;
 	}
 
@@ -91,12 +104,31 @@ public class DefaultLocation extends BeanBasedDocument<DefaultLocation> implemen
 	@Override
 	public DefaultLocation initFromMap(Map<String, Object> raw) {
 		String id = (String)raw.get(LocationDBFields.ID);
-		String l_type = (String)raw.get(LocationDBFields.LOCATION_TYPE);
-		String accuracy_type = (String)raw.get(LocationDBFields.LOCATION_ACCURACY_TYPE);
-		String country_id = (String)raw.get(LocationDBFields.COUNTRY_ID);
+		String name = (String)raw.get(LocationDBFields.NAME);
 		GeoLongLat geoLongLat = GeoLongLat.initFromGeoCordMap(raw);
-		Country country = new Country.CountryBuilder(country_id).build();
-		return new LocationBuilder(id).updateAccuracy(accuracy_type).updateLocationType(l_type).updateCountry(country).updateLongLat(geoLongLat).build();
+		String country_id = (String)raw.get(LocationDBFields.COUNTRY_ID);
+		String state_id = (String)raw.get(LocationDBFields.STATE_ID);
+		String city_id = (String)raw.get(LocationDBFields.CITY_ID);
+		String locality_id = (String)raw.get(LocationDBFields.LOCALITY_ID);
+		String pin = (String)raw.get(LocationDBFields.PIN);
+		String l_type = (String)raw.get(LocationDBFields.LOCATION_TYPE);
+		LocationBuilder builder = new LocationBuilder(id);
+		if(StringUtils.hasText(name))
+			builder.updateName(name);
+		builder.updateLongLat(geoLongLat);
+		if(StringUtils.hasText(country_id))
+			builder.updateCountry(country_id);
+		if(StringUtils.hasText(state_id))
+			builder.updateState(state_id);
+		if(StringUtils.hasText(city_id))
+			builder.updateCity(city_id);
+		if(StringUtils.hasText(locality_id))
+			builder.updateLocality(locality_id);
+		if(StringUtils.hasText(pin))
+			builder.updatePin(pin);
+		if(StringUtils.hasText(l_type))
+			builder.updateLocationType(l_type);
+		return builder.build();
 	}
 	
 	public String getCountryId(){
@@ -111,10 +143,6 @@ public class DefaultLocation extends BeanBasedDocument<DefaultLocation> implemen
 		return location;
 	}
 
-	public LocationType getAccuracyType() {
-		return accuracyType;
-	}
-
 	public AddressComponentType getType() {
 		return type;
 	}
@@ -123,12 +151,50 @@ public class DefaultLocation extends BeanBasedDocument<DefaultLocation> implemen
 		return getId();
 	}
 	
+	public State getState() {
+		return state;
+	}
+
+	public String getStateId(){
+		return getState() == null ? null : getState().getStateId();
+	}
+	public City getCity() {
+		return city;
+	}
+	public String getCityId() {
+		return getCity() == null ? null : getCity().getCityId();
+	}
+
+	public String getPin() {
+		return pin;
+	}
+
+	public String getName() {
+		return WordUtils.capitalize(name, ',');
+	}
+	public Locality getLocality() {
+		return locality;
+	}
+	public String getLocalityId() {
+		return getLocality() == null ? null : getLocality().getLocalityId();
+	}
+
+
+
+	/**
+	 * Builder To build the location from the given state.
+	 * @author Jay
+	 */
 	public static class LocationBuilder implements Builder<DefaultLocation>{
 		private String id;
 		private GeoLongLat location;
 		private Country country;
-		private LocationType accuracyType;
+		private State state;
+		private City city;
+		private Locality locality;
+		private String pin;
 		private AddressComponentType type;
+		private String name;
 		
 		public LocationBuilder(GeoLongLat location){
 			this.location = location;
@@ -142,6 +208,11 @@ public class DefaultLocation extends BeanBasedDocument<DefaultLocation> implemen
 			this.id = id;
 			return this;
 		}
+		public LocationBuilder updateName(String name){
+			Assert.hasText(name, "Location Name should present");
+			this.name = name;
+			return this;
+		}
 		public LocationBuilder updateLongLat(GeoLongLat location){
 			Assert.notNull(location, "Location ID should present");
 			this.location = location;
@@ -149,24 +220,55 @@ public class DefaultLocation extends BeanBasedDocument<DefaultLocation> implemen
 		}
 		
 		public LocationBuilder updateCountry(Country country){
+			Assert.notNull(country, "Country Can't be empty");
 			this.country = country;
 			return this;
 		}
 		
 		public LocationBuilder updateCountry(String countryId){
+			Assert.hasText(countryId, "Country Can't be empty");
 			this.country = new Country.CountryBuilder(countryId).build();
 			return this;
 		}
+		public LocationBuilder updateState(State state){
+			Assert.notNull(state, "State Can't be empty");
+			this.state = state;
+			return this;
+		}
 		
-		public LocationBuilder updateAccuracy(String accuracy){
-			Assert.hasText(accuracy, "Location Accuracy should present");
-			this.accuracyType = LocationType.getEnum(accuracy);
+		public LocationBuilder updateState(String stateId){
+			Assert.hasText(stateId, "State Can't be empty");
+			this.state = new State.StateBuilder(stateId).build();
 			return this;
 		}
-		public LocationBuilder updateAccuracy(LocationType accuracyType){
-			this.accuracyType = accuracyType;
+		public LocationBuilder updateCity(City city){
+			Assert.notNull(city, "City Can't be empty");
+			this.city = city;
 			return this;
 		}
+		
+		public LocationBuilder updateCity(String cityId){
+			Assert.hasText(cityId, "City Can't be empty");
+			this.city = new City.CityBuilder(cityId).build();
+			return this;
+		}
+		public LocationBuilder updateLocality(Locality locality){
+			Assert.notNull(locality, "Locality Can't be empty");
+			this.locality = locality;
+			return this;
+		}
+		
+		public LocationBuilder updateLocality(String localityId){
+			Assert.hasText(localityId, "Locality Can't be empty");
+			this.locality = new Locality.LocalityBuilder(localityId).build();
+			return this;
+		}
+		public LocationBuilder updatePin(String pin){
+			Assert.hasText(pin, "PIN Can't be empty");
+			this.pin = pin;
+			return this;
+		}
+		
 		public LocationBuilder updateLocationType(String type){
 			Assert.hasText(type, "Location Type should present");
 			this.type = AddressComponentType.getEnum(type);
@@ -190,10 +292,14 @@ public class DefaultLocation extends BeanBasedDocument<DefaultLocation> implemen
 	 * @param builder
 	 */
 	private DefaultLocation(LocationBuilder builder){
-		this.accuracyType = builder.accuracyType;
-		this.country = builder.country;
+		this.name = builder.name;
 		this.location = builder.location;
+		this.country = builder.country;
+		this.state = builder.state;
+		this.city = builder.city;
+		this.pin = builder.pin;
 		this.type = builder.type;
+		this.locality = builder.locality;
 		super.setId(builder.id);
 	}
 
