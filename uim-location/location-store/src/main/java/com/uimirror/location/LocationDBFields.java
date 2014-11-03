@@ -21,10 +21,14 @@ public interface LocationDBFields extends BasicDBFields{
 	 
 	String NAME = "name";
 	String COUNTRY_ID = "country_id";
-	String STATE_ID = "s_id";
-	String CITY_ID = "c_id";
-	String LOCALITY_ID = "l_id";
+	String COUNTRY = "country";
+	String STATE_ID = "state_id";
+	String STATE = "state";
+	String CITY_ID = "city_id";
+	String CITY = "city";
+	String LOCALITY_ID = "locality_id";
+	String LOCALITY = "locality";
 	String PIN = "pin";
 	String LOCATION_TYPE = "type";
-	String LOCATION_ACCURACY_TYPE = "accuracy";
+	String GEOMETRY = "geo";
 }

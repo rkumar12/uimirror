@@ -12,6 +12,7 @@ package com.uimirror.location;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.WeakHashMap;
 
 import org.apache.commons.lang3.text.WordUtils;
 import org.springframework.util.Assert;
@@ -301,6 +302,58 @@ public class DefaultLocation extends BeanBasedDocument<DefaultLocation> implemen
 		this.type = builder.type;
 		this.locality = builder.locality;
 		super.setId(builder.id);
+	}
+	
+	/**
+	 * Gets the expanded map that indeed to send to the caller
+	 * @return
+	 */
+	public Map<String, Object> getExpandedLoc(){
+		Map<String, Object> rs = new WeakHashMap<String, Object>(5);
+		rs.put(LocationDBFields.ID, getLocalityId());
+		if(StringUtils.hasText(getName()))
+			rs.put(LocationDBFields.NAME, getName());
+		if(getLocation() != null)
+			rs.put(LocationDBFields.GEOMETRY, getLocation().toGeoCordMap());
+		if(getCountry() != null)
+			rs.put(LocationDBFields.COUNTRY, getCountry().toMap());
+		if(getState() != null)
+			rs.put(LocationDBFields.STATE, getState().toMap());
+		if(getCity() != null)
+			rs.put(LocationDBFields.CITY, getCity().toMap());
+		if(getLocality() != null)
+			rs.put(LocationDBFields.LOCALITY, getLocality().toMap());
+		if(getType() != null)
+			rs.put(LocationDBFields.LOCATION_TYPE, getType().getLocType());
+		if(StringUtils.hasText(getPin()))
+			rs.put(LocationDBFields.PIN, getPin());
+		return rs;
+	}
+	
+	/**
+	 * gets the short Location map
+	 * @return
+	 */
+	public Map<String, Object> getShortLoc(){
+		Map<String, Object> rs = new WeakHashMap<String, Object>(5);
+		rs.put(LocationDBFields.ID, getLocalityId());
+		if(StringUtils.hasText(getName()))
+			rs.put(LocationDBFields.NAME, getName());
+		if(getLocation() != null)
+			rs.put(LocationDBFields.GEOMETRY, getLocation().toGeoCordMap());
+		if(getCountryId() != null)
+			rs.put(LocationDBFields.COUNTRY_ID, getCountryId());
+		if(getStateId() != null)
+			rs.put(LocationDBFields.STATE_ID, getStateId());
+		if(getCityId() != null)
+			rs.put(LocationDBFields.CITY_ID, getCityId());
+		if(getLocalityId() != null)
+			rs.put(LocationDBFields.LOCALITY_ID, getLocalityId());
+		if(getType() != null)
+			rs.put(LocationDBFields.LOCATION_TYPE, getType().getLocType());
+		if(StringUtils.hasText(getPin()))
+			rs.put(LocationDBFields.PIN, getPin());
+		return rs;
 	}
 
 }

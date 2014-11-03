@@ -33,6 +33,20 @@ public interface CountryStore {
 	 * @return
 	 */
 	Country getById(String country_id);
+
+	/**
+	 * Gets the Country Details by country name.
+	 * @param name
+	 * @return
+	 */
+	Country getByName(String name);
+	
+	/**
+	 * Gets the Country Details by country short name.
+	 * @param short name
+	 * @return
+	 */
+	Country getByShortName(String sh_name);
 	
 	/**
 	 * Delete the {@link Country} by the country ID.
