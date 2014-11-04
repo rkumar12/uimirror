@@ -18,7 +18,7 @@ import com.uimirror.location.Locality;
  */
 public interface LocalityStore {
 	
-	String CITY_SEQ = "loc_locality_seq";
+	String LOCALITY_SEQ = "loc_locality_seq";
 
 	/**
 	 * Store the {@link Locality} and returns the new populated {@link Locality} with ID.

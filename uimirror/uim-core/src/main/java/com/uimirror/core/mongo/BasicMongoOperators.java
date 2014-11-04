@@ -27,4 +27,10 @@ public interface BasicMongoOperators {
 	String NOT_EQUAL = "$ne";
 	String OR = "$or";
 	String INCREAMENT = "$inc";
+	
+	String GEO_2SPEHERE_INDEX = "2dsphere";
+	String GEOMETERY = "$geometry";
+	String NEAR = "$near";
+	String MIN_DISTANCE = "$minDistance";
+	String MAX_DISTANCE = "$maxDistance";
 }

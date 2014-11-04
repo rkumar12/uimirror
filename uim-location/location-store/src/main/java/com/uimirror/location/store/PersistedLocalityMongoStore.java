@@ -17,41 +17,42 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.uimirror.core.dao.AbstractMongoStore;
-import com.uimirror.location.Country;
+import com.uimirror.location.CityDBFields;
 import com.uimirror.location.CountryDBFields;
+import com.uimirror.location.Locality;
 
 /**
- * A MONGO Persisted implementation for the {@link Country}
+ * A MONGO Persisted implementation for the {@link Locality}
  * @author Jay
  */
-public class PersistedCountryMongoStore extends AbstractMongoStore<Country> implements CountryStore{
+public class PersistedLocalityMongoStore extends AbstractMongoStore<Locality> implements LocalityStore{
 
 	
 	/**
 	 * Assign/ Create collection from the given {@link DBCollection}
 	 * @param collection
 	 */
-	public PersistedCountryMongoStore(DBCollection collection, DBCollection seqCollection){
-		super(collection, seqCollection, COUNTRY_SEQ, Country.class);
+	public PersistedLocalityMongoStore(DBCollection collection, DBCollection seqCollection){
+		super(collection, seqCollection, LOCALITY_SEQ, Locality.class);
 	}
 	
 	@Override
-	public Country getById(String country_id) {
-		return super.getById(country_id);
+	public Locality getById(String locality_id) {
+		return super.getById(locality_id);
 	}
 
 	@Override
-	public void deleteById(String country_id) {
-		super.deleteById(country_id);
+	public void deleteById(String locality_id) {
+		super.deleteById(locality_id);
 	}
 
 	/* (non-Javadoc)
 	 * @see com.uimirror.location.store.CountryStore#getByName(java.lang.String)
 	 */
 	@Override
-	public Country getByName(String name) {
+	public Locality getByName(String name) {
 		Map<String, Object> query = new WeakHashMap<String, Object>(3);
-		query.put(CountryDBFields.NAME, name);
+		query.put(CityDBFields.NAME, name);
 		return queryFirstRecord(query);
 	}
 
@@ -59,9 +60,9 @@ public class PersistedCountryMongoStore extends AbstractMongoStore<Country> impl
 	 * @see com.uimirror.location.store.CountryStore#getByShortName(java.lang.String)
 	 */
 	@Override
-	public Country getByShortName(String sh_name) {
+	public Locality getByShortName(String sh_name) {
 		Map<String, Object> query = new WeakHashMap<String, Object>(3);
-		query.put(CountryDBFields.SHORT_NAME, sh_name);
+		query.put(CityDBFields.SHORT_NAME, sh_name);
 		return queryFirstRecord(query);
 	}
 	

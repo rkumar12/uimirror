@@ -355,5 +355,49 @@ public class DefaultLocation extends BeanBasedDocument<DefaultLocation> implemen
 			rs.put(LocationDBFields.PIN, getPin());
 		return rs;
 	}
+	
+	/**
+	 * Gets the updated instance by updating the given parameters
+	 * @param old
+	 * @param country
+	 * @param state
+	 * @param city
+	 * @param locality
+	 * @return
+	 */
+	public DefaultLocation getUpdatedInstance(Country country, State state, City city, Locality locality) {
+		LocationBuilder builder = new DefaultLocation.LocationBuilder(getLocationId());
+		builder.updateLongLat(getLocation());
+		builder.updateName(getName());
+		if(country != null)
+			builder.updateCountry(getCountry());
+		if(state != null)
+			builder.updateState(state);
+		if(city != null)
+			builder.updateCity(city);
+		if(locality != null)
+			builder.updateLocality(locality);
+		if(getPin() != null)
+			builder.updatePin(getPin());
+		builder.updateLocationType(getType());
+		return builder.build();
+	}
+	
+	/**
+	 * Checks if the collate required, i.e if it doesn't have city id, country id, locality id, state id or city id
+	 * @param loc
+	 * @return
+	 */
+	public boolean isCollateRequired(){
+		boolean collateRequired = Boolean.FALSE;
+		if(getCountry() != null &&  getCountry().getName() == null && getCountry().getShortName() == null){
+			collateRequired =  Boolean.TRUE;
+		}else if(getState() != null &&  getState().getName() == null && getState().getShortName() == null){
+			return Boolean.TRUE;
+		}else if(getCity() != null &&  getCity().getName() == null && getCity().getShortName() == null){
+			return Boolean.TRUE;
+		}
+		return collateRequired;
+	}
 
 }

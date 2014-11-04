@@ -20,7 +20,9 @@ import javax.ws.rs.core.MediaType;
 import org.glassfish.jersey.server.JSONP;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import com.uimirror.core.Processor;
 import com.uimirror.location.form.LocationQueryForm;
 
 /**
@@ -35,6 +37,7 @@ import com.uimirror.location.form.LocationQueryForm;
 public class LocationEndPoint{
 
 	private static Logger LOG = LoggerFactory.getLogger(LocationEndPoint.class);
+	private @Autowired Processor<LocationQueryForm, String> locationSearchLocator;
 	
 	public LocationEndPoint() {
 		//NOP
@@ -42,15 +45,15 @@ public class LocationEndPoint{
 	
 	/**
 	 * This will process the location search based on the location and parameter specified 
-	 * GET https://location.uimirror.com/location?q=Marathahali&limit=5&exact=false
-     *	
-     * in case of successful location search it will respond with location details
-     * 
-     * response {
-     *	"name":"Marathahali, Bangalore",
-     *  "country" : {"_id" : "1","shortname" : "IN", "name" : "India", "code" :"91" },
-     *  "type"    : "street",
-     *  "cord"    : {"_id" : "1", "lat"   : "-31.876546", "long"    : "0.12345"}
+	 * GET https://location.uimirror.com/location/123/?expanded=true
+	 *	
+	 * in case of successful location search it will respond with location details
+	 * 
+	 * response {
+	 *	"name":"Marathahali, Bangalore",
+	 *  "country" : {"_id" : "1","shortname" : "IN", "name" : "India", "code" :"91" },
+	 *  "type"    : "street",
+	 *  "cord"    : {"_id" : "1", "lat"   : "-31.876546", "long"    : "0.12345"}
 	 *	}
 	 * @param form
 	 * @return
@@ -58,10 +61,36 @@ public class LocationEndPoint{
 	@GET
 	@Produces({ "application/x-javascript", MediaType.APPLICATION_JSON })
 	@JSONP(queryParam="cb", callback="callback")
-	public Object otp(@BeanParam LocationQueryForm form){
+	public Object getLocationById(@BeanParam LocationQueryForm form){
+		LOG.info("[ENTRY]- Received request to search for the location by location id.");
+		String res = locationSearchLocator.invoke(form);
+		LOG.info("[EXIT]- Received request to search for the location by location id.");
+		return res;
+	}
+	/**
+	 * This will process the location search based on the location and parameter specified 
+	 * GET https://location.uimirror.com/location?lon=2.1234&lat=-5.345&expanded=true
+	 *	
+	 * in case of successful location search it will respond with location details
+	 * 
+	 * response {
+	 *	"name":"Marathahali, Bangalore",
+	 *  "country" : {"_id" : "1","shortname" : "IN", "name" : "India", "code" :"91" },
+	 *  "type"    : "street",
+	 *  "cord"    : {"_id" : "1", "lat"   : "-31.876546", "long"    : "0.12345"}
+	 *	}
+	 * @param form
+	 * @return
+	 */
+	@GET
+	@Produces({ "application/x-javascript", MediaType.APPLICATION_JSON })
+	@JSONP(queryParam="cb", callback="callback")
+	@Path(LocationEndPointConstant.LOOKUP)
+	public Object getLocationBylatLong(@BeanParam LocationQueryForm form){
 		LOG.info("[ENTRY]- Received request to search for the location.");
+		String res = locationSearchLocator.invoke(form);
 		LOG.info("[EXIT]- Received request to search for the location.");
-		return "Hello";
+		return res;
 	}
 	
 }

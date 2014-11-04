@@ -12,7 +12,11 @@ package com.uimirror.location.form;
 
 import javax.ws.rs.QueryParam;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.uimirror.core.BooleanUtil;
+import com.uimirror.core.GeoLongLat;
 import com.uimirror.ws.api.security.AuthenticatedPrincipal;
 
 /**
@@ -25,7 +29,7 @@ import com.uimirror.ws.api.security.AuthenticatedPrincipal;
 public class LocationQueryForm extends AuthenticatedPrincipal{
 
 	private static final long serialVersionUID = -8392332379796658783L;
-
+	private static final Logger LOG = LoggerFactory.getLogger(LocationQueryForm.class);
 	//These things required to query by the location name
 	@QueryParam(LocationQueryVariables.QUERY)
 	private String locationName;
@@ -66,6 +70,21 @@ public class LocationQueryForm extends AuthenticatedPrincipal{
 
 	public String getLatitude() {
 		return latitude;
+	}
+
+	/**
+	 * Gets the longitude and latitude of the given query,
+	 * if no valid details present then <code>null</code>
+	 * @return
+	 */
+	public GeoLongLat getLongLatQuery(){
+		GeoLongLat geo = null;
+		try{
+			geo = new GeoLongLat.GeoLongLatBuilder(null).updateLongitude(Double.parseDouble(longitude)).updateLatitude(Double.parseDouble(latitude)).build();
+		}catch(NumberFormatException e){
+			LOG.warn("Parsing Longitude and latitude are invalid.");
+		}
+		return geo;
 	}
 
 	public String getLocationId() {

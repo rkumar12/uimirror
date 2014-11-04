@@ -20,7 +20,6 @@ import com.uimirror.core.rest.extra.ApplicationException;
 import com.uimirror.location.City;
 import com.uimirror.location.Country;
 import com.uimirror.location.DefaultLocation;
-import com.uimirror.location.DefaultLocation.LocationBuilder;
 import com.uimirror.location.Locality;
 import com.uimirror.location.State;
 import com.uimirror.location.store.CityStore;
@@ -55,7 +54,7 @@ public class LocationCollateProcessor implements Processor<DefaultLocation, Defa
 		Locality savedLocality = getLocality(loc.getLocalityId());
 		LOG.info("[END]- Collating the location information.");
 		//Finally return with updated value
-		return createLocationInstance(loc, savedCountry, savedState, savedCity, savedLocality);
+		return loc.getUpdatedInstance(savedCountry, savedState, savedCity, savedLocality);
 	}
 	
 	/**
@@ -125,29 +124,4 @@ public class LocationCollateProcessor implements Processor<DefaultLocation, Defa
 		return savedLocality;
 	}
 	
-	/**
-	 * @param old
-	 * @param country
-	 * @param state
-	 * @param city
-	 * @param locality
-	 * @return
-	 */
-	private DefaultLocation createLocationInstance(DefaultLocation old, Country country, State state, City city, Locality locality) {
-		LocationBuilder builder = new DefaultLocation.LocationBuilder(old.getLocationId());
-		builder.updateLongLat(old.getLocation());
-		builder.updateName(old.getName());
-		if(country != null)
-			builder.updateCountry(old.getCountry());
-		if(state != null)
-			builder.updateState(state);
-		if(city != null)
-			builder.updateCity(city);
-		if(locality != null)
-			builder.updateLocality(locality);
-		if(old.getPin() != null)
-			builder.updatePin(old.getPin());
-		builder.updateLocationType(old.getType());
-		return builder.build();
-	}
 }

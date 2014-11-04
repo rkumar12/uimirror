@@ -17,41 +17,42 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.uimirror.core.dao.AbstractMongoStore;
-import com.uimirror.location.Country;
 import com.uimirror.location.CountryDBFields;
+import com.uimirror.location.State;
+import com.uimirror.location.StateDBFields;
 
 /**
- * A MONGO Persisted implementation for the {@link Country}
+ * A MONGO Persisted implementation for the {@link State}
  * @author Jay
  */
-public class PersistedCountryMongoStore extends AbstractMongoStore<Country> implements CountryStore{
+public class PersistedStateMongoStore extends AbstractMongoStore<State> implements StateStore{
 
 	
 	/**
 	 * Assign/ Create collection from the given {@link DBCollection}
 	 * @param collection
 	 */
-	public PersistedCountryMongoStore(DBCollection collection, DBCollection seqCollection){
-		super(collection, seqCollection, COUNTRY_SEQ, Country.class);
+	public PersistedStateMongoStore(DBCollection collection, DBCollection seqCollection){
+		super(collection, seqCollection, STATE_SEQ, State.class);
 	}
 	
 	@Override
-	public Country getById(String country_id) {
-		return super.getById(country_id);
+	public State getById(String state_id) {
+		return super.getById(state_id);
 	}
 
 	@Override
-	public void deleteById(String country_id) {
-		super.deleteById(country_id);
+	public void deleteById(String state_id) {
+		super.deleteById(state_id);
 	}
 
 	/* (non-Javadoc)
 	 * @see com.uimirror.location.store.CountryStore#getByName(java.lang.String)
 	 */
 	@Override
-	public Country getByName(String name) {
+	public State getByName(String name) {
 		Map<String, Object> query = new WeakHashMap<String, Object>(3);
-		query.put(CountryDBFields.NAME, name);
+		query.put(StateDBFields.NAME, name);
 		return queryFirstRecord(query);
 	}
 
@@ -59,9 +60,9 @@ public class PersistedCountryMongoStore extends AbstractMongoStore<Country> impl
 	 * @see com.uimirror.location.store.CountryStore#getByShortName(java.lang.String)
 	 */
 	@Override
-	public Country getByShortName(String sh_name) {
+	public State getByShortName(String sh_name) {
 		Map<String, Object> query = new WeakHashMap<String, Object>(3);
-		query.put(CountryDBFields.SHORT_NAME, sh_name);
+		query.put(StateDBFields.SHORT_NAME, sh_name);
 		return queryFirstRecord(query);
 	}
 	

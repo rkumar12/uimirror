@@ -16,5 +16,6 @@ package com.uimirror.location.endpoint;
  */
 public interface LocationEndPointConstant {
 	String HOME = "/";
+	String LOOKUP = "lookup/";
 
 }

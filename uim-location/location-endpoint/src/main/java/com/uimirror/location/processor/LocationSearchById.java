@@ -16,10 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.uimirror.core.Processor;
 import com.uimirror.core.rest.extra.ApplicationException;
-import com.uimirror.core.rest.extra.ResponseTransFormer;
-import com.uimirror.location.Country;
 import com.uimirror.location.DefaultLocation;
-import com.uimirror.location.store.CountryStore;
 import com.uimirror.location.store.LocationStore;
 
 /**
@@ -27,27 +24,19 @@ import com.uimirror.location.store.LocationStore;
  * 
  * @author Jay
  */
-public class LocationSearchById implements Processor<String, String>{
+public class LocationSearchById implements Processor<String, DefaultLocation>{
 	
 	protected static Logger LOG = LoggerFactory.getLogger(LocationSearchById.class);
 	private @Autowired LocationStore persistedLocationMongoStore;
-	private @Autowired CountryStore persistedCountryMongoStore;
-	private @Autowired ResponseTransFormer<String> jsonResponseTransFormer;
 
 	/* (non-Javadoc)
 	 * @see com.uimirror.core.Processor#invoke(java.lang.Object)
 	 */
 	@Override
-	public String invoke(String locId) throws ApplicationException {
+	public DefaultLocation invoke(String locId) throws ApplicationException {
 		LOG.debug("[SINGLE]-Reteriving the stored location details");
-		DefaultLocation locationWithOutCountry = persistedLocationMongoStore.getByLocationId(locId);
-		Country country = persistedCountryMongoStore.getById(locationWithOutCountry.getCountryId());
-		DefaultLocation location = new DefaultLocation.LocationBuilder(
-				locationWithOutCountry.getLocationId())
-				.updateCountry(country)
-				.updateLocationType(locationWithOutCountry.getType())
-				.updateLongLat(locationWithOutCountry.getLocation()).build();
-		return jsonResponseTransFormer.doTransForm(location);
+		DefaultLocation loc = persistedLocationMongoStore.getByLocationId(locId);
+		return loc;
 	}
 
 }

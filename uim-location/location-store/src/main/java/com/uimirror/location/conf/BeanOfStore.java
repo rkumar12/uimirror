@@ -14,9 +14,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.mongodb.DBCollection;
+import com.uimirror.location.store.CityStore;
 import com.uimirror.location.store.CountryStore;
+import com.uimirror.location.store.LocalityStore;
 import com.uimirror.location.store.LocationStore;
+import com.uimirror.location.store.PersistedCityMongoStore;
 import com.uimirror.location.store.PersistedCountryMongoStore;
+import com.uimirror.location.store.PersistedLocalityMongoStore;
 import com.uimirror.location.store.PersistedLocationMongoStore;
 
 /**
@@ -27,13 +31,21 @@ import com.uimirror.location.store.PersistedLocationMongoStore;
 public class BeanOfStore {
 
 	@Bean
-	//TODO make the DB and collection intialize first
+	public CityStore persistedCityMongoStore(DBCollection cityColl, DBCollection citySeqColl){
+		return new PersistedCityMongoStore(cityColl, citySeqColl);
+	}
+	
+	@Bean
 	public CountryStore persistedCountryMongoStore(DBCollection countryColl, DBCollection countrySeqColl){
 		return new PersistedCountryMongoStore(countryColl, countrySeqColl);
 	}
 	
 	@Bean
-	//TODO make the DB and collection intialize first
+	public LocalityStore persistedLocalityMongoStore(DBCollection localityColl, DBCollection localitySeqColl){
+		return new PersistedLocalityMongoStore(localityColl, localitySeqColl);
+	}
+	
+	@Bean
 	public LocationStore persistedLocationMongoStore(DBCollection locationColl, DBCollection locationSeqColl){
 		return new PersistedLocationMongoStore(locationColl, locationSeqColl);
 	}
