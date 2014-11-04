@@ -16,6 +16,8 @@ import org.springframework.context.annotation.Import;
 
 import com.uimirror.core.rest.extra.JsonResponseTransFormer;
 import com.uimirror.core.rest.extra.ResponseTransFormer;
+import com.uimirror.location.google.v3.GoogleGeocoder;
+import com.uimirror.location.google.v3.GoogleGeocoderFactory;
 
 /**
  * Initialize or configures the service bean getting used for this application
@@ -30,6 +32,11 @@ public class BeanIntitializer {
 	@Bean(name=JsonResponseTransFormer.NAME)
 	public ResponseTransFormer<String> jsonResponseTransFormer(){
 		return new JsonResponseTransFormer();
+	}
+	
+	@Bean
+	public GoogleGeocoder googleGeocoder(){
+		return GoogleGeocoderFactory.createDefaultGoogleGeocoder();
 	}
 
 }

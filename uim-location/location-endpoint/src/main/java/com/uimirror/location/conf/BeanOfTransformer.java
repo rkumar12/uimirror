@@ -10,16 +10,25 @@
  *******************************************************************************/
 package com.uimirror.location.conf;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.uimirror.core.service.TransformerService;
+import com.uimirror.location.DefaultLocation;
+import com.uimirror.location.core.GeocodeResponse;
+import com.uimirror.location.transformer.GoogleResponseToLocationTransformer;
+
 /**
- * Contains the bean definition for all the authentication controller process
+ * Contains the bean definition for all the location transformers
  * 
  * @author Jay
  */
 @Configuration
 public class BeanOfTransformer {
 
-	//TODO complete the transformers if required
+	@Bean
+	public TransformerService<GeocodeResponse, DefaultLocation> googleResponseToLocationTransformer(){
+		return new GoogleResponseToLocationTransformer();
+	}
 
 }

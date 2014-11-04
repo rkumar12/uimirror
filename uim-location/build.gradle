@@ -30,6 +30,7 @@ allprojects  {
 		uimCoreVersion = '1.0'
 		wsSecurityVersion = '1.0'
 		wsFiltersVersion = '1.0'
+		cucumberJavaVersion = '1.2.0'
 	}
   
 	group = 'com.uimirror'
@@ -41,6 +42,9 @@ subprojects {
         testCompile group: 'junit', name: 'junit', version: junitVersion
 		testCompile group: 'org.mockito', name: 'mockito-core', version: mockitoVersion
 		testCompile group: 'org.springframework', name: 'spring-test', version: springVersion
+		testCompile group: 'info.cukes', name: 'cucumber-java', version: cucumberJavaVersion
+		testCompile group: 'info.cukes', name: 'cucumber-junit', version: cucumberJavaVersion
+		testCompile group: 'info.cukes', name: 'cucumber-spring', version: cucumberJavaVersion
 		//Logging
 		compile (group: 'org.slf4j', name: 'jcl-over-slf4j', version: slf4jVersion)
 		compile (group: 'ch.qos.logback', name: 'logback-classic', version: qosLogBackVersion){

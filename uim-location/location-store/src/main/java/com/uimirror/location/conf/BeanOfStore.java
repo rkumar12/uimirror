@@ -22,6 +22,8 @@ import com.uimirror.location.store.PersistedCityMongoStore;
 import com.uimirror.location.store.PersistedCountryMongoStore;
 import com.uimirror.location.store.PersistedLocalityMongoStore;
 import com.uimirror.location.store.PersistedLocationMongoStore;
+import com.uimirror.location.store.PersistedStateMongoStore;
+import com.uimirror.location.store.StateStore;
 
 /**
  * A config for the location stores
@@ -48,6 +50,11 @@ public class BeanOfStore {
 	@Bean
 	public LocationStore persistedLocationMongoStore(DBCollection locationColl, DBCollection locationSeqColl){
 		return new PersistedLocationMongoStore(locationColl, locationSeqColl);
+	}
+
+	@Bean
+	public StateStore persistedStateMongoStore(DBCollection stateColl, DBCollection stateSeqColl){
+		return new PersistedStateMongoStore(stateColl, stateSeqColl);
 	}
 
 }
