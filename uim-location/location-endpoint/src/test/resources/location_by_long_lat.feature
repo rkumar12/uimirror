@@ -20,3 +20,12 @@ Feature: Searching location by longitude and latutide
       | latitude | longitude | message |
       | 1234     | 404       | 200     |
       | 5678     | 404       | 200     |
+
+  Scenario Outline: valid longitude and latitude and result expanded
+  	And I gave "<expand>" option in the GET parameter
+    Then I got response as "<message>"
+
+    Examples: 
+      | latitude | longitude | expand  | message |
+      | 1234     | 404       | Y       | 200     |
+      | 5678     | 404       | Y       | 200     |

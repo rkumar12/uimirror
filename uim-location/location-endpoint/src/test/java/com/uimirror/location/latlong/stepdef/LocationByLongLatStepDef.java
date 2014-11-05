@@ -16,6 +16,7 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.TestRestTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.util.StringUtils;
 
 import com.uimirror.location.StartApp;
 
@@ -27,10 +28,11 @@ import cucumber.api.java.en.Then;
  */
 @WebAppConfiguration
 @SpringApplicationConfiguration(classes = StartApp.class)
-public class LocationByLongLatStepDefinitions {
+public class LocationByLongLatStepDef {
 	
 	private String latitude;
 	private String longitude;
+	private String expanded;
 	private ResponseEntity<String> entity;
 //	@InjectMocks
 //	private @Autowired Processor<String, DefaultLocation> locationSearchById;
@@ -49,11 +51,18 @@ public class LocationByLongLatStepDefinitions {
 		this.latitude = latitude;
 		this.longitude = longitude;
 	}
+	
+	@Given("^I gave \"(.*?)\" option in the GET parameter$")
+	public void i_gave_option_in_the_GET_parameter(String expanded) throws Throwable {
+		this.expanded = expanded;
+	}
 
 	@Given("^press submit$")
 	public void press_submit() throws Throwable {
-		ResponseEntity<String> entity = new TestRestTemplate().getForEntity(
-				"http://localhost:8080/uim/location/lookup?lat="+ latitude+"&lon="+longitude, String.class);
+		String url = "http://localhost:8080/uim/location/lookup/lat="+ latitude+"&lon="+longitude;
+		if(StringUtils.hasText(expanded))
+			url += "&expanded"+expanded;
+		ResponseEntity<String> entity = new TestRestTemplate().getForEntity(url, String.class);
 		this.entity = entity;
 	}
 

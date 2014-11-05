@@ -54,7 +54,7 @@ public class LocationSerachByIdStepDef {
 		this.entity = entity;
 	}
 	
-	@Given("^I give \"(.*?)\" option in the GET parameter$")
+	@Given("^I gave \"(.*?)\" option in the GET parameter$")
 	public void i_give_option_in_the_GET_parameter(String expanded) throws Throwable {
 		this.expanded = expanded;
 	}

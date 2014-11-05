@@ -21,8 +21,8 @@ Feature: Searching location by location id
       | 1234       | 200  |
       | 5678       | 200  |
 
-  Scenario Outline: Search Location with a valid Location Id
-  	And I give "<expand>" option in the GET parameter
+  Scenario Outline: Search Location with a valid Location Id and expand result
+  	And I gave "<expand>" option in the GET parameter
     Then I got response as "<code>"
 
     Examples: 
