@@ -76,12 +76,10 @@ subprojects {
 task copyScripts(type: Copy) {
 	from 'script'
 	into "$buildDir/scripts"
-//    def docs = file("$buildDir/docs")
-//    outputs.dir docs
-//    doLast {
-//        docs.mkdirs()
-//        new File(docs, "readme.txt").write("Read me!")
-//    }
+}
+task copyDoc(type: Copy) {
+	from 'doc'
+	into "$buildDir/docs"
 }
 distributions {
 	main {
@@ -92,8 +90,7 @@ distributions {
 				from { project(':location-endpoint').configurations.runtime }
 			}
 			into('docs'){
-				include 'readme.txt'
-				from { project(':location-endpoint').copyDocs}
+				from { copyDoc}
 			}
 			into('scripts'){
 				fileMode = 0755

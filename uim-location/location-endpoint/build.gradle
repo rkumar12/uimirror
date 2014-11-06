@@ -41,17 +41,6 @@ jar {
 		attributes "Main-Class": mainClassName
 	}
 }
-task copyDocs(type: Copy) {
-	from 'src/doc'
-	into "$buildDir/docs"
-//    def docs = file("$buildDir/docs")
-//    outputs.dir docs
-//    doLast {
-//        docs.mkdirs()
-//        new File(docs, "readme.txt").write("Read me!")
-//    }
-}
-
 
 description = "Location Module By Uimirror Team."
 
