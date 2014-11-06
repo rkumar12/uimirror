@@ -1,15 +1,11 @@
 apply plugin:'application'
 
-ext {
-	slf4jVersion = "1.7.2"
-	qosLogBackVersion = "1.1.1"
-	jerseyVersion = "2.12"
-	javaeeApiVersion = "7.0"
-	springVersion = "4.1.0.RELEASE"
-	springBootVersion = '1.1.6.RELEASE'
-	wsFiltersVersion = '1.0'
-	janinoVersion = '2.7.6'
-	wsSecurityVersion = '1.0'
+configurations.all {
+	resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+	  if (details.requested.group == 'org.apache.tomcat.embed') {
+		  details.useVersion '8.0.14'
+	  }
+	}
 }
 
 dependencies {
@@ -35,13 +31,30 @@ dependencies {
 	testCompile (group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: springBootVersion)
 }
 
+mainClassName = "com.uimirror.location.StartApp"
+
 jar {
- manifest.attributes provider: 'Uimirror Location Module'
+	manifest {
+		attributes "Implementation-Title": "UIM Location"
+		attributes "Implementation-Vendor": "UIMIRROR"
+		attributes "Implementation-Version": project.version
+		attributes "Main-Class": mainClassName
+	}
 }
+task copyDocs(type: Copy) {
+	from 'src/doc'
+	into "$buildDir/docs"
+//    def docs = file("$buildDir/docs")
+//    outputs.dir docs
+//    doLast {
+//        docs.mkdirs()
+//        new File(docs, "readme.txt").write("Read me!")
+//    }
+}
+
 
 description = "Location Module By Uimirror Team."
 
-mainClassName = "com.uimirror.location.StartApp"
-applicationDefaultJvmArgs = ["-Denv=dev"]
+applicationDefaultJvmArgs = ["-Denv=dev", "-DcontextSource=classpath:application", "-Dport=8080", "-Dnio.port=8443"]
 
 defaultTasks 'clean', 'build', 'intsall'

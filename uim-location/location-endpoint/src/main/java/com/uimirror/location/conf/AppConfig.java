@@ -21,7 +21,7 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
  */
 @Configuration
 @EnableAspectJAutoProxy
-@PropertySource("classpath:application-${env:dev}.properties")
+@PropertySource("${contextSource:classpath:application}-${env:dev}.properties")
 public class AppConfig {
 	
 	/**

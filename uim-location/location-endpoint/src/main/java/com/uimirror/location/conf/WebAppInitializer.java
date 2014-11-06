@@ -17,7 +17,6 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 
 import org.glassfish.jersey.servlet.ServletContainer;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.embedded.ServletRegistrationBean;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
@@ -31,8 +30,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class WebAppInitializer extends SpringBootServletInitializer {
 
-	@Value("${tomcat.contextPath:/uim}/${application.id:location}")
-	private String contextPath;
+//	@Value("${tomcat.contextPath:/uim}/${application.id:location}")
+//	private String contextPath;
 	
 	@Override  
     public void onStartup(ServletContext servletContext) throws ServletException {  
@@ -55,7 +54,7 @@ public class WebAppInitializer extends SpringBootServletInitializer {
         params.put("javax.ws.rs.Application","com.uimirror.location.conf.JerssyApplicationInitializer");
         //params.put("jersey.config.server.provider.classnames","com.uimirror.api.filter.SecurityContextFilter,com.uimirror.challenge.config.filter.UimCORSFilter, com.uimirror.api.filter.PoweredByResponseFilter");
         registration.setInitParameters(params);
-        registration.addUrlMappings(contextPath+"/*");
+        registration.addUrlMappings("/*");
         return registration;
     }
     

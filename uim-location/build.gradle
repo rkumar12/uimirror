@@ -1,3 +1,4 @@
+apply plugin: 'distribution'
 allprojects  {
 	apply plugin: 'eclipse'
 	apply plugin: "java"
@@ -12,17 +13,12 @@ allprojects  {
  //       }
 	 }
 	ext {
-		springVersion = "4.1.0.RELEASE"
-		junitVersion = '4.11'
-		mockitoVersion = '1.9.5'
-	}
-	ext {
-		slf4jVersion = "1.7.2"
-		qosLogBackVersion = "1.1.1"
-		jerseyVersion = "2.12"
+		slf4jVersion = "1.7.7"
+		qosLogBackVersion = "1.1.2"
+		jerseyVersion = "2.13"
 		javaeeApiVersion = "7.0"
-		springVersion = "4.1.0.RELEASE"
-		springBootVersion = '1.1.6.RELEASE'
+		springVersion = "4.1.1.RELEASE"
+		springBootVersion = '1.1.8.RELEASE'
 		junitVersion = '4.11'
 		//gensonVersion = '1.1-RC2'
 		janinoVersion = '2.7.6'
@@ -75,5 +71,38 @@ subprojects {
 	//Gradle Wrapper genrator
 	task wrapper(type: Wrapper) {
 		gradleVersion = '2.0'
+	}
+}
+task copyScripts(type: Copy) {
+	from 'script'
+	into "$buildDir/scripts"
+//    def docs = file("$buildDir/docs")
+//    outputs.dir docs
+//    doLast {
+//        docs.mkdirs()
+//        new File(docs, "readme.txt").write("Read me!")
+//    }
+}
+distributions {
+	main {
+		baseName = project.name
+		contents {
+			from { project(':location-endpoint').installApp }
+			into('lib') {
+				from { project(':location-endpoint').configurations.runtime }
+			}
+			into('docs'){
+				include 'readme.txt'
+				from { project(':location-endpoint').copyDocs}
+			}
+			into('scripts'){
+				fileMode = 0755
+				//from { project(':location-endpoint').startScripts }
+				from { copyScripts }
+				
+				//include '**/start.sh'
+			}
+			duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+		}
 	}
 }

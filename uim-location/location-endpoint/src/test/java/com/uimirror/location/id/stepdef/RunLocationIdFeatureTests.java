@@ -21,7 +21,7 @@ import cucumber.api.junit.Cucumber;
  */
 @RunWith(Cucumber.class)
 @CucumberOptions( glue = {"com.uimirror.location.id.stepdef"}, features="classpath:location_search_by_id.feature")
-//@Ignore("Update this once cucumber has spring boot support")
+@Ignore("Update this once cucumber has spring boot support")
 //TODO
 public class RunLocationIdFeatureTests {
 

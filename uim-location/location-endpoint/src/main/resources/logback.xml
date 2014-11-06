@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <configuration>
-	<if condition='isNull("env")'>
-		<then>
-			<property resource="application-p{'env'}.properties" />
-		</then>
-		<else>
-			<property resource="application-dev.properties" />
-		</else>
-	</if>
+	<property resource="application-${env:-dev}.properties" />
 	
 	<conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter" />
 	<conversionRule conversionWord="wex" converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter" />
@@ -27,10 +20,10 @@
 
 	<appender name="ROLLING"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>${app.dir}/var/jerssey_${application.id}/request.trace.${PID}.log
+		<file>${log.dir}/var/jerssey_${application.id}/request.trace.${PID}.log
 		</file>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<fileNamePattern>${app.dir}/var/uim_${application.id}/request.trace.${PID}.{yyyy-MM-dd}.%d.log
+			<fileNamePattern>${log.dir}/var/uim_${application.id}/request.trace.${PID}.{yyyy-MM-dd}.%d.log
 			</fileNamePattern>
 			<maxHistory>50</maxHistory>
 		</rollingPolicy>
@@ -45,10 +38,10 @@
 
 	<appender name="APPLICATION"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>${app.dir}/var/uim_${application.id}/application.${PID}.log
+		<file>${log.dir}/var/uim_${application.id}/application.${PID}.log
 		</file>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<fileNamePattern>${app.dir}/var/uim_${application.id}/application.${PID}.{yyyy-MM-dd}.%d.log
+			<fileNamePattern>${log.dir}/var/uim_${application.id}/application.${PID}.{yyyy-MM-dd}.%d.log
 			</fileNamePattern>
 			<maxHistory>50</maxHistory>
 		</rollingPolicy>
@@ -69,27 +62,24 @@
 		<appender-ref ref="APPLICATION" />
 	</appender>
 
-	<logger name="org.springframework" level="debug" />
-	<logger name="org.springframework.aop" level="debug" />
-	<logger name="org.springframework.web" level="warn" />
-	<logger name="org.springframework.boot" level="warn" />
-	<logger name="org.apache.catalina" level="debug" />
-
-	<logger name="org.springframework.integration" level="debug" />
+	<logger name="org.springframework" level="${log.level}" />
+	<logger name="org.springframework.aop" level="${log.level}" />
+	<logger name="org.springframework.web" level="${log.level}" />
+	<logger name="org.springframework.boot" level="${log.level}" />
+	<logger name="org.apache.catalina" level="${log.level}" />
 	
-	<logger name="com.uimirror.location" level="DEBUG" additivity="false">
-		<appender-ref ref="CONSOLE" />
+	<logger name="com.uimirror.location" level="${log.level}" additivity="false">
+		<appender-ref ref="ASYNCAPPLICATION" />
 	</logger>
-	<logger name="com.uimirror.ws.api.filter" level="DEBUG" additivity="false">
-		<appender-ref ref="CONSOLE" />
+	<logger name="com.uimirror.ws.api.filter" level="${log.level}" additivity="false">
+		<appender-ref ref="ASYNCAPPLICATION" />
 	</logger>
 	
-	<logger name="com.uimirror.core" level="DEBUG" additivity="false">
-		<appender-ref ref="CONSOLE" />
+	<logger name="com.uimirror.core" level="${log.level}" additivity="false">
+		<appender-ref ref="ASYNCAPPLICATION" />
 	</logger>
 
-	<root level="debug">
-		<appender-ref ref="CONSOLE" />
+	<root level="${log.level}">
 		<appender-ref ref="ASYNCAPPLICATION" />
 	</root>
 </configuration>
