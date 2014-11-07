@@ -1,10 +1,26 @@
 #!/usr/bin/env bash
 
+usage() { echo "Usage: $0 [-s <45|90>] [-p <string>]" 1>&2; exit 1; }
 
-port = $1
+while getopts ":p:n:d" o; do
+    case "${o}" in
+        p)
+            s=${OPTARG}
+            ((s == 45 || s == 90)) || usage
+            ;;
+        n)
+            p=${OPTARG}
+            ;;
+        *)
+            usage
+            ;;
+    esac
+done
+shift $((OPTIND-1))
 
-JAVA_OPTS='-Denv=prod' -port=$port ./location-endpoint & 
+if [ -z "${s}" ] || [ -z "${p}" ]; then
+    usage
+fi
 
-echo "$port :  $!" >> /tmp/uimirror.pid
-
-
+echo "s = ${s}"
+echo "p = ${p}"

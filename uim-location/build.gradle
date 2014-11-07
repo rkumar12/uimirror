@@ -8,9 +8,6 @@ allprojects  {
 	repositories {
 		mavenCentral()
 		mavenLocal()
- //	   maven{
- //		   url "http://repo.springsource.org/libs-milestone/"
- //       }
 	 }
 	ext {
 		slf4jVersion = "1.7.7"
@@ -94,10 +91,7 @@ distributions {
 			}
 			into('scripts'){
 				fileMode = 0755
-				//from { project(':location-endpoint').startScripts }
 				from { copyScripts }
-				
-				//include '**/start.sh'
 			}
 			duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 		}

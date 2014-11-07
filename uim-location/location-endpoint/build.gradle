@@ -43,7 +43,21 @@ jar {
 }
 
 description = "Location Module By Uimirror Team."
-
-applicationDefaultJvmArgs = ["-Denv=dev", "-DcontextSource=classpath:application", "-Dport=8080", "-Dnio.port=8443"]
+applicationDefaultJvmArgs = ["-Denv=dev"
+	, "-DcontextSource=classpath:application"
+	, "-Dport=8080"
+	, "-Dnio.port=8443"
+	, "-Xmx3g"
+	, "-XX:MaxNewSize=2g"
+	, "-XX:NewSize=1g"
+	, "-XX:SurvivorRatio=16"
+	, "-XX:+UseParNewGC"
+	, "-XX:+UseConcMarkSweepGC"
+	, "-XX:MaxTenuringThreshold=0"
+	, "-XX:CMSInitiatingOccupancyFraction=60"
+	, "-XX:+CMSParallelRemarkEnabled"
+	, "-XX:+UseCMSInitiatingOccupancyOnly"
+	, "-XX:ParallelGCThreads=12"
+	, "-XX:LargePageSizeInBytes=256m"]
 
 defaultTasks 'clean', 'build', 'intsall'
