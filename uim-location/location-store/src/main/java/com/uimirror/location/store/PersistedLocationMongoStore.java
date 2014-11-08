@@ -10,6 +10,7 @@
  *******************************************************************************/
 package com.uimirror.location.store;
 
+import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
 
@@ -49,8 +50,16 @@ public class PersistedLocationMongoStore extends AbstractMongoStore<DefaultLocat
 	@Override
 	public DefaultLocation getByCord(double longitude, double latitude) {
 		Map<String, Object> query = new WeakHashMap<String, Object>();
-		query.put(LocationDBField.LOCATION, getLocQueryNearZeroMeter(longitude, latitude));
-		return queryFirstRecord(query);
+		query.put(LocationDBField.LOCATION, getLocQueryMinNearMeter(longitude, latitude));
+		List<DefaultLocation> foundLocs = getByQuery(query);
+		DefaultLocation matchedLoc = null;
+		for(DefaultLocation loc : foundLocs){
+			if(longitude == loc.getLongiTude() && latitude == loc.getLatiTude()){
+				matchedLoc = loc;
+				break;
+			}
+		}
+		return matchedLoc;
 	}
 	
 	/**
@@ -59,11 +68,11 @@ public class PersistedLocationMongoStore extends AbstractMongoStore<DefaultLocat
 	 * @param latitude
 	 * @return
 	 */
-	private Map<String, Object> getLocQueryNearZeroMeter(double longitude, double latitude){
+	private Map<String, Object> getLocQueryMinNearMeter(double longitude, double latitude){
 		Map<String, Object> nearQuery = new WeakHashMap<String, Object>(5);
 		Map<String, Object> geometeryMap = getGeometryQuery(longitude, latitude);
 		geometeryMap.put(BasicMongoOperators.MIN_DISTANCE, 0);
-		geometeryMap.put(BasicMongoOperators.MAX_DISTANCE, 0);
+		geometeryMap.put(BasicMongoOperators.MAX_DISTANCE, 0.1);
 		nearQuery.put(BasicMongoOperators.NEAR, geometeryMap);
 		return nearQuery;
 	}

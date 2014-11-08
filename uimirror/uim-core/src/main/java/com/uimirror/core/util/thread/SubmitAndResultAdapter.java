@@ -38,7 +38,7 @@ public class SubmitAndResultAdapter extends ExecutorServiceAbstractAdapter{
     		claimResource();
     		throw new IllegalArgumentException("No Job is there to execute");
     	}
-		callabels.forEach(callabel -> executorService.submit(callabel));
+		callabels.forEach(callabel -> completionService.submit(callabel));
 	}
 
 	/* (non-Javadoc)

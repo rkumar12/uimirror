@@ -27,7 +27,6 @@ import org.springframework.util.CollectionUtils;
  * @author Jay
  * @since 0.1
  */
-//TODO why callable here it can be runnable
 public class SubmitAndForgetAdapter extends ExecutorServiceAbstractAdapter{
 
 	public SubmitAndForgetAdapter(int numberOfThraed) {

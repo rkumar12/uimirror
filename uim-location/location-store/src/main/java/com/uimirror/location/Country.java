@@ -66,7 +66,7 @@ public class Country  extends BeanBasedDocument<Country> implements BeanValidato
 		String sh_name = (String)raw.get(CountryDBFields.SHORT_NAME);
 		String name = (String)raw.get(CountryDBFields.NAME);
 		int code = (int)raw.getOrDefault(CountryDBFields.CODE, 0);
-		return new CountryBuilder(name).updateName(_id).updateShortName(sh_name).updateCode(code).build();
+		return new CountryBuilder(_id).updateName(name).updateShortName(sh_name).updateCode(code).build();
 	}
 	
 	/* (non-Javadoc)

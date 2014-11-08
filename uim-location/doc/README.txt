@@ -48,6 +48,18 @@ the author of Hamlet and All's Well that Ends Well.  The minor similarities
 hardly make up for the major differeces.  Based on the above analysis, we 
 conclude that Bacon wrote neither of Shakespeare's plays.
 	
+---------
+Clean Databse
+---------
+run the script drop_all_db.sh present in the script folder to clean all the content from
+the location db.
+
+Example ./drop_all_db.sh --port<port_num> --host=<host_name> -u=<user_name> -p=<password>
+	
+	port : Specifies the port to connect to , default to 57980
+	host : specifies host to connect to, default to 127.0.0.1
+	u    : Specifies user name for the data base
+	p    : Specifies password for the data base
 
 ---------
 Known Issue

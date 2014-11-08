@@ -27,7 +27,8 @@ import com.uimirror.location.google.v3.GoogleGeocoderFactory;
 @Configuration
 @Import({DaoBeanIntitializer.class ,BeanOfProcessor.class
 	, BeanOfTransformer.class ,BeanOfValidator.class
-	, BeanOfStore.class, BeanOfExceptionIntitializer.class})
+	, BeanOfStore.class, BeanOfExceptionIntitializer.class
+	, BeanOfBackGroundProcessor.class})
 @EnableAspectJAutoProxy
 public class BeanIntitializer {
 

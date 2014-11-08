@@ -11,6 +11,7 @@
 package com.uimirror.core;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.util.Assert;
@@ -65,12 +66,20 @@ public class GeoLongLat{
 			throw new IllegalArgumentException("Can't deserailze the location");
 		
 		double[] cord = null;
-		if(locMap.get(LocationDBField.COORDINATES) != null){
-			cord = (double[]) map.get(LocationDBField.COORDINATES);
+		Object rs = locMap.get(LocationDBField.COORDINATES);
+		if(rs != null){
+			if(rs instanceof List){
+				List<Double> cords = (List<Double>)rs;
+				cord = new double[2];
+				for(int i = 0; i <2; i++)
+					cord[i] = cords.get(i);
+			}else{
+				cord = (double[]) rs;
+			}
 		}
-		if(cord.length < 2)
+		if(cord == null || cord.length < 2)
 			throw new IllegalStateException("Location Cordinates are invalid");
-		String type = (String)map.get(LocationDBField.TYPE);
+		String type = (String)locMap.get(LocationDBField.TYPE);
 		return new GeoLongLatBuilder(locaName).updateLongitude(cord[0]).updateLatitude(cord[1]).updatePointTypee(type).build();
 	}
 

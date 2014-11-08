@@ -143,6 +143,14 @@ public class DefaultLocation extends BeanBasedDocument<DefaultLocation> implemen
 	public GeoLongLat getLocation() {
 		return location;
 	}
+	
+	public double getLongiTude(){
+		return getLocation().getLongitude();
+	}
+
+	public double getLatiTude(){
+		return getLocation().getLatitude();
+	}
 
 	public AddressComponentType getType() {
 		return type;
@@ -286,7 +294,6 @@ public class DefaultLocation extends BeanBasedDocument<DefaultLocation> implemen
 			return this;
 		}
 		public LocationBuilder updateName(String name){
-			Assert.hasText(name, "Location Name should present");
 			this.name = name;
 			return this;
 		}
@@ -386,7 +393,7 @@ public class DefaultLocation extends BeanBasedDocument<DefaultLocation> implemen
 	 */
 	public Map<String, Object> getExpandedLoc(){
 		Map<String, Object> rs = new WeakHashMap<String, Object>(5);
-		rs.put(LocationDBFields.ID, getLocalityId());
+		rs.put(LocationDBFields.ID, getLocationId());
 		if(StringUtils.hasText(getName()))
 			rs.put(LocationDBFields.NAME, getName());
 		if(getLocation() != null)
@@ -412,7 +419,7 @@ public class DefaultLocation extends BeanBasedDocument<DefaultLocation> implemen
 	 */
 	public Map<String, Object> getShortLoc(){
 		Map<String, Object> rs = new WeakHashMap<String, Object>(5);
-		rs.put(LocationDBFields.ID, getLocalityId());
+		rs.put(LocationDBFields.ID, getLocationId());
 		if(StringUtils.hasText(getName()))
 			rs.put(LocationDBFields.NAME, getName());
 		if(getLocation() != null)
@@ -446,7 +453,7 @@ public class DefaultLocation extends BeanBasedDocument<DefaultLocation> implemen
 		builder.updateLongLat(getLocation());
 		builder.updateName(getName());
 		if(country != null)
-			builder.updateCountry(getCountry());
+			builder.updateCountry(country);
 		if(state != null)
 			builder.updateState(state);
 		if(city != null)

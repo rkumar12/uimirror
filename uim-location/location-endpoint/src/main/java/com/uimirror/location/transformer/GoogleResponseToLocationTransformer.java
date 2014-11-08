@@ -153,7 +153,8 @@ public class GoogleResponseToLocationTransformer implements TransformerService<G
 		 */
 		private DefaultLocation getLocation(){
 			LocationBuilder locationBuilder = new DefaultLocation.LocationBuilder(getGeoCord());
-			locationBuilder.updateName(getAddress());
+			if(StringUtils.hasText(getAddress()))
+				locationBuilder.updateName(getAddress());
 			Country country = getCountry();
 			if(country != null)
 				locationBuilder.updateCountry(country);
