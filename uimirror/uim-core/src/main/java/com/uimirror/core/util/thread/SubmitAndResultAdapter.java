@@ -38,7 +38,12 @@ public class SubmitAndResultAdapter extends ExecutorServiceAbstractAdapter{
     		claimResource();
     		throw new IllegalArgumentException("No Job is there to execute");
     	}
-		callabels.forEach(callabel -> completionService.submit(callabel));
+		try{
+			callabels.forEach(callabel -> completionService.submit(callabel));
+		}catch(Exception e){
+			//TODO if job get rejected then do someting
+			//TODO handel the rejected job senaion, test it via singelton, after one sucessful execution, close the resource and try
+		}
 	}
 
 	/* (non-Javadoc)
