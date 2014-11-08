@@ -79,14 +79,14 @@ done
       export use_env=$env;
   fi
       
-echo "JAVA_OPTS='("-Denv=$use_env" "-Dport=$tomcat_port" "-Dnioport=$nio_port")'  ./location-endpoint  &"
+JAVA_OPTS='("-Denv=$use_env" "-Dport=$tomcat_port" "-Dnioport=$nio_port")'  ../bin/location-endpoint  &
 
 echo "$port :  $!" >> /tmp/uimirror.pid
 
 fi
    
   
-#JAVA_OPTS='-Denv=prod' -port=$port ./location-endpoint &
+#JAVA_OPTS='-Denv=prod' -port=$port ../bin/location-endpoint &
 
 #echo "$port :  $!" >> /tmp/uimirror.pid     
     
