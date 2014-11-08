@@ -1,4 +1,5 @@
 apply plugin:'application'
+apply plugin: 'java'
 
 configurations.all {
 	resolutionStrategy.eachDependency { DependencyResolveDetails details ->

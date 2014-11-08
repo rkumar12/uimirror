@@ -28,7 +28,7 @@ public class DefaultAccessToken extends AbstractAccessToken<DefaultAccessToken>{
 	private static final long serialVersionUID = -6156839027050013727L;
 	
 	/**
-	 * @param map
+	 * @param map from which state will be presumed
 	 */
 	public DefaultAccessToken(Map<String, Object> map) {
 		super(map);
@@ -36,33 +36,32 @@ public class DefaultAccessToken extends AbstractAccessToken<DefaultAccessToken>{
 	
 	/**
 	 *Don't Use this until has some special use case
-	 * @param token
 	 */
 	public DefaultAccessToken() {
 		super();
 	}
 
 	/**
-	 * @param token
-	 * @param owner
-	 * @param client
-	 * @param expire
-	 * @param type
-	 * @param scope
-	 * @param notes
-	 * @param instructions
+	 * @param token issued token
+	 * @param owner owner of this token
+	 * @param client client to whom its granted
+	 * @param expire time interval of token expiry
+	 * @param type token type
+	 * @param scope scope of this token
+	 * @param notes if any notes associated with this
+	 * @param instructions if any insrutctions associated with this
 	 */
 	public DefaultAccessToken(Token token, String owner, String client, long expire, TokenType type, Scope scope, Map<String, Object> notes, Map<String, Object> instructions) {
 		super(token, owner, client, expire, type, scope, notes, instructions);
 	}
 
 	/**
-	 * @param token
-	 * @param owner
-	 * @param client
-	 * @param expire
-	 * @param type
-	 * @param scope
+	 * @param token issued token
+	 * @param owner owner of this token
+	 * @param client client to whom its granted
+	 * @param expire time interval of token expiry
+	 * @param type token type
+	 * @param scope scope of this token
 	 */
 	public DefaultAccessToken(Token token, String owner, String client, long expire, TokenType type, Scope scope) {
 		super(token, owner, client, expire, type, scope);

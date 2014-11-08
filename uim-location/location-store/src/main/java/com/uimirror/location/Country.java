@@ -130,25 +130,13 @@ public class Country  extends BeanBasedDocument<Country> implements BeanValidato
 		return "Country [shortName=" + shortName + ", name=" + name + ", code="
 				+ code + "]";
 	}
-
 	
-	/** 
-	 * Has code, if code present, else first check for the name otherwise check 
-	 * for the short name
-	 * (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
-	 */
-	//TODO not sure about the hashCode here, come back with proper analysis.
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = 1;
-		if(code <= 0)
-			result = prime * result + code;
-		else if(StringUtils.hasText(getName()))
-			result = prime * result + name.hashCode();
-		else if(StringUtils.hasText(getShortName()))
-			result = prime * result + shortName.hashCode();
+		int result = super.hashCode();
+		result = prime * result + code;
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		return result;
 	}
 
@@ -156,16 +144,22 @@ public class Country  extends BeanBasedDocument<Country> implements BeanValidato
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
+		if (!super.equals(obj))
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
 		Country other = (Country) obj;
-		if (code != other.code)
+		if ((code > 0 || other.code >0) && code != other.code)
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
 			return false;
 		return true;
 	}
-	
+
+
 	public static class CountryBuilder implements Builder<Country>{
 		private String shortName;
 		private String name;

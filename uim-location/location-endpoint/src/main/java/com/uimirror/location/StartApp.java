@@ -42,7 +42,7 @@ import com.uimirror.location.conf.WebAppInitializer;
  */
 @Configuration
 @ImportResource("classpath*:applicationContext.xml")
-@ComponentScan(basePackages= {"com.uimirror.location"})
+@ComponentScan(basePackages= {"com.uimirror.location","com.uimirror.core"})
 @Import({
 	AppConfig.class, WebAppInitializer.class
 	, BeanIntitializer.class

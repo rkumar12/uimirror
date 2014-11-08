@@ -19,6 +19,8 @@ import org.springframework.util.StringUtils;
 
 import com.uimirror.core.GeoLongLat;
 import com.uimirror.core.Processor;
+import com.uimirror.core.exceptions.ApplicationExceptionMapper;
+import com.uimirror.core.extra.MapException;
 import com.uimirror.core.rest.extra.ApplicationException;
 import com.uimirror.core.rest.extra.ResponseTransFormer;
 import com.uimirror.location.DefaultLocation;
@@ -41,6 +43,7 @@ public class LocationSearchLocator implements Processor<LocationQueryForm, Strin
 	 * @see com.uimirror.core.Processor#invoke(java.lang.Object)
 	 */
 	@Override
+	@MapException(use=ApplicationExceptionMapper.NAME)
 	public String invoke(LocationQueryForm form) throws ApplicationException {
 		LOG.info("[START]- Getting the location details based on the provided query");
 		Map<String, Object> res = null;

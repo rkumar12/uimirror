@@ -29,19 +29,19 @@ public interface CryptoDefination {
    
     /**
      * <p>This will be doing the encryption of the raw string provided</p>
-     * @param raw
-     * @return
-     * @throws GeneralSecurityException
-     * @throws UnsupportedEncodingException
+     * @param raw string which will be encrypted
+     * @return encrypted version of the string
+     * @throws GeneralSecurityException if security policy violated
+     * @throws UnsupportedEncodingException if format not specified
      */
     public String encrypt(String raw) throws GeneralSecurityException, UnsupportedEncodingException;
     
     /**
      * This will be doing the decrypt of the encrypted message.
-     * @param encryptedMsg
-     * @return
-     * @throws GeneralSecurityException
-     * @throws IOException
+     * @param encryptedMsg which needs to be decrypt
+     * @return decrypted version of the string
+     * @throws GeneralSecurityException if security violates
+     * @throws IOException if conversion issue
      */
     public String decrypt(String encryptedMsg) throws GeneralSecurityException, IOException;
 

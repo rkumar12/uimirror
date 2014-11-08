@@ -32,8 +32,8 @@ public final class ConnectionFactory {
 	
 	/**
 	 * <p>Using Mongo options, host and port it gets a connection</p>
-	 * @return
-	 * @throws UnknownHostException
+	 * @return Mongo connection
+	 * @throws UnknownHostException if host is invalid
 	 */
 	public Mongo getMongoClient() throws UnknownHostException{
 		this.mongo = new MongoClient(host, MongoOptionsFactory.getMongoOptions(this.maxPoolSize, this.connectTimeout, this.readPreference, this.writeConcern)); 

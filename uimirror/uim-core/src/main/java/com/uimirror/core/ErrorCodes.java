@@ -275,7 +275,7 @@ public interface ErrorCodes {
 	/**
 	 * Method Failure (Spring Framework)Not part of the HTTP standard, but defined by Spring in the HttpStatus class to be used when a method failed.
 	 *  This status code is deprecated by Spring.
-	 *                 &
+	 *                 &amp;
 	 * Enhance Your Calm (Twitter)
 	 * Not part of the HTTP standard, but returned by version 1 of the Twitter Search and Trends API when the client is being rate limited.[12] Other services may wish to 
 	 * implement the 429 Too Many Requests response code instead.
@@ -352,7 +352,7 @@ public interface ErrorCodes {
    	/**
    	 * Unavailable For Legal Reasons (Internet draft)
    	 * Defined in the internet draft "A New HTTP Status Code for Legally-restricted Resources".[17] Intended to be used when resource access is denied for legal reasons,
-   	 *             &
+   	 *             &amp;
    	 * Redirect (Microsoft)
    	 * Used in Exchange ActiveSync if there either is a more efficient server to use or the server cannot access the users' mailbox.            
    	 * 
@@ -393,7 +393,7 @@ public interface ErrorCodes {
    	/**
    	 * Client Closed Request (Nginx)
    	 * Used in Nginx logs to indicate when the connection has been closed by client while the server is still processing its request, making server unable to send a status code back.
-   	 * &
+   	 * &amp;
    	 * Token required (Esri)
    	 * Returned by ArcGIS for Server. A code of 499 indicates that a token is required (if no token was submitted).
    	 */

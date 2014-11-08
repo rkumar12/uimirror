@@ -22,8 +22,8 @@ public interface BackgroundProcessorFactory<P,R> {
 
 	/**
 	 * Factory container for the background processors
-	 * @param name
-	 * @return
+	 * @param name of the processor
+	 * @return an instance of the processor
 	 */
 	BackgroundProcessor<P, R> getProcessor(String name);
 }

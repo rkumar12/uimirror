@@ -22,9 +22,9 @@ public final class BASE64DecoderHelper {
 
 	/**
 	 * <p>This will decode the base64 string into the raw string</p>
-	 * @param property
-	 * @return
-	 * @throws IOException
+	 * @param property that will be mapped
+	 * @return byte[] representation 
+	 * @throws IOException if encoding error
 	 */
 	public static byte[] base64Decode(String property) throws IOException {
         // NB: This class is internal, and you probably should use another impl

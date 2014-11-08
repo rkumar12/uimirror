@@ -35,7 +35,7 @@ public class AlreadyExistException extends ExceptionInJson{
 	
 	/**
 	 * <p>Construct the response with user provided message</p>
-	 * @param message
+	 * @param message stating the exception details
 	 */
 	public AlreadyExistException(String message) {
 		super(CODE, message);
@@ -43,7 +43,7 @@ public class AlreadyExistException extends ExceptionInJson{
 	
 	/**
 	 * <p>Construct the response with user provided message</p>
-	 * @param message
+	 * @param message stating the exception details
 	 */
 	public AlreadyExistException(Object message) {
 		super(CODE, message);

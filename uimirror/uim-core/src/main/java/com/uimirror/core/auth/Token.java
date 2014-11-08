@@ -41,7 +41,7 @@ public class Token {
 	
 	/**
 	 * Tries to encrypt the token, if in case of any issues, returns the original
-	 * @return
+	 * @return {@link Token}
 	 */
 	public Token getEncrypted(){
 		try {
@@ -54,7 +54,7 @@ public class Token {
 	
 	/**
 	 * Tries to decrypt the token, if in case of any issues, return the original
-	 * @return
+	 * @return {@link Token}
 	 */
 	public Token getDecrypted(){
 		try {
@@ -67,7 +67,7 @@ public class Token {
 	
 	/**
 	 * Gets the Crypto Definitions
-	 * @return
+	 * @return {@link CryptoDefination}
 	 */
 	private CryptoDefination getCryptoDefination(){
 		CryptoDefination cd = null;

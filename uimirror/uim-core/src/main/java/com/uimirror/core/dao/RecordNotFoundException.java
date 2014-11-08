@@ -29,7 +29,6 @@ public class RecordNotFoundException extends DBException{
 	/**
      * Constructs an {@code RecordNotFoundException} with the specified message and root cause.
      *
-     *@param errorCode
      * @param msg the detail message
      */
     public RecordNotFoundException(String msg) {

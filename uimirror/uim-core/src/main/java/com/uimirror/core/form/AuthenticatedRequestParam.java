@@ -23,7 +23,7 @@ public interface AuthenticatedRequestParam{
 	 * If a request has the token in the header or query parameter it will detect those
 	 * without a proper token header/query parameter user will not be allowed for the further actions.
 	 * It will apply de-cryption, and return the raw token 
-	 * @return
+	 * @return the token 
 	 */
 	public String getToken();
 

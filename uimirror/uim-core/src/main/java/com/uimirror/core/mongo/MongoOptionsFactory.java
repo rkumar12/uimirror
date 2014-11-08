@@ -25,8 +25,12 @@ public final class MongoOptionsFactory {
 	}
 
 	/**
-	 * <p>Builds the options for the mongo connection.
-	 * @return
+	 * Builds the options for the mongo connection.
+	 * @param maxPoolSize number connection to keep
+	 * @param connectTimeout when connection will be terminated
+	 * @param readPreference read concern
+	 * @param writeConcern write concern
+	 * @return connection object
 	 */
 	public static MongoClientOptions getMongoOptions(int maxPoolSize, int connectTimeout, ReadPreference readPreference, WriteConcern writeConcern){
 		return MongoClientOptions.builder()

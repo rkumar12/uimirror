@@ -19,8 +19,8 @@ public abstract class DefaultValidator{
 
 	/**
 	 * Checks for the not null of the passed object
-	 * @param src
-	 * @return
+	 * @param src to be validated
+	 * @return <code>true</code> if the provided object is not null
 	 */
 	public boolean isNotNull(Object src){
 		return null == src ? Boolean.FALSE : Boolean.TRUE;

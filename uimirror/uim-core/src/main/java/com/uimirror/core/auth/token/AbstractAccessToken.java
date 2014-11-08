@@ -47,26 +47,26 @@ public abstract class AbstractAccessToken<T> extends BeanBasedDocument<T> implem
 	}
 
 	/**
-	 * @param token
-	 * @param owner
-	 * @param client
-	 * @param expire
-	 * @param type
-	 * @param scope
-	 * @param notes
-	 * @param instructions
+	 * @param token issued token
+	 * @param owner owner of this token
+	 * @param client client to whom its granted
+	 * @param expire time interval of token expiry
+	 * @param type token type
+	 * @param scope scope of this token
+	 * @param notes associated notes
+	 * @param instructions associated instructions
 	 */
 	public AbstractAccessToken(Token token, String owner, String client, long expire, TokenType type, Scope scope, Map<String, Object> notes, Map<String, Object> instructions) {
 		initialize(token, owner, client, expire, type, scope, notes, instructions);
 	}
 
 	/**
-	 * @param token
-	 * @param owner
-	 * @param client
-	 * @param expire
-	 * @param type
-	 * @param scope
+	 * @param token issued token
+	 * @param owner owner of this token
+	 * @param client client to whom its granted
+	 * @param expire time interval of token expiry
+	 * @param type token type
+	 * @param scope scope of this token
 	 */
 	public AbstractAccessToken(Token token, String owner, String client, long expire, TokenType type, Scope scope) {
 		initialize(token, owner, client, expire, type, scope, null, null);
@@ -93,9 +93,9 @@ public abstract class AbstractAccessToken<T> extends BeanBasedDocument<T> implem
 	}
 	/**
 	 * This will update the instructions and notes iff provided arguments are not empty
-	 * @param notes
-	 * @param instructions
-	 * @return
+	 * @param notes associated notes
+	 * @param instructions associated instructions
+	 * @return a Accesstoken instance
 	 */
 	@Autowired
 	public AccessToken updateInstructions(Map<String, Object> notes, Map<String, Object> instructions){
@@ -119,8 +119,8 @@ public abstract class AbstractAccessToken<T> extends BeanBasedDocument<T> implem
 	
 	/**
 	 * Defines the contract for the de-serializing the persisted source to represent a valid state.
-	 * @param src
-	 * @return
+	 * @param src {@link Map} from where state will be presumed
+	 * @return {@link AccessToken}
 	 */
 	protected abstract T init(Map<String, Object> src);
 
@@ -178,11 +178,11 @@ public abstract class AbstractAccessToken<T> extends BeanBasedDocument<T> implem
 	
 	/**
 	 * Validates the map objects to make sure map has proper details to populate the object
-	 * @param token
-	 * @param id
-	 * @param timeout
-	 * @param type
-	 * @param scope
+	 * @param token token
+	 * @param id token id
+	 * @param timeout interval to expiry
+	 * @param type token
+	 * @param scope of the issued token
 	 */
 	protected void validate(Token token, String id, long timeout, TokenType type, Scope scope){
 		Assert.notNull(token, ERR_MSG);
@@ -191,10 +191,10 @@ public abstract class AbstractAccessToken<T> extends BeanBasedDocument<T> implem
 	
 	/**
 	 * Validates the map objects to make sure map has proper details to populate the object
-	 * @param id
-	 * @param timeout
-	 * @param type
-	 * @param scope
+	 * @param id token 
+	 * @param timeout interval of the token
+	 * @param type issued token type
+	 * @param scope scope of the token
 	 */
 	protected void validate(String id, long timeout, TokenType type, Scope scope){
 		validate(id);

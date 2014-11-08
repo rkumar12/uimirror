@@ -59,7 +59,7 @@ public class BasicDetails extends BeanBasedDocument<BasicDetails> implements Bea
 	/**
 	 * Serialize the current state that needs to be persisted to the system.
 	 * 
-	 * @return
+	 * @return {@link Map} represention of the current state
 	 */
 	public Map<String, Object> serailize() {
 		Map<String, Object> state = new LinkedHashMap<String, Object>(16);
@@ -99,7 +99,7 @@ public class BasicDetails extends BeanBasedDocument<BasicDetails> implements Bea
 	/**
 	 * converts a map that comes from DB into BasicDetails object.
 	 * 
-	 * @param raw
+	 * @param raw from which it will be serialized
 	 * @return {@link BasicDetails}
 	 */
 	@SuppressWarnings("unchecked")

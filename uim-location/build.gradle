@@ -1,5 +1,4 @@
-apply plugin: 'distribution'
-allprojects  {
+subprojects  {
 	apply plugin: 'eclipse'
 	apply plugin: "java"
 	apply plugin: "maven"
@@ -78,6 +77,8 @@ task copyDoc(type: Copy) {
 	from 'doc'
 	into "$buildDir/docs"
 }
+
+apply plugin: 'distribution'
 distributions {
 	main {
 		baseName = project.name

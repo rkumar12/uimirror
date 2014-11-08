@@ -39,7 +39,7 @@ public class MatcherServiceImpl implements CryptoMatcherService{
 	 * If strategy is specified then it get instance using the key else with default key
 	 * 
 	 * @param startegy
-	 * @return
+	 * @return {@link CryptoDefination} from the startegy
 	 */
 	private CryptoDefination getCryptoDefination(final String startegy){
 		CryptoDefination cryptoDefination = null;
@@ -57,7 +57,7 @@ public class MatcherServiceImpl implements CryptoMatcherService{
 	 * @param cryptoDefination
 	 * @param raw
 	 * @param encrypted
-	 * @return
+	 * @return <code>true</code> if matches
 	 */
 	private boolean match(final CryptoDefination cryptoDefination , final String raw, final String encrypted){
 		boolean matched = Boolean.FALSE;

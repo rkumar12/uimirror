@@ -19,8 +19,8 @@ public class BooleanUtil {
 	/**
 	 * Checks the provided argument is either y/yes/true, then returns true
 	 * else false
-	 * @param obj
-	 * @return
+	 * @param obj which will be parsed
+	 * @return the boolean value represented by the obj
 	 */
 	public static final boolean parseBoolean(String obj){
 		boolean keepMeLogin = Boolean.parseBoolean(obj);

@@ -12,6 +12,7 @@ package com.uimirror.location.conf;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.Import;
 
 import com.uimirror.core.rest.extra.JsonResponseTransFormer;
@@ -26,7 +27,8 @@ import com.uimirror.location.google.v3.GoogleGeocoderFactory;
 @Configuration
 @Import({DaoBeanIntitializer.class ,BeanOfProcessor.class
 	, BeanOfTransformer.class ,BeanOfValidator.class
-	, BeanOfStore.class})
+	, BeanOfStore.class, BeanOfExceptionIntitializer.class})
+@EnableAspectJAutoProxy
 public class BeanIntitializer {
 
 	@Bean(name=JsonResponseTransFormer.NAME)

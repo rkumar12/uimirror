@@ -37,7 +37,7 @@ public class IllegalArgumentException extends ExceptionInJson{
 	
 	/**
 	 * <p>Construct the response with user provided message</p>
-	 * @param message
+	 * @param message stating the reason of the exception
 	 */
 	public IllegalArgumentException(String message) {
 		super(CODE, message);
@@ -45,7 +45,7 @@ public class IllegalArgumentException extends ExceptionInJson{
 	
 	/**
 	 * <p>Construct the response with user provided message</p>
-	 * @param message
+	 * @param message stating the reason of the exception
 	 */
 	public IllegalArgumentException(Map<String, Object> message) {
 		super(CODE, message);

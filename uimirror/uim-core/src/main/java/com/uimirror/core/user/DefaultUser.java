@@ -54,8 +54,8 @@ public class DefaultUser extends BeanBasedDocument<DefaultUser> implements BeanV
 	
 	/**
 	 * Updates the User Credentials
-	 * @param userInfo
-	 * @return
+	 * @param userCredentials cedentials
+	 * @return user object
 	 */
 	public DefaultUser updateCredentials(Credentials userCredentials){
 		return new DefaultUser(this.userInfo, userCredentials, this.userDetails, this.userAccountLogs);
@@ -63,8 +63,8 @@ public class DefaultUser extends BeanBasedDocument<DefaultUser> implements BeanV
 	
 	/**
 	 * Updates the User Details
-	 * @param userInfo
-	 * @return
+	 * @param userDetails details
+	 * @return user instance
 	 */
 	public DefaultUser updateDetails(BasicDetails userDetails){
 		return new DefaultUser(this.userInfo, this.userCredentials, userDetails, this.userAccountLogs);
@@ -72,8 +72,8 @@ public class DefaultUser extends BeanBasedDocument<DefaultUser> implements BeanV
 	
 	/**
 	 * Updates the User Details
-	 * @param userInfo
-	 * @return
+	 * @param userAccountLogs 
+	 * @return user instance
 	 */
 	public DefaultUser updateLogs(AccountLogs userAccountLogs){
 		return new DefaultUser(this.userInfo, this.userCredentials, this.userDetails, userAccountLogs);
@@ -134,7 +134,7 @@ public class DefaultUser extends BeanBasedDocument<DefaultUser> implements BeanV
 	/**
 	 * Serialize the current state that needs to be persisted to the system.
 	 * 
-	 * @return
+	 * @return {@link Map} representation of the current state
 	 */
 	public Map<String, Object> serailize() {
 		Map<String, Object> state = new LinkedHashMap<String, Object>(20);
@@ -147,7 +147,7 @@ public class DefaultUser extends BeanBasedDocument<DefaultUser> implements BeanV
 	
 	/**
 	 * converts a map that comes from DB into BasicInfo object.
-	 * @param raw
+	 * @param raw from where it will be presumed the state
 	 * @return {@link BasicInfo}
 	 */
 	private DefaultUser init(Map<String, Object> raw) {

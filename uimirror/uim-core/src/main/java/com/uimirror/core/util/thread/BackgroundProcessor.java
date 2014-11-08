@@ -20,13 +20,14 @@ public interface BackgroundProcessor<P, R> {
 	/**
 	 * This will process the defined type of parameters and run the business logic 
 	 * This will not return any response to the caller. in background
-	 * @param param
+	 * @param param which will be invoked
 	 */
 	void invoke(P param);
 	
 	/**
 	 * This will get the result of the submitted tasks
-	 * @return
+	 * @return the result
+	 * @throws IllegalThreadStateException if no result found
 	 */
 	R getResult() throws IllegalThreadStateException;
 

@@ -29,8 +29,8 @@ public class RandomKeyGenerator {
 	
 	/**
 	 * Generates a non secured random string from all the alphabets
-	 * @param len
-	 * @return
+	 * @param len to which string will be truncated
+	 * @return random string of the provided length
 	 */
 	public static String randomString( int len ) {
 		if (len < 1)
@@ -43,8 +43,8 @@ public class RandomKeyGenerator {
 	
 	/**
 	 * Generates a secure random string from all the alphabets
-	 * @param len
-	 * @return
+	 * @param len to which string will be truncated
+	 * @return random string of the provided length
 	 */
 	public static String randomSecureString( int len ) {
 		if (len < 1)

@@ -35,7 +35,7 @@ public class UnAuthorizedException extends ExceptionInJson{
 	
 	/**
 	 * <p>Construct the response with user provided message</p>
-	 * @param message
+	 * @param message details stating the exception cause
 	 */
 	public UnAuthorizedException(String message) {
 		super(CODE, message);

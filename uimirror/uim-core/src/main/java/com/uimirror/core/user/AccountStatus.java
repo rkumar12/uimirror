@@ -12,7 +12,6 @@ package com.uimirror.core.user;
 
 /**
  * Identifies possible status for the account
- * {@link AccountStatus#ACTIEVE} or {@link AccountStatus#BLOCKED} 
  * @author Jay
  */
 public enum AccountStatus {

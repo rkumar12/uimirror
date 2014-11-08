@@ -21,9 +21,9 @@ public interface Processor<P, R> {
 	/**
 	 * This will process the defined type of parameters and run the business logic to 
 	 * generate a response that will be send to the user
-	 * @param param
-	 * @return R
-	 * @throws ApplicationException
+	 * @param param which will be processed
+	 * @return R response from the processed parameters
+	 * @throws ApplicationException in case of any exception during process
 	 */
 	R invoke(P param) throws ApplicationException;
 

@@ -30,57 +30,57 @@ public interface AccessToken extends Principal, Serializable{
 	 * {@link TokenType#TEMPORAL} if this token is issued for temproal purpose only
 	 * {@linkplain TokenType#_2FA} if this token is issued where user wants to perform 2FA
 	 *  
-	 * @return
+	 * @return {@link TokenType}
 	 */
 	TokenType getType();
 	
 	/**
 	 * Represents the issued token and its paraphrase
-	 * @return
+	 * @return {@link Token}
 	 */
 	Token getToken();
 	
 	/**
 	 * Specifies the time in mills, the token will expire on
-	 * @return
+	 * @return expire period in long
 	 */
 	long getExpire();
 	
 	/**
 	 * Defines the scope for this token
-	 * @return
+	 * @return {@link Scope}
 	 * 
 	 */
 	Scope getScope();
 	
 	/**
 	 * Specifies the owner for this token
-	 * @return
+	 * @return owner 
 	 */
 	String getOwner();
 	
 	/**
 	 * Specifies the client from which request generated
-	 * @return
+	 * @return client
 	 */
 	String getClient();
 	
 	/**
 	 * If this token as some additional Notes
-	 * @return
+	 * @return {@link Map}
 	 */
 	Map<String, Object> getNotes();
 	
 	/**
 	 * If this token has any instructions that needs to be taken care
-	 * @return
+	 * @return {@link Map}
 	 */
 	Map<String, Object> getInstructions();
 	
 	/**
-	 * @param notes
-	 * @param instructions
-	 * @return
+	 * @param notes associated with this
+	 * @param instructions instructions associated with this
+	 * @return {@link AccessToken}
 	 */
 	AccessToken updateInstructions(Map<String, Object> notes, Map<String, Object> instructions);
 	
@@ -88,7 +88,7 @@ public interface AccessToken extends Principal, Serializable{
 	 * Converts to the response Map, which in-terms will be transformed to the json
 	 * Necessary to remove unnecessary info while serializing such as it might have user agent
 	 * host name, extra authentication parameters etc
-	 * @return
+	 * @return {@link Map}
 	 */
 	Map<String, Object> toResponseMap();
 	
@@ -96,7 +96,7 @@ public interface AccessToken extends Principal, Serializable{
 	 * Should remove the un-necessary info from the token details
 	 * This should be called when response being sent to the client, shouldn't be before
 	 * This will encrypt the token and send back
-	 * @return
+	 * @return {@link AccessToken}
 	 */
 	AccessToken eraseEsential();
 

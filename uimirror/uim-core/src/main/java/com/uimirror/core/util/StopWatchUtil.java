@@ -15,9 +15,9 @@ public class StopWatchUtil {
 	 * <p>
 	 * This will format the stopwatch summary to be shown in the log
 	 * 
-	 * @param msg
-	 * @param stopWatch
-	 * @return
+	 * @param msg which will be shown
+	 * @param stopWatch instance of the {@link StopWatch} 
+	 * @return message that will be printed
 	 */
 	public static String formatStopSwatchSummery(String msg, StopWatch stopWatch) {
 

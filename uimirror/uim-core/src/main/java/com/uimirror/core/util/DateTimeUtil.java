@@ -10,13 +10,11 @@
  *******************************************************************************/
 package com.uimirror.core.util;
 
-import java.text.SimpleDateFormat;
 import java.time.Clock;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
 
 import org.apache.commons.validator.routines.DateValidator;
 
@@ -32,7 +30,7 @@ public class DateTimeUtil {
 
 	/**
 	 * Gets the system time w.r.t to UTC in EPOCH
-	 * @return
+	 * @return the long representation
 	 */
 	public static final long getCurrentSystemUTCEpoch(){
 		return getCurrentUTCTime().toEpochSecond();
@@ -40,7 +38,7 @@ public class DateTimeUtil {
 	
 	/**
 	 * Gets the system time w.r.t to UTC in {@link LocalDate}
-	 * @return
+	 * @return the long representation
 	 */
 	public static final LocalDate getCurrentSystemUTCDate(){
 		return getCurrentUTCTime().toLocalDate();
@@ -48,8 +46,8 @@ public class DateTimeUtil {
 	
 	/**
 	 * get the system time w.r.t UTC add the time interval in minutes and convert to EPOCH
-	 * @param minutes
-	 * @return
+	 * @param minutes to be added
+	 * @return the long representation
 	 */
 	public static final long addToCurrentUTCTimeConvertToEpoch(long minutes){
 		return getCurrentUTCTime().plusMinutes(minutes).toEpochSecond();
@@ -57,13 +55,17 @@ public class DateTimeUtil {
 	
 	/**
 	 * get the system time w.r.t UTC minus the time interval in minutes and convert to EPOCH
-	 * @param minutes
-	 * @return
+	 * @param minutes to be subtracted
+	 * @return the long representation
 	 */
 	public static final long minusToCurrentUTCTimeConvertToEpoch(long minutes){
 		return getCurrentUTCTime().minusMinutes(minutes).toEpochSecond();
 	}
 	
+	/**
+	 * Get the current UTC time
+	 * @return {@link ZonedDateTime} of the UTC
+	 */
 	public static final ZonedDateTime getCurrentUTCTime(){
 		return ZonedDateTime.now(Clock.systemUTC());
 	}
@@ -71,8 +73,8 @@ public class DateTimeUtil {
 	
 	/**
 	 * validates date to dd-MM-yyyy format
-	 * @param date
-	 * @return boolean
+	 * @param date which will be checked
+	 * @return boolean <code>true</code> if the provided date is valid
 	 */
 	public static boolean isAValidDate(String date) {
 		DateValidator validator = DateValidator.getInstance();
@@ -90,8 +92,8 @@ public class DateTimeUtil {
 	
 	/**
 	 * Validates if age is above 18 based on dob.
-	 * @param dob
-	 * @return boolean
+	 * @param dob that needs to be checked
+	 * @return boolean <code>true</code> if date is above 18
 	 */
 	public static boolean isAgeAboveEighteen(String dob) {
 		boolean result = Boolean.FALSE;

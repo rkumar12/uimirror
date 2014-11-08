@@ -71,7 +71,7 @@ public class DOB {
 
 	/**
 	 * Get the map for dob
-	 * @return
+	 * @return {@link Map} representation of the state
 	 */
 	public Map<String, Object> toMap(){
 		Map<String, Object> map = new LinkedHashMap<String, Object>(8);
@@ -83,7 +83,8 @@ public class DOB {
 
 	/**
 	 * Get the map for dob
-	 * @return
+	 * @param map from which state will be presumed
+	 * @return object with state from the provided {@link Map}
 	 */
 	public static DOB initFromMap(Map<String, Object> map){
 		if(CollectionUtils.isEmpty(map))

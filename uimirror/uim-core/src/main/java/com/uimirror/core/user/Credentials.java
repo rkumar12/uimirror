@@ -48,14 +48,14 @@ public class Credentials extends BeanBasedDocument<Credentials> implements BeanV
 	}
 
 	/**
-	 * @param profileId
-	 * @param userNames
-	 * @param password
-	 * @param screenPassword
-	 * @param accountState
-	 * @param accountStatus
-	 * @param encryptionStratgy
-	 * @param instructions
+	 * @param profileId id
+	 * @param userNames name
+	 * @param password password
+	 * @param screenPassword screen password
+	 * @param accountState state
+	 * @param accountStatus status
+	 * @param encryptionStratgy startegy
+	 * @param instructions instructions
 	 */
 	public Credentials(String profileId, List<String> userNames, String password,
 			String screenPassword, AccountState accountState,

@@ -34,10 +34,7 @@ public class BackgroundMailService extends AbstractBackgroundProcessor<Map<Strin
 
 	private MailService mailService;
 	public static final String NAME = "BMS";
-	
-	/**
-	 * @param size
-	 */
+
 	public BackgroundMailService() {
 		super(1);
 	}
@@ -50,6 +47,10 @@ public class BackgroundMailService extends AbstractBackgroundProcessor<Map<Strin
 		getAdaptor().submitTasks(createJobs(param));
 	}
 	
+	/**
+	 * @param locale
+	 * @return
+	 */
 	public Context getContext(Locale locale){
 		return mailService.getContext(locale);
 	}
@@ -64,7 +65,7 @@ public class BackgroundMailService extends AbstractBackgroundProcessor<Map<Strin
 	
 	/**
 	 * Creates the Job List
-	 * @param token
+	 * @param param
 	 * @return
 	 */
 	private List<Runnable> createJobs(Map<String, Object> param){

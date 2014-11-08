@@ -180,6 +180,82 @@ public class DefaultLocation extends BeanBasedDocument<DefaultLocation> implemen
 		return getLocality() == null ? null : getLocality().getLocalityId();
 	}
 
+	@Override
+	public String toString() {
+		return "DefaultLocation [name=" + name + ", location=" + location
+				+ ", country=" + country + ", state=" + state + ", city="
+				+ city + ", locality=" + locality + ", pin=" + pin + ", type="
+				+ type + "]";
+	}
+	
+	
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((city == null) ? 0 : city.hashCode());
+		result = prime * result + ((country == null) ? 0 : country.hashCode());
+		result = prime * result
+				+ ((locality == null) ? 0 : locality.hashCode());
+		result = prime * result
+				+ ((location == null) ? 0 : location.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((pin == null) ? 0 : pin.hashCode());
+		result = prime * result + ((state == null) ? 0 : state.hashCode());
+		result = prime * result + ((type == null) ? 0 : type.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		DefaultLocation other = (DefaultLocation) obj;
+		if (city == null) {
+			if (other.city != null)
+				return false;
+		} else if (!city.equals(other.city))
+			return false;
+		if (country == null) {
+			if (other.country != null)
+				return false;
+		} else if (!country.equals(other.country))
+			return false;
+		if (locality == null) {
+			if (other.locality != null)
+				return false;
+		} else if (!locality.equals(other.locality))
+			return false;
+		if (location == null) {
+			if (other.location != null)
+				return false;
+		} else if (!location.equals(other.location))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (pin == null) {
+			if (other.pin != null)
+				return false;
+		} else if (!pin.equals(other.pin))
+			return false;
+		if (state == null) {
+			if (other.state != null)
+				return false;
+		} else if (!state.equals(other.state))
+			return false;
+		if (type != other.type)
+			return false;
+		return true;
+	}
+
 
 
 	/**

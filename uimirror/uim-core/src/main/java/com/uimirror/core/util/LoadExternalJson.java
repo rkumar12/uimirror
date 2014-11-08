@@ -31,9 +31,9 @@ public class LoadExternalJson{
 	private static final Logger LOG = LoggerFactory.getLogger(LoadExternalJson.class);
 	/**
 	 * <p>Load test data for unit testing.
-	 * @param fullPath
-	 * @param clazz
-	 * @return
+	 * @param fullPath path from where source will be located
+	 * @param clazz destination class to which translated
+	 * @return final object with state
 	 */
 	public static Object loadData(String fullPath, Class<? extends Object> clazz){
 		return new Genson().deserialize(loadFileFromClassPath(fullPath), clazz);
@@ -41,8 +41,8 @@ public class LoadExternalJson{
 
 	/**
 	 * <p>Loads file from class path.
-	 * @param fullPath
-	 * @return
+	 * @param fullPath from where file will be loaded
+	 * @return json string
 	 */
 	public static String loadFileFromClassPath(String fullPath){
 		StringWriter wrtr = new StringWriter();

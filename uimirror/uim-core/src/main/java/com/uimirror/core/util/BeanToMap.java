@@ -30,8 +30,8 @@ public class BeanToMap {
 	/**
 	 * <p>This converts a bean to map using {@link BeanMap}</p>
 	 * This remove class key from the map default
-	 * @param bean
-	 * @return
+	 * @param bean which needs to convert to {@link Map}
+	 * @return {@link Map} representation of the bean
 	 */
 	public static Map<String, Object> toMap(Object bean){
 		return toMap(bean, Boolean.TRUE);
@@ -39,9 +39,9 @@ public class BeanToMap {
 	
 	/**
 	 * <p>This converts a bean to map using {@link BeanMap}</p>
-	 * @param bean
+	 * @param bean needs to be converted
 	 * @param removeCLass is <code>Boolean.True</code> then removes class from the result map
-	 * @return
+	 * @return {@link Map} representation of the object
 	 */
 	public static Map<String, Object> toMap(Object bean, boolean removeCLass){
 		Map<String, Object> objectAsMap = new LinkedHashMap<String, Object>();
@@ -53,8 +53,9 @@ public class BeanToMap {
 	
 	/**
 	 * <p>This converts a map to bean using {@link BeanUtils}</p>
-	 * @param bean
-	 * @return
+	 * @param map {@link Map} that will be used for the conversion
+	 * @param des, The object which will be populated
+	 * @return the object will populated field
 	 */
 	@SuppressWarnings("unchecked")
 	public static Object fromMap(@SuppressWarnings("rawtypes") Map map, Object des){

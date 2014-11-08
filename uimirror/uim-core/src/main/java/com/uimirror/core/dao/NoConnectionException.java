@@ -29,7 +29,6 @@ public class NoConnectionException extends DBException{
 	/**
      * Constructs an {@code NoConnectionException} with the specified message and root cause.
      *
-     *@param errorCode
      * @param msg the detail message
      */
     public NoConnectionException(String msg) {

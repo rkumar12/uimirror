@@ -115,7 +115,7 @@ public class BasicInfo extends BeanBasedDocument<BasicInfo> implements BeanValid
 
 	/**
 	 * converts a map that comes from DB into BasicInfo object.
-	 * @param raw
+	 * @param raw {@link Map} from which it will be intialized
 	 * @return {@link BasicInfo}
 	 */
 	private BasicInfo init(Map<String, Object> raw) {

@@ -34,7 +34,6 @@ public class WebUtil {
      *
      * @param spec the String to convert to java.net.URL
      * @return <code> {@link URL}</code> if the String is a valid url
-     * @throws <code> {@link IllegalArgumentException}</code> in case string is empty, null, blank or malformed
      * @since 1.0
      */
 	public static URL getUrl(String spec){
@@ -51,7 +50,7 @@ public class WebUtil {
 	/**
 	 * <p>This will test if the provided string is a valid url or not</p>
 	 * Check Out <code> {@link WebUtil#getUrl(String)}</code> for the url checking rules
-	 * @param spec
+	 * @param spec url which will be parsed
 	 * @return <code>true</code> if the string is a valid url else <code>false</code>
 	 */
 	public static boolean isValidUrl(String spec){
@@ -66,8 +65,8 @@ public class WebUtil {
 	/**
 	 * Find a Domain name from the URL
 	 * i.e for http://account.uimirror.com/abc it will extract http://account.uimirror.com
-	 * @param url
-	 * @return
+	 * @param url which will be parsed
+	 * @return domain from the url
 	 */
 	public static String getURLDomain(String url){
 		Matcher m = URL_PATTERN.matcher(url);
@@ -78,8 +77,8 @@ public class WebUtil {
 	
 	/**
 	 * Checks if the URL is a local host
-	 * @param url
-	 * @return
+	 * @param url which will be parsed
+	 * @return <code>true</code> if url is localhost
 	 */
 	public static boolean isLoaclHostURL(String url){
 		Matcher m = LOCAL_HOST_PATTERN.matcher(url);
@@ -88,9 +87,9 @@ public class WebUtil {
 	
 	/**
 	 * Checks if the app URL and redirect URL are same or not
-	 * @param appURL
-	 * @param redirectURL
-	 * @return
+	 * @param appURL which will be validated
+	 * @param redirectURL to which it will be redirected
+	 * @return <code>true</code> if valid
 	 */
 	public static boolean isValidAppAndRedirectURL(String appURL, String redirectURL){
 		if(!StringUtils.hasText(appURL))

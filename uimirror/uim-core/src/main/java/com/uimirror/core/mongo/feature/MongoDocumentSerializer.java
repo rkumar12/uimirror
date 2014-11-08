@@ -25,21 +25,22 @@ public abstract class MongoDocumentSerializer<T> {
 	/**
 	 * <p>Defines contract how a object class while saving will be serialized</p>
 	 * This gives a default implementation of object getting converted to {@link Map}
-	 * @return
-	 * @throws IllegalStateException 
+	 * @return {@link Map} representation of the Object
+	 * @throws IllegalStateException if the object fields are in valid
 	 */
 	public Map<String, Object> toMap() throws IllegalStateException{
 		return BeanToMap.toMap(this);
 	}
 	/**
 	 * Defines contract, from the source object , value needs to be initialized.
-	 * @param src
+	 * @param src {@link Map} from which object will be intialized
+	 * @return T, converted object
 	 */
 	public abstract T initFromMap(Map<String, Object> src);
 	
 	/**
 	 * Validates the incoming source to initialize
-	 * @param src
+	 * @param src {@link Map} the object that will be validated
 	 */
 	protected void validateSource(Map<String, Object> src){
 		if(CollectionUtils.isEmpty(src))

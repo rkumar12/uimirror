@@ -34,7 +34,7 @@ public @interface MapException {
 
 	/**
 	 * An instance alias name of {@link ExceptionMapper} which will be used to map the exception
-	 * @return
+	 * @return the class name that will be used
 	 */
 	String use();
 }

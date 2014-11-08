@@ -26,12 +26,12 @@ public interface Constants {
 	String MESSAGE = "message";
 	String NAME_REGEX_PATTERN = "(?u)^[A-Za-zàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð,.'-]+$";
 	/**
-	 * REGEX ^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\S+$).{8,}$
+	 * REGEX ^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&amp;+=])(?=\S+$).{8,}$
 	 * ^                 # start-of-string
 	 * (?=.*[0-9])       # a digit must occur at least once
      * (?=.*[a-z])       # a lower case letter must occur at least once
      * (?=.*[A-Z])       # an upper case letter must occur at least once
-     * (?=.*[@#$%^&+=])  # a special character must occur at least once
+     * (?=.*[@#$%^&amp;+=])  # a special character must occur at least once
      * (?=\S+$)          # no whitespace allowed in the entire string
      * .{8,}             # anything, at least eight places though
      * $  

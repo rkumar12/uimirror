@@ -37,7 +37,7 @@ public class GeoLongLat{
 
 	/**
 	 * Converts the location details in to a serialize  map that will be stored in the DB
-	 * @return
+	 * @return {@link Map} representing the {@link GeoLongLat}
 	 */
 	public Map<String, Object> toGeoCordMap(){
 		Map<String, Object> map = new LinkedHashMap<String, Object>(6);
@@ -54,7 +54,8 @@ public class GeoLongLat{
 
 	/**
 	 * Converts the serialized map to the bean
-	 * @return
+	 * @param map from which state will be resumed
+	 * @return {@link GeoLongLat} from the map
 	 */
 	@SuppressWarnings("unchecked")
 	public static GeoLongLat initFromGeoCordMap(Map<String, Object> map){
@@ -76,8 +77,8 @@ public class GeoLongLat{
 	/**
 	 * Return distance between this location and that location
 	 * measured in statute miles
-	 * @param that
-	 * @return
+	 * @param that to which distance will be calculated
+	 * @return distance between the current and provided distance
 	 */
 	public double distanceTo(GeoLongLat that) {
 		double STATUTE_MILES_PER_NAUTICAL_MILE = 1.15077945;
@@ -156,6 +157,49 @@ public class GeoLongLat{
 		this.latitude = builder.latitude;
 		this.longitude = builder.longitude;
 		this.type = builder.type;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		long temp;
+		temp = Double.doubleToLongBits(latitude);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result
+				+ ((location == null) ? 0 : location.hashCode());
+		temp = Double.doubleToLongBits(longitude);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		GeoLongLat other = (GeoLongLat) obj;
+		if (Double.doubleToLongBits(latitude) != Double
+				.doubleToLongBits(other.latitude))
+			return false;
+		if (location == null) {
+			if (other.location != null)
+				return false;
+		} else if (!location.equals(other.location))
+			return false;
+		if (Double.doubleToLongBits(longitude) != Double
+				.doubleToLongBits(other.longitude))
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "GeoLongLat [location=" + location + ", longitude=" + longitude
+				+ ", latitude=" + latitude + ", type=" + type + "]";
 	}
 
 }

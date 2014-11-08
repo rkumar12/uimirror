@@ -22,8 +22,8 @@ public interface ResponseTransFormer<R> {
 	/**
 	 * <p>According to the {@link Produces} type, implementing class should return
 	 * value accordingly</p>
-	 * @param src
-	 * @return
+	 * @param src which needs to be transformed
+	 * @return desired object
 	 */
 	R doTransForm(Object src);
 }

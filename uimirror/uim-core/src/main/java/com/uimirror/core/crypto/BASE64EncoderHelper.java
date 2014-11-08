@@ -20,8 +20,8 @@ public final class BASE64EncoderHelper {
 
 	/**
 	 * It encodes the given string into the base64 string
-	 * @param bytes
-	 * @return
+	 * @param bytes which will be encoded
+	 * @return encoded version of the string
 	 */
 	public static String base64Encode(byte[] bytes) {
         // NB: This class is internal, and you probably should use another impl

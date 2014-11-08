@@ -99,7 +99,7 @@ public class AccountLogs extends BeanBasedDocument<AccountLogs> implements BeanV
 	/**
 	 * converts a map that comes from DB into AccountLogs object.
 	 * 
-	 * @param raw
+	 * @param raw {@link Map} from which state will be preserved
 	 * @return {@link AccountLogs}
 	 */
 	@SuppressWarnings("unchecked")
@@ -120,7 +120,7 @@ public class AccountLogs extends BeanBasedDocument<AccountLogs> implements BeanV
 	/**
 	 * Serialize the current state that needs to be persisted to the system.
 	 * 
-	 * @return
+	 * @return {@link Map} representation of the current state
 	 */
 	public Map<String, Object> serailize() {
 		Map<String, Object> state = new LinkedHashMap<String, Object>(9);

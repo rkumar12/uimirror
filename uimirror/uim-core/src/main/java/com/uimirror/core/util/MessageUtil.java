@@ -29,8 +29,8 @@ public class MessageUtil {
 	
 	/**
 	 * Creates the message based on the field
-	 * @param fields
-	 * @return
+	 * @param fields list of fields which needs to segregated
+	 * @return final string represenation of the message
 	 */
 	public static String getErrorMessage(List<String> fields){
 		StringBuilder sb = new StringBuilder();

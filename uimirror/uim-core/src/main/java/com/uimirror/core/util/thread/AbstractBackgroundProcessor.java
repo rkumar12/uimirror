@@ -35,7 +35,7 @@ public abstract class AbstractBackgroundProcessor<P, R> implements BackgroundPro
 	
 	/**
 	 * Gives the current initialized thread adaptors
-	 * @return
+	 * @return {@link ExecutorServiceAbstractAdapter} adptor
 	 */
 	protected ExecutorServiceAbstractAdapter getAdaptor(){
 		return adapter;
@@ -43,7 +43,8 @@ public abstract class AbstractBackgroundProcessor<P, R> implements BackgroundPro
 	
 	/**
 	 * This will get the result of the submitted tasks
-	 * @return
+	 * @return Object[] of the results
+	 * @throws IllegalThreadStateException if no result was expected
 	 */
 	protected Object[] getResults() throws IllegalThreadStateException{
 		if(adapter instanceof SubmitAndForgetAdapter)

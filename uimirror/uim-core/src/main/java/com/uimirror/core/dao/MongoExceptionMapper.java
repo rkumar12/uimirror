@@ -10,6 +10,9 @@
  *******************************************************************************/
 package com.uimirror.core.dao;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.mongodb.BulkWriteException;
 import com.mongodb.CommandFailureException;
 import com.mongodb.MongoCursorNotFoundException;
@@ -23,6 +26,7 @@ import com.uimirror.core.exceptions.ExceptionMapper;
 public class MongoExceptionMapper implements ExceptionMapper{
 
 	public static final String NAME = "MONGOEM";
+	private static final Logger LOG = LoggerFactory.getLogger(MongoExceptionMapper.class);
 	/* (non-Javadoc)
 	 * @see com.uimirror.core.ExceptionMapper#mapIt(java.lang.Object)
 	 */
@@ -34,8 +38,10 @@ public class MongoExceptionMapper implements ExceptionMapper{
 			return translateCommandFailure();
 		if(isCursorNotFound(exceptionToMap))
 			return translateNotFound();
-		if(exceptionToMap instanceof MongoException)
+		if(exceptionToMap instanceof MongoException){
+			LOG.error("[CRTICAL-MONGO-ERROR]- Something went wrong {}",exceptionToMap);
 			return translateInternal();
+		}
 		return exceptionToMap;
 	}
 	

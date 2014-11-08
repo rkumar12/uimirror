@@ -21,11 +21,10 @@ public interface CryptoMatcherService {
 
 	/**
 	 * Matches the provided parameters using the crypto definition mentioned in the strategy.
-	 * 
-	 * @param raw
-	 * @param encrypted
-	 * @param startegy
-	 * @return
+	 * @param raw which be encrypted
+	 * @param encrypted which will be decrypted
+	 * @param startegy policy
+	 * @return <code>true</code> if matches
 	 */
 	public boolean matchByEncrypting(final String raw, final String encrypted, final String startegy);
 }

@@ -31,15 +31,15 @@ public abstract class ExceptionInJson extends ApplicationException{
 
 	/**
 	 * <p>Initialize the exception response to be part of the response</p>
-	 * @param status
-	 * @param msg
+	 * @param status cause of the exception
+	 * @param msg describing the root cause
 	 */
 	public ExceptionInJson(Status status, Object msg) {
 		super(responseBuilder(status, msg));
 	}
 	/**
 	 * <p>Builds invalid Response message</p>
-	 * @return
+	 * @return {@link Response} object
 	 */
 	private static Response responseBuilder(Status status, Object msg) {
 		Map<String, Object> rs = new LinkedHashMap<String, Object>();
@@ -49,8 +49,8 @@ public abstract class ExceptionInJson extends ApplicationException{
 	
 	/**
 	 * <p>Helper to build the final response with status code</p>
-	 * @param res
-	 * @return
+	 * @param res {@link Map} which needs to transformed
+	 * @return {@link Response} object
 	 */
 	private static Response buildResponse(Status status, Map<String, ? extends Object> res){
 		return Response.status(status).entity(new Genson().serialize(res)).build();

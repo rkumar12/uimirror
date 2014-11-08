@@ -25,8 +25,7 @@ public abstract class ApplicationException extends WebApplicationException{
 
 	/**
 	 * <p>Initialize the exception response to be part of the response</p>
-	 * @param status
-	 * @param msg
+	 * @param res which will be mapped
 	 */
 	public ApplicationException(Response res) {
 		super(res);

@@ -35,7 +35,7 @@ public class InternalException extends ExceptionInJson{
 	
 	/**
 	 * <p>Construct the response with user provided message</p>
-	 * @param message
+	 * @param message stating the exception details
 	 */
 	public InternalException(String message) {
 		super(CODE, message);

@@ -14,9 +14,11 @@ import javax.ws.rs.QueryParam;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
 
 import com.uimirror.core.BooleanUtil;
 import com.uimirror.core.GeoLongLat;
+import com.uimirror.core.rest.extra.IllegalArgumentException;
 import com.uimirror.ws.api.security.AuthenticatedPrincipal;
 
 /**
@@ -39,10 +41,8 @@ public class LocationQueryForm extends AuthenticatedPrincipal{
 	private String limit;
 	
 	//by longitude and latitude
-	@QueryParam(LocationQueryVariables.LONGITUDE)
-	private String longitude;
-	@QueryParam(LocationQueryVariables.LATITUDE)
-	private String latitude;
+	@QueryParam(LocationQueryVariables.LOCATION)
+	private String location;
 	
 	//By Location LOCATION_ID
 	@QueryParam(LocationQueryVariables.LOCATION_ID)
@@ -64,23 +64,29 @@ public class LocationQueryForm extends AuthenticatedPrincipal{
 		return limit;
 	}
 
-	public String getLongitude() {
-		return longitude;
-	}
-
-	public String getLatitude() {
-		return latitude;
+	public String getLocation() {
+		return location;
 	}
 
 	/**
 	 * Gets the longitude and latitude of the given query,
 	 * if no valid details present then <code>null</code>
+	 * Expects Longitude,latitude
 	 * @return
 	 */
 	public GeoLongLat getLongLatQuery(){
+		
 		GeoLongLat geo = null;
+		//Validate the provided numbers first
+		if(!StringUtils.hasText(location)){
+			throw new IllegalArgumentException();
+		}
+		String[] locs = location.split(",");
+		if(locs.length <= 0){
+			throw new IllegalArgumentException();
+		}
 		try{
-			geo = new GeoLongLat.GeoLongLatBuilder(null).updateLongitude(Double.parseDouble(longitude)).updateLatitude(Double.parseDouble(latitude)).build();
+			geo = new GeoLongLat.GeoLongLatBuilder(null).updateLongitude(Double.parseDouble(locs[0])).updateLatitude(Double.parseDouble(locs[1])).build();
 		}catch(NumberFormatException e){
 			LOG.warn("Parsing Longitude and latitude are invalid.");
 		}
@@ -93,6 +99,12 @@ public class LocationQueryForm extends AuthenticatedPrincipal{
 	
 	public boolean isExpanded(){
 		return BooleanUtil.parseBoolean(expanded);
+	}
+
+	@Override
+	public String toString() {
+		return "LocationQueryForm [limit=" + limit + ", location(Longitude,Latitude)=" + location
+				+ ", locationId=" + locationId + ", expanded=" + expanded + "]";
 	}
 
 }

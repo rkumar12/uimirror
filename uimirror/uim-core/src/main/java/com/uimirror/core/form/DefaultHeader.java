@@ -22,14 +22,14 @@ public interface DefaultHeader {
 	/**
 	 * This gives the client IP, tries to connect 
 	 * this should present in all communication
-	 * @return
+	 * @return ip address
 	 */
 	String getIp();
 
 	/**
 	 * Specifies the user browser meta information, from where user tries to get connect
 	 * it should present in all the communication
-	 * @return
+	 * @return user agent
 	 */
 	String getUserAgent();
 }

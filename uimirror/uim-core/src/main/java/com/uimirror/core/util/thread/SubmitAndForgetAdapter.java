@@ -49,8 +49,8 @@ public class SubmitAndForgetAdapter extends ExecutorServiceAbstractAdapter{
 	/**
 	 * Submit the Runnable tasks to execute in background.
 	 *  
-	 * @param runabels
-	 * @throws IllegalArgumentException
+	 * @param runabels list of objects which will be executed
+	 * @throws IllegalArgumentException if no object found
 	 */
 	@Override
 	public void submitTasks(List<? extends Runnable> runabels) throws IllegalArgumentException {

@@ -21,7 +21,9 @@ public final class DBCollectionUtil {
 
 	/**
 	 * <p>Returns the collection specified in the collection construct
-	 * @return
+	 * @param db from where collection will be retrieved
+	 * @param collectionName name that will be retrieved
+	 * @return {@link DBCollection} from the given {@link DB} and collectionName
 	 */
 	public static DBCollection getCollection(final DB db, final String collectionName){
 		if(db == null){

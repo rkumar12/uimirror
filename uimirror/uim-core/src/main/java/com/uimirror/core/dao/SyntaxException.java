@@ -29,7 +29,6 @@ public class SyntaxException extends DBException{
 	/**
      * Constructs an {@code SyntaxException} with the specified message and root cause.
      *
-     *@param errorCode
      * @param msg the detail message
      */
     public SyntaxException(String msg) {

@@ -24,8 +24,9 @@ public interface LocationQueryVariables extends Parameters{
 	String EXACT = "exact";
 	
 	//By Long, Lat
-	String LONGITUDE = "lon";
-	String LATITUDE = "lat";
+//	String LONGITUDE = "longitude";
+//	String LATITUDE = "latitude";
+	String LOCATION = "loc";
 	String EXPANDED = "expanded";
 	
 	//By Location LOCATION_ID

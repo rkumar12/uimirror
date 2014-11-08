@@ -33,7 +33,6 @@ import com.uimirror.core.extra.MapException;
 import com.uimirror.core.mongo.BasicMongoOperators;
 import com.uimirror.core.mongo.feature.BasicDBFields;
 import com.uimirror.core.mongo.feature.BeanBasedDocument;
-import com.uimirror.core.mongo.feature.MongoDocumentSerializer;
 
 /**
  * Basic and essential implementation for the {@linkplain BasicStore}
@@ -41,8 +40,8 @@ import com.uimirror.core.mongo.feature.MongoDocumentSerializer;
  * the operators defined in {@linkplain BasicMongoOperators}
  * Make sure in case of update giving the proper {@linkplain Map} with key as one of 
  * the operators defined in {@linkplain BasicMongoOperators} leaving the top most document
- * as by default its taking {@linkplain BasicMongoOperators#SET} only for {@linkplain BasicStore#updateById(Object, MongoDocumentSerializer)}
- * else in case for the updateByQuery pass the updated {@linkplain Map<String, Object} as fully update filed
+ * as by default its taking  only for {@linkplain BasicStore#updateById(Object, Map)}
+ * else in case for the updateByQuery pass the updated as fully update filed
  * with proper operators from the {@linkplain BasicMongoOperators}
  * 
  * @author Jay
@@ -57,6 +56,7 @@ public abstract class AbstractMongoStore<T extends BeanBasedDocument<T>> extends
 	 * @param mongo
 	 * @param dbName
 	 * @param collectionName
+	 * @param claz
 	 */
 	public AbstractMongoStore(Mongo mongo, String dbName, String collectionName , Class<? extends BeanBasedDocument<T>> claz){
 		super(mongo, dbName, collectionName);
@@ -67,6 +67,7 @@ public abstract class AbstractMongoStore<T extends BeanBasedDocument<T>> extends
 	/**
 	 * Assign/ Create collection from the given {@link DBCollection}
 	 * @param collection
+	 * @param claz
 	 */
 	public AbstractMongoStore(DBCollection collection, Class<? extends BeanBasedDocument<T>> claz){
 		super(collection);
@@ -76,6 +77,7 @@ public abstract class AbstractMongoStore<T extends BeanBasedDocument<T>> extends
 	/**
 	 * @param db
 	 * @param collectionName
+	 * @param claz
 	 */
 	public AbstractMongoStore(DB db, String collectionName, Class<? extends BeanBasedDocument<T>> claz) {
 		super(db, collectionName);
@@ -162,7 +164,7 @@ public abstract class AbstractMongoStore<T extends BeanBasedDocument<T>> extends
 	 * If empty, then whole documents in the collection.
 	 * 
 	 * @param obj
-	 * @return
+	 * @return {@link WriteResult}
 	 */
 	protected WriteResult delete(DBObject obj){
 		return getCollection().remove(obj);
@@ -263,11 +265,11 @@ public abstract class AbstractMongoStore<T extends BeanBasedDocument<T>> extends
 	
 	/**
 	 * Updates to the document
-	 * @param q
-	 * @param u
-	 * @param nomatchInsert
-	 * @param multi
-	 * @return
+	 * @param q query
+	 * @param u update statment
+	 * @param nomatchInsert if no match then create a document
+	 * @param multi if multi needs to be inserted
+	 * @return no of results write to DB
 	 */
 	@MapException(use=MongoExceptionMapper.NAME)
 	protected WriteResult update(Map<String, Object> q, Map<String, Object> u, boolean nomatchInsert, boolean multi){
@@ -276,9 +278,9 @@ public abstract class AbstractMongoStore<T extends BeanBasedDocument<T>> extends
 	
 	/**
 	 * Concerts the {@linkplain DBCursor} into list of {@linkplain T}
-	 * @param cursor
-	 * @param fetchSize
-	 * @return
+	 * @param cursor document cursor
+	 * @param fetchSize size to which it will fetched at a time
+	 * @return {@link List} of Object
 	 */
 	@SuppressWarnings("unchecked")
 	public List<T> getFromCursor(DBCursor cursor, int fetchSize){
@@ -299,8 +301,8 @@ public abstract class AbstractMongoStore<T extends BeanBasedDocument<T>> extends
 	
 	/**
 	 * This creates an ID Query
-	 * @param id
-	 * @return
+	 * @param id for which document will be qured
+	 * @return formated query
 	 */
 	protected DBObject getIdQuery(Object id){
 		return new BasicDBObject(BasicDBFields.ID, id);
@@ -308,8 +310,8 @@ public abstract class AbstractMongoStore<T extends BeanBasedDocument<T>> extends
 	
 	/**
 	 * This creates an ID Query Map
-	 * @param id
-	 * @return
+	 * @param id object id
+	 * @return {@link Map}
 	 */
 	protected Map<String, Object> getIdMap(Object id){
 		Map<String, Object> map = new LinkedHashMap<String, Object>(3);
@@ -319,8 +321,8 @@ public abstract class AbstractMongoStore<T extends BeanBasedDocument<T>> extends
 	
 	/**
 	 * Gets the number of document that got affected because of this {@linkplain WriteResult}
-	 * @param result
-	 * @return
+	 * @param result write concerns
+	 * @return number of record
 	 */
 	protected int getNumberOfDocumentAffected(WriteResult result){
 		return result.getN();
@@ -339,8 +341,8 @@ public abstract class AbstractMongoStore<T extends BeanBasedDocument<T>> extends
 	
 	/**
 	 * Converts the provided map into {@link DBObject}
-	 * @param obj
-	 * @return
+	 * @param obj object to be serialized
+	 * @return {@link DBObject}
 	 */
 	protected DBObject convertToDBObject(Map<String, Object> obj){
 		DBObject dbObject = null;
@@ -353,9 +355,9 @@ public abstract class AbstractMongoStore<T extends BeanBasedDocument<T>> extends
 	
 	/**
 	 * Query for the first record from the document.
-	 * @param query
-	 * @return
-	 * @throws RecordNotFoundException
+	 * @param query query 
+	 * @return found object
+	 * @throws RecordNotFoundException if no record
 	 */
 	protected T queryFirstRecord(Map<String, Object> query) throws RecordNotFoundException{
 		List<T> results = getByQuery(query);
@@ -364,10 +366,10 @@ public abstract class AbstractMongoStore<T extends BeanBasedDocument<T>> extends
 	
 	/**
 	 * Query for the first record from the document.
-	 * @param query
-	 * @param fields
-	 * @return
-	 * @throws RecordNotFoundException
+	 * @param query query
+	 * @param fields fileds
+	 * @return state of the object
+	 * @throws RecordNotFoundException exception once object not found
 	 */
 	protected T queryFirstRecord(Map<String, Object> query, Map<String, Object> fields) throws RecordNotFoundException{
 		List<T> results = getByQuery(query, fields);
@@ -404,8 +406,8 @@ public abstract class AbstractMongoStore<T extends BeanBasedDocument<T>> extends
 	
 	/**
 	 * Gets the exists map query
-	 * @param flag
-	 * @return
+	 * @param flag exist field 
+	 * @return {@link Map} of the query
 	 */
 	public Map<String, Object> getExistQuery( boolean flag){
 		Map<String, Object> query = new LinkedHashMap<String, Object>(5);

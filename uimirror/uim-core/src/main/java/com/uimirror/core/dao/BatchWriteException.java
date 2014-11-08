@@ -29,7 +29,6 @@ public class BatchWriteException extends DBException{
 	/**
      * Constructs an {@code BatchWriteException} with the specified message and root cause.
      *
-     *@param errorCode
      * @param msg the detail message
      */
     public BatchWriteException(String msg) {

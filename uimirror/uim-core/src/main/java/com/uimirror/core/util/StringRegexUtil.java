@@ -21,8 +21,8 @@ public class StringRegexUtil {
 
 	/**
 	 * Matches the given name with internatiolnization support
-	 * @param name
-	 * @return
+	 * @param name which will be validated
+	 * @return <code>true</code> if its valid
 	 */
 	public static boolean isValidName(String name){
 		return Constants.NAME_PATTERN.matcher(name).matches();
@@ -30,8 +30,8 @@ public class StringRegexUtil {
 	
 	/**
 	 * Matches the password policy 
-	 * @param password
-	 * @return
+	 * @param password which needs to be validated
+	 * @return <code>true</code> if its follwing the rules
 	 */
 	public static boolean isPasswordFollowingThePolicy(String password){
 		return Constants.PASSWORD_POLICY_PATTERN.matcher(password).matches();

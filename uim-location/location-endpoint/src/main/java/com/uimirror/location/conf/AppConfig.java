@@ -12,7 +12,6 @@ package com.uimirror.location.conf;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
@@ -20,7 +19,6 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
  * @author Jay
  */
 @Configuration
-@EnableAspectJAutoProxy
 @PropertySource("${contextSource:classpath:application}-${env:dev}.properties")
 public class AppConfig {
 	

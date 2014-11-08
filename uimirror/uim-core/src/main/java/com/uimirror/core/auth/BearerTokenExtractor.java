@@ -16,7 +16,7 @@ import org.springframework.util.StringUtils;
 
 /**
  * {@link TokenExtractor} that strips the authenticator from a bearer token request (with an Authorization header in the
- * form "Bearer <code><TOKEN></code>", or as a request parameter if that fails). The access token is the principal in
+ * form "Bearer TOKEN", or as a request parameter if that fails). The access token is the principal in
  * the authentication token that is extracted.
  * @author Jay
  */
@@ -34,7 +34,8 @@ public class BearerTokenExtractor implements TokenExtractor {
 	
 	/**
 	 * Extracts the access token from the header parameters
-	 * @param from
+	 * @param header
+	 * @param queryParam
 	 * @return
 	 */
 	public static String extractAccessToken(String header, String queryParam) {
@@ -50,9 +51,8 @@ public class BearerTokenExtractor implements TokenExtractor {
 
 	/**
 	 * Extract the OAuth bearer token from a header.
-	 * 
-	 * @param from The request.
-	 * @return The token, or null if no OAuth authorization header was supplied.
+	 * @param header
+	 * @return
 	 */
 	protected static String extractHeaderToken(String header) {
 		if(StringUtils.hasText(header)){

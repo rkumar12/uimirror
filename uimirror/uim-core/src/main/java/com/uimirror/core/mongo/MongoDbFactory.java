@@ -21,17 +21,15 @@ import com.mongodb.Mongo;
  * 
  * @author Jayaram
  * @version $
- * @see 
- * @createdOn 15-Mar-2014 9:09:48 PM
- * @modifiedby Jayaram
- * @modifiedon 15-Mar-2014 9:09:48 PM
  * ***********************************************************************
  */
 public final class MongoDbFactory {
 	
 	/**
-	 * <p>Gets or create the db from the 
-	 * @return
+	 * <p>Gets or create the db from the
+	 * @param mongo, Mongo Connection
+	 * @param dbName DB Name which will be extracted
+	 * @return {@link DB} of the connection
 	 */
 	public static DB getDB(Mongo mongo, String dbName){
 		if(dbName == null || dbName.trim().isEmpty()){
