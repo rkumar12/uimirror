@@ -99,7 +99,15 @@ public class Credentials extends BeanBasedDocument<Credentials> implements BeanV
 		String stateVal = (String)raw.get(UserAuthDBFields.ACCOUNT_STATE);
 		AccountStatus accountStatus = StringUtils.hasText(statVal) ? AccountStatus.getEnum(statVal) : AccountStatus.ACTIVE;
 		AccountState accountState = StringUtils.hasText(stateVal) ? AccountState.getEnum(stateVal) : AccountState.ENABLED;
-		return new Credentials(id, userNames, password, screenPassword, accountState, accountStatus, encryptionStratgy, instructions);
+		CredentialsBuilder build = new CredentialsBuilder(id).
+				addEncStartegy(encryptionStratgy).
+				addInstructions(instructions).
+				addPassword(password).
+				addScreenPassword(screenPassword).
+				addState(accountState).
+				addStatus(accountStatus).
+				addUserNames(userNames);
+		return build.build();
 	}
 	
 	/** 
