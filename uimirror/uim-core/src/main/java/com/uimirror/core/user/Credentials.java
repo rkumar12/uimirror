@@ -17,6 +17,7 @@ import java.util.Map;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import com.uimirror.core.Builder;
 import com.uimirror.core.mongo.feature.BeanBasedDocument;
 import com.uimirror.core.service.BeanValidatorService;
 
@@ -176,6 +177,96 @@ public class Credentials extends BeanBasedDocument<Credentials> implements BeanV
 
 	public String getScreenPassword() {
 		return screenPassword;
+	}
+
+	@Override
+	public String toString() {
+		return "Credentials [userNames=" + userNames + ", password=[*********]"
+				+ ", screenPassword= [*********]" + screenPassword + ", accountState="
+				+ accountState + ", accountStatus=" + accountStatus
+				+ ", encryptionStratgy=" + encryptionStratgy
+				+ ", instructions=" + instructions + "]";
+	}
+	
+	public static class CredentialsBuilder implements Builder<Credentials>{
+		
+		private String profileId;
+		private List<String> userNames;
+		private String password;
+		private String screenPassword;
+		private AccountState accountState;
+		private AccountStatus accountStatus;
+		private String encryptionStratgy;
+		private Map<String, Object> instructions;
+		
+		public CredentialsBuilder(String profileId) {
+			this.profileId = profileId;
+		}
+		
+		public CredentialsBuilder addUserNames(List<String> userNames){
+			this.userNames = userNames;
+			return this;
+		}
+		
+		public CredentialsBuilder addPassword(String password){
+			this.password = password;
+			return this;
+		}
+		
+		public CredentialsBuilder addScreenPassword(String screenPassword){
+			this.screenPassword = screenPassword;
+			return this;
+		}
+		
+		public CredentialsBuilder addState(String state){
+			this.accountState = AccountState.getEnum(state);
+			return this;
+		}
+		
+		public CredentialsBuilder addState(AccountState state){
+			this.accountState = state;
+			return this;
+		}
+		
+		public CredentialsBuilder addStatus(String status){
+			this.accountStatus = AccountStatus.getEnum(status);
+			return this;
+		}
+		
+		public CredentialsBuilder addStatus(AccountStatus status){
+			this.accountStatus = status;
+			return this;
+		}
+		
+		public CredentialsBuilder addEncStartegy(String startegy){
+			this.encryptionStratgy = startegy;
+			return this;
+		}
+		
+		public CredentialsBuilder addInstructions(Map<String, Object> instructions){
+			this.instructions = instructions;
+			return this;
+		}
+
+		/* (non-Javadoc)
+		 * @see com.uimirror.core.Builder#build()
+		 */
+		@Override
+		public Credentials build() {
+			return new Credentials(this);
+		}
+		
+	}
+	
+	private Credentials(CredentialsBuilder builder){
+		super(builder.profileId);
+		this.accountState = builder.accountState;
+		this.accountStatus = builder.accountStatus;
+		this.encryptionStratgy = builder.encryptionStratgy;
+		this.instructions = builder.instructions;
+		this.password = builder.password;
+		this.screenPassword = builder.screenPassword;
+		this.userNames = builder.userNames;
 	}
 
 }

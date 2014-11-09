@@ -15,13 +15,15 @@ import java.util.Map;
 
 import org.springframework.util.StringUtils;
 
+import com.uimirror.core.Builder;
 import com.uimirror.core.Constants;
 import com.uimirror.core.bean.Gender;
 import com.uimirror.core.mongo.feature.BeanBasedDocument;
 import com.uimirror.core.service.BeanValidatorService;
 
 /**
- * This has the basic user Info for the user such as email, name etc
+ * Basic Information of a user 
+ * such as name, email, gender, current account status and state of the account.
  * @author Jay
  */
 public class BasicInfo extends BeanBasedDocument<BasicInfo> implements BeanValidatorService {
@@ -129,7 +131,9 @@ public class BasicInfo extends BeanBasedDocument<BasicInfo> implements BeanValid
 		String stateVal = (String) raw.get(UserDBFields.ACCOUNT_STATE);
 		AccountStatus accountStatus = StringUtils.hasText(statVal) ? AccountStatus.getEnum(statVal): null;
 		AccountState accountState = StringUtils.hasText(stateVal) ? AccountState.getEnum(stateVal): null;
-		return new BasicInfo(id,firstName, lastName, email, genderVal,  accountStatus, accountState);
+		BasicInfoBuilder builder = new BasicInfoBuilder(id);
+		builder.addEmail(email).addFirstName(firstName).addGender(genderVal).addLastName(lastName).addState(accountState).addStatus(accountStatus);
+		return builder.build();
 	}
 	
 	public String getFirstName() {
@@ -165,6 +169,123 @@ public class BasicInfo extends BeanBasedDocument<BasicInfo> implements BeanValid
 
 	public String getProfileId() {
 		return getId();
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((email == null) ? 0 : email.hashCode());
+		result = prime * result + ((getProfileId() == null) ? 0 : getProfileId().hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		BasicInfo other = (BasicInfo) obj;
+		if (getProfileId() == null) {
+			if (other.getProfileId() != null)
+				return false;
+		} else if (!getProfileId().equals(other.getProfileId()))
+			return false;
+		if (email == null) {
+			if (other.email != null)
+				return false;
+		} else if (!email.equals(other.email))
+			return false;
+		return true;
+	}
+	
+	public static class BasicInfoBuilder implements Builder<BasicInfo>{
+		private String profileId;
+		private String firstName;
+		private String lastName;
+		private String email;
+		private Gender gender;
+		private AccountStatus accountStatus;
+		private AccountState accountState;
+		
+		public BasicInfoBuilder(String profileId) {
+			this.profileId = profileId;
+		}
+		
+		public BasicInfoBuilder addFirstName(String firstName){
+			this.firstName = firstName;
+			return this;
+		}
+		
+		public BasicInfoBuilder addLastName(String lastName){
+			this.lastName = lastName;
+			return this;
+		}
+		
+		public BasicInfoBuilder addEmail(String email){
+			this.email = email;
+			return this;
+		}
+		
+		public BasicInfoBuilder addGender(String gender){
+			this.gender = Gender.getEnum(gender);
+			return this;
+		}
+		
+		public BasicInfoBuilder addGender(Gender gender){
+			this.gender = gender;
+			return this;
+		}
+		
+		public BasicInfoBuilder addStatus(String status){
+			this.accountStatus = AccountStatus.getEnum(status);
+			return this;
+		}
+		
+		public BasicInfoBuilder addStatus(AccountStatus status){
+			this.accountStatus = status;
+			return this;
+		}
+		
+		public BasicInfoBuilder addState(String state){
+			this.accountState = AccountState.getEnum(state);
+			return this;
+		}
+		
+		public BasicInfoBuilder addState(AccountState state){
+			this.accountState = state;
+			return this;
+		}
+
+		/* (non-Javadoc)
+		 * @see com.uimirror.core.Builder#build()
+		 */
+		@Override
+		public BasicInfo build() {
+			return new BasicInfo(this);
+		}
+		
+	}
+	
+	private BasicInfo(BasicInfoBuilder builder){
+		super(builder.profileId);
+		this.accountState = builder.accountState;
+		this.accountStatus = builder.accountStatus;
+		this.email = builder.email;
+		this.firstName = builder.firstName;
+		this.lastName = builder.lastName;
+		this.gender = builder.gender;
+	}
+
+	@Override
+	public String toString() {
+		return "BasicInfo [firstName=" + firstName + ", lastName=" + lastName
+				+ ", email=" + email + ", gender=" + gender
+				+ ", accountStatus=" + accountStatus + ", accountState="
+				+ accountState + "]";
 	}
 
 }

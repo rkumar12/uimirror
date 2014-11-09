@@ -191,10 +191,10 @@ public class Country  extends BeanBasedDocument<Country> implements BeanValidato
 	}
 	
 	private Country(CountryBuilder builder){
+		super(builder.id);
 		this.name = builder.name;
 		this.shortName = builder.shortName;
 		this.code = builder.code;
-		super.setId(builder.id);
 	}
 
 }

@@ -24,7 +24,6 @@ import com.uimirror.core.service.BeanValidatorService;
 public class DefaultUser extends BeanBasedDocument<DefaultUser> implements BeanValidatorService{
 
 	private static final long serialVersionUID = 3920171901998649548L;
-	
 	private BasicInfo userInfo;
 	private Credentials userCredentials;
 	private BasicDetails userDetails;

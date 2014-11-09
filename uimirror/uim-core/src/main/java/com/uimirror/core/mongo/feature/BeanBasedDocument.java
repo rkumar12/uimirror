@@ -47,7 +47,8 @@ public abstract class BeanBasedDocument<T> extends MongoDocumentSerializer<T> im
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
-	//TODO com back with proper analysis
+
+	@SuppressWarnings("rawtypes")
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

@@ -20,8 +20,10 @@ import com.uimirror.core.bean.Gender;
 
 /**
  * This has Short user Info for the user such as name, email, gender
+ * This has been deprecated in favor of {@link BasicInfo}
  * @author Jay
  */
+@Deprecated
 public class ShortUserInfo {
 
 	private String profileId;
