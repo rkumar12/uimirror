@@ -1,19 +1,15 @@
-//apply plugin: 'distribution'
 apply plugin:'application'
 
-ext {
-	slf4jVersion = "1.7.2"
-	qosLogBackVersion = "1.1.1"
-	jerseyVersion = "2.12"
-	javaeeApiVersion = "7.0"
-	springVersion = "4.1.0.RELEASE"
-	springBootVersion = '1.1.6.RELEASE'
-	junitVersion = '4.11'
-	//gensonVersion = '1.1-RC2'
-	janinoVersion = '2.7.6'
-}
 group = "com.uimirror"
 version = 1.0
+
+configurations.all {
+	resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+	  if (details.requested.group == 'org.apache.tomcat.embed') {
+		  details.useVersion '8.0.14'
+	  }
+	}
+}
 
 dependencies {
 	compile project(':uim-core')
@@ -22,51 +18,67 @@ dependencies {
 	compile project(':uim-oauth-client')
 	compile project(':uim-sso-core')
 	compile project(':uim-user')
-	//Logging
-	compile (group: 'org.slf4j', name: 'jcl-over-slf4j', version: slf4jVersion)
-	compile (group: 'ch.qos.logback', name: 'logback-classic', version: qosLogBackVersion){
-        exclude group: 'org.slf4j', module: 'slf4j-api' //by both name and group
-    }
-	compile (group: 'ch.qos.logback', name: 'logback-core', version: qosLogBackVersion)
-	compile (group: 'org.codehaus.janino', name: 'janino', version: janinoVersion)
-	//Logging End
-	//Spring Start
-	compile (group: 'org.springframework', name: 'spring-core', version: springVersion)
-	compile (group: 'org.springframework', name: 'spring-context', version: springVersion)
-		//[group: 'org.springframework', name: 'spring-web', version: springVersion],
-	compile (group: 'org.springframework', name: 'spring-beans', version: springVersion)
-	compile (group: 'org.springframework', name: 'spring-web', version: springVersion)
-	compile (group: 'org.springframework', name: 'spring-expression', version: springVersion)
-
-	//Spring End
+	
 	compile group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet', version: jerseyVersion
 	compile group: 'org.glassfish.jersey.ext', name: 'jersey-spring3', version: jerseyVersion
 	compile group: 'org.glassfish.jersey.media', name: 'jersey-media-json-processing', version: jerseyVersion
 	compile (group: 'javax', name: 'javaee-api', version: javaeeApiVersion)
-	
-	//Genson
-	//compile (group: 'com.owlike', name: 'genson', version: gensonVersion)
-	
-}
-dependencies {
-	   compile (group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: springBootVersion){
-		   	exclude module: 'jackson-databind'
-			exclude module: 'spring-webmvc'
-			exclude module: 'spring-web'
-			exclude module: 'log4j-over-slf4j'
-			exclude module: 'jboss-logging'
-			exclude module: 'jul-to-slf4j'
-		 }
+	compile (group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: springBootVersion){
+		exclude module: 'jackson-databind'
+	 exclude module: 'spring-webmvc'
+	 exclude module: 'spring-web'
+	 exclude module: 'log4j-over-slf4j'
+	 exclude module: 'jboss-logging'
+	 exclude module: 'jul-to-slf4j'
+	}
 	testCompile (group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: springBootVersion)
+	
 }
 
+mainClassName = "com.uimirror.ws.account.StartApp"
+
 jar {
-	manifest.attributes provider: 'Uimirror Account Module'
+	manifest {
+		attributes "Implementation-Title": "UIM Account"
+		attributes "Implementation-Vendor": "UIMIRROR"
+		attributes "Implementation-Version": project.version
+		attributes "Main-Class": mainClassName
+	}
 }
 
 description = "Account Module By Uimirror Team."
 
-mainClassName = "com.uimirror.ws.account.StartApp"
-applicationDefaultJvmArgs = ["-Denv=dev"]
 
-defaultTasks 'clean', 'build', 'intsall'
+applicationDefaultJvmArgs = ["-Denv=dev"
+	, "-DcontextSource=classpath:application"
+	, "-Dport=8080"
+	, "-Dnio.port=8443"
+	, "-Xmx3g"
+	, "-XX:MaxNewSize=2g"
+	, "-XX:NewSize=1g"
+	, "-XX:SurvivorRatio=16"
+	, "-XX:+UseParNewGC"
+	, "-XX:+UseConcMarkSweepGC"
+	, "-XX:MaxTenuringThreshold=0"
+	, "-XX:CMSInitiatingOccupancyFraction=60"
+	, "-XX:+CMSParallelRemarkEnabled"
+	, "-XX:+UseCMSInitiatingOccupancyOnly"
+	, "-XX:ParallelGCThreads=12"
+	, "-XX:LargePageSizeInBytes=256m"]
+
+task copyScripts(type: Copy) {
+	from 'script'
+	into "$buildDir/script"
+}
+task copyDoc(type: Copy) {
+	from 'doc'
+	into "$buildDir/docs"
+}
+applicationDistribution.from(copyDoc) {
+	into "docs"
+}
+applicationDistribution.from(copyScripts) {
+	fileMode = 0755
+	into "scripts"
+}
+defaultTasks 'clean', 'build', 'intsall', 'distZip'
