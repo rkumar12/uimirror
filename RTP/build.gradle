@@ -1,4 +1,4 @@
-allprojects  {
+subprojects  {
 	apply plugin: 'eclipse'
 	apply plugin: "java"
 	apply plugin: "maven"
@@ -13,17 +13,12 @@ allprojects  {
 	 }
 	 
 	 ext {
-		 springVersion = "4.1.0.RELEASE"
-		 junitVersion = '4.11'
-		 mockitoVersion = '1.9.5'
-	 }
-	 ext {
-		 slf4jVersion = "1.7.2"
-		 qosLogBackVersion = "1.1.1"
-		 jerseyVersion = "2.12"
+		 slf4jVersion = "1.7.7"
+		 qosLogBackVersion = "1.1.2"
+		 jerseyVersion = "2.13"
 		 javaeeApiVersion = "7.0"
-		 springVersion = "4.1.0.RELEASE"
-		 springBootVersion = '1.1.6.RELEASE'
+		 springVersion = "4.1.1.RELEASE"
+		 springBootVersion = '1.1.8.RELEASE'
 		 junitVersion = '4.11'
 		 //gensonVersion = '1.1-RC2'
 		 janinoVersion = '2.7.6'
@@ -31,17 +26,13 @@ allprojects  {
 		 uimCoreVersion = '1.0'
 		 wsSecurityVersion = '1.0'
 		 wsFiltersVersion = '1.0'
+		 cucumberJavaVersion = '1.2.0'
 	 }
-  }
+	 description = "RTP By UIMIRROR Team."
+	 targetCompatibility = "1.8"
+	 sourceCompatibility = "1.8"
+}
 subprojects {
-	description = "RTP By UIMIRROR Team."
-	targetCompatibility = "1.8"
-	sourceCompatibility = "1.8"
-
-    repositories {
-       mavenCentral()
-	   mavenLocal()
-    }
 	
 	dependencies {
 		//Test jars
