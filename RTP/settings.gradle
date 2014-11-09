@@ -1,1 +1,10 @@
-include "rtp-core", "rtp-campaign", "rtp-shop", "reaching-endpoints"
+rootProject.name = 'RTP'
+include ':rtp-core'
+include ':rtp-campaign'
+include ':rtp-shop'
+include ':reaching-endpoints'
+
+project(':rtp-core').projectDir = "$rootDir/rtp-core" as File
+project(':rtp-campaign').projectDir = "$rootDir/rtp-campaign" as File
+project(':rtp-shop').projectDir = "$rootDir/rtp-shop" as File
+project(':reaching-endpoints').projectDir = "$rootDir/reaching-endpoints" as File
