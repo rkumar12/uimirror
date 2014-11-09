@@ -89,16 +89,9 @@ public class DOB {
 	public static DOB initFromMap(Map<String, Object> map){
 		if(CollectionUtils.isEmpty(map))
 			return null;
-		int date = 0;
-		int month = 0;
-		int year = 0;
-		if(map.get(UserDBFields.DATE_OF_BIRTH_DATE) != null)
-			date = (int)map.get(UserDBFields.DATE_OF_BIRTH_DATE);
-		if(map.get(UserDBFields.DATE_OF_BIRTH_MONTH) != null)
-			month = (int)map.get(UserDBFields.DATE_OF_BIRTH_MONTH);
-
-		if(map.get(UserDBFields.DATE_OF_BIRTH_YEAR) != null)
-			year = (int)map.get(UserDBFields.DATE_OF_BIRTH_YEAR);
+		int date = (int)map.getOrDefault(UserDBFields.DATE_OF_BIRTH_DATE, 0);
+		int month = (int)map.getOrDefault(UserDBFields.DATE_OF_BIRTH_MONTH, 0);
+		int year = (int)map.getOrDefault(UserDBFields.DATE_OF_BIRTH_YEAR, 0);
 		return new DOB(date, month, year);
 	}
 

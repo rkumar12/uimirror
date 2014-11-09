@@ -13,6 +13,7 @@ package com.uimirror.core.user;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import com.uimirror.core.Builder;
 import com.uimirror.core.mongo.feature.BeanBasedDocument;
 import com.uimirror.core.service.BeanValidatorService;
 
@@ -154,7 +155,49 @@ public class DefaultUser extends BeanBasedDocument<DefaultUser> implements BeanV
 		Credentials userCredentials = new Credentials().initFromMap(raw);
 		BasicDetails userDetails = new BasicDetails().initFromMap(raw);
 		AccountLogs userAccountLogs = new AccountLogs().initFromMap(raw);
-		return new DefaultUser(userInfo,userCredentials, userDetails, userAccountLogs);
+		return new DefaultUserBuilder(userInfo).addCredentials(userCredentials).addDetails(userDetails).addLogs(userAccountLogs).build();
+	}
+	
+	public static class DefaultUserBuilder implements Builder<DefaultUser>{
+		
+		private BasicInfo userInfo;
+		private Credentials userCredentials;
+		private BasicDetails userDetails;
+		private AccountLogs userAccountLogs;
+		
+		public DefaultUserBuilder(BasicInfo userInfo){
+			this.userInfo = userInfo;
+		}
+		
+		public DefaultUserBuilder addCredentials(Credentials userCredentials){
+			this.userCredentials = userCredentials;
+			return this;
+		}
+		
+		public DefaultUserBuilder addDetails(BasicDetails userDetails){
+			this.userDetails = userDetails;
+			return this;
+		}
+		
+		public DefaultUserBuilder addLogs(AccountLogs userAccountLogs){
+			this.userAccountLogs = userAccountLogs;
+			return this;
+		}
+
+		/* (non-Javadoc)
+		 * @see com.uimirror.core.Builder#build()
+		 */
+		@Override
+		public DefaultUser build() {
+			return new DefaultUser(this);
+		}
+		
+	}
+	private DefaultUser(DefaultUserBuilder builder){
+		this.userAccountLogs = builder.userAccountLogs;
+		this.userCredentials = builder.userCredentials;
+		this.userDetails = builder.userDetails;
+		this.userInfo = builder.userInfo;
 	}
 
 }

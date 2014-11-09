@@ -105,14 +105,8 @@ public class AccountLogs extends BeanBasedDocument<AccountLogs> implements BeanV
 	@SuppressWarnings("unchecked")
 	private AccountLogs init(Map<String, Object> raw) {
 		String id = (String) raw.get(UserDBFields.ID);
-		long creatOn = 0l;
-		long modifiedOn = 0l;
-		if(raw.get(UserDBFields.CREATED_ON) != null){
-			creatOn = (long) raw.get(UserDBFields.CREATED_ON);
-		}
-		if(raw.get(UserDBFields.MODIFIED_ON) != null){
-			modifiedOn = (long) raw.get(UserDBFields.MODIFIED_ON);
-		}
+		long creatOn = (long) raw.getOrDefault(UserDBFields.CREATED_ON, 0l);
+		long modifiedOn = (long) raw.getOrDefault(UserDBFields.MODIFIED_ON, 0l);
 		Map<String,Object> details =  (Map<String, Object>) raw.get(UserDBFields.DETAILS);
 		return new AccountLogs(id,creatOn,modifiedOn,details);
 	}

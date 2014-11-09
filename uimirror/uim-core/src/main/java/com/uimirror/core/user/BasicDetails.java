@@ -13,6 +13,7 @@ package com.uimirror.core.user;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import com.uimirror.core.Builder;
 import com.uimirror.core.DOB;
 import com.uimirror.core.mongo.feature.BeanBasedDocument;
 import com.uimirror.core.service.BeanValidatorService;
@@ -107,8 +108,15 @@ public class BasicDetails extends BeanBasedDocument<BasicDetails> implements Bea
 		String id = (String) raw.get(UserDBFields.ID);
 		Map<String, Object> dateOfBirth = (Map<String, Object>) raw.get(UserDBFields.DATE_OF_BIRTH);
 		DOB dob = DOB.initFromMap(dateOfBirth);
-		//TODO other parts also 
-		return new BasicDetails(id,null, null ,dob, null);
+		String presentAddId = (String)raw.get(UserDBFields.PRESENT_ADDRESS);
+		String permanetAddId = (String)raw.get(UserDBFields.PERMANET_ADDRESS);
+		Map<String, Object> extraInfo = (Map<String, Object>)raw.get(UserDBFields.INFO);
+		return new BasicDetailsBuilder(id).
+				updateDetails(extraInfo).
+				updateDOB(dob).
+				updatePermanetAddress(permanetAddId).
+				updatePresentAddress(presentAddId).
+				build();
 	}
 
 	public String getProfileId() {
@@ -128,6 +136,55 @@ public class BasicDetails extends BeanBasedDocument<BasicDetails> implements Bea
 		return "BasicDetails [presentAddress=" + presentAddress
 				+ ", permanetAddress=" + permanetAddress + ", dateOfBirth="
 				+ dateOfBirth + ", details=" + details + "]";
+	}
+	
+	public static class BasicDetailsBuilder implements Builder<BasicDetails>{
+		private String profileId;
+		private String presentAddress;
+		private String permanetAddress;
+		private DOB dateOfBirth;
+		private Map<String, Object> details;
+		
+		public BasicDetailsBuilder(String profileId){
+			this.profileId = profileId;
+		}
+		
+		public BasicDetailsBuilder updatePresentAddress(String locationId){
+			this.presentAddress = locationId;
+			return this;
+		}
+		
+		public BasicDetailsBuilder updatePermanetAddress(String locationId){
+			this.permanetAddress = locationId;
+			return this;
+		}
+		
+		public BasicDetailsBuilder updateDOB(DOB dob){
+			this.dateOfBirth = dob;
+			return this;
+		}
+		
+		public BasicDetailsBuilder updateDetails(Map<String, Object> details){
+			this.details = details;
+			return this;
+		}
+
+		/* (non-Javadoc)
+		 * @see com.uimirror.core.Builder#build()
+		 */
+		@Override
+		public BasicDetails build() {
+			return new BasicDetails(this);
+		}
+		
+	}
+	
+	private BasicDetails(BasicDetailsBuilder builder){
+		super(builder.profileId);
+		this.dateOfBirth = builder.dateOfBirth;
+		this.details = builder.details;
+		this.permanetAddress = builder.permanetAddress;
+		this.presentAddress = builder.presentAddress;
 	}
 
 }
