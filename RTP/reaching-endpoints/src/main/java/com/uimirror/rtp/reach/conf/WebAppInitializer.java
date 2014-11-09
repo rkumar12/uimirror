@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror. - initial API and implementation
  *******************************************************************************/
-package com.uimirror.rtp.reaching.api.endpoint.conf;
+package com.uimirror.rtp.reach.conf;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -52,7 +52,7 @@ public class WebAppInitializer extends SpringBootServletInitializer {
     public ServletRegistrationBean dispatcherServletRegistration() {
         ServletRegistrationBean registration = new ServletRegistrationBean(dispatcherServlet());
         Map<String,String> params = new HashMap<String,String>();
-        params.put("javax.ws.rs.Application","com.uimirror.rtp.reaching.api.endpoint.conf.JerssyApplicationInitializer");
+        params.put("javax.ws.rs.Application","com.uimirror.rtp.reach.conf.JerssyApplicationInitializer");
         registration.setInitParameters(params);
         registration.addUrlMappings(contextPath+"/*");
         return registration;

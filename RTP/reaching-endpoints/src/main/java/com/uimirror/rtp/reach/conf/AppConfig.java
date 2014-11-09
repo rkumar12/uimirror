@@ -8,31 +8,29 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.rtp.reaching.api.endpoint.conf;
+package com.uimirror.rtp.reach.conf;
 
-import java.net.UnknownHostException;
-
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import com.mongodb.Mongo;
-import com.uimirror.core.mongo.ConnectionFactory;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
 /**
- * Configures all the database beans
  * @author Jay
  */
 @Configuration
-public class DaoBeanIntitializer {
+@EnableAspectJAutoProxy
+@PropertySource("classpath:application-${env:dev}.properties")
+public class AppConfig {
 	
-	protected @Value("${mongo.host:127.0.0.1}") String host;
-	
+	/**
+	 * Property Bean Creation
+	 * @return
+	 */
 	@Bean
-	public Mongo mongo() throws UnknownHostException{
-		ConnectionFactory cf = new ConnectionFactory();
-		cf.setHost(host);
-		return cf.getMongoClient();
-	}
+    public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
+        return new PropertySourcesPlaceholderConfigurer();
+    }
 
 }

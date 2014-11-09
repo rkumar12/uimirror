@@ -1,4 +1,4 @@
-package com.uimirror.rtp.reaching.api.endpoint.shop;
+package com.uimirror.rtp.reach.endpoint.shop;
 
 public interface RegisterShopEndPointConstants {
 

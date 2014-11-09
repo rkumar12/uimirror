@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.rtp.shop.form;
+package com.uimirror.rtp.reach.endpoint;
 
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -22,6 +22,7 @@ import org.springframework.util.StringUtils;
 import com.uimirror.core.Constants;
 import com.uimirror.core.rest.extra.IllegalArgumentException;
 import com.uimirror.core.service.BeanValidatorService;
+import com.uimirror.rtp.shop.form.RegisterShopConstants;
 import com.uimirror.ws.api.security.AuthenticatedPrincipal;
 
 /**

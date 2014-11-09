@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.rtp.reaching.api.endpoint.conf;
+package com.uimirror.rtp.reach.conf;
 
 import org.glassfish.jersey.filter.LoggingFilter;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -31,7 +31,7 @@ public class JerssyApplicationInitializer extends ResourceConfig{
 	
 	public JerssyApplicationInitializer(){
 		// Register resources and providers using package-scanning.
-		packages(false, "com.uimirror.rtp.reaching.api.endpoint");
+		packages(false, "com.uimirror.rtp.reach");
 		//packages(true, "com.uimirror.account.auth.conf");
 		register(PreAuthorizeDynamicFeature.class);
 		register(AccessTokenResponseFilter.class);

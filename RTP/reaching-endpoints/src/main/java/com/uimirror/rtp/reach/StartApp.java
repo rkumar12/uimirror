@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.rtp.reaching.api.endpoint;
+package com.uimirror.rtp.reach;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -21,7 +21,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
 import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
 import org.springframework.context.annotation.Bean;
@@ -32,9 +31,9 @@ import org.springframework.context.annotation.ImportResource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.FileCopyUtils;
 
-import com.uimirror.rtp.reaching.api.endpoint.conf.AppConfig;
-import com.uimirror.rtp.reaching.api.endpoint.conf.BeanIntitializer;
-import com.uimirror.rtp.reaching.api.endpoint.conf.WebAppInitializer;
+import com.uimirror.rtp.reach.conf.AppConfig;
+import com.uimirror.rtp.reach.conf.BeanIntitializer;
+import com.uimirror.rtp.reach.conf.WebAppInitializer;
 
 
 /**
@@ -52,27 +51,24 @@ public class StartApp {
 
 	private static Logger LOG = LoggerFactory.getLogger(StartApp.class);
 	
-	@Value("${tomcat.port:8080}")
+	@Value("${port:8080}")
 	private int tomcatPort;
+	
+	@Value("${nio.port:8443}")
+	private int tomcatNioPort;
 
 	@Value("${tomcat.sessionTimeout:30}")
 	private int tomcatSessionTimeout;
 
 	@Value("${tomcat.contextPath:/uim}/${application.id:reaching}")
 	private String contextPath;
-	
-	@Bean
-	public ServerProperties serverProperties() {
-		ServerProperties serverProperties = new ServerProperties();
-		serverProperties.setSessionTimeout(tomcatSessionTimeout);
-		serverProperties.setContextPath(contextPath);
-		serverProperties.setPort(tomcatPort);
-		return serverProperties;
-	}
 
 	@Bean
 	public EmbeddedServletContainerFactory servletContainer() {
 		TomcatEmbeddedServletContainerFactory tomcat = new TomcatEmbeddedServletContainerFactory();
+		tomcat.setPort(tomcatPort);
+		tomcat.setSessionTimeout(tomcatSessionTimeout);
+		tomcat.setContextPath(contextPath);
 		tomcat.addAdditionalTomcatConnectors(createSslConnector());
 		return tomcat;
 	}
@@ -85,7 +81,7 @@ public class StartApp {
 			File truststore = keystore;
 			connector.setScheme("https");
 			connector.setSecure(true);
-			connector.setPort(8443);
+			connector.setPort(tomcatNioPort);
 			protocol.setSSLEnabled(true);
 			protocol.setKeystoreFile(keystore.getAbsolutePath());
 			protocol.setKeystorePass("changeit");

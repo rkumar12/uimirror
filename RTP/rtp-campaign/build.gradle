@@ -1,3 +1,7 @@
-//apply plugin: 'distribution'
+apply plugin: "java"
+description = 'RTP Campaign'
 version = 1.0
-description = "RTP- Campaignn Package."
+dependencies {
+	compile project(':rtp-shop')
+}
+defaultTasks 'clean', 'build'

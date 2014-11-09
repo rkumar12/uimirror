@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.rtp.reaching.api.endpoint.shop;
+package com.uimirror.rtp.reach.endpoint.shop;
 
 import javax.inject.Singleton;
 import javax.ws.rs.Consumes;
