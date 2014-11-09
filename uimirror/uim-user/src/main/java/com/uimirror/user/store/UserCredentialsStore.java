@@ -20,33 +20,17 @@ import com.uimirror.core.user.Credentials;
  */
 public interface UserCredentialsStore {
 
-	/**
-	 * <p>Retrieves the credential object in the given document by the provided search criteria</p>
-	 * @param type
-	 * @return
-	 * @throws DBException
-	 */
 	Credentials getCredentialsByUserName(String identifier) throws DBException;
 	
-	/**
-	 * Retrieves the document by id
-	 * @param identifier
-	 * @return
-	 * @throws DBException
-	 */
 	Credentials getCredentialsByProfileId(String identifier) throws DBException;
 	
 	/**
-	 * This will change the account state as enabled
-	 * @param profileId
-	 * @return
+	 * This will mark the account status as actieve
+	 * @param profileId user's id
+	 * @return number of record got affected ideally it should be 1
 	 * @throws DBException
 	 */
-	int enableAccount(String profileId) throws DBException;
+	void enableAccount(String profileId) throws DBException;
 	
-	/**
-	 * @param credentials
-	 * @return
-	 */
 	Credentials store(Credentials credentials);
 }

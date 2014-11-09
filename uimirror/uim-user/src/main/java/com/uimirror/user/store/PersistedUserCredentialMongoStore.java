@@ -72,10 +72,10 @@ public class PersistedUserCredentialMongoStore extends AbstractMongoStore<Creden
 	 * @see com.uimirror.account.auth.dao.UserCredentialsStore#enableAccount(java.lang.String)
 	 */
 	@Override
-	public int enableAccount(String profileId) throws DBException {
+	public void enableAccount(String profileId) throws DBException {
 		Map<String, Object> set = new LinkedHashMap<String, Object>(3);
 		set.put(BasicMongoOperators.SET, getAccountStateMap(AccountState.ENABLED));
-		return updateById(profileId, set);
+		updateById(profileId, set);
 	}
 	
 	/**Create a map for the account state 
