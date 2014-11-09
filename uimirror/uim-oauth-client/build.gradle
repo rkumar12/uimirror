@@ -1,6 +1,4 @@
-ext {
-	jerseyVersion = "2.12"
-}
+apply plugin:'application'
 
 group = "com.uimirror.api"
 version = 1.0
