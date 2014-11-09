@@ -13,35 +13,19 @@ package com.uimirror.user.store;
 import com.uimirror.core.user.DefaultUser;
 
 /**
- * Store the User account Basic Info in the DB 
+ * Store the newly coming user into a Temporally memory 
  * 
  * @author Jay
  */
 public interface DefaultUserStore {
 
-	/**
-	 * Retrieves the document based on the profile id
-	 * @param profileId
-	 * @return
-	 */
+	String USER_BASIC_INFO_SEQ = "ubis";
+	
 	DefaultUser getUserByProfileId(String profileId);
 	
-	/**
-	 * Retrieves the document based on the email
-	 * @param email
-	 * @return
-	 */
 	DefaultUser getUserByEmail(String email);
 
-	/**
-	 * Delete all the logs present for the user in his log
-	 * @param profileId
-	 */
 	void deleteByprofileId(String profileId);
 	
-	/**
-	 * @param user
-	 * @return
-	 */
 	DefaultUser store(DefaultUser user);
 }

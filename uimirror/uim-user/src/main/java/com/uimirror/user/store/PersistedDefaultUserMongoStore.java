@@ -10,8 +10,8 @@
  *******************************************************************************/
 package com.uimirror.user.store;
 
-import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.WeakHashMap;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
@@ -21,12 +21,11 @@ import com.uimirror.core.user.DefaultUser;
 import com.uimirror.core.user.UserDBFields;
 
 /**
- * Retrieves the credential store for the user.
+ * A temp store for the user information.
+ * 
  * @author Jay
  */
 public class PersistedDefaultUserMongoStore extends AbstractMongoStore<DefaultUser> implements DefaultUserStore {
-	
-	private final static String USER_BASIC_INFO_SEQ = "ubis";
 	
 	/**
 	 * Assign/ Create collection from the given {@link DBCollection}
@@ -61,7 +60,7 @@ public class PersistedDefaultUserMongoStore extends AbstractMongoStore<DefaultUs
 	}
 	
 	private Map<String, Object> getEMailQuery(String email){
-		Map<String, Object> map = new LinkedHashMap<String, Object>(3);
+		Map<String, Object> map = new WeakHashMap<String, Object>(3);
 		map.put(UserDBFields.EMAIL, email);
 		return map;
 	}
