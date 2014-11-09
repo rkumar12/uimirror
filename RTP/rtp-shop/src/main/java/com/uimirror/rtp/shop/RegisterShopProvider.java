@@ -36,9 +36,9 @@ public class RegisterShopProvider implements Processor<ShopRegisterForm, Shop> {
     
     Shop registerShopBean = new Shop();
     
-    registerShopBean.setShopBasicInfo(shopBasicInfo);
-    
-    registerShopBean.setShopOtherInfo(shopOtherInfo);
+//    registerShopBean.setShopBasicInfo(shopBasicInfo);
+//    
+//    registerShopBean.setShopOtherInfo(shopOtherInfo);
     
     return registerShopBean;
   }

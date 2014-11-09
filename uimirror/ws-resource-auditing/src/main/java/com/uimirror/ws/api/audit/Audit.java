@@ -60,7 +60,7 @@ public final class Audit  extends BeanBasedDocument implements Serializable{
 
 	//Constructor with all the value needs to be populate
 	public Audit(String id, long requestTime, long responseTime, String resource, String clientId, Status status) {
-		super(10);
+		//super(10);
 		this.id = id;
 		this.requestTime = requestTime;
 		this.responseTime = responseTime;
@@ -127,14 +127,14 @@ public final class Audit  extends BeanBasedDocument implements Serializable{
 	 * <p>This will initialize the document map for Mongo</p>
 	 */
 	private void initialize(){
-		super.put(AuditFieldConstants._ID, this.id);
-		super.put(AuditFieldConstants._CLIENT_ID, this.clientId);
-		super.put(AuditFieldConstants._RESOURCE, this.resource);
-		super.put(AuditFieldConstants._STATUS, this.status);
-		if(this.requestTime > 0l)
-			super.put(AuditFieldConstants._RQ_TIME, this.requestTime);
-		if(this.responseTime > 0l)
-			super.put(AuditFieldConstants._RS_TIME, this.responseTime);
+//		super.put(AuditFieldConstants._ID, this.id);
+//		super.put(AuditFieldConstants._CLIENT_ID, this.clientId);
+//		super.put(AuditFieldConstants._RESOURCE, this.resource);
+//		super.put(AuditFieldConstants._STATUS, this.status);
+//		if(this.requestTime > 0l)
+//			super.put(AuditFieldConstants._RQ_TIME, this.requestTime);
+//		if(this.responseTime > 0l)
+//			super.put(AuditFieldConstants._RS_TIME, this.responseTime);
 	}
 
 	public String getId() {
@@ -201,6 +201,15 @@ public final class Audit  extends BeanBasedDocument implements Serializable{
 		return "Audit [id=" + id + ", requestTime=" + requestTime
 				+ ", responseTime=" + responseTime + ", resource=" + resource
 				+ ", clientId=" + clientId + ", status=" + status + "]";
+	}
+
+	/* (non-Javadoc)
+	 * @see com.uimirror.core.mongo.feature.MongoDocumentSerializer#initFromMap(java.util.Map)
+	 */
+	@Override
+	public Object initFromMap(Map src) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

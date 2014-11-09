@@ -79,7 +79,7 @@ public class AuditRepoImpl implements AuditRepo {
 	public void insert(Audit audit) throws IllegalArgumentException, MongoException {
 		Assert.notNull(audit, "Null Object can't be saved");
 		LOG.debug("[START]-Creating a Audit");
-		this.clientAuditStore.save(audit);
+		//this.clientAuditStore.save(audit);
 		LOG.debug("[END]-Creating a Audit");
 	}
 
@@ -92,9 +92,9 @@ public class AuditRepoImpl implements AuditRepo {
 		LOG.debug("[START]- Finding Audit by ID");
 		DBObject query = new BasicDBObject(4);
 		query.put(AuditFieldConstants._ID, id);
-		Audit audit = (Audit) this.clientAuditStore.findOne(query);
+		//Audit audit = (Audit) this.clientAuditStore.findOne(query);
 		LOG.debug("[END]- Finding Audit by ID");
-		return audit;
+		return null;
 	}
 
 	/* (non-Javadoc)
@@ -302,7 +302,7 @@ public class AuditRepoImpl implements AuditRepo {
 		//Retrieve max of 20 at a time by default
 		cursor.batchSize(batchSize);
 		List<Audit> lst = new ArrayList<Audit>(batchSize);
-		cursor.forEach((audit) -> lst.add((Audit)audit));
+		//cursor.forEach((audit) -> lst.add((Audit)audit));
 		return lst;
 	}
 

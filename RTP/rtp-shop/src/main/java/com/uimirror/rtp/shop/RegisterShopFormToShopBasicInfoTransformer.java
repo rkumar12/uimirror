@@ -12,7 +12,8 @@ public class RegisterShopFormToShopBasicInfoTransformer implements TransformerSe
   public Object transform(ShopRegisterForm src) {
     Assert.notNull(src, "Source Can't be empty");
 
-    return new ShopMeta(null, src.getCategory(), src.getShopAddress(), src.getShopContactNumber());
+    //return new ShopMeta(null, src.getCategory(), src.getShopAddress(), src.getShopContactNumber());
+    return null;
   }
 
 }

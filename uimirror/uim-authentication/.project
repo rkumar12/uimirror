@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>uim-ws-authentication</name>
+	<name>uim-authentication</name>
 	<comment>This will be used for common authentication process</comment>
 	<projects>
 	</projects>

@@ -1,7 +1,7 @@
 rootProject.name = 'uimirror'
 include ':ws-resource-security'
 include ':ws-resource-auditing'
-include ':uim-ws-authentication'
+include ':uim-authentication'
 include ':uim-core'
 include ':ws-filters'
 include ':uim-oauth-client'
@@ -12,7 +12,7 @@ include ':uim-account-endpoint'
 project(':uim-core').projectDir = "$rootDir/uim-core" as File
 project(':ws-resource-security').projectDir = "$rootDir/ws-resource-security" as File
 project(':ws-resource-auditing').projectDir = "$rootDir/ws-resource-auditing" as File
-project(':uim-ws-authentication').projectDir = "$rootDir/uim-ws-authentication" as File
+project(':uim-authentication').projectDir = "$rootDir/uim-authentication" as File
 project(':ws-filters').projectDir = "$rootDir/ws-filters" as File
 project(':uim-oauth-client').projectDir = "$rootDir/uim-oauth-client" as File
 project(':uim-user').projectDir = "$rootDir/uim-user" as File
