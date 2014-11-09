@@ -61,8 +61,6 @@ dependencies {
 	
 }
 
-
-
 task sourceJar(type: Jar, dependsOn: classes) {
 	classifier "source"
 	from sourceSets.main.allSource

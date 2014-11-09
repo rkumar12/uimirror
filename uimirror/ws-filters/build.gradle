@@ -1,30 +1,16 @@
-ext {
-	jerseyVersion = "2.12"
-	springVersion = "4.1.0.RELEASE"
-	slf4jVersion = "1.7.2"
-	qosLogBackVersion = "1.1.1"
-}
+apply plugin:'application'
 
-group = "com.uimirror.ws.api"
+group = "com.uimirror.api"
 version = 1.0
 
 dependencies {
 	compile project(':uim-core')
     compile 'commons-codec:commons-codec:1.5'
 	compile 'commons-lang:commons-lang:2.6'
-	//Jackson fasterxml
-	//compile 'com.fasterxml.jackson.core:jackson-annotations:2.3.3'
-	//Spring Depedancy
-	compile (//[group: 'org.springframework', name: 'spring-context', version: springVersion],
-			 [group: 'org.springframework', name: 'spring-beans', version: springVersion],
-			 [group: 'org.springframework', name: 'spring-core', version: springVersion],
-			 )
-	//Spring ENd
 	compile 'javax.annotation:javax.annotation-api:1.2'
+	//Jersey Start
 	compile (group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet', version: jerseyVersion){
-		exclude module: 'jersey-client'
-		//exclude module: 'javax.annotation-api'
-		exclude module: 'validation-api'
+		exclude module: 'javax.annotation-api'
 		exclude module: 'aopalliance-repackaged'
 		exclude module: 'javax.inject'
 		exclude module: 'hk2-api'
@@ -36,35 +22,38 @@ dependencies {
 		exclude module: 'jersey-container-servlet-core'
 		exclude module: 'jersey-container-servlet'
 		exclude module: 'jersey-common'
-		//exclude module: 'jersey-server'
+		exclude module: 'jersey-server'
+		exclude module: 'jersey-client'
+		exclude module: 'jersey-container-servlet'
 		
 	}
-	//Logging
-	compile ([group: 'org.slf4j', name: 'slf4j-api', version: slf4jVersion],
-			)
-	compile ([group: 'ch.qos.logback', name: 'logback-classic', version: qosLogBackVersion],
-			 [group: 'ch.qos.logback', name: 'logback-core', version: qosLogBackVersion],
-			)
-	//Logging End
-	
-
+	//Jersey END
 }
 
-task sourceJar(type: Jar) {
-    from sourceSets.main.allJava
+task sourceJar(type: Jar, dependsOn: classes) {
+	classifier "source"
+	from sourceSets.main.allSource
 }
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+	classifier = 'javadoc'
+	from javadoc.destinationDir
+}
+
 publishing {
-	publications {
-		mavenJava(MavenPublication) {
-            groupId project.group
-            artifactId project.name
-            version project.version
-            from components.java
-			artifact sourceJar {
-					classifier "sources"
-			}
-        }
-	}
+	  publications {
+		  mavenJava(MavenPublication) {
+			  groupId project.group
+			  artifactId project.name
+			  version project.version
+			  from components.java
+			  artifact sourceJar {
+				  classifier "sources"
+			  }
+			  artifact javadocJar {
+				  classifier "javadoc"
+			  }
+		  }
+	  }
 }
-
-defaultTasks 'clean', 'build', 'intsall'
+defaultTasks 'clean', 'build', 'intsall', 'publishToMavenLocal'
