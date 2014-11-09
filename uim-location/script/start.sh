@@ -1,6 +1,13 @@
 #!/usr/bin/env bash
 
+#***********************************************
+#  Name: start.sh
+#  Date: 9 Nov 2014
+#  Usage: ./start.sh -port=8080 -nioport=8443 -env=prod
+#
+#**********************************************
 
+#To Show the message
 usage(){
 
   echo "Usage : $0 -p <port_to_start> -n <nioport> -e <env>
