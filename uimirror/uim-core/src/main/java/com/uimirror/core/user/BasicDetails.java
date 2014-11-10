@@ -29,6 +29,7 @@ public class BasicDetails extends BeanBasedDocument<BasicDetails> implements Bea
 	private String presentAddress;
 	private String permanetAddress;
 	private DOB dateOfBirth;
+	private MetaInfo metaInfo;
 	private Map<String, Object> details;
 
 	// DOn't Use this until it has specific requirement

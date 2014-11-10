@@ -14,5 +14,6 @@ public interface UserDBFields extends UserAuthDBFields, UserAccountLogDBFields, 
 	 String ACCOUNT_STATUS="account_status";
 	 String ACCOUNT_STATE="account_state";
 	 String INFO = "info";
+	 String LOCALE = "locale";
 
 }

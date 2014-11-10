@@ -32,14 +32,14 @@ public class PersistedDefaultUserMongoStore extends AbstractMongoStore<DefaultUs
 	 * @param collection
 	 */
 	public PersistedDefaultUserMongoStore(DBCollection collection, DBCollection seqCollection){
-		super(collection, seqCollection,USER_BASIC_INFO_SEQ,DefaultUser.class);
+		super(collection, seqCollection, USER_BASIC_INFO_SEQ, DefaultUser.class);
 	}
 
 	/* (non-Javadoc)
 	 * @see com.uimirror.account.user.dao.UserBasicInfoStore#getUserInfoByProfileId(java.lang.String)
 	 */
 	@Override
-	public DefaultUser getUserByProfileId(String profileId) {
+	public DefaultUser getByProfileId(String profileId) {
 		return getById(profileId);
 	}
 
@@ -55,11 +55,16 @@ public class PersistedDefaultUserMongoStore extends AbstractMongoStore<DefaultUs
 	 * @see com.uimirror.account.user.dao.DefaultUserStore#getUserByEmail(java.lang.String)
 	 */
 	@Override
-	public DefaultUser getUserByEmail(String email) {
-		return queryFirstRecord(getEMailQuery(email));
+	public DefaultUser getByEmail(String email) {
+		return queryFirstRecord(getEmailQuery(email));
 	}
 	
-	private Map<String, Object> getEMailQuery(String email){
+	/**
+	 * Get A Query for the email query.
+	 * @param email
+	 * @return
+	 */
+	private Map<String, Object> getEmailQuery(String email){
 		Map<String, Object> map = new WeakHashMap<String, Object>(3);
 		map.put(UserDBFields.EMAIL, email);
 		return map;

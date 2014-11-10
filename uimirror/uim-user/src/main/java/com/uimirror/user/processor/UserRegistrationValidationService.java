@@ -70,7 +70,7 @@ public class UserRegistrationValidationService implements ValidatorService<Strin
 	private DefaultUser checkInTempStore(String email){
 		DefaultUser user = null;
 		try{
-			user = persistedDefaultUserMongoStore.getUserByEmail(email);
+			user = persistedDefaultUserMongoStore.getByEmail(email);
 			backGroundCreateMissingUserProcessor.getProcessor(BackGroundCreateMissingUserProcessor.NAME).invoke(user);
 		}catch(RecordNotFoundException e){
 			//NOP

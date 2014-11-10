@@ -13,7 +13,8 @@ package com.uimirror.user.store;
 import com.uimirror.core.user.DefaultUser;
 
 /**
- * Store the newly coming user into a Temporally memory 
+ * A flat representation of user data 
+ * into temp user collection 
  * 
  * @author Jay
  */
@@ -21,9 +22,9 @@ public interface DefaultUserStore {
 
 	String USER_BASIC_INFO_SEQ = "ubis";
 	
-	DefaultUser getUserByProfileId(String profileId);
+	DefaultUser getByProfileId(String profileId);
 	
-	DefaultUser getUserByEmail(String email);
+	DefaultUser getByEmail(String email);
 
 	void deleteByprofileId(String profileId);
 	

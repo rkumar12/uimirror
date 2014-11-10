@@ -47,33 +47,16 @@ public class Credentials extends BeanBasedDocument<Credentials> implements BeanV
 	public Credentials(Map<String, Object> raw) {
 		super(raw);
 	}
-
-	/**
-	 * @param profileId id
-	 * @param userNames name
-	 * @param password password
-	 * @param screenPassword screen password
-	 * @param accountState state
-	 * @param accountStatus status
-	 * @param encryptionStratgy startegy
-	 * @param instructions instructions
-	 */
-	public Credentials(String profileId, List<String> userNames, String password,
-			String screenPassword, AccountState accountState,
-			AccountStatus accountStatus, String encryptionStratgy,
-			Map<String, Object> instructions) {
-		super(profileId);
-		this.userNames = userNames;
-		this.password = password;
-		this.screenPassword = screenPassword;
-		this.accountState = accountState;
-		this.accountStatus = accountStatus;
-		this.encryptionStratgy = encryptionStratgy;
-		this.instructions = instructions;
-	}
 	
 	public Credentials updateProfileId(String profileId) {
-		return new Credentials(profileId, userNames, password, screenPassword, accountState, accountStatus, encryptionStratgy, instructions);
+		return new CredentialsBuilder(profileId).
+				addEncStartegy(encryptionStratgy).
+				addInstructions(instructions).
+				addPassword(password).
+				addScreenPassword(screenPassword).
+				addState(accountState).
+				addStatus(accountStatus).
+				addUserNames(userNames).build();
 	}
 
 	/* (non-Javadoc)

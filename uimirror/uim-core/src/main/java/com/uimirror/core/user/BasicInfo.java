@@ -45,15 +45,6 @@ public class BasicInfo extends BeanBasedDocument<BasicInfo> implements BeanValid
 		super(map);
 	}
 
-	public BasicInfo(String id,String firstName, String lastName, String email, Gender gender,  AccountStatus accountStatus, AccountState accountState) {
-		super(id);
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.email = email;
-		this.gender = gender;
-		this.accountStatus = accountStatus;
-		this.accountState = accountState;
-	}
 	@Override
 	public Map<String, Object> toMap() {
 		// First check if it represents a valid state then can be serialized

@@ -34,14 +34,6 @@ public class DefaultUser extends BeanBasedDocument<DefaultUser> implements BeanV
 	public DefaultUser() {
 		super();
 	}
-
-	public DefaultUser(BasicInfo userInfo, Credentials userCredentials, BasicDetails userDetails, AccountLogs userAccountLogs) {
-		super();
-		this.userInfo = userInfo;
-		this.userCredentials = userCredentials;
-		this.userDetails = userDetails;
-		this.userAccountLogs = userAccountLogs;
-	}
 	
 	/**
 	 * Updates the User info
@@ -49,7 +41,7 @@ public class DefaultUser extends BeanBasedDocument<DefaultUser> implements BeanV
 	 * @return
 	 */
 	public DefaultUser updateInfo(BasicInfo userInfo){
-		return new DefaultUser(userInfo, this.userCredentials, this.userDetails, this.userAccountLogs);
+		return new DefaultUserBuilder(userInfo).addCredentials(userCredentials).addDetails(userDetails).addLogs(userAccountLogs).build();
 	}
 	
 	/**
@@ -58,7 +50,7 @@ public class DefaultUser extends BeanBasedDocument<DefaultUser> implements BeanV
 	 * @return user object
 	 */
 	public DefaultUser updateCredentials(Credentials userCredentials){
-		return new DefaultUser(this.userInfo, userCredentials, this.userDetails, this.userAccountLogs);
+		return new DefaultUserBuilder(userInfo).addCredentials(userCredentials).addDetails(userDetails).addLogs(userAccountLogs).build();
 	}
 	
 	/**
@@ -67,7 +59,7 @@ public class DefaultUser extends BeanBasedDocument<DefaultUser> implements BeanV
 	 * @return user instance
 	 */
 	public DefaultUser updateDetails(BasicDetails userDetails){
-		return new DefaultUser(this.userInfo, this.userCredentials, userDetails, this.userAccountLogs);
+		return new DefaultUserBuilder(userInfo).addCredentials(userCredentials).addDetails(userDetails).addLogs(userAccountLogs).build();
 	}
 	
 	/**
@@ -76,7 +68,7 @@ public class DefaultUser extends BeanBasedDocument<DefaultUser> implements BeanV
 	 * @return user instance
 	 */
 	public DefaultUser updateLogs(AccountLogs userAccountLogs){
-		return new DefaultUser(this.userInfo, this.userCredentials, this.userDetails, userAccountLogs);
+		return new DefaultUserBuilder(userInfo).addCredentials(userCredentials).addDetails(userDetails).addLogs(userAccountLogs).build();
 	}
 
 	public BasicInfo getUserInfo() {
