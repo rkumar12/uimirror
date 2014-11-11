@@ -18,38 +18,48 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import com.uimirror.core.Builder;
-import com.uimirror.core.mongo.feature.BeanBasedDocument;
+import com.uimirror.core.mongo.feature.AbstractBeanBasedDocument;
 import com.uimirror.core.service.BeanValidatorService;
 
 /**
  * A Basic User Credentials Object
  * @author Jay
  */
-public class Credentials extends BeanBasedDocument<Credentials> implements BeanValidatorService{
+public class Credentials extends AbstractBeanBasedDocument<Credentials> implements BeanValidatorService{
 
 	private static final long serialVersionUID = -8054579659925533437L;
-	private List<String> userNames;
-	private String password;
-	private String screenPassword;
-	private AccountState accountState;
-	private AccountStatus accountStatus;
-	private String encryptionStratgy;
-	private Map<String, Object> instructions;
+	private final List<String> userNames;
+	private final String password;
+	private final String screenPassword;
+	private final AccountState accountState;
+	private final AccountStatus accountStatus;
+	private final String encryptionStratgy;
+	private final Map<String, Object> instructions;
 	
-	//DOn't Use this until it has specific requirement
-	public Credentials(){
-		super();
-	}
-	
-	/**
-	 * @param raw
+	/** 
+	 * Checks the necessary fields that needs to be present to demonstrate a state of the client. 
+	 * @see com.uimirror.core.service.BeanValidatorService#isValid()
 	 */
-	public Credentials(Map<String, Object> raw) {
-		super(raw);
+	@Override
+	public boolean isValid() {
+		boolean valid = Boolean.TRUE;
+		if(CollectionUtils.isEmpty(getUserId()))
+			valid = Boolean.FALSE;
+		if(!StringUtils.hasText(getPassword()))
+			valid = Boolean.FALSE;
+		if(accountState == null)
+			valid = Boolean.FALSE;
+		if(accountStatus == null)
+			valid = Boolean.FALSE;
+		return valid;
 	}
 	
-	public Credentials updateProfileId(String profileId) {
-		return new CredentialsBuilder(profileId).
+	/* (non-Javadoc)
+	 * @see com.uimirror.core.mongo.feature.MongoDocumentSerializer#updateId()
+	 */
+	@Override
+	public Credentials updateId(String id) {
+		return new CredentialsBuilder(id).
 				addEncStartegy(encryptionStratgy).
 				addInstructions(instructions).
 				addPassword(password).
@@ -63,9 +73,9 @@ public class Credentials extends BeanBasedDocument<Credentials> implements BeanV
 	 * @see com.uimirror.core.mongo.feature.MongoDocumentSerializer#initFromMap(java.util.Map)
 	 */
 	@Override
-	public Credentials initFromMap(Map<String, Object> src) {
+	public Credentials readFromMap(Map<String, Object> src) {
 		//Validate the source shouldn't be empty
-		validateSource(src);
+		isValidSource(src);
 		//Initialize the state
 		return init(src);
 	}
@@ -93,27 +103,13 @@ public class Credentials extends BeanBasedDocument<Credentials> implements BeanV
 		return build.build();
 	}
 	
-	/** 
-	 * Checks the necessary fields that needs to be present to demonstrate a state of the client. 
-	 * @see com.uimirror.core.service.BeanValidatorService#isValid()
-	 */
-	@Override
-	public boolean isValid() {
-		boolean valid = Boolean.TRUE;
-		if(CollectionUtils.isEmpty(getUserId()))
-			valid = Boolean.FALSE;
-		if(!StringUtils.hasText(getPassword()))
-			valid = Boolean.FALSE;
-		return valid;
-	}
-	
 	/**
 	 * Create a map that needs to be persisted
-	 * @return
+	 * @return state in a {@link Map}
 	 * @throws IllegalStateException 
 	 */
 	@Override
-	public Map<String, Object> toMap() throws IllegalStateException{
+	public Map<String, Object> writeToMap() throws IllegalStateException{
 		//First check if it represents a valid state then can be serialized
 		if(!isValid())
 			throw new IllegalStateException("Can't be serailized the state of the object");
@@ -122,7 +118,7 @@ public class Credentials extends BeanBasedDocument<Credentials> implements BeanV
 	
 	/**
 	 * Serialize the current state that needs to be persisted to the system.
-	 * @return
+	 * @return serialized {@link Map}
 	 */
 	public Map<String, Object> serailize(){
 		Map<String, Object> state = new LinkedHashMap<String, Object>(16);
@@ -168,15 +164,6 @@ public class Credentials extends BeanBasedDocument<Credentials> implements BeanV
 
 	public String getScreenPassword() {
 		return screenPassword;
-	}
-
-	@Override
-	public String toString() {
-		return "Credentials [userNames=" + userNames + ", password=[*********]"
-				+ ", screenPassword= [*********]" + screenPassword + ", accountState="
-				+ accountState + ", accountStatus=" + accountStatus
-				+ ", encryptionStratgy=" + encryptionStratgy
-				+ ", instructions=" + instructions + "]";
 	}
 	
 	public static class CredentialsBuilder implements Builder<Credentials>{
@@ -258,6 +245,27 @@ public class Credentials extends BeanBasedDocument<Credentials> implements BeanV
 		this.password = builder.password;
 		this.screenPassword = builder.screenPassword;
 		this.userNames = builder.userNames;
+	}
+	
+	//DOn't Use this until it has specific requirement
+	public Credentials(){
+		//NOP
+		this.userNames = null;
+		this.password = null;
+		this.screenPassword = null;
+		this.accountState = null;
+		this.accountStatus = null;
+		this.encryptionStratgy = null;
+		this.instructions = null;
+	}
+	
+	@Override
+	public String toString() {
+		return "Credentials [userNames=" + userNames + ", password=[*********]"
+				+ ", screenPassword= [*********]" + screenPassword + ", accountState="
+				+ accountState + ", accountStatus=" + accountStatus
+				+ ", encryptionStratgy=" + encryptionStratgy
+				+ ", instructions=" + instructions + "]";
 	}
 
 }

@@ -15,17 +15,16 @@ import org.springframework.util.StringUtils;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.Mongo;
-import com.mongodb.MongoException;
 
 /**
  * Common Mongo Collection Initializer
  * 
  * @author Jay
  */
-public abstract class MongoInitializer {
+public class MongoInitializer {
 
-	private final DBCollection collection;
-	private final DBCollection seqCollection;
+	protected final DBCollection collection;
+	protected final DBCollection seqCollection;
 	
 	public MongoInitializer(Mongo mongo, String dbName, String collectionName, String seqCollectionName) {
 		checkValidity(mongo, dbName, collectionName);
@@ -51,20 +50,29 @@ public abstract class MongoInitializer {
 		this.seqCollection = null;
 	}
 	
+	/**
+	 * Initialize the store based on the collection and seq collection
+	 *  
+	 * @param collection where document will be persisted
+	 * @param seqCollection collection where sequence will be stored
+	 */
 	public MongoInitializer(DBCollection collection, DBCollection seqCollection) {
 		checkValidity(collection);
 		this.collection = collection;
 		this.seqCollection = seqCollection;
 	}
+	
+	/**
+	 * Initialize the store based on the collection
+	 * 
+	 * @param collection where document will be persisted
+	 */
 	public MongoInitializer(DBCollection collection) {
 		checkValidity(collection);
 		this.collection = collection;
 		this.seqCollection = null;
 	}
-
-	public DBCollection getCollection() {
-		return collection;
-	}
+	
 	/**
 	 * <p>This checks for the validity of the parameter passed</p>
 	 * @param obj
@@ -80,16 +88,21 @@ public abstract class MongoInitializer {
 			}
 		}
 	}
-	/**
-	 * <p>This checks the {@link MongoException} and interprets the message and translate to the appropriate message</p>
-	 * @param e
-	 */
-	public void mapException(MongoException e){
-		
-	}
 
+	/**
+	 * Gets the Seq collection for this store
+	 * @return a collection instance
+	 */
 	public DBCollection getSeqCollection() {
 		return seqCollection;
+	}
+	
+	/**
+	 * Gets the collection for this store
+	 * @return a collection instance
+	 */
+	public DBCollection getCollection() {
+		return collection;
 	}
 
 }

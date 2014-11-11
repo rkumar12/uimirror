@@ -12,39 +12,48 @@ package com.uimirror.core.mongo.feature;
 
 import java.util.Map;
 
-import org.springframework.util.CollectionUtils;
-
-import com.uimirror.core.util.BeanToMap;
-
 /**
- * <p>Default dto bean serialization and de-serialization</p>
+ * <p>A Seralizer and desarilzer contract for the Beans</p>
  * @author Jay
  */
-public abstract class MongoDocumentSerializer<T> {
-
-	/**
-	 * <p>Defines contract how a object class while saving will be serialized</p>
-	 * This gives a default implementation of object getting converted to {@link Map}
-	 * @return {@link Map} representation of the Object
-	 * @throws IllegalStateException if the object fields are in valid
-	 */
-	public Map<String, Object> toMap() throws IllegalStateException{
-		return BeanToMap.toMap(this);
-	}
-	/**
-	 * Defines contract, from the source object , value needs to be initialized.
-	 * @param src {@link Map} from which object will be intialized
-	 * @return T, converted object
-	 */
-	public abstract T initFromMap(Map<String, Object> src);
+public interface MongoDocumentSerializer<T> {
 	
 	/**
-	 * Validates the incoming source to initialize
-	 * @param src {@link Map} the object that will be validated
+	 * Id of the doument
+	 * @return id value for the current document
 	 */
-	protected void validateSource(Map<String, Object> src){
-		if(CollectionUtils.isEmpty(src))
-			throw new IllegalArgumentException("Initialization Source can't be empty");
-	}
+	public String getId();
+
+	/**
+	 * Serialize the state of object into a {@link Map}
+	 * which will be stored to the Mongo document.
+	 * 
+	 * @return a {@link Map} of details that needs to be store
+	 * @throws IllegalStateException in case the object state its trying to persist is not valid
+	 */
+	public Map<String, Object> writeToMap() throws IllegalStateException;
+
+	/**
+	 * Reads the content from map and restore the state of the object.
+	 * 
+	 * @param src a {@link Map} from where state will be restored
+	 * @return a state full instance of type T
+	 * @throws IllegalArgumentException in case provided source is invalid
+	 */
+	public abstract T readFromMap(Map<String, Object> src) throws IllegalArgumentException;
+	
+	/**
+	 * Checks if the provided source is valid, if not throws {@link IllegalArgumentException}
+	 * @param src which will be validated
+	 * @return <code>true</code> if valid
+	 * @throws IllegalArgumentException in case wrong input
+	 */
+	public boolean isValidSource(Map<String, Object> src) throws IllegalArgumentException;
+	
+	/**
+	 * Will update the id field into the bean and copying the other existing details.
+	 * @return restored object
+	 */
+	public T updateId(String id);
 
 }

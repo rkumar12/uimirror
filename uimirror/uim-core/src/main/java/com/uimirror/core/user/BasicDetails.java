@@ -10,79 +10,53 @@
  *******************************************************************************/
 package com.uimirror.core.user;
 
-import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.WeakHashMap;
+
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import com.uimirror.core.Builder;
 import com.uimirror.core.DOB;
-import com.uimirror.core.mongo.feature.BeanBasedDocument;
+import com.uimirror.core.mongo.feature.AbstractBeanBasedDocument;
 import com.uimirror.core.service.BeanValidatorService;
 
 /**
  * Contains the User details of the user
  * @author Jay
  */
-public class BasicDetails extends BeanBasedDocument<BasicDetails> implements BeanValidatorService {
+public class BasicDetails extends AbstractBeanBasedDocument<BasicDetails> implements BeanValidatorService {
 
 	private static final long serialVersionUID = -5282406171053226490L;
-
-	private String presentAddress;
-	private String permanetAddress;
-	private DOB dateOfBirth;
-	private MetaInfo metaInfo;
-	private Map<String, Object> details;
+	private final String presentAddress;
+	private final String permanetAddress;
+	private final DOB dateOfBirth;
+	private final MetaInfo metaInfo;
+	private final Map<String, Object> details;
 
 	// DOn't Use this until it has specific requirement
 	public BasicDetails() {
-		super();
-	}
-
-	public BasicDetails(Map<String, Object> map) {
-		super(map);
+		this.permanetAddress = null;
+		this.presentAddress = null;
+		this.dateOfBirth = null;
+		this.metaInfo = null;
+		this.details = null;
 	}
 	
-	public BasicDetails(String profileId, String presentAddress, String permanetAddress, DOB dateOfBirth, Map<String, Object> details) {
-		super(profileId);
-		this.presentAddress = presentAddress;
-		this.permanetAddress = permanetAddress;
-		this.dateOfBirth = dateOfBirth;
-		this.details = details;
-	}
-
-
-	@Override
-	public Map<String, Object> toMap() {
-		// First check if it represents a valid state then can be serialized
-		if (!isValid())
-			throw new IllegalStateException("Can't be serailized the state of the object");
-		return serailize();
-	}
-
-	/**
-	 * Serialize the current state that needs to be persisted to the system.
-	 * 
-	 * @return {@link Map} represention of the current state
-	 */
-	public Map<String, Object> serailize() {
-		Map<String, Object> state = new LinkedHashMap<String, Object>(16);
-		state.put(UserDBFields.ID, getId());
-		state.put(UserDBFields.DATE_OF_BIRTH, dateOfBirth.toMap());
-		//state.put(UserDBFields.ADDRESS, address);
-		return state;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.uimirror.core.service.BeanValidatorService#isValid()
+	/* (non-Javadoc)
+	 * @see com.uimirror.core.mongo.feature.MongoDocumentSerializer#updateId()
 	 */
 	@Override
-	public boolean isValid() {
-		boolean valid = Boolean.TRUE;
-		if(getDateOfBirth() == null)
-			valid = Boolean.FALSE;
-		return valid;
+	public BasicDetails updateId(String id) {
+		return new BasicDetailsBuilder(id).
+				updateDetails(details).
+				updateDOB(dateOfBirth).
+				updatePermanetAddress(permanetAddress).
+				updatePresentAddress(presentAddress).
+				updateMetaInfo(metaInfo).
+				build();
 	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -91,11 +65,53 @@ public class BasicDetails extends BeanBasedDocument<BasicDetails> implements Bea
 	 * .util.Map)
 	 */
 	@Override
-	public BasicDetails initFromMap(Map<String, Object> src) {
+	public BasicDetails readFromMap(Map<String, Object> src) {
 		// Validate the source shouldn't be empty
-		validateSource(src);
+		isValidSource(src);
 		// Initialize the state
 		return init(src);
+	}
+	
+	@Override
+	public Map<String, Object> writeToMap() {
+		// First check if it represents a valid state then can be serialized
+		if (!isValid())
+			throw new IllegalStateException("Can't be serailized the state of the object");
+		return serailize();
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.uimirror.core.service.BeanValidatorService#isValid()
+	 */
+	@Override
+	public boolean isValid() {
+		boolean valid = Boolean.TRUE;
+		if(getDateOfBirth() == null || !getDateOfBirth().isMoreThanighteen())
+			valid = Boolean.FALSE;
+		return valid;
+	}
+
+	/**
+	 * Serialize the current state that needs to be persisted to the system.
+	 * 
+	 * @return {@link Map} represention of the current state
+	 */
+	public Map<String, Object> serailize() {
+		Map<String, Object> state = new WeakHashMap<String, Object>(16);
+		if(StringUtils.hasText(getProfileId()))
+			state.put(UserDBFields.ID, getProfileId());
+		if(StringUtils.hasText(getPermanetAddress()))
+			state.put(UserDBFields.PERMANET_ADDRESS, getPermanetAddress());
+		if(StringUtils.hasText(getPresentAddress()))
+			state.put(UserDBFields.PRESENT_ADDRESS, getPresentAddress());
+		state.put(UserDBFields.DATE_OF_BIRTH, getDateOfBirth().toMap());
+		if(getMetaInfo() != null)
+			state.put(UserDBFields.META_INFO, getMetaInfo().toMap());
+		if(!CollectionUtils.isEmpty(getDetails()))
+			state.put(UserDBFields.INFO, getDetails());
+		return state;
 	}
 
 	/**
@@ -107,8 +123,8 @@ public class BasicDetails extends BeanBasedDocument<BasicDetails> implements Bea
 	@SuppressWarnings("unchecked")
 	private BasicDetails init(Map<String, Object> raw) {
 		String id = (String) raw.get(UserDBFields.ID);
-		Map<String, Object> dateOfBirth = (Map<String, Object>) raw.get(UserDBFields.DATE_OF_BIRTH);
-		DOB dob = DOB.initFromMap(dateOfBirth);
+		DOB dob = DOB.initFromMap(raw);
+		MetaInfo info = MetaInfo.initFromMap(raw);
 		String presentAddId = (String)raw.get(UserDBFields.PRESENT_ADDRESS);
 		String permanetAddId = (String)raw.get(UserDBFields.PERMANET_ADDRESS);
 		Map<String, Object> extraInfo = (Map<String, Object>)raw.get(UserDBFields.INFO);
@@ -117,26 +133,8 @@ public class BasicDetails extends BeanBasedDocument<BasicDetails> implements Bea
 				updateDOB(dob).
 				updatePermanetAddress(permanetAddId).
 				updatePresentAddress(presentAddId).
+				updateMetaInfo(info).
 				build();
-	}
-
-	public String getProfileId() {
-		return getId();
-	}
-
-	public DOB getDateOfBirth() {
-		return this.dateOfBirth;
-	}
-
-	public Object getDetails() {
-		return this.details;
-	}
-
-	@Override
-	public String toString() {
-		return "BasicDetails [presentAddress=" + presentAddress
-				+ ", permanetAddress=" + permanetAddress + ", dateOfBirth="
-				+ dateOfBirth + ", details=" + details + "]";
 	}
 	
 	public static class BasicDetailsBuilder implements Builder<BasicDetails>{
@@ -145,6 +143,7 @@ public class BasicDetails extends BeanBasedDocument<BasicDetails> implements Bea
 		private String permanetAddress;
 		private DOB dateOfBirth;
 		private Map<String, Object> details;
+		private MetaInfo metaInfo;
 		
 		public BasicDetailsBuilder(String profileId){
 			this.profileId = profileId;
@@ -169,6 +168,11 @@ public class BasicDetails extends BeanBasedDocument<BasicDetails> implements Bea
 			this.details = details;
 			return this;
 		}
+		
+		public BasicDetailsBuilder updateMetaInfo(MetaInfo info){
+			this.metaInfo = info;
+			return this;
+		}
 
 		/* (non-Javadoc)
 		 * @see com.uimirror.core.Builder#build()
@@ -186,6 +190,39 @@ public class BasicDetails extends BeanBasedDocument<BasicDetails> implements Bea
 		this.details = builder.details;
 		this.permanetAddress = builder.permanetAddress;
 		this.presentAddress = builder.presentAddress;
+		this.metaInfo = builder.metaInfo;
+	}
+	
+	public String getProfileId() {
+		return getId();
+	}
+
+	public DOB getDateOfBirth() {
+		return this.dateOfBirth;
+	}
+
+	public Map<String, Object> getDetails() {
+		return this.details;
+	}
+
+	public String getPresentAddress() {
+		return presentAddress;
+	}
+
+	public String getPermanetAddress() {
+		return permanetAddress;
+	}
+
+	public MetaInfo getMetaInfo() {
+		return metaInfo;
+	}
+
+	@Override
+	public String toString() {
+		return "BasicDetails [presentAddress=" + presentAddress
+				+ ", permanetAddress=" + permanetAddress + ", dateOfBirth="
+				+ dateOfBirth + ", metaInfo=" + metaInfo + ", details="
+				+ details + "]";
 	}
 
 }

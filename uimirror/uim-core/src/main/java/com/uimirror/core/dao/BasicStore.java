@@ -13,23 +13,15 @@ package com.uimirror.core.dao;
 import java.util.List;
 import java.util.Map;
 
-import com.uimirror.core.mongo.BasicMongoOperators;
-import com.uimirror.core.mongo.feature.BeanBasedDocument;
+import com.mongodb.DBCollection;
 import com.uimirror.core.mongo.feature.MongoDocumentSerializer;
 
 /**
- * This is a basic store definition,
- * every store should have to give this definition for the
- * storing, getting by id &amp; delete by id
- * Make sure in case of query giving the proper {@linkplain Map} with key as one of 
- * the operators defined in {@linkplain BasicMongoOperators}
- * Make sure in case of update giving the proper {@linkplain Map} with key as one of 
- * the operators defined in {@linkplain BasicMongoOperators} leaving the top most document
- * as by default its taking {@linkplain BasicMongoOperators#SET}
+ * This is a basic MONGO store contract definition for the basic CRUD operations,
  * 
  * @author Jay
  */
-public interface BasicStore<T extends BeanBasedDocument<T>> {
+public interface BasicStore<T extends MongoDocumentSerializer<T>> {
 	
 	/**
 	 * Gets the Sequence for the document
@@ -39,7 +31,7 @@ public interface BasicStore<T extends BeanBasedDocument<T>> {
 
 	/**
 	 * Stores the document by calling 
-	 * {@linkplain MongoDocumentSerializer#toMap()}
+	 * {@linkplain MongoDocumentSerializer#writeToMap()}
 	 * @param doc document to be persisted
 	 * @return T bean object
 	 * @throws DBException in case of any exception
@@ -161,5 +153,16 @@ public interface BasicStore<T extends BeanBasedDocument<T>> {
 	 * @throws DBException in case of any exception
 	 */
 	int updateByQueryInsertWhenNoMatchWithOutMulti(Map<String, Object> query, Map<String, Object> toUpdate) throws DBException;
+	
+	/**Gets the collection being used for this store
+	 * @return where document will be persisted.
+	 */
+	DBCollection getCollection();
+	
+	/**
+	 * gets the sequence collection being used for this store
+	 * @return where sequence numbers will be persisted.
+	 */
+	DBCollection getSeqCollection();
 	
 }

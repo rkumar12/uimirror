@@ -75,7 +75,7 @@ public class DateTimeUtil {
 	
 	
 	/**
-	 * validates date to yyyy-mm-dd format
+	 * validates date to be in yyyy-mm-dd format
 	 * @param date which will be checked
 	 * @return boolean <code>true</code> if the provided date is valid
 	 */
@@ -178,19 +178,63 @@ public class DateTimeUtil {
 	}
 	
 	/**
+	 * Converts the given date into {@link LocalDate} with given format and given {@link Locale}
+	 * Make Sure input date is in 2011-12-03, YYYY-MM-DD
+	 * into a string
+	 * @param ldt needs to parse
+	 * @param format needs to translate
+	 * @param locale to use
+	 * @return a string representaion of the ldt
+	 */
+	public static String localDateToString(LocalDate ldt, String format, String locale){
+		Locale lo = null;
+		DateTimeFormatter dtf = null;
+		if(locale != null){
+			lo = Locale.forLanguageTag(locale);
+		}
+		lo = lo == null ? Locale.US : lo;
+		if(format != null){
+			dtf = DateTimeFormatter.ofPattern(format, lo);
+		}
+		dtf = dtf == null ? DateTimeFormatter.ISO_LOCAL_DATE.withLocale(lo) : dtf;
+		//DateTimeFormatter dtf = DateTimeFormatter.ofPattern(format, locale);
+		return ldt.format(dtf);
+	}
+
+	
+	/**
 	 * Validates if age is above 18 based on dob.
 	 * @param dob that needs to be checked
 	 * @param dtf a date formatter to be used, if null use default one
 	 * @return boolean <code>true</code> if date is above 18
 	 */
 	private static boolean isAgeAboveEighteen(String dob, DateTimeFormatter dtf) {
-		boolean result = Boolean.FALSE;
 		if(dtf == null)
 			dtf = DTF_YYYY_MM_DD;
 		LocalDate birthDay = stringToDate(dob, dtf);
-		Period period = Period.between(birthDay, getCurrentSystemUTCDate());
-		
-		if(period.getYears() >= AGE_LIMIT){
+		return isAgeAboveEighteen(birthDay);
+	}
+	
+	/**
+	 * Validates from the given localDate is more than 18 or not
+	 * @param date which will be validated
+	 * @return if its more than 18 years
+	 */
+	public static boolean isAgeAboveEighteen(LocalDate date) {
+		return isDateMoreThan(date, AGE_LIMIT);
+	}
+	
+	/**
+	 * Validates from the given localDate is more than specified years 
+	 * @param date which will be validated
+	 * @param years number of years its more than
+	 * @return <code>true</code> if it valid else <code>false</code>
+	 */
+	public static boolean isDateMoreThan(LocalDate date, int years) {
+		boolean result = Boolean.FALSE;
+		//TODO potential bug of checking it should be with time zone
+		Period pd = Period.between(date, getCurrentSystemUTCDate());
+		if(pd.getYears() >= years){
 			result = Boolean.TRUE;
 		}
 		return result;

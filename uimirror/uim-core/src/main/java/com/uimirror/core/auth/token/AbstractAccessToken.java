@@ -22,14 +22,14 @@ import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.Scope;
 import com.uimirror.core.auth.Token;
 import com.uimirror.core.auth.TokenType;
-import com.uimirror.core.mongo.feature.BeanBasedDocument;
+import com.uimirror.core.mongo.feature.AbstractBeanBasedDocument;
 import com.uimirror.core.service.BeanValidatorService;
 
 /**
  * A basic implementation of the accesstoken
  * @author Jay
  */
-public abstract class AbstractAccessToken<T> extends BeanBasedDocument<T> implements AccessToken, BeanValidatorService{
+public abstract class AbstractAccessToken<T> extends AbstractBeanBasedDocument<T> implements AccessToken, BeanValidatorService{
 
 	private static final long serialVersionUID = 1758356201287067187L;
 	private Token token;
@@ -72,14 +72,6 @@ public abstract class AbstractAccessToken<T> extends BeanBasedDocument<T> implem
 		initialize(token, owner, client, expire, type, scope, null, null);
 	}
 	
-	/**
-	 * This will initialize the object state from the map
-	 * @param map
-	 */
-	public AbstractAccessToken(Map<String, Object> map){
-		super(map);
-	}
-	
 	private void initialize(Token token, String owner, String client, long expire, TokenType type, Scope scope, Map<String, Object> notes, Map<String, Object> instructions){
 		this.token = token;
 		this.setId(this.token.getToken());
@@ -110,9 +102,9 @@ public abstract class AbstractAccessToken<T> extends BeanBasedDocument<T> implem
 	 * @see com.uimirror.core.mongo.feature.MongoDocumentSerializer#initFromMap(java.util.Map)
 	 */
 	@Override
-	public T initFromMap(Map<String, Object> src) {
+	public T readFromMap(Map<String, Object> src) {
 		//Validate the source shouldn't be empty
-		validateSource(src);
+		isValidSource(src);
 		//Initialize the state
 		return init(src);
 	}
@@ -129,7 +121,7 @@ public abstract class AbstractAccessToken<T> extends BeanBasedDocument<T> implem
 	 * always it will have _id, parapharse, id, expire, type and scope
 	 */
 	@Override
-	public Map<String, Object> toMap(){
+	public Map<String, Object> writeToMap(){
 		//First check if it represents a valid state then can be serialized
 		if(!isValid())
 			throw new IllegalStateException("Can't be serailized the state of the object");

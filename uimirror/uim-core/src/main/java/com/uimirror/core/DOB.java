@@ -11,7 +11,6 @@
 package com.uimirror.core;
 
 import java.time.LocalDate;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.WeakHashMap;
 
@@ -25,27 +24,39 @@ import com.uimirror.core.util.DateTimeUtil;
  * Gets the DOB of the user
  * @author Jay
  */
-public class DOB {
+public class DOB{
 
-	private String dob;
-	private String format;
-	private Map<String, Integer> fragments;
+	private final String dob;
+	private final String format;
+	private final Map<String, Integer> fragments;
+	private final LocalDate dobInDate;
+	private final String locale;
 
+	/**Validates the given DOB to be in yyyy-mm-dd format
+	 * @return
+	 */
+	public boolean isValidFormat() {
+		return DateTimeUtil.isAValidDate(dob);
+	}
+	
 	/**
 	 * Get the map for dob
 	 * @return {@link Map} representation of the state
 	 */
 	public Map<String, Object> toMap(){
-		Map<String, Object> map = new LinkedHashMap<String, Object>(5);
+		if(!isValidFormat()){
+			return null;
+		}
+		Map<String, Object> map = new WeakHashMap<String, Object>(5);
 		if(StringUtils.hasText(dob))
-			map.put(UserDBFields.DATE_OF_BIRTH, getDate());
+			map.put(UserDBFields.DATE_OF_BIRTH, getDob());
 		if(StringUtils.hasText(format))
 			map.put(UserDBFields.DOB_FORMAT, getFormat());
 		return map;
 	}
 
 	/**
-	 * Get the map for dob
+	 * Get the map for dob, which has depedancy on user meta info
 	 * @param map from which state will be presumed
 	 * @return object with state from the provided {@link Map}
 	 */
@@ -53,14 +64,13 @@ public class DOB {
 	public static DOB initFromMap(Map<String, Object> map){
 		if(CollectionUtils.isEmpty(map))
 			return null;
-		
 		Map<String, Object> dobMap = (Map<String, Object>)map.get(UserDBFields.DATE_OF_BIRTH);
-		if(dobMap == null){
+		if(dobMap == null)
 			return null;
-		}
 		String dob = (String)dobMap.get(UserDBFields.DATE_OF_BIRTH);
 		String format = (String)dobMap.get(UserDBFields.DOB_FORMAT);
-		String locale = (String)map.get(UserDBFields.LOCALE);
+		Map<String, Object> metaMap = (Map<String, Object>)map.get(UserDBFields.META_INFO);
+		String locale = metaMap == null ? null : (String)metaMap.get(UserDBFields.LOCALE);
 		return new DOBBuilder(dob).addFormat(format).addLocale(locale).build();
 	}
 	
@@ -69,6 +79,7 @@ public class DOB {
 		private String format;
 		private Map<String, Integer> fragments;
 		private String locale;
+		private LocalDate dobInDate;
 		
 		public DOBBuilder(String dob){
 			this.dob = dob;
@@ -90,10 +101,11 @@ public class DOB {
 		@Override
 		public DOB build() {
 			LocalDate ldt = DateTimeUtil.stringToDate(dob, format, locale);
+			this.dobInDate = ldt;
 			if(ldt != null){
 				fragments = new WeakHashMap<String, Integer>(8);
-				fragments.put(UserDBFields.DATE_OF_BIRTH_DATE, ldt.getMonthValue());
-				fragments.put(UserDBFields.DATE_OF_BIRTH_MONTH, ldt.getDayOfMonth());
+				fragments.put(UserDBFields.DATE_OF_BIRTH_DATE, ldt.getDayOfMonth());
+				fragments.put(UserDBFields.DATE_OF_BIRTH_MONTH, ldt.getMonthValue());
 				fragments.put(UserDBFields.DATE_OF_BIRTH_YEAR, ldt.getYear());
 			}
 			return new DOB(this);
@@ -104,6 +116,8 @@ public class DOB {
 		this.dob = builder.dob;
 		this.format = builder.format;
 		this.fragments = builder.fragments;
+		this.dobInDate = builder.dobInDate;
+		this.locale = builder.locale;
 	}
 	
 	public int getDate() {
@@ -120,6 +134,18 @@ public class DOB {
 
 	public String getDob() {
 		return dob;
+	}
+	
+	public String getFormatedDob(){
+		if(this.dobInDate == null)
+			return dob;
+		else{
+			return DateTimeUtil.localDateToString(dobInDate, format, locale);
+		}
+	}
+	
+	public boolean isMoreThanighteen(){
+		return DateTimeUtil.isAgeAboveEighteen(dobInDate);
 	}
 
 	public String getFormat() {

@@ -28,13 +28,6 @@ public class DefaultAccessToken extends AbstractAccessToken<DefaultAccessToken>{
 	private static final long serialVersionUID = -6156839027050013727L;
 	
 	/**
-	 * @param map from which state will be presumed
-	 */
-	public DefaultAccessToken(Map<String, Object> map) {
-		super(map);
-	}
-	
-	/**
 	 *Don't Use this until has some special use case
 	 */
 	public DefaultAccessToken() {

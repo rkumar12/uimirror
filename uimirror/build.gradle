@@ -23,6 +23,8 @@ subprojects  {
 		wsSecurityVersion = '1.0'
 		wsFiltersVersion = '1.0'
 		cucumberJavaVersion = '1.2.0'
+		seertjVersion = '1.7.0'
+		equalsQualiferVersion = '1.5'
 	}
   
 	group = 'com.uimirror'
@@ -37,6 +39,9 @@ subprojects {
 		testCompile group: 'info.cukes', name: 'cucumber-java', version: cucumberJavaVersion
 		testCompile group: 'info.cukes', name: 'cucumber-junit', version: cucumberJavaVersion
 		testCompile group: 'info.cukes', name: 'cucumber-spring', version: cucumberJavaVersion
+		testCompile group: 'org.assertj', name: 'assertj-core', version: seertjVersion
+		//EqualsVerifier
+		testCompile group: 'nl.jqno.equalsverifier', name: 'equalsverifier', version: equalsQualiferVersion
 		//Logging
 		compile (group: 'org.slf4j', name: 'jcl-over-slf4j', version: slf4jVersion)
 		compile (group: 'ch.qos.logback', name: 'logback-classic', version: qosLogBackVersion){

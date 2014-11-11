@@ -12,7 +12,6 @@ package com.uimirror.core.dao;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,87 +22,53 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import com.mongodb.BasicDBObject;
-import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
-import com.mongodb.Mongo;
 import com.mongodb.WriteResult;
 import com.uimirror.core.extra.MapException;
 import com.uimirror.core.mongo.BasicMongoOperators;
+import com.uimirror.core.mongo.feature.AbstractBeanBasedDocument;
 import com.uimirror.core.mongo.feature.BasicDBFields;
-import com.uimirror.core.mongo.feature.BeanBasedDocument;
+import com.uimirror.core.mongo.feature.MongoDocumentSerializer;
 
 /**
  * Basic and essential implementation for the {@linkplain BasicStore}
- * Make sure in case of query giving the proper {@linkplain Map} with key as one of 
- * the operators defined in {@linkplain BasicMongoOperators}
- * Make sure in case of update giving the proper {@linkplain Map} with key as one of 
- * the operators defined in {@linkplain BasicMongoOperators} leaving the top most document
- * as by default its taking  only for {@linkplain BasicStore#updateById(Object, Map)}
- * else in case for the updateByQuery pass the updated as fully update filed
- * with proper operators from the {@linkplain BasicMongoOperators}
+ * 
+ * Which abstracts the definition for basic CRUD operation with MONGO store
  * 
  * @author Jay
  */
-public abstract class AbstractMongoStore<T extends BeanBasedDocument<T>> extends MongoInitializer implements BasicStore<T>{
+public abstract class AbstractMongoStore<T extends MongoDocumentSerializer<T>> implements BasicStore<T>{
 
 	protected static final Logger LOG = LoggerFactory.getLogger(AbstractMongoStore.class);
 	private T t;
-	private String seqName;
-	/**
-	 * Assign/ Create collection from the given {@link Mongo}
-	 * @param mongo
-	 * @param dbName
-	 * @param collectionName
-	 * @param claz
-	 */
-	public AbstractMongoStore(Mongo mongo, String dbName, String collectionName , Class<? extends BeanBasedDocument<T>> claz){
-		super(mongo, dbName, collectionName);
-		setTargetClass(claz);
-		
-	}
-	
+	private final String seqName;
+	private final MongoInitializer initializer;
+
 	/**
 	 * Assign/ Create collection from the given {@link DBCollection}
 	 * @param collection
 	 * @param claz
 	 */
-	public AbstractMongoStore(DBCollection collection, Class<? extends BeanBasedDocument<T>> claz){
-		super(collection);
+	public AbstractMongoStore(DBCollection collection, Class<? extends AbstractBeanBasedDocument<T>> claz){
+		this.seqName = null;
+		this.initializer = new MongoInitializer(collection) ;
 		setTargetClass(claz);
-	}
-	
-	/**
-	 * @param db
-	 * @param collectionName
-	 * @param claz
-	 */
-	public AbstractMongoStore(DB db, String collectionName, Class<? extends BeanBasedDocument<T>> claz) {
-		super(db, collectionName);
-		setTargetClass(claz);
-	}
-	
-	public AbstractMongoStore(DB db, String collectionName,
-			String seqCollectionName, String seqName, Class<? extends BeanBasedDocument<T>> claz) {
-		super(db, collectionName, seqCollectionName);
-		setTargetClass(claz);
-		this.seqName = seqName;
 	}
 
-	public AbstractMongoStore(DBCollection collection,
-			DBCollection seqCollection, String seqName, Class<? extends BeanBasedDocument<T>> claz) {
-		super(collection, seqCollection);
-		setTargetClass(claz);
+	public AbstractMongoStore(DBCollection collection, DBCollection seqCollection, String seqName, Class<? extends AbstractBeanBasedDocument<T>> claz) {
 		this.seqName = seqName;
+		this.initializer = new MongoInitializer(collection, seqCollection) ;
+		setTargetClass(claz);
 	}
 
 	/**
 	 * Initialize the type of serialization of the class
-	 * @param claz
+	 * @param claz class for which store is getting initialized
 	 */
 	@SuppressWarnings("unchecked")
-	private void setTargetClass(Class<? extends BeanBasedDocument<T>> claz){
+	private void setTargetClass(Class<? extends MongoDocumentSerializer<T>> claz){
 		try {
 			t = (T) claz.getConstructor().newInstance(new Object[] { });
 		} catch (InstantiationException | IllegalAccessException
@@ -121,24 +86,15 @@ public abstract class AbstractMongoStore<T extends BeanBasedDocument<T>> extends
 	public T store(T doc) throws DBException {
 		LOG.debug("[START]- Storing the object");
 		Assert.notNull(doc, "Object To store can't be empty");
-		//Serialize the states
-		Map<String, Object> document = doc.toMap();
-		if(CollectionUtils.isEmpty(document))
-			throw new IllegalArgumentException("Object To store can't be empty");
-		
-		//If ID null and Sequence Name present then put the sequence name as well 
-		if(!StringUtils.hasText(doc.getId()) && getSeqName() != null)
-			document.put(BasicDBFields.ID, getNextSequence());
-		
-		getCollection().save(convertToDBObject(document));
-		
+		//Serailize
+		Map<String, Object> document = seralize(doc);
+		getCollection().save(MongoStoreHelper.convertToDBObject(document));
 		LOG.debug("[END]- Storing the object");
 		LOG.debug("[START]- Create Index");
 		ensureIndex();
 		LOG.debug("[END]- Create Index");
-		return StringUtils.hasText(doc.getId()) ? doc : t.initFromMap(document);
+		return StringUtils.hasText(doc.getId()) ? doc : doc.updateId((String)document.get(BasicDBFields.ID));
 	}
-
 
 	/* (non-Javadoc)
 	 * @see com.uimirror.core.dao.BasicStore#deleteById(java.lang.Object)
@@ -147,7 +103,7 @@ public abstract class AbstractMongoStore<T extends BeanBasedDocument<T>> extends
 	@MapException(use=MongoExceptionMapper.NAME)
 	public void deleteById(Object id) throws DBException {
 		LOG.debug("[SINGLE]- Deleting the object");
-		delete(getIdQuery(id));
+		delete(MongoStoreHelper.getIdQuery(id));
 	}
 	/* (non-Javadoc)
 	 * @see com.uimirror.core.dao.BasicStore#deleteByQuery(java.util.Map)
@@ -156,7 +112,7 @@ public abstract class AbstractMongoStore<T extends BeanBasedDocument<T>> extends
 	@MapException(use=MongoExceptionMapper.NAME)
 	public int deleteByQuery(Map<String, Object> query) throws DBException {
 		LOG.debug("[SINGLE]- Deleting the objects based on the query");
-		return getNumberOfDocumentAffected(delete(convertToDBObject(query)));
+		return getNumberOfDocumentAffected(delete(MongoStoreHelper.convertToDBObject(query)));
 	}
 	
 	/**
@@ -194,12 +150,12 @@ public abstract class AbstractMongoStore<T extends BeanBasedDocument<T>> extends
 	@MapException(use=MongoExceptionMapper.NAME)
 	public T getById(Object id, Map<String, Object> fields) throws DBException {
 		LOG.debug("[START]- Getting an object based on the ID");
-		DBObject result = getCollection().findOne(getIdQuery(id), convertToDBObject(fields));
+		DBObject result = getCollection().findOne(MongoStoreHelper.getIdQuery(id), MongoStoreHelper.convertToDBObject(fields));
 		if(result == null){
 			throw new RecordNotFoundException();
 		}
 		LOG.debug("[END]- Getting an object based on the ID");
-		return (T) t.initFromMap(result.toMap());
+		return (T) t.readFromMap(result.toMap());
 	}
 
 	/* (non-Javadoc)
@@ -209,7 +165,7 @@ public abstract class AbstractMongoStore<T extends BeanBasedDocument<T>> extends
 	@MapException(use=MongoExceptionMapper.NAME)
 	public List<T> getByQuery(Map<String, Object> query, Map<String, Object> fields) throws DBException {
 		LOG.debug("[START]- Getting an object based on the Query specified");
-		DBCursor cursor = getCollection().find(convertToDBObject(query), convertToDBObject(fields));
+		DBCursor cursor = getCollection().find(MongoStoreHelper.convertToDBObject(query), MongoStoreHelper.convertToDBObject(fields));
 		LOG.debug("[END]- Getting an object based on the Query specified");
 		return getFromCursor(cursor, 50);
 	}
@@ -220,7 +176,7 @@ public abstract class AbstractMongoStore<T extends BeanBasedDocument<T>> extends
 	@Override
 	public int updateById(Object id, Map<String, Object> toUpdate) throws DBException {
 		LOG.debug("[SINGLE]- Updateing the document by ID");
-		return updateByQuery(getIdMap(id), toUpdate);
+		return updateByQuery(MongoStoreHelper.getIdMap(id), toUpdate);
 	}
 	
 	/* (non-Javadoc)
@@ -236,7 +192,7 @@ public abstract class AbstractMongoStore<T extends BeanBasedDocument<T>> extends
 	 */
 	@Override
 	public int updateByIdInsertWhenNoMatchWithMulti(Object id, Map<String, Object> toUpdate) throws DBException {
-		return getNumberOfDocumentAffected(update(getIdMap(id), toUpdate, Boolean.TRUE, Boolean.TRUE));
+		return getNumberOfDocumentAffected(update(MongoStoreHelper.getIdMap(id), toUpdate, Boolean.TRUE, Boolean.TRUE));
 	}
 
 	/* (non-Javadoc)
@@ -244,7 +200,7 @@ public abstract class AbstractMongoStore<T extends BeanBasedDocument<T>> extends
 	 */
 	@Override
 	public int updateByIdInsertWhenNoMatchWithOutMulti(Object id, Map<String, Object> toUpdate) throws DBException {
-		return getNumberOfDocumentAffected(update(getIdMap(id), toUpdate, Boolean.TRUE, Boolean.FALSE));
+		return getNumberOfDocumentAffected(update(MongoStoreHelper.getIdMap(id), toUpdate, Boolean.TRUE, Boolean.FALSE));
 	}
 
 	/* (non-Javadoc)
@@ -273,7 +229,7 @@ public abstract class AbstractMongoStore<T extends BeanBasedDocument<T>> extends
 	 */
 	@MapException(use=MongoExceptionMapper.NAME)
 	protected WriteResult update(Map<String, Object> q, Map<String, Object> u, boolean nomatchInsert, boolean multi){
-		return getCollection().update(convertToDBObject(q), convertToDBObject(u), nomatchInsert, multi);
+		return getCollection().update(MongoStoreHelper.convertToDBObject(q), MongoStoreHelper.convertToDBObject(u), nomatchInsert, multi);
 	}
 	
 	/**
@@ -290,33 +246,13 @@ public abstract class AbstractMongoStore<T extends BeanBasedDocument<T>> extends
 		cursor.batchSize(fetchSize);
 		List<T> results = new ArrayList<T>(fetchSize+(fetchSize+thirtyPercentage));
 		cursor.forEach((result) -> {
-			results.add((T)t.initFromMap(result.toMap()));
+			results.add((T)t.readFromMap(result.toMap()));
 		});
 		if(CollectionUtils.isEmpty(results)){
 			throw new RecordNotFoundException("No Record Found");
 		}
 		return results;
 		//return null;
-	}
-	
-	/**
-	 * This creates an ID Query
-	 * @param id for which document will be qured
-	 * @return formated query
-	 */
-	protected DBObject getIdQuery(Object id){
-		return new BasicDBObject(BasicDBFields.ID, id);
-	}
-	
-	/**
-	 * This creates an ID Query Map
-	 * @param id object id
-	 * @return {@link Map}
-	 */
-	protected Map<String, Object> getIdMap(Object id){
-		Map<String, Object> map = new LinkedHashMap<String, Object>(3);
-		map.put(BasicDBFields.ID, id);
-		return map;
 	}
 	
 	/**
@@ -338,20 +274,6 @@ public abstract class AbstractMongoStore<T extends BeanBasedDocument<T>> extends
 //		s.put(BasicMongoOperators.SET, obj);
 //		return s;
 //	}
-	
-	/**
-	 * Converts the provided map into {@link DBObject}
-	 * @param obj object to be serialized
-	 * @return {@link DBObject}
-	 */
-	protected DBObject convertToDBObject(Map<String, Object> obj){
-		DBObject dbObject = null;
-		if(CollectionUtils.isEmpty(obj))
-			dbObject = new BasicDBObject();
-		else
-			dbObject = new BasicDBObject(obj);
-		return dbObject;
-	}
 	
 	/**
 	 * Query for the first record from the document.
@@ -400,19 +322,47 @@ public abstract class AbstractMongoStore<T extends BeanBasedDocument<T>> extends
 	    return res.get("seq").toString();
 	}
 	
-	private String getSeqName(){
+	/**
+	 * Returns the sequence name being used
+	 * @return sequence name
+	 */
+	protected String getSeqName(){
 		return seqName;
 	}
 	
-	/**
-	 * Gets the exists map query
-	 * @param flag exist field 
-	 * @return {@link Map} of the query
+	/* (non-Javadoc)
+	 * @see com.uimirror.core.dao.BasicStore#getCollection()
 	 */
-	public Map<String, Object> getExistQuery( boolean flag){
-		Map<String, Object> query = new LinkedHashMap<String, Object>(5);
-		query.put(BasicMongoOperators.EXISTS, flag);
-		return query;
+	public DBCollection getCollection(){
+		return initializer.getCollection();
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.uimirror.core.dao.BasicStore#getSeqCollection()
+	 */
+	public DBCollection getSeqCollection(){
+		return initializer.getSeqCollection();
+	}
+	
+	/**
+	 * This will serialize the document into {@link Map} and populate id , if not present
+	 * @param doc which will be persisted
+	 * @return map of the document
+	 */
+	private Map<String, Object> seralize(T doc) {
+		//Serialize the states
+		Map<String, Object> document = doc.writeToMap();
+		if(CollectionUtils.isEmpty(document))
+			throw new IllegalArgumentException("Object To store can't be empty");
+				
+		//If ID null and Sequence Name present then put the sequence name as well 
+		if(!StringUtils.hasText(doc.getId())){
+			if(getSeqName() != null)
+				document.put(BasicDBFields.ID, getNextSequence());
+			else
+				throw new IllegalStateException("document to persist is couropted");
+		}
+		return document;
 	}
 
 }

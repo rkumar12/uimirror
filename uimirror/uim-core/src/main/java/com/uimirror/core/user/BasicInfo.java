@@ -10,15 +10,15 @@
  *******************************************************************************/
 package com.uimirror.core.user;
 
-import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.WeakHashMap;
 
 import org.springframework.util.StringUtils;
 
 import com.uimirror.core.Builder;
 import com.uimirror.core.Constants;
 import com.uimirror.core.bean.Gender;
-import com.uimirror.core.mongo.feature.BeanBasedDocument;
+import com.uimirror.core.mongo.feature.AbstractBeanBasedDocument;
 import com.uimirror.core.service.BeanValidatorService;
 
 /**
@@ -26,27 +26,43 @@ import com.uimirror.core.service.BeanValidatorService;
  * such as name, email, gender, current account status and state of the account.
  * @author Jay
  */
-public class BasicInfo extends BeanBasedDocument<BasicInfo> implements BeanValidatorService {
+public final class BasicInfo extends AbstractBeanBasedDocument<BasicInfo> implements BeanValidatorService {
 
 	private static final long serialVersionUID = -5282406171053226490L;
-	private String firstName;
-	private String lastName;
-	private String email;
-	private Gender gender;
-	private AccountStatus accountStatus;
-	private AccountState accountState;
+	private final String firstName;
+	private final String lastName;
+	private final String email;
+	private final Gender gender;
+	private final AccountStatus accountStatus;
+	private final AccountState accountState;
 
 	// DOn't Use this until it has specific requirement
 	public BasicInfo() {
-		super();
+		this.accountState = null;
+		this.accountStatus = null;
+		this.email = null;
+		this.firstName = null;
+		this.lastName = null;
+		this.gender = null;
 	}
 
-	public BasicInfo(Map<String, Object> map) {
-		super(map);
+
+	/* (non-Javadoc)
+	 * @see com.uimirror.core.mongo.feature.MongoDocumentSerializer#updateId(java.lang.String)
+	 */
+	@Override
+	public BasicInfo updateId(String id) {
+		return new BasicInfoBuilder(id).
+				addEmail(email).
+				addFirstName(firstName).
+				addGender(gender).
+				addLastName(lastName).
+				addState(accountState).
+				addStatus(accountStatus).build();
 	}
 
 	@Override
-	public Map<String, Object> toMap() {
+	public Map<String, Object> writeToMap() {
 		// First check if it represents a valid state then can be serialized
 		if (!isValid())
 			throw new IllegalStateException("Can't be serailized the state of the object");
@@ -67,6 +83,10 @@ public class BasicInfo extends BeanBasedDocument<BasicInfo> implements BeanValid
 			valid = Boolean.FALSE;
 		if (getGender() == null)
 			valid = Boolean.FALSE;
+		if(getAccountState() == null)
+			valid = Boolean.FALSE;
+		if(getAccountStatus() == null)
+			valid = Boolean.FALSE;
 		return valid;
 
 	}
@@ -77,7 +97,7 @@ public class BasicInfo extends BeanBasedDocument<BasicInfo> implements BeanValid
 	 * @return
 	 */
 	public Map<String, Object> serailize() {
-		Map<String, Object> state = new LinkedHashMap<String, Object>(16);
+		Map<String, Object> state = new WeakHashMap<String, Object>(16);
 		if(StringUtils.hasText(getId()))
 			state.put(UserDBFields.ID, getId());
 		state.put(UserDBFields.FIRST_NAME, getFirstName());
@@ -98,9 +118,9 @@ public class BasicInfo extends BeanBasedDocument<BasicInfo> implements BeanValid
 	 * .util.Map)
 	 */
 	@Override
-	public BasicInfo initFromMap(Map<String, Object> src) {
+	public BasicInfo readFromMap(Map<String, Object> src) {
 		// Validate the source shouldn't be empty
-		validateSource(src);
+		isValidSource(src);
 		// Initialize the state
 		return init(src);
 
@@ -165,30 +185,33 @@ public class BasicInfo extends BeanBasedDocument<BasicInfo> implements BeanValid
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = super.hashCode();
+		int result = 1;
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
-		result = prime * result + ((getProfileId() == null) ? 0 : getProfileId().hashCode());
+		result = prime * result
+				+ ((getProfileId() == null) ? 0 : getProfileId().hashCode());
 		return result;
 	}
+	
+	
 
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (!super.equals(obj))
+		if (obj == null)
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
 		BasicInfo other = (BasicInfo) obj;
-		if (getProfileId() == null) {
-			if (other.getProfileId() != null)
-				return false;
-		} else if (!getProfileId().equals(other.getProfileId()))
-			return false;
 		if (email == null) {
 			if (other.email != null)
 				return false;
 		} else if (!email.equals(other.email))
+			return false;
+		if (getProfileId() == null) {
+			if (other.getProfileId() != null)
+				return false;
+		} else if (!getProfileId().equals(other.getProfileId()))
 			return false;
 		return true;
 	}

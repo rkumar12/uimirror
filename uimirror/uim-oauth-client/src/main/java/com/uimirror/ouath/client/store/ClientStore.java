@@ -20,6 +20,8 @@ import com.uimirror.ouath.client.Client;
  */
 public interface ClientStore {
 
+	String CLIENT_BASIC_SEQ = "cbs";
+	
 	/**
 	 * Query a {@link Client} record by the apiKey
 	 * 
