@@ -10,19 +10,20 @@
  *******************************************************************************/
 package com.uimirror.core.user;
 
-import nl.jqno.equalsverifier.EqualsVerifier;
-import nl.jqno.equalsverifier.Warning;
+import static org.assertj.core.api.Assertions.fail;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
  * @author Jay
  */
-public class BasicInfoHashCodeTest {
+@Ignore
+public class CredentialsTest {
+
 
 	@Test
-	public void testHashCode() {
-		EqualsVerifier.forClass(BasicInfo.class).suppress(Warning.NONFINAL_FIELDS).verify();
+	public void serializeTest(){
+		fail("Not Yet Implemented");
 	}
-
 }

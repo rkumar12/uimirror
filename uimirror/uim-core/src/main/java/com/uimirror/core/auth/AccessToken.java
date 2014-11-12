@@ -78,11 +78,18 @@ public interface AccessToken extends Principal, Serializable{
 	Map<String, Object> getInstructions();
 	
 	/**
-	 * @param notes associated with this
-	 * @param instructions instructions associated with this
+	 * @param instructions to be updated
+	 * @param updateFlag suggests if the input data will be updated or replaced
 	 * @return {@link AccessToken}
 	 */
-	AccessToken updateInstructions(Map<String, Object> notes, Map<String, Object> instructions);
+	AccessToken updateInstructions(Map<String, Object> instructions, boolean updateFlag);
+	
+	/**
+	 * @param notes to be updated
+	 * @param updateFlag suggests if the input data will be updated or replaced
+	 * @return {@link AccessToken}
+	 */
+	AccessToken updateNotes(Map<String, Object> notes, boolean updateFlag);
 	
 	/**
 	 * Converts to the response Map, which in-terms will be transformed to the json

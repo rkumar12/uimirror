@@ -10,7 +10,7 @@
  *******************************************************************************/
 package com.uimirror.core.util;
 
-import junit.framework.Assert;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
 
@@ -30,12 +30,11 @@ public class StringUtilRegexTest {
 		String name2 = "1234Test";
 		String name3 = "@#$Test";
 		String name4 = "~Test";
-		
-		Assert.assertEquals(true, StringRegexUtil.isValidName(name));
-		Assert.assertEquals(true, StringRegexUtil.isValidName(name1));
-		Assert.assertEquals(false, StringRegexUtil.isValidName(name2));
-		Assert.assertEquals(false, StringRegexUtil.isValidName(name3));
-		Assert.assertEquals(false, StringRegexUtil.isValidName(name4));
+		assertThat(StringRegexUtil.isValidName(name)).isTrue();
+		assertThat(StringRegexUtil.isValidName(name1)).isTrue();
+		assertThat(StringRegexUtil.isValidName(name2)).isFalse();
+		assertThat(StringRegexUtil.isValidName(name3)).isFalse();
+		assertThat(StringRegexUtil.isValidName(name4)).isFalse();
 	}
 	/**
 	 * Checks a various password range
@@ -47,12 +46,11 @@ public class StringUtilRegexTest {
 		String password2 = "1234   Test";
 		String password3 = "      ";
 		String password4 = "";
-		
-		Assert.assertEquals(true, StringRegexUtil.isValidName(password));
-		Assert.assertEquals(true, StringRegexUtil.isValidName(password1));
-		Assert.assertEquals(false, StringRegexUtil.isValidName(password2));
-		Assert.assertEquals(false, StringRegexUtil.isValidName(password3));
-		Assert.assertEquals(false, StringRegexUtil.isValidName(password4));
+		assertThat(StringRegexUtil.isValidName(password)).isTrue();
+		assertThat(StringRegexUtil.isValidName(password1)).isTrue();
+		assertThat(StringRegexUtil.isValidName(password2)).isFalse();
+		assertThat(StringRegexUtil.isValidName(password3)).isFalse();
+		assertThat(StringRegexUtil.isValidName(password4)).isFalse();
 	}
 
 }

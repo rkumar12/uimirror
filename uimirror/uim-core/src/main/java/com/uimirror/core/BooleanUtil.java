@@ -15,17 +15,26 @@ package com.uimirror.core;
  * @author Jay
  */
 public class BooleanUtil {
+	
+	//Prevent creating instance
+	private BooleanUtil(){
+		//NOP
+	}
+	public static final String YES = "Yes";
+	public static final String Y = "Y";
+	
 
 	/**
-	 * Checks the provided argument is either y/yes/true, then returns true
-	 * else false
+	 * Checks the provided argument is either y/yes/true, then returns <code>true</code>
+	 * else <code>false</code>
+	 * 
 	 * @param obj which will be parsed
 	 * @return the boolean value represented by the obj
 	 */
 	public static final boolean parseBoolean(String obj){
 		boolean keepMeLogin = Boolean.parseBoolean(obj);
 		keepMeLogin = (keepMeLogin == Boolean.FALSE && 
-				("y".equalsIgnoreCase(obj) || "yes".equalsIgnoreCase(obj))) ?  Boolean.TRUE : Boolean.FALSE;
+				(Y.equalsIgnoreCase(obj) || YES.equalsIgnoreCase(obj))) ?  Boolean.TRUE : Boolean.FALSE;
 		return keepMeLogin;
 	}
 

@@ -31,6 +31,7 @@ public class Token {
 
 	private final String token;
 	private final String paraphrase;
+	
 	private static final Logger LOG = LoggerFactory.getLogger(Token.class);
 	
 	public Token(String token, String paraphrase) {
@@ -86,5 +87,5 @@ public class Token {
 	public String getParaphrase() {
 		return paraphrase;
 	}
-
+	
 }

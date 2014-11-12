@@ -8,16 +8,22 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.core;
+package com.uimirror.core.auth;
+
+import static org.junit.Assert.*;
+
+import org.junit.Ignore;
+import org.junit.Test;
 
 /**
- * Builder for the constructor to builder pattern.
- * Strategic pattern implementation, every class which needs to provide the builder
- * pattern needs to implement this.
- * 
  * @author Jay
  */
-public interface Builder<T> {
+@Ignore
+public class DefaultAccessTokenTest {
 
-	public T build();
+	@Test
+	public void test() {
+		fail("Not yet implemented");
+	}
+
 }

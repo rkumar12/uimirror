@@ -22,7 +22,11 @@ import com.uimirror.core.user.MetaInfoDBFields;
 import com.uimirror.core.util.DateTimeUtil;
 
 /**
- * Gets the DOB of the user
+ * Manages the Date of birth details.
+ * which has format and locale details to format the date.
+ * it de fragments the dob and maintain the date, month and yesr seperatly.
+ * it has utility method {@link #isMoreThanighteen()} to validate the date of birth 
+ * follows the right standard. 
  * @author Jay
  */
 public class DOB{

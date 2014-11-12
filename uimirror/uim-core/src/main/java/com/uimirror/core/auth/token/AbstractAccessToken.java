@@ -10,10 +10,15 @@
  *******************************************************************************/
 package com.uimirror.core.auth.token;
 
+import static com.uimirror.core.auth.token.AccessTokenFields.AUTH_TKN_MESSAGES;
+import static com.uimirror.core.auth.token.AccessTokenFields.ENCRYPT_STARTEGY;
+import static com.uimirror.core.auth.token.AccessTokenFields.TOKEN;
+import static com.uimirror.core.auth.token.AccessTokenFields.TYPE;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.WeakHashMap;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -32,70 +37,18 @@ import com.uimirror.core.service.BeanValidatorService;
 public abstract class AbstractAccessToken<T> extends AbstractBeanBasedDocument<T> implements AccessToken, BeanValidatorService{
 
 	private static final long serialVersionUID = 1758356201287067187L;
-	private Token token;
-	private String owner;
-	private String client;
-	private long expire;
-	private TokenType type;
-	private Scope scope;
-	private Map<String, Object> notes;
-	private Map<String, Object> instructions;
+	protected Token token;
+	protected String owner;
+	protected String client;
+	protected long expire;
+	protected TokenType type;
+	protected Scope scope;
+	protected Map<String, Object> notes;
+	protected Map<String, Object> instructions;
 	
 	//Don't use this if not special condition
 	protected AbstractAccessToken(){
 		super();
-	}
-
-	/**
-	 * @param token issued token
-	 * @param owner owner of this token
-	 * @param client client to whom its granted
-	 * @param expire time interval of token expiry
-	 * @param type token type
-	 * @param scope scope of this token
-	 * @param notes associated notes
-	 * @param instructions associated instructions
-	 */
-	public AbstractAccessToken(Token token, String owner, String client, long expire, TokenType type, Scope scope, Map<String, Object> notes, Map<String, Object> instructions) {
-		initialize(token, owner, client, expire, type, scope, notes, instructions);
-	}
-
-	/**
-	 * @param token issued token
-	 * @param owner owner of this token
-	 * @param client client to whom its granted
-	 * @param expire time interval of token expiry
-	 * @param type token type
-	 * @param scope scope of this token
-	 */
-	public AbstractAccessToken(Token token, String owner, String client, long expire, TokenType type, Scope scope) {
-		initialize(token, owner, client, expire, type, scope, null, null);
-	}
-	
-	private void initialize(Token token, String owner, String client, long expire, TokenType type, Scope scope, Map<String, Object> notes, Map<String, Object> instructions){
-		this.token = token;
-		this.setId(this.token.getToken());
-		this.owner = owner;
-		this.client = client;
-		this.expire = expire;
-		this.type = type;
-		this.scope = scope;
-		this.notes = notes == null ? new LinkedHashMap<String, Object>() : notes;
-		this.instructions = instructions == null ? new LinkedHashMap<String, Object>() : instructions;
-	}
-	/**
-	 * This will update the instructions and notes iff provided arguments are not empty
-	 * @param notes associated notes
-	 * @param instructions associated instructions
-	 * @return a Accesstoken instance
-	 */
-	@Autowired
-	public AccessToken updateInstructions(Map<String, Object> notes, Map<String, Object> instructions){
-		if(!CollectionUtils.isEmpty(notes))
-			this.notes.putAll(notes);
-		if(!CollectionUtils.isEmpty(instructions))
-			this.instructions.putAll(instructions);
-		return this;
 	}
 
 	/* (non-Javadoc)
@@ -148,25 +101,9 @@ public abstract class AbstractAccessToken<T> extends AbstractBeanBasedDocument<T
 	
 	/**
 	 * Creates the {@link Map} that will be serialized over the network
-	 * @return
+	 * @return a serialized {@link Map} 
 	 */
-	private Map<String, Object> serailize() {
-		Map<String, Object> map = new LinkedHashMap<String, Object>(10);
-		map.put(AccessTokenFields.ID, this.token.getToken());
-		if(StringUtils.hasText(this.token.getParaphrase()))
-			map.put(AccessTokenFields.ENCRYPT_STARTEGY, this.token.getParaphrase());
-		map.put(AccessTokenFields.TYPE, this.type.getTokenType());
-		if(StringUtils.hasText(getOwner()))
-			map.put(AccessTokenFields.AUTH_TKN_OWNER, this.owner);
-		map.put(AccessTokenFields.AUTH_TKN_CLIENT, this.client);
-		map.put(AccessTokenFields.AUTH_TKN_EXPIRES, this.expire);
-		if(!CollectionUtils.isEmpty(notes))
-			map.put(AccessTokenFields.AUTH_TKN_NOTES, this.notes);
-		if(!CollectionUtils.isEmpty(instructions))
-			map.put(AccessTokenFields.AUTH_TKN_INSTRUCTIONS, this.instructions);
-		map.put(AccessTokenFields.SCOPE, this.scope.getScope());
-		return map;
-	}
+	protected abstract Map<String, Object> serailize();
 	
 	/**
 	 * Validates the map objects to make sure map has proper details to populate the object
@@ -268,7 +205,7 @@ public abstract class AbstractAccessToken<T> extends AbstractBeanBasedDocument<T
 	 */
 	@Override
 	public Map<String, Object> getNotes() {
-		return this.notes == null ? new LinkedHashMap<String, Object>(5) : this.notes;
+		return this.notes == null ? new WeakHashMap<String, Object>(5) : this.notes;
 	}
 
 	/* (non-Javadoc)
@@ -276,7 +213,7 @@ public abstract class AbstractAccessToken<T> extends AbstractBeanBasedDocument<T
 	 */
 	@Override
 	public Map<String, Object> getInstructions() {
-		return this.instructions == null ? new LinkedHashMap<String, Object>(5) : this.instructions;
+		return this.instructions == null ? new WeakHashMap<String, Object>(5) : this.instructions;
 	}
 	
 	/* (non-Javadoc)
@@ -285,12 +222,12 @@ public abstract class AbstractAccessToken<T> extends AbstractBeanBasedDocument<T
 	@Override
 	public Map<String, Object> toResponseMap() {
 		Map<String, Object> rs = new LinkedHashMap<String, Object>(15);
-		rs.put(AccessTokenFields.TOKEN, token.getToken());
+		rs.put(TOKEN, token.getToken());
 		if(StringUtils.hasText(token.getParaphrase()))
-			rs.put(AccessTokenFields.ENCRYPT_STARTEGY, token.getParaphrase());
-		rs.put(AccessTokenFields.TYPE, type.getTokenType());
+			rs.put(ENCRYPT_STARTEGY, token.getParaphrase());
+		rs.put(TYPE, type.getTokenType());
 		if(!CollectionUtils.isEmpty(getInstructions())){
-			rs.put(AccessTokenFields.AUTH_TKN_MESSAGES, getInstructions());
+			rs.put(AUTH_TKN_MESSAGES, getInstructions());
 		}
 		return rs;
 	}

@@ -124,7 +124,7 @@ public class BasicDetails extends AbstractBeanBasedDocument<BasicDetails> implem
 		DOB dob = DOB.initFromMap(raw);
 		@SuppressWarnings("unchecked")
 		Map<String, Object> metaMap = (Map<String, Object>)raw.get(META_INFO);
-		if(CollectionUtils.isEmpty(metaMap))
+		if(!CollectionUtils.isEmpty(metaMap))
 			info = MetaInfo.initFromMap(metaMap);
 		String presentAddId = (String)raw.get(PRESENT_ADDRESS);
 		String permanetAddId = (String)raw.get(PERMANET_ADDRESS);

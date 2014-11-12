@@ -10,6 +10,10 @@
  *******************************************************************************/
 package com.uimirror.core.form;
 
+import static com.uimirror.core.auth.AuthConstants.ACCESS_TOKEN;
+import static com.uimirror.core.auth.AuthConstants.AUTHORIZATION_TOKEN;
+import static com.uimirror.core.auth.AuthConstants.TOKEN_ENCRYPTION_STARTEGY;
+
 import java.io.Serializable;
 
 import javax.ws.rs.HeaderParam;
@@ -17,7 +21,6 @@ import javax.ws.rs.QueryParam;
 
 import org.springframework.util.StringUtils;
 
-import com.uimirror.core.auth.AuthConstants;
 import com.uimirror.core.auth.BearerTokenExtractor;
 import com.uimirror.core.auth.Token;
 import com.uimirror.core.rest.extra.IllegalArgumentException;
@@ -33,14 +36,14 @@ public class AuthenticatedHeaderForm extends ClientMetaForm implements Serializa
 
 	private static final long serialVersionUID = -1215523730014366150L;
 	
-	@HeaderParam(AuthConstants.TOKEN_ENCRYPTION_STARTEGY)
+	@HeaderParam(TOKEN_ENCRYPTION_STARTEGY)
 	private String tokenEncryptionStartegy;
 	
-	@HeaderParam(AuthConstants.AUTHORIZATION_TOKEN)
+	@HeaderParam(AUTHORIZATION_TOKEN)
 	private String accessToken;
 	
 	//OUTH2 allows accessToken can be part of the query parameter as well
-	@QueryParam(AuthConstants.ACCESS_TOKEN)
+	@QueryParam(ACCESS_TOKEN)
 	private String accessTokenInRequestParam;
 
 	/* (non-Javadoc)

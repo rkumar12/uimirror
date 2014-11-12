@@ -10,6 +10,7 @@
  *******************************************************************************/
 package com.uimirror.core.user;
 
+import static com.uimirror.core.user.UserDBFields.*;
 import static org.assertj.core.api.Assertions.*;
 
 import java.util.Map;
@@ -32,14 +33,13 @@ public class BasicDetailsTest {
 	
 	@Before
 	public void setUp(){
-		op.put(UserDBFields.DATE_OF_BIRTH, dob.toMap());
-		op.put(UserDBFields.META_INFO, info.toMap());
+		op.put(DATE_OF_BIRTH, dob.toMap());
+		op.put(META_INFO, info.toMap());
 	}
 	@Test
 	public void seralizeTest() {
 		assertThat(dt.writeToMap()).isEqualTo(op);
 	}
-
 	@Test
 	public void deSeralizeTest() {
 		assertThat(dt.readFromMap(op).toString()).isEqualTo(dt.toString());

@@ -32,6 +32,7 @@ public class MongoExceptionMapper implements ExceptionMapper{
 	 */
 	@Override
 	public Throwable mapIt(Throwable exceptionToMap) {
+		LOG.error("[MAP-MONGO-ERROR]- Something went wrong {}",exceptionToMap);
 		if(isBulkWrite(exceptionToMap))
 			return translateBulkWrite();
 		if(isCommandFailure(exceptionToMap))
@@ -39,7 +40,6 @@ public class MongoExceptionMapper implements ExceptionMapper{
 		if(isCursorNotFound(exceptionToMap))
 			return translateNotFound();
 		if(exceptionToMap instanceof MongoException){
-			LOG.error("[CRTICAL-MONGO-ERROR]- Something went wrong {}",exceptionToMap);
 			return translateInternal();
 		}
 		return exceptionToMap;

@@ -8,16 +8,28 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.core;
+package com.uimirror.core.user;
+
+import static org.assertj.core.api.Assertions.fail;
+import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.Warning;
+
+import org.junit.Ignore;
+import org.junit.Test;
 
 /**
- * Builder for the constructor to builder pattern.
- * Strategic pattern implementation, every class which needs to provide the builder
- * pattern needs to implement this.
- * 
  * @author Jay
  */
-public interface Builder<T> {
+public class BasicInfoTest {
 
-	public T build();
+	@Test
+	public void testHashCode() {
+		EqualsVerifier.forClass(BasicInfo.class).suppress(Warning.NONFINAL_FIELDS).verify();
+	}
+
+	@Test
+	@Ignore
+	public void serializeTest(){
+		fail("Not Yet Implemented");
+	}
 }

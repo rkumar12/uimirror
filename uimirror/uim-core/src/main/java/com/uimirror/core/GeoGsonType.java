@@ -14,13 +14,18 @@ package com.uimirror.core;
  * Stores the different type of the GeoJson types supported currently
  * @author Jay
  */
-public interface GeoGsonType {
-	String POINT = "Point";
-	String LINESTRING = "LineString";
-	String POLYGON = "Polygon";
-	String MULTIPOINT = "MultiPoint";
-	String MULTILINESTRING = "MultiLineString";
-	String MULTIPOLYGON = "MultiPolygon";
-	String GEOMETRYCOLLECTION = "GeometryCollection";
+public class GeoGsonType {
+	
+	//Prevent from instantiate
+	private GeoGsonType(){
+		//NOP
+	}
+	public static final String POINT = "Point";
+	public static final String LINESTRING = "LineString";
+	public static final String POLYGON = "Polygon";
+	public static final String MULTIPOINT = "MultiPoint";
+	public static final String MULTILINESTRING = "MultiLineString";
+	public static final String MULTIPOLYGON = "MultiPolygon";
+	public static final String GEOMETRYCOLLECTION = "GeometryCollection";
 
 }

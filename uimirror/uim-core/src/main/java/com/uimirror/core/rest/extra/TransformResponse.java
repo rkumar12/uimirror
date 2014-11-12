@@ -27,6 +27,7 @@ import java.lang.annotation.Target;
 @Target({ElementType.METHOD})
 @Inherited
 @Documented
+@Deprecated
 public @interface TransformResponse {
 
 	String by() default "json";

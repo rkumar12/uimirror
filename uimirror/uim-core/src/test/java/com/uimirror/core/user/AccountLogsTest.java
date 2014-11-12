@@ -12,11 +12,13 @@ package com.uimirror.core.user;
 
 import static org.junit.Assert.*;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
  * @author Jay
  */
+@Ignore
 public class AccountLogsTest {
 
 	@Test

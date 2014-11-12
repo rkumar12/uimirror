@@ -17,6 +17,7 @@ package com.uimirror.core;
  * 
  * @author Jay
  */
+@Deprecated
 public enum ActorType {
 
 	USER("U"),

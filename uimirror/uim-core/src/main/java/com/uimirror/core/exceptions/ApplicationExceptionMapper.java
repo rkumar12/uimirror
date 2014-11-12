@@ -10,6 +10,9 @@
  *******************************************************************************/
 package com.uimirror.core.exceptions;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.uimirror.core.rest.extra.ApplicationException;
 import com.uimirror.core.rest.extra.InternalException;
 
@@ -20,11 +23,13 @@ import com.uimirror.core.rest.extra.InternalException;
 public class ApplicationExceptionMapper implements ExceptionMapper{
 
 	public static final String NAME = "AEM";
+	private Logger LOG = LoggerFactory.getLogger(ApplicationExceptionMapper.class);
 	/* (non-Javadoc)
 	 * @see com.uimirror.core.ExceptionMapper#mapIt(java.lang.Object)
 	 */
 	@Override
 	public Throwable mapIt(Throwable exceptionToMap) {
+		LOG.error("[MAP-APP-ERROR]- Something went wrong {}", exceptionToMap);
 		if(isSkipable(exceptionToMap))
 			return exceptionToMap;
 		if(isInvalidInput(exceptionToMap))
