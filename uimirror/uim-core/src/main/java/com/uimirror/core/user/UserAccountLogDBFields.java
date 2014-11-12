@@ -16,9 +16,15 @@ import com.uimirror.core.mongo.feature.BasicDBFields;
  * Contains all the DB fields required for application
  * @author Jay
  */
-public interface UserAccountLogDBFields extends BasicDBFields{
+public class UserAccountLogDBFields extends BasicDBFields{
+	
+	//Prevent instance
+	private UserAccountLogDBFields(){
+		//NOP
+	}
+	
 	//User Account logs such as created on etc
-	String CREATED_ON = "created_on";
-	String MODIFIED_ON = "modified_on";
-	String DETAILS = "details";
+	public static final String CREATED_ON = "created_on";
+	public static final String MODIFIED_ON = "modified_on";
+	public static final String DETAILS = "details";
 }

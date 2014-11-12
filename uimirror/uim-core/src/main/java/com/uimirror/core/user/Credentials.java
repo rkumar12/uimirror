@@ -10,6 +10,7 @@
  *******************************************************************************/
 package com.uimirror.core.user;
 
+import static com.uimirror.core.user.UserAuthDBFields.*;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,13 +29,13 @@ import com.uimirror.core.service.BeanValidatorService;
 public class Credentials extends AbstractBeanBasedDocument<Credentials> implements BeanValidatorService{
 
 	private static final long serialVersionUID = -8054579659925533437L;
-	private final List<String> userNames;
-	private final String password;
-	private final String screenPassword;
-	private final AccountState accountState;
-	private final AccountStatus accountStatus;
-	private final String encryptionStratgy;
-	private final Map<String, Object> instructions;
+	private List<String> userNames;
+	private String password;
+	private String screenPassword;
+	private AccountState accountState;
+	private AccountStatus accountStatus;
+	private String encryptionStratgy;
+	private Map<String, Object> instructions;
 	
 	/** 
 	 * Checks the necessary fields that needs to be present to demonstrate a state of the client. 
@@ -82,14 +83,14 @@ public class Credentials extends AbstractBeanBasedDocument<Credentials> implemen
 	
 	@SuppressWarnings("unchecked")
 	private Credentials init(Map<String, Object> raw){
-		String id = (String)raw.get(UserAuthDBFields.ID);
-		List<String> userNames = (List<String>) raw.get(UserAuthDBFields.USER_ID);
-		String password = (String)raw.get(UserAuthDBFields.PASSWORD);
-		String screenPassword = (String)raw.get(UserAuthDBFields.SCREEN_PASSWORD);
-		String encryptionStratgy = (String)raw.get(UserAuthDBFields.ENCRYPTION_PWD);
-		Map<String, Object> instructions = (Map<String, Object>)raw.get(UserAuthDBFields.ACCOUNT_INSTRUCTION);
-		String statVal = (String)raw.get(UserAuthDBFields.ACCOUNT_STATUS);
-		String stateVal = (String)raw.get(UserAuthDBFields.ACCOUNT_STATE);
+		String id = (String)raw.get(ID);
+		List<String> userNames = (List<String>) raw.get(USER_ID);
+		String password = (String)raw.get(PASSWORD);
+		String screenPassword = (String)raw.get(SCREEN_PASSWORD);
+		String encryptionStratgy = (String)raw.get(ENCRYPTION_PWD);
+		Map<String, Object> instructions = (Map<String, Object>)raw.get(ACCOUNT_INSTRUCTION);
+		String statVal = (String)raw.get(ACCOUNT_STATUS);
+		String stateVal = (String)raw.get(ACCOUNT_STATE);
 		AccountStatus accountStatus = StringUtils.hasText(statVal) ? AccountStatus.getEnum(statVal) : AccountStatus.ACTIVE;
 		AccountState accountState = StringUtils.hasText(stateVal) ? AccountState.getEnum(stateVal) : AccountState.ENABLED;
 		CredentialsBuilder build = new CredentialsBuilder(id).
@@ -122,17 +123,17 @@ public class Credentials extends AbstractBeanBasedDocument<Credentials> implemen
 	 */
 	public Map<String, Object> serailize(){
 		Map<String, Object> state = new LinkedHashMap<String, Object>(16);
-		state.put(UserAuthDBFields.ID, getId());
-		state.put(UserAuthDBFields.USER_ID, getUserId());
-		state.put(UserAuthDBFields.PASSWORD, getPassword());
+		state.put(ID, getId());
+		state.put(USER_ID, getUserId());
+		state.put(PASSWORD, getPassword());
 		if(StringUtils.hasText(getScreenPassword()))
-			state.put(UserAuthDBFields.SCREEN_PASSWORD, getScreenPassword());
+			state.put(SCREEN_PASSWORD, getScreenPassword());
 		if(StringUtils.hasText(getEncryptionStratgy()))
-			state.put(UserAuthDBFields.ENCRYPTION_PWD, getEncryptionStratgy());
+			state.put(ENCRYPTION_PWD, getEncryptionStratgy());
 		if(!CollectionUtils.isEmpty(getInstructions()))
-			state.put(UserAuthDBFields.ACCOUNT_INSTRUCTION, getInstructions());
-		state.put(UserAuthDBFields.ACCOUNT_STATUS, getAccountStatus().getStatus());
-		state.put(UserAuthDBFields.ACCOUNT_STATE, getAccountState().getState());
+			state.put(ACCOUNT_INSTRUCTION, getInstructions());
+		state.put(ACCOUNT_STATUS, getAccountStatus().getStatus());
+		state.put(ACCOUNT_STATE, getAccountState().getState());
 		return state;
 	}
 	

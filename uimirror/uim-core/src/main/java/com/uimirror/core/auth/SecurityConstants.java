@@ -14,10 +14,15 @@ package com.uimirror.core.auth;
  * Defines the constant that are for security related
  * @author Jay
  */
-public interface SecurityConstants {
+public class SecurityConstants {
+	
+	//Prevent creating objects
+	private SecurityConstants(){
+		//NOP
+	}
 
 	/**
 	 * <p>String identifier for the Ouath2 authorization header.
 	 */
-	String BEARER = "Bearer";
+	public static final String BEARER = "Bearer";
 }

@@ -14,10 +14,14 @@ package com.uimirror.core.mail;
 /**
  * @author Jay
  */
-public interface MailConstants {
-	String FORM = "form";
-	String TO = "to";
-	String SUBJECT = "sub";
-	String TEMPLATE_NAME = "temp_name";
-	String CONTEXT = "ctx";
+public class MailConstants {
+	//Prevent creating instance
+	private MailConstants(){
+		//NOP
+	}
+	public static final String FORM = "form";
+	public static final String TO = "to";
+	public static final String SUBJECT = "sub";
+	public static final String TEMPLATE_NAME = "temp_name";
+	public static final String CONTEXT = "ctx";
 }

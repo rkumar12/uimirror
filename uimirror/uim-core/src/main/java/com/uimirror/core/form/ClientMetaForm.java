@@ -10,11 +10,12 @@
  *******************************************************************************/
 package com.uimirror.core.form;
 
+import static com.uimirror.core.Constants.IP;
+import static com.uimirror.core.Constants.USER_AGENT;
+
 import java.io.Serializable;
 
 import javax.ws.rs.HeaderParam;
-
-import com.uimirror.core.auth.AuthConstants;
 
 /**
  * Stores the basic information about the client such as 
@@ -26,9 +27,9 @@ public class ClientMetaForm implements Serializable, DefaultHeader{
 
 	private static final long serialVersionUID = -8154326668744495565L;
 	
-	@HeaderParam(AuthConstants.IP)
+	@HeaderParam(IP)
 	private String ip;
-	@HeaderParam(AuthConstants.USER_AGENT)
+	@HeaderParam(USER_AGENT)
 	private String userAgent;
 
 	public String getIp() {

@@ -13,7 +13,7 @@ package com.uimirror.core.mongo.feature;
 /**
  * @author Jay
  */
-public interface BasicDBFields {
-	String ID = "_id";
-	String ON = "on";
+public abstract class BasicDBFields {
+	public static final String ID = "_id";
+	public static final String ON = "on";
 }

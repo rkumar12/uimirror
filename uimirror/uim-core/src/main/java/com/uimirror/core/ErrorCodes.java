@@ -14,8 +14,11 @@ package com.uimirror.core;
  * <p>This has all the constant codes of a web code</p>
  * @author Jay
  */
-public interface ErrorCodes {
-	
+public class ErrorCodes {
+	//Prevent creating new instance
+	private ErrorCodes(){
+		//NOP
+	}
 	//1xx series
 	/**
 	 * Continue

@@ -13,18 +13,21 @@ package com.uimirror.core;
 import java.util.regex.Pattern;
 
 /**
+ * Common Constans for the uimirror applcations
  * @author Jayaram
- *
  */
-public interface Constants {
+public class Constants {
+	private Constants(){
+		//STOP the user to create instance
+	}
 
 	public static final String UTF_8 = "utf-8";
 	public static final String EMPTY = "";
 	public static final String SINGLE_SPACE = " ";
-	String ERROR = "error";
-	String FIELDS = "fields";
-	String MESSAGE = "message";
-	String NAME_REGEX_PATTERN = "(?u)^[A-Za-zàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð,.'-]+$";
+	public static final String ERROR = "error";
+	public static final String FIELDS = "fields";
+	public static final String MESSAGE = "message";
+	public static final String NAME_REGEX_PATTERN = "(?u)^[A-Za-zàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð,.'-]+$";
 	/**
 	 * REGEX ^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&amp;+=])(?=\S+$).{8,}$
 	 * ^                 # start-of-string
@@ -36,8 +39,11 @@ public interface Constants {
      * .{8,}             # anything, at least eight places though
      * $  
 	 */
-	String PASSWORD_REGEX_PATTERN = "^(?=.*[a-zA-Z])(?=\\S+$).{6,}$";
+	public static final String PASSWORD_REGEX_PATTERN = "^(?=.*[a-zA-Z])(?=\\S+$).{6,}$";
 	
-	Pattern NAME_PATTERN = Pattern.compile(NAME_REGEX_PATTERN);
-	Pattern PASSWORD_POLICY_PATTERN = Pattern.compile(PASSWORD_REGEX_PATTERN);
+	public static final Pattern NAME_PATTERN = Pattern.compile(NAME_REGEX_PATTERN);
+	public static final Pattern PASSWORD_POLICY_PATTERN = Pattern.compile(PASSWORD_REGEX_PATTERN);
+	
+	public static final String USER_AGENT = "user-agent";
+	public static final String IP = "host";
 }

@@ -129,7 +129,7 @@ public final class RegisterForm extends ClientAPIForm implements BeanValidatorSe
 		if(!StringUtils.hasText(getDateOfBirth()) || !DateTimeUtil.isAValidDate(getDateOfBirth()))
 			fields.add(RegisterConstants.DATE_OF_BIRTH);
 			//Check Age limit
-		else if(!DateTimeUtil.isAgeAboveEighteen(getDateOfBirth()))
+		else if(!DateTimeUtil.isAgeAboveEighteen(getDateOfBirth(), null))
 			ageLimitMessage=MessageUtil.getAgeLimitMessage();
 		if(!StringUtils.hasText(password))
 			fields.add(RegisterConstants.PASSWORD);

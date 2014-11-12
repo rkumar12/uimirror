@@ -10,12 +10,16 @@
  *******************************************************************************/
 package com.uimirror.core.user;
 
+import com.uimirror.core.mongo.feature.BasicDBFields;
 
-public interface MetaInfoDBFields{
+public class MetaInfoDBFields extends BasicDBFields{
 	 
-	String META_INFO = "meta";
-	String LOCALE = "locale";
-	String CURRENCY = "cur";
-	String TIMEZONE = "tz";
+	//Prevent Instance
+	private MetaInfoDBFields(){
+		//NOP
+	}
+	public static final String LOCALE = "locale";
+	public static final String CURRENCY = "cur";
+	public static final String TIMEZONE = "tz";
 
 }

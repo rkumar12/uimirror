@@ -10,6 +10,8 @@
  *******************************************************************************/
 package com.uimirror.core.user;
 
+import static com.uimirror.core.user.UserDBFields.*;
+
 import java.util.Map;
 import java.util.WeakHashMap;
 
@@ -28,19 +30,15 @@ import com.uimirror.core.service.BeanValidatorService;
 public class BasicDetails extends AbstractBeanBasedDocument<BasicDetails> implements BeanValidatorService {
 
 	private static final long serialVersionUID = -5282406171053226490L;
-	private final String presentAddress;
-	private final String permanetAddress;
-	private final DOB dateOfBirth;
-	private final MetaInfo metaInfo;
-	private final Map<String, Object> details;
+	private String presentAddress;
+	private String permanetAddress;
+	private DOB dateOfBirth;
+	private MetaInfo metaInfo;
+	private Map<String, Object> details;
 
 	// DOn't Use this until it has specific requirement
 	public BasicDetails() {
-		this.permanetAddress = null;
-		this.presentAddress = null;
-		this.dateOfBirth = null;
-		this.metaInfo = null;
-		this.details = null;
+		//NOP
 	}
 	
 	/* (non-Javadoc)
@@ -101,16 +99,16 @@ public class BasicDetails extends AbstractBeanBasedDocument<BasicDetails> implem
 	public Map<String, Object> serailize() {
 		Map<String, Object> state = new WeakHashMap<String, Object>(16);
 		if(StringUtils.hasText(getProfileId()))
-			state.put(UserDBFields.ID, getProfileId());
+			state.put(ID, getProfileId());
 		if(StringUtils.hasText(getPermanetAddress()))
-			state.put(UserDBFields.PERMANET_ADDRESS, getPermanetAddress());
+			state.put(PERMANET_ADDRESS, getPermanetAddress());
 		if(StringUtils.hasText(getPresentAddress()))
-			state.put(UserDBFields.PRESENT_ADDRESS, getPresentAddress());
-		state.put(UserDBFields.DATE_OF_BIRTH, getDateOfBirth().toMap());
+			state.put(PRESENT_ADDRESS, getPresentAddress());
+		state.put(DATE_OF_BIRTH, getDateOfBirth().toMap());
 		if(getMetaInfo() != null)
-			state.put(UserDBFields.META_INFO, getMetaInfo().toMap());
+			state.put(META_INFO, getMetaInfo().toMap());
 		if(!CollectionUtils.isEmpty(getDetails()))
-			state.put(UserDBFields.INFO, getDetails());
+			state.put(INFO, getDetails());
 		return state;
 	}
 
@@ -120,14 +118,18 @@ public class BasicDetails extends AbstractBeanBasedDocument<BasicDetails> implem
 	 * @param raw from which it will be serialized
 	 * @return {@link BasicDetails}
 	 */
-	@SuppressWarnings("unchecked")
 	private BasicDetails init(Map<String, Object> raw) {
-		String id = (String) raw.get(UserDBFields.ID);
+		MetaInfo info = null;
+		String id = (String) raw.get(ID);
 		DOB dob = DOB.initFromMap(raw);
-		MetaInfo info = MetaInfo.initFromMap(raw);
-		String presentAddId = (String)raw.get(UserDBFields.PRESENT_ADDRESS);
-		String permanetAddId = (String)raw.get(UserDBFields.PERMANET_ADDRESS);
-		Map<String, Object> extraInfo = (Map<String, Object>)raw.get(UserDBFields.INFO);
+		@SuppressWarnings("unchecked")
+		Map<String, Object> metaMap = (Map<String, Object>)raw.get(META_INFO);
+		if(CollectionUtils.isEmpty(metaMap))
+			info = MetaInfo.initFromMap(metaMap);
+		String presentAddId = (String)raw.get(PRESENT_ADDRESS);
+		String permanetAddId = (String)raw.get(PERMANET_ADDRESS);
+		@SuppressWarnings("unchecked")
+		Map<String, Object> extraInfo = (Map<String, Object>)raw.get(INFO);
 		return new BasicDetailsBuilder(id).
 				updateDetails(extraInfo).
 				updateDOB(dob).

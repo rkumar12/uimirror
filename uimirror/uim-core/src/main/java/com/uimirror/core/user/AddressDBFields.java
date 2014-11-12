@@ -10,11 +10,18 @@
  *******************************************************************************/
 package com.uimirror.core.user;
 
+import com.uimirror.core.mongo.feature.BasicDBFields;
 
-public interface AddressDBFields{
-	 
-	String PRESENT_ADDRESS = "prsent_address";
-	String PERMANET_ADDRESS = "permanet_address";
+
+public class AddressDBFields extends BasicDBFields{
+	
+	//Prevent instance 
+	private AddressDBFields(){
+		 //NOP
+	}
+	
+	public static final String PRESENT_ADDRESS = "prsent_address";
+	public static final String PERMANET_ADDRESS = "permanet_address";
 	
 
 }

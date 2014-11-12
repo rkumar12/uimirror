@@ -10,6 +10,10 @@
  *******************************************************************************/
 package com.uimirror.core.user;
 
+import static com.uimirror.core.user.MetaInfoDBFields.CURRENCY;
+import static com.uimirror.core.user.MetaInfoDBFields.LOCALE;
+import static com.uimirror.core.user.MetaInfoDBFields.TIMEZONE;
+
 import java.util.Map;
 import java.util.WeakHashMap;
 
@@ -24,26 +28,21 @@ import com.uimirror.core.Builder;
  */
 public class MetaInfo {
 	
-	private final String locale;
-	private final String currency;
-	private final String timeZone;
+	private String locale;
+	private String currency;
+	private String timeZone;
 	
 	/**
 	 * Get the map for dob, which has depedancy on user meta info
 	 * @param map from which state will be presumed
 	 * @return object with state from the provided {@link Map}
 	 */
-	@SuppressWarnings("unchecked")
 	public static MetaInfo initFromMap(Map<String, Object> map){
 		if(CollectionUtils.isEmpty(map))
 			throw new IllegalArgumentException("Can't restore from the given map");
-		Map<String, Object> metaMap = (Map<String, Object>)map.get(UserDBFields.META_INFO);
-		if(metaMap == null){
-			return null;
-		}
-		return new MetaBuilder((String)metaMap.get(UserDBFields.LOCALE)).
-				addCurrency((String)metaMap.get(UserDBFields.CURRENCY)).
-				addTimeZone((String)metaMap.get(UserDBFields.TIMEZONE)).
+		return new MetaBuilder((String)map.get(LOCALE)).
+				addCurrency((String)map.get(CURRENCY)).
+				addTimeZone((String)map.get(TIMEZONE)).
 				build();
 	}
 	
@@ -54,11 +53,11 @@ public class MetaInfo {
 	public Map<String, Object> toMap(){
 		Map<String, Object> rs = new WeakHashMap<String, Object>(8);
 		if(StringUtils.hasText(locale))
-			rs.put(UserDBFields.LOCALE, locale);
+			rs.put(LOCALE, locale);
 		if(StringUtils.hasText(currency))
-			rs.put(UserDBFields.CURRENCY, currency);
+			rs.put(CURRENCY, currency);
 		if(StringUtils.hasText(timeZone))
-			rs.put(UserDBFields.TIMEZONE, timeZone);
+			rs.put(TIMEZONE, timeZone);
 		return CollectionUtils.isEmpty(rs) ? null : rs;
 	}
 	

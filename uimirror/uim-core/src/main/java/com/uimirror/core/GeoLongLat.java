@@ -10,6 +10,7 @@
  *******************************************************************************/
 package com.uimirror.core;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,7 +19,6 @@ import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 
 import com.uimirror.core.mongo.feature.LocationDBField;
-import com.uimirror.core.rest.extra.IllegalArgumentException;
 
 /**
  * Stores the Longitude and latitude for the location coordinate.
@@ -38,15 +38,16 @@ public class GeoLongLat{
 
 	/**
 	 * Converts the location details in to a serialize  map that will be stored in the DB
+	 * First coordinate should be longitude then latitude
 	 * @return {@link Map} representing the {@link GeoLongLat}
 	 */
 	public Map<String, Object> toGeoCordMap(){
 		Map<String, Object> map = new LinkedHashMap<String, Object>(6);
 		map.put(LocationDBField.TYPE, getType());
-		double[] cord = new double[2];
-		cord[0] = longitude;
-		cord[1] = latitude;
-		map.put(LocationDBField.COORDINATES, cord);
+		List<Double> cords = new ArrayList<Double>(4);
+		cords.add(longitude);
+		cords.add(latitude);
+		map.put(LocationDBField.COORDINATES, cords);
 		Map<String, Object> locMap = new LinkedHashMap<String, Object>(6);
 		locMap.put(LocationDBField.LOCATION, map);
 		locMap.put(LocationDBField.LOCATION_NAME, location);
@@ -55,32 +56,24 @@ public class GeoLongLat{
 
 	/**
 	 * Converts the serialized map to the bean
+	 * It expects the map should have string as key and object as value.
+	 * each object can be of type another map or a list
 	 * @param map from which state will be resumed
 	 * @return {@link GeoLongLat} from the map
 	 */
-	@SuppressWarnings("unchecked")
+	
 	public static GeoLongLat initFromGeoCordMap(Map<String, Object> map){
+		@SuppressWarnings("unchecked")
 		Map<String, Object> locMap = (Map<String, Object>)map.get(LocationDBField.LOCATION);
 		String locaName = (String) map.get(LocationDBField.LOCATION_NAME);
 		if(locMap == null || CollectionUtils.isEmpty(locMap))
 			throw new IllegalArgumentException("Can't deserailze the location");
-		
-		double[] cord = null;
-		Object rs = locMap.get(LocationDBField.COORDINATES);
-		if(rs != null){
-			if(rs instanceof List){
-				List<Double> cords = (List<Double>)rs;
-				cord = new double[2];
-				for(int i = 0; i <2; i++)
-					cord[i] = cords.get(i);
-			}else{
-				cord = (double[]) rs;
-			}
-		}
-		if(cord == null || cord.length < 2)
+		@SuppressWarnings("unchecked")
+		List<Double> cords = (List<Double>) locMap.get(LocationDBField.COORDINATES);
+		if(cords == null || cords.size() < 2)
 			throw new IllegalStateException("Location Cordinates are invalid");
 		String type = (String)locMap.get(LocationDBField.TYPE);
-		return new GeoLongLatBuilder(locaName).updateLongitude(cord[0]).updateLatitude(cord[1]).updatePointTypee(type).build();
+		return new GeoLongLatBuilder(locaName).updateLongitude(cords.get(1)).updateLatitude(cords.get(2)).updatePointTypee(type).build();
 	}
 
 	/**
@@ -152,6 +145,8 @@ public class GeoLongLat{
 		 */
 		@Override
 		public GeoLongLat build() {
+			if(longitude == 0.0d && latitude != 0.0d || longitude != 0.0d && latitude == 0.0d)
+				throw new IllegalArgumentException();
 			return new GeoLongLat(this);
 		}
 		

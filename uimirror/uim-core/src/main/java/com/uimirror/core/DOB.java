@@ -10,14 +10,15 @@
  *******************************************************************************/
 package com.uimirror.core;
 
+import static com.uimirror.core.user.DOBDBFields.*;
+import static com.uimirror.core.user.UserDBFields.DATE_OF_BIRTH;
+import static com.uimirror.core.user.UserDBFields.META_INFO;
 import java.time.LocalDate;
 import java.util.Map;
 import java.util.WeakHashMap;
-
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
-
-import com.uimirror.core.user.UserDBFields;
+import com.uimirror.core.user.MetaInfoDBFields;
 import com.uimirror.core.util.DateTimeUtil;
 
 /**
@@ -49,9 +50,9 @@ public class DOB{
 		}
 		Map<String, Object> map = new WeakHashMap<String, Object>(5);
 		if(StringUtils.hasText(dob))
-			map.put(UserDBFields.DATE_OF_BIRTH, getDob());
+			map.put(DATE_OF_BIRTH, getDob());
 		if(StringUtils.hasText(format))
-			map.put(UserDBFields.DOB_FORMAT, getFormat());
+			map.put(DOB_FORMAT, getFormat());
 		return map;
 	}
 
@@ -64,13 +65,13 @@ public class DOB{
 	public static DOB initFromMap(Map<String, Object> map){
 		if(CollectionUtils.isEmpty(map))
 			return null;
-		Map<String, Object> dobMap = (Map<String, Object>)map.get(UserDBFields.DATE_OF_BIRTH);
+		Map<String, Object> dobMap = (Map<String, Object>)map.get(DATE_OF_BIRTH);
 		if(dobMap == null)
 			return null;
-		String dob = (String)dobMap.get(UserDBFields.DATE_OF_BIRTH);
-		String format = (String)dobMap.get(UserDBFields.DOB_FORMAT);
-		Map<String, Object> metaMap = (Map<String, Object>)map.get(UserDBFields.META_INFO);
-		String locale = metaMap == null ? null : (String)metaMap.get(UserDBFields.LOCALE);
+		String dob = (String)dobMap.get(DATE_OF_BIRTH);
+		String format = (String)dobMap.get(DOB_FORMAT);
+		Map<String, Object> metaMap = (Map<String, Object>)map.get(META_INFO);
+		String locale = metaMap == null ? null : (String)metaMap.get(MetaInfoDBFields.LOCALE);
 		return new DOBBuilder(dob).addFormat(format).addLocale(locale).build();
 	}
 	
@@ -104,9 +105,9 @@ public class DOB{
 			this.dobInDate = ldt;
 			if(ldt != null){
 				fragments = new WeakHashMap<String, Integer>(8);
-				fragments.put(UserDBFields.DATE_OF_BIRTH_DATE, ldt.getDayOfMonth());
-				fragments.put(UserDBFields.DATE_OF_BIRTH_MONTH, ldt.getMonthValue());
-				fragments.put(UserDBFields.DATE_OF_BIRTH_YEAR, ldt.getYear());
+				fragments.put(DATE_OF_BIRTH_DATE, ldt.getDayOfMonth());
+				fragments.put(DATE_OF_BIRTH_MONTH, ldt.getMonthValue());
+				fragments.put(DATE_OF_BIRTH_YEAR, ldt.getYear());
 			}
 			return new DOB(this);
 		}
@@ -121,15 +122,15 @@ public class DOB{
 	}
 	
 	public int getDate() {
-		return fragments != null ? fragments.get(UserDBFields.DATE_OF_BIRTH_DATE) : 0;
+		return fragments != null ? fragments.get(DATE_OF_BIRTH_DATE) : 0;
 	}
 
 	public int getMonth() {
-		return fragments != null ? fragments.get(UserDBFields.DATE_OF_BIRTH_MONTH) : 0;
+		return fragments != null ? fragments.get(DATE_OF_BIRTH_MONTH) : 0;
 	}
 
 	public int getYear() {
-		return fragments != null ? fragments.get(UserDBFields.DATE_OF_BIRTH_YEAR) : 0;
+		return fragments != null ? fragments.get(DATE_OF_BIRTH_YEAR) : 0;
 	}
 
 	public String getDob() {

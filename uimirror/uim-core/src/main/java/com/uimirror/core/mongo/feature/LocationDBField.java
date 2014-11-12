@@ -13,12 +13,16 @@ package com.uimirror.core.mongo.feature;
 /**
  * @author Jay
  */
-public interface LocationDBField {
+public class LocationDBField extends BasicDBFields{
+	//Prevent creating instance
+	private LocationDBField(){
+		//NOP
+	}
 
-	String TYPE = "type";
-	String LATITUDE = "lat";
-	String LONGITUDE = "lng";
-	String COORDINATES = "coordinates";
-	String LOCATION = "loc";
-	String LOCATION_NAME = "loc_name";
+	public static final String TYPE = "type";
+	public static final String LATITUDE = "lat";
+	public static final String LONGITUDE = "lng";
+	public static final String COORDINATES = "coordinates";
+	public static final String LOCATION = "loc";
+	public static final String LOCATION_NAME = "loc_name";
 }

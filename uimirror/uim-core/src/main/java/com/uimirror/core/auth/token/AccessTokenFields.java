@@ -16,21 +16,26 @@ import com.uimirror.core.mongo.feature.BasicDBFields;
  * Basic DB fileds for the access token
  * @author Jay
  */
-public interface AccessTokenFields extends BasicDBFields{
+public class AccessTokenFields extends BasicDBFields{
+	
+	//Prevent creating instance
+	private AccessTokenFields(){
+		//NOP
+	}
 	
 	//Auth Token Fields
-	String ENCRYPT_STARTEGY = "algo";
-	String TYPE = "type";
-	String SCOPE = "scope";
-	String AUTH_TKN_OWNER = "owner";
-	String AUTH_TKN_CLIENT = "client";
-	String AUTH_TKN_EXPIRES = "expire";
-	String AUTH_TKN_NOTES = "note";
-	String AUTH_TKN_INSTRUCTIONS = "instructions";
-	String AUTH_TKN_MESSAGES = "msg";
+	public static final String ENCRYPT_STARTEGY = "algo";
+	public static final String TYPE = "type";
+	public static final String SCOPE = "scope";
+	public static final String AUTH_TKN_OWNER = "owner";
+	public static final String AUTH_TKN_CLIENT = "client";
+	public static final String AUTH_TKN_EXPIRES = "expire";
+	public static final String AUTH_TKN_NOTES = "note";
+	public static final String AUTH_TKN_INSTRUCTIONS = "instructions";
+	public static final String AUTH_TKN_MESSAGES = "msg";
 	//Token will be transfered from _ID, both are logical similar, only token will be in encrypted way
-	String TOKEN = "token";
+	public static final String TOKEN = "token";
 	//Refresh Token Interval
-	String REFRESH_TOKEN_INTERVAL = "refresh";
+	public static final String REFRESH_TOKEN_INTERVAL = "refresh";
 
 }

@@ -10,7 +10,6 @@
  *******************************************************************************/
 package com.uimirror.core.auth;
 
-import com.uimirror.core.Parameters;
 
 /**
  * Common interface that defines the contract that implementing class 
@@ -20,43 +19,48 @@ import com.uimirror.core.Parameters;
  * 
  * @author Jay
  */
-public interface AuthConstants extends Parameters{
+public class AuthConstants{
+	
+	//Prevent creating object
+	private AuthConstants(){
+		//NOP
+	}
 
-	String USER_ID = "uid";
+	public static final String USER_ID = "uid";
 	//This is also known as the parapharse that will be used for decrypting
-	String TOKEN_ENCRYPTION_STARTEGY = "pp";
-	String PASSWORD = "pwd";
-	String OTP = "otp";
-	String WEB_VERIFY_TOKEN = "wotp";
-	String KEEP_ME_LOGIN = "keepmelogin";
-	String REDIRECT_URI = "redirect_uri";
-	String SCOPE = "scope";
-	String APP = "app";
-	String AUTHORIZATION_TOKEN = "Authorization";
-	String ACCESS_TOKEN = "access_token";
-	String APPROVAL = "approval";
+	public static final String TOKEN_ENCRYPTION_STARTEGY = "pp";
+	public static final String PASSWORD = "pwd";
+	public static final String OTP = "otp";
+	public static final String WEB_VERIFY_TOKEN = "wotp";
+	public static final String KEEP_ME_LOGIN = "keepmelogin";
+	public static final String REDIRECT_URI = "redirect_uri";
+	public static final String SCOPE = "scope";
+	public static final String APP = "app";
+	public static final String AUTHORIZATION_TOKEN = "Authorization";
+	public static final String ACCESS_TOKEN = "access_token";
+	public static final String APPROVAL = "approval";
 	
 	//Default refresh period is 30 Mins
-	int DEFAULT_EXPIRY_INTERVAL = 30;
-	int KEEP_ME_LOGED_IN_EXPIRY_INTERVAL = 24*60;
+	public static final int DEFAULT_EXPIRY_INTERVAL = 30;
+	public static final int KEEP_ME_LOGED_IN_EXPIRY_INTERVAL = 24*60;
 	
 	//For Client specific screen
-	String CLIENT_ID = "client_id";
-	String CLIENT_SECRET = "client_secret";
-	String CLIENT_SECRET_CODE = "code";
-	String LIMIT = "limit";
-	String SESSION_ID = "session_id";
+	public static final String CLIENT_ID = "client_id";
+	public static final String CLIENT_SECRET = "client_secret";
+	public static final String CLIENT_SECRET_CODE = "code";
+	public static final String LIMIT = "limit";
+	public static final String SESSION_ID = "session_id";
 	
 	//Auth refresh instructions
-	String INST_AUTH_EXPIRY_INTERVAL = "expiry_inst";
+	public static final String INST_AUTH_EXPIRY_INTERVAL = "expiry_inst";
 	
 	//Instructions Next step
-	String INST_NEXT_STEP = "next";
-	String INST_NEXT_USER_AUTH = "user_login";
-	String INST_NEXT_USER_OTP = "user_otp";
-	String INST_NEXT_CLIENT_AUTHORIZATION = "client_authorization";
-	String INST_NEXT_ACCESS_TOKEN = "access";
-	String INST_RESTORE_REQUIRED = "restore";
-	String INST_NEXT_ACCOUNT_VERIFY = "verify_acount";
+	public static final String INST_NEXT_STEP = "next";
+	public static final String INST_NEXT_USER_AUTH = "user_login";
+	public static final String INST_NEXT_USER_OTP = "user_otp";
+	public static final String INST_NEXT_CLIENT_AUTHORIZATION = "client_authorization";
+	public static final String INST_NEXT_ACCESS_TOKEN = "access";
+	public static final String INST_RESTORE_REQUIRED = "restore";
+	public static final String INST_NEXT_ACCOUNT_VERIFY = "verify_acount";
 	
 }

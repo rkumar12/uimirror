@@ -10,13 +10,14 @@
  *******************************************************************************/
 package com.uimirror.core.user;
 
+import static com.uimirror.core.user.UserDBFields.*;
+import static com.uimirror.core.Constants.SINGLE_SPACE;
 import java.util.Map;
 import java.util.WeakHashMap;
 
 import org.springframework.util.StringUtils;
 
 import com.uimirror.core.Builder;
-import com.uimirror.core.Constants;
 import com.uimirror.core.bean.Gender;
 import com.uimirror.core.mongo.feature.AbstractBeanBasedDocument;
 import com.uimirror.core.service.BeanValidatorService;
@@ -29,21 +30,16 @@ import com.uimirror.core.service.BeanValidatorService;
 public final class BasicInfo extends AbstractBeanBasedDocument<BasicInfo> implements BeanValidatorService {
 
 	private static final long serialVersionUID = -5282406171053226490L;
-	private final String firstName;
-	private final String lastName;
-	private final String email;
-	private final Gender gender;
-	private final AccountStatus accountStatus;
-	private final AccountState accountState;
+	private String firstName;
+	private String lastName;
+	private String email;
+	private Gender gender;
+	private AccountStatus accountStatus;
+	private AccountState accountState;
 
 	// DOn't Use this until it has specific requirement
 	public BasicInfo() {
-		this.accountState = null;
-		this.accountStatus = null;
-		this.email = null;
-		this.firstName = null;
-		this.lastName = null;
-		this.gender = null;
+		//NOP
 	}
 
 
@@ -99,14 +95,14 @@ public final class BasicInfo extends AbstractBeanBasedDocument<BasicInfo> implem
 	public Map<String, Object> serailize() {
 		Map<String, Object> state = new WeakHashMap<String, Object>(16);
 		if(StringUtils.hasText(getId()))
-			state.put(UserDBFields.ID, getId());
-		state.put(UserDBFields.FIRST_NAME, getFirstName());
+			state.put(ID, getId());
+		state.put(FIRST_NAME, getFirstName());
 		if(StringUtils.hasText(getLastName()))
-			state.put(UserDBFields.LAST_NAME, getLastName());
-		state.put(UserDBFields.EMAIL, getEmail());
-		state.put(UserDBFields.GENDER, getGender().toString());
-		state.put(UserDBFields.ACCOUNT_STATUS, getAccountStatus().getStatus());
-		state.put(UserDBFields.ACCOUNT_STATE, getAccountState().getState());
+			state.put(LAST_NAME, getLastName());
+		state.put(EMAIL, getEmail());
+		state.put(GENDER, getGender().toString());
+		state.put(ACCOUNT_STATUS, getAccountStatus().getStatus());
+		state.put(ACCOUNT_STATE, getAccountState().getState());
 		return state;
 	}
 
@@ -132,14 +128,14 @@ public final class BasicInfo extends AbstractBeanBasedDocument<BasicInfo> implem
 	 * @return {@link BasicInfo}
 	 */
 	private BasicInfo init(Map<String, Object> raw) {
-		String id = (String) raw.get(UserDBFields.ID);
-		String firstName = (String) raw.get(UserDBFields.FIRST_NAME);
-		String lastName = (String) raw.get(UserDBFields.LAST_NAME);
-		String email = (String) raw.get(UserDBFields.EMAIL);
-		String gender = (String) raw.get(UserDBFields.GENDER);
+		String id = (String) raw.get(ID);
+		String firstName = (String) raw.get(FIRST_NAME);
+		String lastName = (String) raw.get(LAST_NAME);
+		String email = (String) raw.get(EMAIL);
+		String gender = (String) raw.get(GENDER);
 		Gender genderVal = StringUtils.hasText(gender) ? Gender.getEnum(gender) : null;
-		String statVal = (String) raw.get(UserDBFields.ACCOUNT_STATUS);
-		String stateVal = (String) raw.get(UserDBFields.ACCOUNT_STATE);
+		String statVal = (String) raw.get(ACCOUNT_STATUS);
+		String stateVal = (String) raw.get(ACCOUNT_STATE);
 		AccountStatus accountStatus = StringUtils.hasText(statVal) ? AccountStatus.getEnum(statVal): null;
 		AccountState accountState = StringUtils.hasText(stateVal) ? AccountState.getEnum(stateVal): null;
 		BasicInfoBuilder builder = new BasicInfoBuilder(id);
@@ -157,7 +153,7 @@ public final class BasicInfo extends AbstractBeanBasedDocument<BasicInfo> implem
 
 	public String getName() {
 		if(StringUtils.hasText(lastName) && StringUtils.hasText(firstName))
-			return this.firstName + Constants.SINGLE_SPACE+ this.lastName;
+			return this.firstName + SINGLE_SPACE+ this.lastName;
 		else if(StringUtils.hasText(firstName))
 			return this.firstName;
 		return this.lastName;

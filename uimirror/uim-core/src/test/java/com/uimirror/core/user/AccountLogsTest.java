@@ -8,15 +8,20 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.core;
+package com.uimirror.core.user;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
 
 /**
- * Defines the contract of the input parameters
- * that a form will will be submited with the specified key
  * @author Jay
  */
-public interface Parameters extends Constants{
+public class AccountLogsTest {
 
-	String USER_AGENT = "user-agent";
-	String IP = "host";
+	@Test
+	public void test() {
+		fail("Not yet implemented");
+	}
+
 }

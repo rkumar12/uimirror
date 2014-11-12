@@ -10,7 +10,10 @@
  *******************************************************************************/
 package com.uimirror.core;
 
-import static org.assertj.core.api.Assertions.*;
+import static com.uimirror.core.user.MetaInfoDBFields.CURRENCY;
+import static com.uimirror.core.user.MetaInfoDBFields.LOCALE;
+import static com.uimirror.core.user.MetaInfoDBFields.TIMEZONE;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Map;
 import java.util.WeakHashMap;
@@ -18,7 +21,6 @@ import java.util.WeakHashMap;
 import org.junit.Test;
 
 import com.uimirror.core.user.MetaInfo;
-import com.uimirror.core.user.UserDBFields;
 
 /**
  * @author Jay
@@ -29,22 +31,20 @@ public class MetaInfoTest {
 	public void serailizeTest() {
 		MetaInfo info = new MetaInfo.MetaBuilder("en_UK").addCurrency("GB").addTimeZone("UTC").build();
 		Map<String, Object> rs = new WeakHashMap<String, Object>();
-		rs.put(UserDBFields.LOCALE, "en_UK");
-		rs.put(UserDBFields.CURRENCY, "GB");
-		rs.put(UserDBFields.TIMEZONE, "UTC");
+		rs.put(LOCALE, "en_UK");
+		rs.put(CURRENCY, "GB");
+		rs.put(TIMEZONE, "UTC");
 		assertThat(info.toMap()).isEqualTo(rs);
 	}
 	
 	@Test
 	public void deSerailizeTest() {
-		Map<String, Object> rs = new WeakHashMap<String, Object>();
-		rs.put(UserDBFields.LOCALE, "en_UK");
-		rs.put(UserDBFields.CURRENCY, "GB");
-		rs.put(UserDBFields.TIMEZONE, "UTC");
 		Map<String, Object> input = new WeakHashMap<String, Object>();
-		input.put(UserDBFields.META_INFO, rs);
+		input.put(LOCALE, "en_UK");
+		input.put(CURRENCY, "GB");
+		input.put(TIMEZONE, "UTC");
 		MetaInfo info = MetaInfo.initFromMap(input);
-		assertThat(info.toMap()).isEqualTo(rs);
+		assertThat(info.toMap()).isEqualTo(input);
 	}
 
 }

@@ -25,17 +25,14 @@ import com.uimirror.core.service.BeanValidatorService;
 public class DefaultUser extends AbstractBeanBasedDocument<DefaultUser> implements BeanValidatorService{
 
 	private static final long serialVersionUID = 3920171901998649548L;
-	private final BasicInfo basicInfo;
-	private final Credentials credentials;
-	private final BasicDetails details;
-	private final AccountLogs accountLogs;
+	private BasicInfo basicInfo;
+	private Credentials credentials;
+	private BasicDetails details;
+	private AccountLogs accountLogs;
 	
 	//Don't Use It untill it has some special requirment
 	public DefaultUser() {
-		this.basicInfo = null;
-		this.credentials = null;
-		this.details = null;
-		this.accountLogs = null;
+		//NOP
 	}
 
 	/* (non-Javadoc)

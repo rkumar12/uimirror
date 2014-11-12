@@ -10,6 +10,7 @@
  *******************************************************************************/
 package com.uimirror.core.user;
 
+import static com.uimirror.core.user.UserAccountLogDBFields.*;
 import java.util.Map;
 import java.util.WeakHashMap;
 
@@ -28,15 +29,13 @@ import com.uimirror.core.service.BeanValidatorService;
 public class AccountLogs extends AbstractBeanBasedDocument<AccountLogs> implements BeanValidatorService {
 	
 	private static final long serialVersionUID = -6504474875834652281L;
-	private final long createdOn;
-	private final long modifiedOn;
-	private final Map<String,Object> details;
+	private long createdOn;
+	private long modifiedOn;
+	private Map<String,Object> details;
 	
 	//Don't Use this until it has specific requirement
 	public AccountLogs() {
-		this.createdOn = 0l;
-		this.modifiedOn = 0l;
-		this.details = null;
+		//NOP
 	}
 	
 	@Override
@@ -73,11 +72,11 @@ public class AccountLogs extends AbstractBeanBasedDocument<AccountLogs> implemen
 		Map<String, Object> state = new WeakHashMap<String, Object>(9);
 		if(StringUtils.hasText(getProfileId()))
 			state.put(UserDBFields.ID, getId());
-		state.put(UserDBFields.CREATED_ON, getCreatedOn());
+		state.put(CREATED_ON, getCreatedOn());
 		if(getModifiedOn() > 0l)
-			state.put(UserDBFields.MODIFIED_ON, getModifiedOn());
+			state.put(MODIFIED_ON, getModifiedOn());
 		if(!CollectionUtils.isEmpty(getDetails()))
-			state.put(UserDBFields.DETAILS, getDetails());
+			state.put(DETAILS, getDetails());
 		return state;
 	}
 	
@@ -99,9 +98,9 @@ public class AccountLogs extends AbstractBeanBasedDocument<AccountLogs> implemen
 	@SuppressWarnings("unchecked")
 	private AccountLogs init(Map<String, Object> raw) {
 		String id = (String) raw.get(UserDBFields.ID);
-		long creatOn = (long) raw.getOrDefault(UserDBFields.CREATED_ON, 0l);
-		long modifiedOn = (long) raw.getOrDefault(UserDBFields.MODIFIED_ON, 0l);
-		Map<String,Object> details =  (Map<String, Object>) raw.get(UserDBFields.DETAILS);
+		long creatOn = (long) raw.getOrDefault(CREATED_ON, 0l);
+		long modifiedOn = (long) raw.getOrDefault(MODIFIED_ON, 0l);
+		Map<String,Object> details =  (Map<String, Object>) raw.get(DETAILS);
 		return new LogBuilder(id).updatedCreatedOn(creatOn).updateModifiedOn(modifiedOn).updateDetails(details).build();
 	}
 	
