@@ -106,5 +106,19 @@ public interface AccessToken extends Principal, Serializable{
 	 * @return {@link AccessToken}
 	 */
 	AccessToken eraseEsential();
+	
+	/**
+	 * Checks if the current token is expired
+	 * @return <code>true</code> if the current token is expired else <code>false</code>
+	 */
+	public boolean isActive();
+	
+	/**
+	 * Checks if this token is about to expire, 
+	 * i.e token time is about to expire in 15 mins.
+	 *  
+	 * @return <code>true</code> if token going to expire
+	 */
+	public boolean isRefreshRequired();
 
 }

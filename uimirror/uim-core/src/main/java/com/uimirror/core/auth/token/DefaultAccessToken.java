@@ -37,7 +37,7 @@ import com.uimirror.core.auth.TokenType;
  * An {@linkplain AccessToken} issued to the user
  * @author Jay
  */
-public class DefaultAccessToken extends AbstractAccessToken<DefaultAccessToken>{
+public final class DefaultAccessToken extends AbstractAccessToken<DefaultAccessToken>{
 
 	private static final long serialVersionUID = -6156839027050013727L;
 	
@@ -233,6 +233,14 @@ public class DefaultAccessToken extends AbstractAccessToken<DefaultAccessToken>{
 		this.scope = builder.scope;
 		this.token = builder.token;
 		this.type = builder.type;
+	}
+
+	@Override
+	public String toString() {
+		return "DefaultAccessToken [token=" + token + ", owner=" + owner
+				+ ", client=" + client + ", expire=" + expire + ", type="
+				+ type + ", scope=" + scope + ", notes=" + notes
+				+ ", instructions=" + instructions + "]";
 	}
 	
 }

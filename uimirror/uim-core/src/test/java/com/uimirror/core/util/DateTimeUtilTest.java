@@ -84,4 +84,17 @@ public class DateTimeUtilTest {
 		assertThat(Boolean.TRUE).isEqualTo(DateTimeUtil.isAgeAboveEighteen(dt1, null));
 		assertThat(Boolean.FALSE).isEqualTo(DateTimeUtil.isAgeAboveEighteen(dt2, null));
 	}
+	
+	@Test
+	public void testIsExpired(){
+		long eex = DateTimeUtil.getCurrentSystemUTCEpoch();
+		assertThat(DateTimeUtil.isExpired(eex)).isTrue();
+
+		long el = DateTimeUtil.addToCurrentUTCTimeConvertToEpoch(5);
+		assertThat(DateTimeUtil.isExpired(el)).isFalse();
+		assertThat(DateTimeUtil.isExpired(0)).isTrue();
+		
+		assertThat(DateTimeUtil.isCurrentUTCApproachingBy(el, 4)).isTrue();
+		assertThat(DateTimeUtil.isCurrentUTCApproachingBy(0, 5)).isFalse();
+	}
 }

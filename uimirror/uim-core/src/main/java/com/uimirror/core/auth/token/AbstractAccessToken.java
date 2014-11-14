@@ -29,6 +29,7 @@ import com.uimirror.core.auth.Token;
 import com.uimirror.core.auth.TokenType;
 import com.uimirror.core.mongo.feature.AbstractBeanBasedDocument;
 import com.uimirror.core.service.BeanValidatorService;
+import com.uimirror.core.util.DateTimeUtil;
 
 /**
  * A basic implementation of the accesstoken
@@ -230,6 +231,33 @@ public abstract class AbstractAccessToken<T> extends AbstractBeanBasedDocument<T
 			rs.put(AUTH_TKN_MESSAGES, getInstructions());
 		}
 		return rs;
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.uimirror.core.auth.AccessToken#isExpired()
+	 */
+	@Override
+	public boolean isActive(){
+		boolean active = Boolean.TRUE;
+		if(getName() == null)
+			throw new IllegalArgumentException("Token is not in valid state.");
+		else if(TokenType.TEMPORAL != getType())
+			active = !(DateTimeUtil.isExpired(getExpire()));
+		return active;
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.uimirror.core.auth.AccessToken#isRefreshRequired()
+	 */
+	@Override
+	public boolean isRefreshRequired(){
+		boolean aboutToExpire = Boolean.TRUE;
+		aboutToExpire = DateTimeUtil.isCurrentUTCApproachingBy(getExpire(), 15);
+		if(!aboutToExpire){
+			if(!isActive())
+				throw new IllegalArgumentException("Not a Valid a token.");
+		}
+		return aboutToExpire;
 	}
 
 }

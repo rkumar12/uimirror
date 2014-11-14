@@ -11,11 +11,13 @@
 package com.uimirror.core.util;
 
 import java.time.Clock;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.time.temporal.ChronoUnit;
 import java.util.Locale;
 
 import org.apache.commons.validator.routines.DateValidator;
@@ -29,8 +31,28 @@ public class DateTimeUtil {
 	public static final String DOB_FORMAT_YYYY_MM_DD= "yyyy-MM-dd";
 	private static final int AGE_LIMIT = 18;
 	private static final DateTimeFormatter DTF_YYYY_MM_DD = DateTimeFormatter.ISO_LOCAL_DATE.withLocale(Locale.US);
-//	private static final DateTimeFormatter DTF_YYYY_MM_DD = DateTimeFormatter.ofPattern("uuuu MM dd", Locale.US);
 
+	/**
+	 * Checks if the provided epoch time is after the current time+ the amount of time added
+	 * @param epoch which needs to be checked
+	 * @param approachingTimeInMinute to be added
+	 * @return <code>true</code> if its more else <code>false</code>
+	 */
+	public static final boolean isCurrentUTCApproachingBy(long epoch, long approachingTimeInMinute){
+		long dif = ChronoUnit.MINUTES.between(getCurrentUTCTime().toInstant(), Instant.ofEpochSecond(epoch));
+		return dif >= 0 && dif <= approachingTimeInMinute;
+	}
+
+	/**
+	 * Checks the provided epoch time with current time in utc format.
+	 * if the current time is greater than the provided time then its expired else valid.
+	 * @param epoch which needs to be check against current time
+	 * @return true if expired
+	 */
+	public static final boolean isExpired(long epoch){
+		return getCurrentUTCTime().toInstant().isAfter(Instant.ofEpochSecond(epoch));
+	}
+	
 	/**
 	 * Gets the system time w.r.t to UTC in EPOCH
 	 * @return the long representation
