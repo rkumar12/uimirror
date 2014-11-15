@@ -14,7 +14,10 @@ import static com.uimirror.core.user.MetaInfoDBFields.CURRENCY;
 import static com.uimirror.core.user.MetaInfoDBFields.LOCALE;
 import static com.uimirror.core.user.MetaInfoDBFields.TIMEZONE;
 
+import java.util.Currency;
+import java.util.Locale;
 import java.util.Map;
+import java.util.TimeZone;
 import java.util.WeakHashMap;
 
 import org.springframework.util.CollectionUtils;
@@ -40,10 +43,19 @@ public class MetaInfo {
 	public static MetaInfo initFromMap(Map<String, Object> map){
 		if(CollectionUtils.isEmpty(map))
 			throw new IllegalArgumentException("Can't restore from the given map");
-		return new MetaBuilder((String)map.get(LOCALE)).
-				addCurrency((String)map.get(CURRENCY)).
-				addTimeZone((String)map.get(TIMEZONE)).
-				build();
+		String locale = (String)map.get(LOCALE);
+		String currency = (String)map.get(CURRENCY);
+		String timeZone = (String)map.get(TIMEZONE);
+		MetaBuilder builder = new MetaBuilder(timeZone);
+		if(StringUtils.hasText(locale)) {
+			String[] localeParts = locale.split("_");
+			if( localeParts!= null && localeParts.length > 1){
+				builder.addLang(localeParts[0]);
+				builder.addCountryCode(localeParts[1]);
+			}
+		} 
+		builder.addCurrency(currency);
+		return builder.build();
 	}
 	
 	/**
@@ -57,24 +69,31 @@ public class MetaInfo {
 		if(StringUtils.hasText(currency))
 			rs.put(CURRENCY, currency);
 		if(StringUtils.hasText(timeZone))
-			rs.put(TIMEZONE, timeZone);
+			rs.put(TIMEZONE, TimeZone.getTimeZone(timeZone).toZoneId().toString());
 		return CollectionUtils.isEmpty(rs) ? null : rs;
 	}
 	
 	public static class MetaBuilder implements Builder<MetaInfo>{
-		private String locale;
+		private String lang;
+		private String timeZoneName;
+		private String countryCode;
 		private String currency;
-		private String timeZone;
-		public MetaBuilder(String locale){
-			this.locale = locale;
-		}
-		public MetaBuilder addCurrency(String currency){
-			this.currency = currency;
-			return this;
+		
+		public MetaBuilder(String timeZoneName){
+			this.timeZoneName = timeZoneName;
 		}
 		
-		public MetaBuilder addTimeZone(String timeZone){
-			this.timeZone = timeZone;
+		public MetaBuilder addLang(String lang){
+			this.lang = lang;
+			return this;
+		}
+		public MetaBuilder addCountryCode(String countryCode){
+			this.countryCode = countryCode;
+			return this;
+		}
+
+		public MetaBuilder addCurrency(String currency){
+			this.currency = currency;
 			return this;
 		}
 		/* (non-Javadoc)
@@ -89,10 +108,19 @@ public class MetaInfo {
 	
 	public MetaInfo(MetaBuilder builder){
 		if(builder == null)
-			throw new java.lang.IllegalArgumentException("Can't create the state from the given source");
-		this.currency = builder.currency;
-		this.timeZone = builder.timeZone;
-		this.locale = builder.locale;
+			throw new IllegalArgumentException("Can't create the state from the given source");
+		Locale loc = new Locale(builder.lang, builder.countryCode);
+		this.locale = loc.toString();
+		this.timeZone = TimeZone.getTimeZone(builder.timeZoneName).getID();
+		if(builder.currency == null){
+			try{
+				this.currency = Currency.getInstance(loc).getCurrencyCode();
+			}catch(IllegalArgumentException e){
+				//NOP
+			}
+		}else{
+			this.currency = builder.currency;
+		}
 	}
 
 	public String getLocale() {

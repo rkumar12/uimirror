@@ -10,8 +10,15 @@
  *******************************************************************************/
 package com.uimirror.core.user;
 
-import static com.uimirror.core.user.UserDBFields.*;
 import static com.uimirror.core.Constants.SINGLE_SPACE;
+import static com.uimirror.core.mongo.feature.BasicDBFields.ID;
+import static com.uimirror.core.user.UserDBFields.ACCOUNT_STATE;
+import static com.uimirror.core.user.UserDBFields.ACCOUNT_STATUS;
+import static com.uimirror.core.user.UserDBFields.EMAIL;
+import static com.uimirror.core.user.UserDBFields.FIRST_NAME;
+import static com.uimirror.core.user.UserDBFields.GENDER;
+import static com.uimirror.core.user.UserDBFields.LAST_NAME;
+
 import java.util.Map;
 import java.util.WeakHashMap;
 

@@ -28,8 +28,8 @@ public class UserDBFields extends BasicDBFields{
 	 public static final String DATE_OF_BIRTH="dob";
 	 public static final String PRESENT_ADDRESS="present_add";
 	 public static final String PERMANET_ADDRESS="permanet_add";
-	 public static final String ACCOUNT_STATUS="account_status";
-	 public static final String ACCOUNT_STATE="account_state";
+	 public static final String ACCOUNT_STATUS="status";
+	 public static final String ACCOUNT_STATE="state";
 	 public static final String INFO = "info";
 	 public static final String META_INFO = "meta";
 

@@ -10,7 +10,15 @@
  *******************************************************************************/
 package com.uimirror.core.user;
 
-import static com.uimirror.core.user.UserAuthDBFields.*;
+import static com.uimirror.core.mongo.feature.BasicDBFields.ID;
+import static com.uimirror.core.user.UserAuthDBFields.ACCOUNT_INSTRUCTION;
+import static com.uimirror.core.user.UserAuthDBFields.ACCOUNT_STATE;
+import static com.uimirror.core.user.UserAuthDBFields.ACCOUNT_STATUS;
+import static com.uimirror.core.user.UserAuthDBFields.ENCRYPTION_PWD;
+import static com.uimirror.core.user.UserAuthDBFields.PASSWORD;
+import static com.uimirror.core.user.UserAuthDBFields.SCREEN_PASSWORD;
+import static com.uimirror.core.user.UserAuthDBFields.USER_ID;
+
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -263,7 +271,7 @@ public class Credentials extends AbstractBeanBasedDocument<Credentials> implemen
 	@Override
 	public String toString() {
 		return "Credentials [userNames=" + userNames + ", password=[*********]"
-				+ ", screenPassword= [*********]" + screenPassword + ", accountState="
+				+ ", screenPassword= [*********], accountState="
 				+ accountState + ", accountStatus=" + accountStatus
 				+ ", encryptionStratgy=" + encryptionStratgy
 				+ ", instructions=" + instructions + "]";

@@ -10,7 +10,11 @@
  *******************************************************************************/
 package com.uimirror.core.user;
 
-import static com.uimirror.core.user.UserAccountLogDBFields.*;
+import static com.uimirror.core.user.UserAccountLogDBFields.CREATED_ON;
+import static com.uimirror.core.user.UserAccountLogDBFields.DETAILS;
+import static com.uimirror.core.user.UserAccountLogDBFields.MODIFIED_ON;
+import static com.uimirror.core.user.UserDBFields.ID;
+
 import java.util.Map;
 import java.util.WeakHashMap;
 
@@ -42,6 +46,7 @@ public class AccountLogs extends AbstractBeanBasedDocument<AccountLogs> implemen
 	public AccountLogs updateId(String id) {
 		return new LogBuilder(id).updatedCreatedOn(createdOn).updateModifiedOn(modifiedOn).updateDetails(details).build();
 	}
+	
 	@Override
 	public Map<String, Object> writeToMap() {
 		// First check if it represents a valid state then can be serialized
@@ -71,7 +76,7 @@ public class AccountLogs extends AbstractBeanBasedDocument<AccountLogs> implemen
 	public Map<String, Object> serailize() {
 		Map<String, Object> state = new WeakHashMap<String, Object>(9);
 		if(StringUtils.hasText(getProfileId()))
-			state.put(UserDBFields.ID, getId());
+			state.put(ID, getId());
 		state.put(CREATED_ON, getCreatedOn());
 		if(getModifiedOn() > 0l)
 			state.put(MODIFIED_ON, getModifiedOn());
@@ -97,7 +102,7 @@ public class AccountLogs extends AbstractBeanBasedDocument<AccountLogs> implemen
 	 */
 	@SuppressWarnings("unchecked")
 	private AccountLogs init(Map<String, Object> raw) {
-		String id = (String) raw.get(UserDBFields.ID);
+		String id = (String) raw.get(ID);
 		long creatOn = (long) raw.getOrDefault(CREATED_ON, 0l);
 		long modifiedOn = (long) raw.getOrDefault(MODIFIED_ON, 0l);
 		Map<String,Object> details =  (Map<String, Object>) raw.get(DETAILS);
@@ -160,5 +165,11 @@ public class AccountLogs extends AbstractBeanBasedDocument<AccountLogs> implemen
 
 	public Map<String, Object> getDetails() {
 		return details;
+	}
+
+	@Override
+	public String toString() {
+		return "AccountLogs [createdOn=" + createdOn + ", modifiedOn="
+				+ modifiedOn + ", details=" + details + "]";
 	}
 }

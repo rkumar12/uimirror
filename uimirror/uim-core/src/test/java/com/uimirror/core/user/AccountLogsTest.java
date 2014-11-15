@@ -10,20 +10,49 @@
  *******************************************************************************/
 package com.uimirror.core.user;
 
-import static org.junit.Assert.*;
+import static com.uimirror.core.mongo.feature.BasicDBFields.ID;
+import static com.uimirror.core.user.UserAccountLogDBFields.CREATED_ON;
+import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.Ignore;
+import java.util.Map;
+import java.util.WeakHashMap;
+
+import org.junit.Before;
 import org.junit.Test;
+
+import com.uimirror.core.util.DateTimeUtil;
 
 /**
  * @author Jay
  */
-@Ignore
 public class AccountLogsTest {
+	
+	private AccountLogs logs;
+	private AccountLogs logsWithProfileId;
+	private Map<String, Object> res;
+	private Map<String, Object> resWithProfileId;
+	
+	@Before
+	public void setUp(){
+		logs = new AccountLogs.LogBuilder(null).updatedCreatedOn(DateTimeUtil.getCurrentSystemUTCEpoch()).build();
+		logsWithProfileId = new AccountLogs.LogBuilder("123").updatedCreatedOn(DateTimeUtil.getCurrentSystemUTCEpoch()).build();
+		res = new WeakHashMap<String, Object>();
+		res.put(CREATED_ON, logs.getCreatedOn());
+		resWithProfileId = new WeakHashMap<String, Object>();
+		resWithProfileId.put(CREATED_ON, logsWithProfileId.getCreatedOn());
+		resWithProfileId.put(ID, logsWithProfileId.getProfileId());
+	}
 
 	@Test
-	public void test() {
-		fail("Not yet implemented");
+	public void testSerailize() {
+		assertThat(logs.serailize()).isEqualTo(res);
+		assertThat(logsWithProfileId.serailize()).isEqualTo(resWithProfileId);
+	}
+
+	@Test
+	public void testDeSerailize() {
+		assertThat(logs.readFromMap(res).toString()).isEqualTo(logs.toString());
+		assertThat(logs.readFromMap(resWithProfileId).toString()).isEqualTo(logsWithProfileId.toString());
 	}
 
 }

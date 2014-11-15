@@ -22,7 +22,7 @@ import com.uimirror.core.service.BeanValidatorService;
  * A Default User representing the UIM System 
  * @author Jay
  */
-public class DefaultUser extends AbstractBeanBasedDocument<DefaultUser> implements BeanValidatorService{
+public final class DefaultUser extends AbstractBeanBasedDocument<DefaultUser> implements BeanValidatorService{
 
 	private static final long serialVersionUID = 3920171901998649548L;
 	private BasicInfo basicInfo;
