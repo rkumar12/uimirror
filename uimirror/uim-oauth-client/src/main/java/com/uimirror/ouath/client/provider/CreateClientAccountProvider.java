@@ -16,10 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.uimirror.core.Processor;
 import com.uimirror.core.rest.extra.ApplicationException;
-import com.uimirror.core.service.TransformerService;
 import com.uimirror.core.service.ValidatorService;
 import com.uimirror.ouath.client.Client;
-import com.uimirror.ouath.client.form.ClientRegisterForm;
 import com.uimirror.ouath.client.store.ClientStore;
 
 /**
@@ -33,42 +31,24 @@ import com.uimirror.ouath.client.store.ClientStore;
  * 
  * @author Jay
  */
-public class CreateClientAccountProvider implements Processor<ClientRegisterForm, Client>{
+public class CreateClientAccountProvider implements Processor<Client, Client>{
 
 	protected static final Logger LOG = LoggerFactory.getLogger(CreateClientAccountProvider.class);
-	private @Autowired TransformerService<ClientRegisterForm, Client> clientRegisterFormToClientTransformer;
-	private @Autowired ValidatorService<Client> createClientAccountValidator;
+	private @Autowired ValidatorService<Client> clientAccountValidator;
 	private @Autowired ClientStore persistedClientMongoStore;
-
-	public CreateClientAccountProvider() {
-		// NOP
-	}
 
 	/* (non-Javadoc)
 	 * @see com.uimirror.core.Processor#invoke(java.lang.Object)
 	 */
 	@Override
-	public Client invoke(ClientRegisterForm param) throws ApplicationException {
+	public Client invoke(Client client) throws ApplicationException {
 		LOG.info("[START]- Registering a new Client.");
-		//Step -1 Transform to the desired type
-		Client client = transformToClient(param);
-		//Step -2 Validate provided details are correct or not
-		createClientAccountValidator.validate(client);
-		//Step -3 Finally Save
+		//Step -1 Validate provided details are correct or not
+		clientAccountValidator.validate(client);
+		//Step -2 Finally Save
 		client = persistedClientMongoStore.store(client);
 		LOG.info("[END]- Registering a new Client.");
 		return client;
-	}
-	
-	
-	/**
-	 * Convert from {@link ClientRegisterForm} to {@link Client}
-	 * This will not populate the owner and details map
-	 * @param param
-	 * @return
-	 */
-	private Client transformToClient(ClientRegisterForm param){
-		return clientRegisterFormToClientTransformer.transform(param);
 	}
 
 }

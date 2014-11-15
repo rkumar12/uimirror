@@ -17,6 +17,7 @@ import com.uimirror.core.service.TransformerService;
 import com.uimirror.core.user.AccountStatus;
 import com.uimirror.core.util.DateTimeUtil;
 import com.uimirror.ouath.client.Client;
+import com.uimirror.ouath.client.Client.ClientBuilder;
 import com.uimirror.ouath.client.form.ClientRegisterForm;
 
 /**
@@ -35,9 +36,16 @@ public class ClientRegisterFormToClientTransformer implements TransformerService
 		//Validate the form
 		form.isValid();
 		
-		return new Client(null, form.getName(), getSecretKey()
-				, form.getRedirectURL(), form.getAppURL(), AccountStatus.ACTIVE, getApiKey()
-				, DateTimeUtil.getCurrentSystemUTCEpoch(), form.getOwner(), null);
+		return new ClientBuilder(null).
+				addApiKey(getApiKey()).
+				addAppURL(form.getAppURL()).
+				addImagePath(form.getImage()).
+				addName(form.getName()).
+				addRedirectURI(form.getRedirectURL()).
+				addRegisteredBy(form.getOwner()).
+				addRegisteredOn(DateTimeUtil.getCurrentSystemUTCEpoch()).
+				addSecret(getSecretKey()).
+				addStatus(AccountStatus.ACTIVE).build();
 	}
 	
 	/**

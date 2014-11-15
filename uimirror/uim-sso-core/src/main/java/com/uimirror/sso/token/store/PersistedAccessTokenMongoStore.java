@@ -21,6 +21,7 @@ import com.uimirror.core.auth.token.AccessTokenFields;
 import com.uimirror.core.auth.token.DefaultAccessToken;
 import com.uimirror.core.dao.AbstractMongoStore;
 import com.uimirror.core.dao.DBException;
+import com.uimirror.core.dao.MongoStoreHelper;
 import com.uimirror.core.mongo.BasicMongoOperators;
 import com.uimirror.core.util.DateTimeUtil;
 
@@ -130,7 +131,7 @@ public class PersistedAccessTokenMongoStore extends AbstractMongoStore<DefaultAc
 	@Override
 	public AccessToken getUserRegisteredWOTPToken(String profileId)throws DBException {
 		Map<String, Object> query = getIdMap(profileId);
-		query.put(AccessTokenFields.AUTH_TKN_INSTRUCTIONS+"."+AuthConstants.WEB_VERIFY_TOKEN, getExistQuery(Boolean.TRUE));
+		query.put(AccessTokenFields.AUTH_TKN_INSTRUCTIONS+"."+AuthConstants.WEB_VERIFY_TOKEN, MongoStoreHelper.getExistQuery(Boolean.TRUE));
 		return queryFirstRecord(query);
 	}
 	

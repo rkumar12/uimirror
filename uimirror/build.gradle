@@ -20,6 +20,7 @@ subprojects  {
 		//gensonVersion = '1.1-RC2'
 		janinoVersion = '2.7.6'
 		mockitoVersion = '1.9.5'
+		//powermockVersion = '1.5.1'
 		uimCoreVersion = '1.0'
 		wsSecurityVersion = '1.0'
 		wsFiltersVersion = '1.0'
@@ -59,6 +60,8 @@ subprojects {
 		compile (group: 'org.springframework', name: 'spring-web', version: springVersion)
 		compile (group: 'org.springframework', name: 'spring-expression', version: springVersion)
 		//Spring End
+		//Common lang
+		compile group: 'org.apache.commons', name: 'commons-lang3', version:'3.1'
     }
 
 	description = "UIMirror Common Applications."

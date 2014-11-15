@@ -12,7 +12,7 @@ configurations.all {
 }
 
 dependencies {
-	compile project(':uim-core')
+	//compile project(':uim-core')
 	compile project(':ws-resource-security')
 	compile project(':ws-filters')
 	compile project(':uim-oauth-client')
@@ -35,7 +35,7 @@ dependencies {
 	
 }
 
-mainClassName = "com.uimirror.ws.account.StartApp"
+mainClassName = "com.uimirror.account.StartApp"
 
 jar {
 	manifest {
@@ -53,7 +53,7 @@ applicationDefaultJvmArgs = ["-Denv=dev"
 	, "-DcontextSource=classpath:application"
 	, "-Dport=8080"
 	, "-Dnio.port=8443"
-	, "-Xmx3g"
+	, "-Xmx64M"
 	, "-XX:MaxNewSize=2g"
 	, "-XX:NewSize=1g"
 	, "-XX:SurvivorRatio=16"

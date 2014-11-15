@@ -10,6 +10,8 @@
  *******************************************************************************/
 package com.uimirror.user.store;
 
+import com.uimirror.core.dao.DBException;
+import com.uimirror.core.dao.RecordNotFoundException;
 import com.uimirror.core.user.DefaultUser;
 
 /**
@@ -22,11 +24,35 @@ public interface DefaultUserStore {
 
 	String USER_BASIC_INFO_SEQ = "ubis";
 	
-	DefaultUser getByProfileId(String profileId);
+	/**
+	 * Retrieves user by the profile id
+	 * 
+	 * @param profileId on which basics document will be retrieved
+	 * @return found object else {@link RecordNotFoundException}
+	 * @throws DBException if any internal or syntax error found
+	 */
+	DefaultUser getByProfileId(String profileId) throws DBException;
 	
-	DefaultUser getByEmail(String email);
+	/**
+	 * Retrieves user by the email id
+	 * 
+	 * @param email search criteria
+	 * @return retrieved user else {@link RecordNotFoundException}
+	 * @throws DBException if any syntax error
+	 */
+	DefaultUser getByEmail(String email) throws DBException;
 
-	void deleteByprofileId(String profileId);
+	/**
+	 * Delete the use based on the profile ID
+	 * @param profileId on which basics it will be deleted
+	 * @throws DBException if any syntax error
+	 */
+	void deleteByprofileId(String profileId) throws DBException;
 	
+	/**store the user document into the collection
+	 * 
+	 * @param user which will be saved
+	 * @return updated user, with profile id
+	 */
 	DefaultUser store(DefaultUser user);
 }

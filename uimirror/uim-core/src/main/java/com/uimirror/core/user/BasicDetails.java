@@ -10,11 +10,18 @@
  *******************************************************************************/
 package com.uimirror.core.user;
 
-import static com.uimirror.core.user.UserDBFields.*;
+import static com.uimirror.core.mongo.feature.BasicDBFields.ID;
+import static com.uimirror.core.user.UserDBFields.DATE_OF_BIRTH;
+import static com.uimirror.core.user.UserDBFields.INFO;
+import static com.uimirror.core.user.UserDBFields.META_INFO;
+import static com.uimirror.core.user.UserDBFields.PERMANET_ADDRESS;
+import static com.uimirror.core.user.UserDBFields.PRESENT_ADDRESS;
 
 import java.util.Map;
 import java.util.WeakHashMap;
 
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.StandardToStringStyle;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
@@ -221,10 +228,11 @@ public class BasicDetails extends AbstractBeanBasedDocument<BasicDetails> implem
 
 	@Override
 	public String toString() {
-		return "BasicDetails [presentAddress=" + presentAddress
-				+ ", permanetAddress=" + permanetAddress + ", dateOfBirth="
-				+ dateOfBirth + ", metaInfo=" + metaInfo + ", details="
-				+ details + "]";
+		StandardToStringStyle style = new StandardToStringStyle();
+	    style.setFieldSeparator(", ");
+	    style.setUseClassName(false);
+	    style.setUseIdentityHashCode(false);
+	    return new ReflectionToStringBuilder(this, style).toString();
 	}
 
 }

@@ -47,7 +47,7 @@ public class CreateClientAccountValidator implements ValidatorService<Client>{
 	public boolean validate(Client src) {
 		if(isClientExists(src))
 			throw new ClientAlreadyExistException();
-		return isClientExists(src);
+		return Boolean.FALSE;
 	}
 	
 	/**

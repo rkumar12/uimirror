@@ -13,6 +13,9 @@ package com.uimirror.core.user;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.StandardToStringStyle;
+
 import com.uimirror.core.Builder;
 import com.uimirror.core.mongo.feature.AbstractBeanBasedDocument;
 import com.uimirror.core.service.BeanValidatorService;
@@ -247,9 +250,11 @@ public final class DefaultUser extends AbstractBeanBasedDocument<DefaultUser> im
 
 	@Override
 	public String toString() {
-		return "DefaultUser [basicInfo=" + basicInfo + ", credentials="
-				+ credentials + ", details=" + details + ", accountLogs="
-				+ accountLogs + "]";
+		StandardToStringStyle style = new StandardToStringStyle();
+	    style.setFieldSeparator(", ");
+	    style.setUseClassName(false);
+	    style.setUseIdentityHashCode(false);
+	    return new ReflectionToStringBuilder(this, style).toString();
 	}
 
 }

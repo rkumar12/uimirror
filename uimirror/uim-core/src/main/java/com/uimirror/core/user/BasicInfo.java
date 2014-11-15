@@ -22,6 +22,8 @@ import static com.uimirror.core.user.UserDBFields.LAST_NAME;
 import java.util.Map;
 import java.util.WeakHashMap;
 
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.StandardToStringStyle;
 import org.springframework.util.StringUtils;
 
 import com.uimirror.core.Builder;
@@ -299,10 +301,11 @@ public final class BasicInfo extends AbstractBeanBasedDocument<BasicInfo> implem
 
 	@Override
 	public String toString() {
-		return "BasicInfo [firstName=" + firstName + ", lastName=" + lastName
-				+ ", email=" + email + ", gender=" + gender
-				+ ", accountStatus=" + accountStatus + ", accountState="
-				+ accountState + "]";
+		StandardToStringStyle style = new StandardToStringStyle();
+	    style.setFieldSeparator(", ");
+	    style.setUseClassName(false);
+	    style.setUseIdentityHashCode(false);
+	    return new ReflectionToStringBuilder(this, style).toString();
 	}
 
 }

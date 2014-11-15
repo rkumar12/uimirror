@@ -10,12 +10,17 @@
  *******************************************************************************/
 package com.uimirror.user.store;
 
+import static com.uimirror.core.user.UserDBFields.ACCOUNT_STATE;
+import static com.uimirror.core.user.UserDBFields.ACCOUNT_STATUS;
+import static com.uimirror.core.user.UserDBFields.DATE_OF_BIRTH;
+import static com.uimirror.core.user.UserDBFields.FIRST_NAME;
+import static com.uimirror.core.user.UserDBFields.LAST_NAME;
+
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.uimirror.core.dao.AbstractMongoStore;
 import com.uimirror.core.user.BasicDetails;
-import com.uimirror.core.user.UserDBFields;
 
 /**
  * Retrieves the credential store for the user.
@@ -61,28 +66,28 @@ public class PersistedUserBasicDetailsMongoStore extends AbstractMongoStore<Basi
 	 * Creates index on first name and last name with status and state
 	 */
 	private void ensureIndexOnPresentLocation(){
-		DBObject first_last_name = new BasicDBObject(UserDBFields.FIRST_NAME, 1);
-		first_last_name.put(UserDBFields.LAST_NAME, 1);
-		first_last_name.put(UserDBFields.ACCOUNT_STATUS, 1);
-		first_last_name.put(UserDBFields.ACCOUNT_STATE, 1);
+		DBObject first_last_name = new BasicDBObject(FIRST_NAME, 1);
+		first_last_name.put(LAST_NAME, 1);
+		first_last_name.put(ACCOUNT_STATUS, 1);
+		first_last_name.put(ACCOUNT_STATE, 1);
 		getCollection().createIndex(first_last_name);
 	}
 	/**
 	 * Creates index on first name with status and state
 	 */
 	private void ensureIndexOnPermanetLocation(){
-		DBObject first_name = new BasicDBObject(UserDBFields.FIRST_NAME, 1);
-		first_name.put(UserDBFields.ACCOUNT_STATUS, 1);
-		first_name.put(UserDBFields.ACCOUNT_STATE, 1);
+		DBObject first_name = new BasicDBObject(FIRST_NAME, 1);
+		first_name.put(ACCOUNT_STATUS, 1);
+		first_name.put(ACCOUNT_STATE, 1);
 		getCollection().createIndex(first_name);
 	}
 	/**
 	 * Creates index on last name with status and state
 	 */
 	private void ensureIndexOnDateOfBirth(){
-		DBObject last_name = new BasicDBObject(UserDBFields.LAST_NAME, 1);
-		last_name.put(UserDBFields.DATE_OF_BIRTH, 1);
-		last_name.put(UserDBFields.ACCOUNT_STATE, 1);
+		DBObject last_name = new BasicDBObject(LAST_NAME, 1);
+		last_name.put(DATE_OF_BIRTH, 1);
+		last_name.put(ACCOUNT_STATE, 1);
 		getCollection().createIndex(last_name);
 	}
 

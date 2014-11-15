@@ -19,7 +19,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import com.uimirror.core.auth.Scope;
-import com.uimirror.core.mongo.feature.BeanBasedDocument;
+import com.uimirror.core.mongo.feature.AbstractBeanBasedDocument;
 import com.uimirror.core.service.BeanValidatorService;
 
 /**
@@ -28,7 +28,7 @@ import com.uimirror.core.service.BeanValidatorService;
  * accordingly during new request access token, user will be promoted for the same.
  * @author Jay
  */
-public class UserAuthorizedClient extends BeanBasedDocument<UserAuthorizedClient> implements BeanValidatorService{
+public class UserAuthorizedClient extends AbstractBeanBasedDocument<UserAuthorizedClient> implements BeanValidatorService{
 
 	private static final long serialVersionUID = 8725514681944084516L;
 	private List<ClientAuthorizedScope> clients;
@@ -42,7 +42,7 @@ public class UserAuthorizedClient extends BeanBasedDocument<UserAuthorizedClient
 	 * @see com.uimirror.core.mongo.feature.MongoDocumentSerializer#initFromMap(java.util.Map)
 	 */
 	@Override
-	public UserAuthorizedClient initFromMap(Map<String, Object> src) {
+	public UserAuthorizedClient readFromMap(Map<String, Object> src) {
 		//Validate the source shouldn't be empty
 		validateSource(src);
 		//Initialize the state
@@ -151,7 +151,7 @@ public class UserAuthorizedClient extends BeanBasedDocument<UserAuthorizedClient
 	 * always it will have _id
 	 */
 	@Override
-	public Map<String, Object> toMap(){
+	public Map<String, Object> writeToMap(){
 		//First check if it represents a valid state then can be serialized
 		if(!isValid())
 			throw new IllegalStateException("Can't be serailized the state of the object");

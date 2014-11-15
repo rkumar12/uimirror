@@ -10,22 +10,40 @@
  *******************************************************************************/
 package com.uimirror.ouath.client;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import static com.uimirror.core.mongo.feature.BasicDBFields.ID;
+import static com.uimirror.ouath.client.ClientDBFields.API_KEY;
+import static com.uimirror.ouath.client.ClientDBFields.APP_URL;
+import static com.uimirror.ouath.client.ClientDBFields.DETAILS;
+import static com.uimirror.ouath.client.ClientDBFields.IMAGE;
+import static com.uimirror.ouath.client.ClientDBFields.NAME;
+import static com.uimirror.ouath.client.ClientDBFields.REDIRECT_URI;
+import static com.uimirror.ouath.client.ClientDBFields.REGISTERED_BY;
+import static com.uimirror.ouath.client.ClientDBFields.REGISTERED_ON;
+import static com.uimirror.ouath.client.ClientDBFields.SECRET;
+import static com.uimirror.ouath.client.ClientDBFields.STATUS;
 
+import java.util.Map;
+import java.util.WeakHashMap;
+
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang.builder.StandardToStringStyle;
+import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import com.uimirror.core.mongo.feature.BeanBasedDocument;
+import com.uimirror.core.Builder;
+import com.uimirror.core.mongo.feature.AbstractBeanBasedDocument;
 import com.uimirror.core.service.BeanValidatorService;
 import com.uimirror.core.user.AccountStatus;
+import com.uimirror.core.util.web.WebUtil;
 
 /**
  * A basic client , which will have at minimum client id,
- * API key, client secret, redirect URL  
+ * API key, client secret, redirect URL
+ *   
  * @author Jay
  */
-public class Client extends BeanBasedDocument<Client> implements BeanValidatorService{
+public final class Client extends AbstractBeanBasedDocument<Client> implements BeanValidatorService{
 
 	private static final long serialVersionUID = -5074118579759365950L;
 	private String name;
@@ -35,129 +53,130 @@ public class Client extends BeanBasedDocument<Client> implements BeanValidatorSe
 	private AccountStatus status;
 	private String apiKey;
 	private long registeredOn;
-	private String registeredBy;
+	private String registeredById;
+	private String image;
 	private Map<String, Object> details;
 
 	//DOn't Use this until it has specific requirement
 	public Client(){
 		super();
 	}
-	public Client(Map<String, Object> map) {
-		super(map);
-	}
 
-	/**
-	 * @param id
-	 * @param name
-	 * @param secret
-	 * @param redirectURI
-	 * @param status
-	 * @param apiKey
-	 * @param registeredOn
-	 * @param registeredBy
-	 * @param details
+	/* (non-Javadoc)
+	 * @see com.uimirror.core.mongo.feature.AbstractBeanBasedDocument#updateId(java.lang.String)
 	 */
-	public Client(String id, String name, String secret, String redirectURI, String appUrl,
-			AccountStatus status, String apiKey, long registeredOn,
-			String registeredBy, Map<String, Object> details) {
-		super(id);
-		this.name = name;
-		this.secret = secret;
-		this.redirectURI = redirectURI;
-		this.appURL = appUrl;
-		this.status = status;
-		this.apiKey = apiKey;
-		this.registeredOn = registeredOn;
-		this.registeredBy = registeredBy;
-		this.details = details;
-	}
-
-
-
-	public String getClientId(){
-		return getId();
-	}
-
-	public String getSecret() {
-		return secret;
-	}
-
-	public AccountStatus getStatus() {
-		return status == null ? AccountStatus.ACTIVE : this.status;
+	@Override
+	public Client updateId(String id){
+		if(!StringUtils.hasText(id)){
+			throw new IllegalArgumentException("Can't update invalid ID");
+		}
+		return new ClientBuilder(id).
+				addApiKey(apiKey).
+				addAppURL(appURL).
+				addDetails(details).
+				addImagePath(image).
+				addName(name).
+				addRedirectURI(redirectURI).
+				addRegisteredBy(registeredById).
+				addRegisteredOn(registeredOn).
+				addSecret(secret).
+				addStatus(status).build();
 	}
 	
-	public String getName() {
-		return name;
-	}
-
-	public String getRedirectURI() {
-		return redirectURI;
-	}
-
-	public String getApiKey() {
-		return apiKey;
-	}
-
-	public long getRegisteredOn() {
-		return registeredOn;
-	}
-
-	public String getRegisteredBy() {
-		return registeredBy;
-	}
-
-	public Map<String, Object> getDetails() {
-		return details == null ? new LinkedHashMap<String, Object>(5) : this.details;
-	}
-	
-	public String getAppURL() {
-		return appURL;
-	}
 	/**
 	 * Update the provided details, if any new details to add,
 	 * it will create a new instance and returned
-	 * @param details
-	 * @return
+	 * @param details needs to be upsert
+	 * @param upsert flags suggest to replace all value or update only
+	 * @return updated client
 	 */
-	public Client updateDetails(Map<String, Object> details){
+	public Client updateDetails(Map<String, Object> details, boolean upsert){
 		if(CollectionUtils.isEmpty(details))
 			return this;
-			
-		details.putAll(this.getDetails());
-		return new Client(this.getId(), this.name, this.secret, this.redirectURI, this.appURL, this.status, this.apiKey, this.registeredOn, this.registeredBy, details);
-		
+		if(upsert)
+			this.details = details;
+		else{
+			this.details = getDetails();
+			this.details.putAll(details);
+		}
+		return new ClientBuilder(getClientId()).
+				addApiKey(apiKey).
+				addAppURL(appURL).
+				addDetails(details).
+				addImagePath(image).
+				addName(name).
+				addRedirectURI(redirectURI).
+				addRegisteredBy(registeredById).
+				addRegisteredOn(registeredOn).
+				addSecret(secret).
+				addStatus(status).build();
+	}
+	
+	/**
+	 * Checks if the client is in {@link AccountStatus#ACTIVE} status
+	 * @return <code>true</code> if active else <code>false</code>
+	 */
+	public boolean isActive(){
+		return AccountStatus.ACTIVE == status;
+	}
+	
+	/**
+	 * Checks if client has valid app and redirect URL
+	 * @return <code>true</code> if valid else <code>false</code>
+	 */
+	public boolean isValidAppAndRedirectURL(){
+		return WebUtil.isValidAppAndRedirectURL(appURL, redirectURI);
 	}
 
 	/* (non-Javadoc)
 	 * @see com.uimirror.core.mongo.feature.MongoDocumentSerializer#initFromMap(java.util.Map)
 	 */
 	@Override
-	public Client initFromMap(Map<String, Object> src) {
+	public Client readFromMap(Map<String, Object> src) {
 		//Validate the source shouldn't be empty
-		validateSource(src);
+		isValidSource(src);
 		//Initialize the state
 		return init(src);
 	}
 	
-	
-	
-	@SuppressWarnings("unchecked")
 	private Client init(Map<String, Object> src){
-		String id = (String)src.get(ClientDBFields.ID);
-		String name = (String)src.get(ClientDBFields.NAME);
-		String secret = (String)src.get(ClientDBFields.SECRET);
-		String redirectURI = (String)src.get(ClientDBFields.REDIRECT_URI);
-		String appURL = (String)src.get(ClientDBFields.APP_URL);
-		String st = (String)src.get(ClientDBFields.STATUS);
+		String id = (String)src.get(ID);
+		String name = (String)src.get(NAME);
+		String secret = (String)src.get(SECRET);
+		String redirectURI = (String)src.get(REDIRECT_URI);
+		String appURL = (String)src.get(APP_URL);
+		String st = (String)src.get(STATUS);
 		AccountStatus status = st == null ? null : AccountStatus.getEnum(st);
-		String apiKey = (String)src.get(ClientDBFields.API_KEY);
-		String  registeredBy = (String)src.get(ClientDBFields.REGISTERED_BY);
-		long registeredOn = 0l;
-		if(src.get(ClientDBFields.REGISTERED_ON) != null){
-			registeredOn = (long)src.get(ClientDBFields.REGISTERED_ON);
-		}
-		Map<String, Object> details = (Map<String, Object>)src.get(ClientDBFields.DETAILS);
-		return new Client(id, name, secret, redirectURI, appURL, status, apiKey, registeredOn, registeredBy, details);
+		String apiKey = (String)src.get(API_KEY);
+		String  registeredById = (String)src.get(REGISTERED_BY);
+		String  image = (String)src.get(ClientDBFields.IMAGE);
+		long registeredOn = (long)src.getOrDefault(REGISTERED_ON, 0l);
+		@SuppressWarnings("unchecked")
+		Map<String, Object> details = (Map<String, Object>)src.get(DETAILS);
+		return new ClientBuilder(id).
+				addApiKey(apiKey).
+				addAppURL(appURL).
+				addDetails(details).
+				addImagePath(image).
+				addName(name).
+				addRedirectURI(redirectURI).
+				addRegisteredBy(registeredById).
+				addRegisteredOn(registeredOn).
+				addSecret(secret).
+				addStatus(status).build();
+	}
+	
+	/**
+	 * Create a map that needs to be persisted
+	 * @return
+	 * @throws IllegalStateException 
+	 */
+	@Override
+	public Map<String, Object> writeToMap() throws IllegalStateException{
+		//First check if it represents a valid state then can be serialized
+		if(!isValid())
+			throw new IllegalStateException("Can't be serailized the state of the object");
+		return serailize();
 	}
 
 	/** 
@@ -175,24 +194,11 @@ public class Client extends BeanBasedDocument<Client> implements BeanValidatorSe
 			valid = Boolean.FALSE;
 		if(!StringUtils.hasText(getApiKey()))
 			valid = Boolean.FALSE;
-		if(!StringUtils.hasText(getRegisteredBy()))
+		if(!StringUtils.hasText(getRegisteredById()))
 			valid = Boolean.FALSE;
 		if(getRegisteredOn() <= 0l)
 			valid = Boolean.FALSE;
 		return valid;
-	}
-
-	/**
-	 * Create a map that needs to be persisted
-	 * @return
-	 * @throws IllegalStateException 
-	 */
-	@Override
-	public Map<String, Object> toMap() throws IllegalStateException{
-		//First check if it represents a valid state then can be serialized
-		if(!isValid())
-			throw new IllegalStateException("Can't be serailized the state of the object");
-		return serailize();
 	}
 	
 	/**
@@ -200,19 +206,183 @@ public class Client extends BeanBasedDocument<Client> implements BeanValidatorSe
 	 * @return
 	 */
 	public Map<String, Object> serailize(){
-		Map<String, Object> state = new LinkedHashMap<String, Object>(16);
+		Map<String, Object> state = new WeakHashMap<String, Object>(16);
 		if(StringUtils.hasText(getId()))
-			state.put(ClientDBFields.ID, getId());
-		state.put(ClientDBFields.NAME, getName());
-		state.put(ClientDBFields.SECRET, getSecret());
-		state.put(ClientDBFields.STATUS, getStatus().getStatus());
-		state.put(ClientDBFields.REDIRECT_URI, getRedirectURI());
-		state.put(ClientDBFields.APP_URL, getAppURL());
-		state.put(ClientDBFields.API_KEY, getApiKey());
-		state.put(ClientDBFields.REGISTERED_BY, getRegisteredBy());
-		state.put(ClientDBFields.REGISTERED_ON, getRegisteredOn());
+			state.put(ID, getId());
+		state.put(NAME, getName());
+		state.put(SECRET, getSecret());
+		state.put(STATUS, getStatus().getStatus());
+		state.put(REDIRECT_URI, getRedirectURI());
+		state.put(APP_URL, getAppURL());
+		state.put(API_KEY, getApiKey());
+		state.put(REGISTERED_BY, getRegisteredById());
+		state.put(REGISTERED_ON, getRegisteredOn());
+		state.put(IMAGE, getImage());
 		if(!CollectionUtils.isEmpty(getDetails()))
-			state.put(ClientDBFields.DETAILS, getDetails());
+			state.put(DETAILS, getDetails());
 		return state;
 	}
+	
+	public static class ClientBuilder implements Builder<Client>{
+		
+		private String clientId;
+		private String name;
+		private String secret;
+		private String redirectURI;
+		private String appURL;
+		private AccountStatus status;
+		private String apiKey;
+		private long registeredOn;
+		private String registeredById;
+		private String image;
+		private Map<String, Object> details;
+		
+		public ClientBuilder(String clientId){
+			this.clientId = clientId;
+		}
+		
+		public ClientBuilder addName(String name){
+			this.name = name;
+			return this;
+		}
+
+		public ClientBuilder addSecret(String secretkey){
+			this.secret = secretkey;
+			return this;
+		}
+
+		public ClientBuilder addRedirectURI(String redirectURI){
+			this.redirectURI = redirectURI;
+			return this;
+		}
+		
+		public ClientBuilder addAppURL(String appURL){
+			this.appURL = appURL;
+			return this;
+		}
+
+		public ClientBuilder addStatus(String status){
+			if(!StringUtils.hasText(status))
+				throw new IllegalArgumentException("Status is invalid");
+			this.status = AccountStatus.getEnum(status);
+			return this;
+		}
+
+		public ClientBuilder addStatus(AccountStatus status){
+			this.status = status;
+			return this;
+		}
+
+		public ClientBuilder addApiKey(String apiKey){
+			this.apiKey = apiKey;
+			return this;
+		}
+		
+		public ClientBuilder addRegisteredOn(long registeredOn){
+			this.registeredOn = registeredOn;
+			return this;
+		}
+		
+		public ClientBuilder addRegisteredBy(String registeredBy){
+			this.registeredById = registeredBy;
+			return this;
+		}
+		
+		public ClientBuilder addImagePath(String image){
+			this.image = image;
+			return this;
+		}
+		
+		public ClientBuilder addDetails(Map<String, Object> details){
+			this.details = details;
+			return this;
+		}
+		
+		/* (non-Javadoc)
+		 * @see com.uimirror.core.Builder#build()
+		 */
+		@Override
+		public Client build() {
+			return new Client(this);
+		}
+		
+	}
+	
+	private Client(ClientBuilder builder){
+		Assert.notNull(builder, "Can't create a state");
+		super.setId(builder.clientId);
+		this.name = builder.name;
+		this.secret = builder.secret;
+		this.redirectURI = builder.redirectURI;
+		this.appURL = builder.appURL;
+		this.status = builder.status;
+		this.apiKey = builder.apiKey;
+		this.registeredOn = builder.registeredOn;
+		this.registeredById = builder.registeredById;
+		this.image = builder.image;
+		this.details = builder.details;
+	}
+	
+	public String getClientId(){
+		return getId();
+	}
+
+	public String getName() {
+		return name;
+	}
+
+
+	public String getSecret() {
+		return secret;
+	}
+
+
+	public String getRedirectURI() {
+		return redirectURI;
+	}
+
+
+	public String getAppURL() {
+		return appURL;
+	}
+
+
+	public AccountStatus getStatus() {
+		return status;
+	}
+
+
+	public String getApiKey() {
+		return apiKey;
+	}
+
+
+	public long getRegisteredOn() {
+		return registeredOn;
+	}
+
+
+	public String getRegisteredById() {
+		return registeredById;
+	}
+
+
+	public String getImage() {
+		return image;
+	}
+
+
+	public Map<String, Object> getDetails() {
+		return details == null ? new WeakHashMap<String, Object>() : details;
+	}
+
+	@Override
+	public String toString() {
+		StandardToStringStyle style = new StandardToStringStyle();
+	    style.setFieldSeparator(", ");
+	    style.setUseClassName(false);
+	    style.setUseIdentityHashCode(false);
+	    return new ReflectionToStringBuilder(this, style).toString();
+	}
+	
 }

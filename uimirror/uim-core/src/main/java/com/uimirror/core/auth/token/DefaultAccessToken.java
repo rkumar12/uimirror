@@ -23,6 +23,8 @@ import static com.uimirror.core.mongo.feature.BasicDBFields.ID;
 import java.util.Map;
 import java.util.WeakHashMap;
 
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.StandardToStringStyle;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -237,10 +239,11 @@ public final class DefaultAccessToken extends AbstractAccessToken<DefaultAccessT
 
 	@Override
 	public String toString() {
-		return "DefaultAccessToken [token=" + token + ", owner=" + owner
-				+ ", client=" + client + ", expire=" + expire + ", type="
-				+ type + ", scope=" + scope + ", notes=" + notes
-				+ ", instructions=" + instructions + "]";
+		StandardToStringStyle style = new StandardToStringStyle();
+	    style.setFieldSeparator(", ");
+	    style.setUseClassName(false);
+	    style.setUseIdentityHashCode(false);
+	    return new ReflectionToStringBuilder(this, style).toString();
 	}
 	
 }

@@ -20,7 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 
-import com.uimirror.core.mongo.feature.BeanBasedDocument;
+import com.uimirror.core.mongo.feature.AbstractBeanBasedDocument;
 import com.uimirror.ws.api.audit.common.AuditFieldConstants;
 
 /**
@@ -35,7 +35,7 @@ import com.uimirror.ws.api.audit.common.AuditFieldConstants;
  * 
  * @author Jayaram
  */
-public final class Audit  extends BeanBasedDocument implements Serializable{
+public final class Audit  extends AbstractBeanBasedDocument implements Serializable{
 
 	private static final long serialVersionUID = -6606261756865155348L;
 	protected static final Logger LOG = LoggerFactory.getLogger(Audit.class);
@@ -207,7 +207,7 @@ public final class Audit  extends BeanBasedDocument implements Serializable{
 	 * @see com.uimirror.core.mongo.feature.MongoDocumentSerializer#initFromMap(java.util.Map)
 	 */
 	@Override
-	public Object initFromMap(Map src) {
+	public Object readFromMap(Map src) {
 		// TODO Auto-generated method stub
 		return null;
 	}

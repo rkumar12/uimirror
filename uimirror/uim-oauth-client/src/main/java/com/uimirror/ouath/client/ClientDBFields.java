@@ -16,16 +16,22 @@ import com.uimirror.core.mongo.feature.BasicDBFields;
  * Contains all the basic db fields that will be used by the client
  * @author Jay
  */
-public interface ClientDBFields extends BasicDBFields{
+public class ClientDBFields extends BasicDBFields{
 	
-	String NAME = "name";
-	String SECRET = "secret";
-	String REDIRECT_URI = "redirect_uri";
-	String APP_URL = "app_uri";
-	String STATUS = "status";
-	String API_KEY = "api_key";
-	String REGISTERED_ON = "registered_on";
-	String REGISTERED_BY = "registered_by";
-	String DETAILS = "details";
+	//Prevent instance
+	private ClientDBFields(){
+		//NOP
+	}
+	public static final String NAME = "name";
+	public static final String SECRET = "secret";
+	public static final String REDIRECT_URI = "redirect_uri";
+	public static final String APP_URL = "app_uri";
+	public static final String STATUS = "status";
+	public static final String API_KEY = "api_key";
+	public static final String REGISTERED_ON = "registered_on";
+	public static final String REGISTERED_BY = "registered_by";
+	public static final String DETAILS = "details";
+	public static final String IMAGE = "image";
+	
 
 }

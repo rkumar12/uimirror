@@ -10,6 +10,10 @@
  *******************************************************************************/
 package com.uimirror.user.store;
 
+import static com.uimirror.core.mongo.BasicMongoOperators.SET;
+import static com.uimirror.core.user.UserAuthDBFields.ACCOUNT_STATE;
+import static com.uimirror.core.user.UserAuthDBFields.USER_ID;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -20,11 +24,8 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.uimirror.core.dao.AbstractMongoStore;
 import com.uimirror.core.dao.DBException;
-import com.uimirror.core.mongo.BasicMongoOperators;
 import com.uimirror.core.user.AccountState;
 import com.uimirror.core.user.Credentials;
-import com.uimirror.core.user.UserAuthDBFields;
-import com.uimirror.core.user.UserDBFields;
 
 /**
  * Retrieves the credential store for the user.
@@ -56,7 +57,7 @@ public class PersistedUserCredentialMongoStore extends AbstractMongoStore<Creden
 	private Map<String, Object> getUserIdQuery(String identifier){
 		Assert.hasText(identifier, "UserID Query Parameter can't be empty");
 		Map<String, Object> query = new LinkedHashMap<String, Object>(3);
-		query.put(UserAuthDBFields.USER_ID, identifier);
+		query.put(USER_ID, identifier);
 		return query;
 	}
 
@@ -74,7 +75,7 @@ public class PersistedUserCredentialMongoStore extends AbstractMongoStore<Creden
 	@Override
 	public void enableAccount(String profileId) throws DBException {
 		Map<String, Object> set = new LinkedHashMap<String, Object>(3);
-		set.put(BasicMongoOperators.SET, getAccountStateMap(AccountState.ENABLED));
+		set.put(SET, getAccountStateMap(AccountState.ENABLED));
 		updateById(profileId, set);
 	}
 	
@@ -84,7 +85,7 @@ public class PersistedUserCredentialMongoStore extends AbstractMongoStore<Creden
 	 */
 	private Map<String, Object> getAccountStateMap(AccountState state){
 		Map<String, Object> field = new LinkedHashMap<String, Object>(3);
-		field.put(UserAuthDBFields.ACCOUNT_STATE, state.getState());
+		field.put(ACCOUNT_STATE, state.getState());
 		return field;
 	}
 	
@@ -94,7 +95,7 @@ public class PersistedUserCredentialMongoStore extends AbstractMongoStore<Creden
 	@Override
 	protected void ensureIndex() {
 		//TODO finalize during production what needs to be actual value
-		DBObject obj = new BasicDBObject(UserDBFields.USER_ID, 1);
+		DBObject obj = new BasicDBObject(USER_ID, 1);
 		getCollection().createIndex(obj);
 	}
 

@@ -9,13 +9,13 @@
  * Uimirror Team
  *******************************************************************************/
 package com.uimirror.user.store;
+import static com.uimirror.core.user.UserAccountLogDBFields.CREATED_ON;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.uimirror.core.dao.AbstractMongoStore;
 import com.uimirror.core.user.AccountLogs;
-import com.uimirror.core.user.UserDBFields;
 
 /**
  * Retrieves the credential store for the user.
@@ -53,7 +53,7 @@ public class PersistedUserAccountLogMongoStore extends AbstractMongoStore<Accoun
 	@Override
 	protected void ensureIndex() {
 		//TODO finalize during production what needs to be actual value
-		DBObject obj = new BasicDBObject(UserDBFields.CREATED_ON, 1);
+		DBObject obj = new BasicDBObject(CREATED_ON, 1);
 		getCollection().createIndex(obj);
 	}
 

@@ -20,6 +20,8 @@ import java.util.Map;
 import java.util.TimeZone;
 import java.util.WeakHashMap;
 
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.StandardToStringStyle;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
@@ -137,8 +139,11 @@ public class MetaInfo {
 
 	@Override
 	public String toString() {
-		return "MetaInfo [locale=" + locale + ", currency=" + currency
-				+ ", timeZone=" + timeZone + "]";
+		StandardToStringStyle style = new StandardToStringStyle();
+	    style.setFieldSeparator(", ");
+	    style.setUseClassName(false);
+	    style.setUseIdentityHashCode(false);
+	    return new ReflectionToStringBuilder(this, style).toString();
 	}
 
 }

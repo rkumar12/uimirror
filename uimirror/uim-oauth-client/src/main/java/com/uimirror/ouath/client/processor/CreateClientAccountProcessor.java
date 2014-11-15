@@ -22,6 +22,7 @@ import com.uimirror.core.exceptions.ApplicationExceptionMapper;
 import com.uimirror.core.extra.MapException;
 import com.uimirror.core.rest.extra.ApplicationException;
 import com.uimirror.core.rest.extra.ResponseTransFormer;
+import com.uimirror.core.service.TransformerService;
 import com.uimirror.ouath.client.Client;
 import com.uimirror.ouath.client.ClientDBFields;
 import com.uimirror.ouath.client.form.ClientRegisterForm;
@@ -41,8 +42,9 @@ import com.uimirror.ouath.client.form.ClientRegisterForm;
 public class CreateClientAccountProcessor implements Processor<ClientRegisterForm, String>{
 
 	protected static final Logger LOG = LoggerFactory.getLogger(CreateClientAccountProcessor.class);
-	private @Autowired Processor<ClientRegisterForm, Client> createClientAccountProvider;
+	private @Autowired Processor<Client, Client> createClientAccountProvider;
 	private @Autowired ResponseTransFormer<String> jsonResponseTransFormer;
+	private @Autowired TransformerService<ClientRegisterForm, Client> clientRegisterFormToClientTransformer;
 
 	public CreateClientAccountProcessor() {
 		// NOP
@@ -55,7 +57,9 @@ public class CreateClientAccountProcessor implements Processor<ClientRegisterFor
 	@MapException(use=ApplicationExceptionMapper.NAME)
 	public String invoke(ClientRegisterForm param) throws ApplicationException {
 		LOG.info("[START]- Registering a new Client.");
-		Client client =createClientAccountProvider.invoke(param);
+		//Step -1 Transform to the desired type
+		Client client = transformToClient(param);
+		client =createClientAccountProvider.invoke(client);
 		LOG.info("[END]- Registering a new Client.");
 		return jsonResponseTransFormer.doTransForm(cleanClient(client));
 	}
@@ -72,4 +76,13 @@ public class CreateClientAccountProcessor implements Processor<ClientRegisterFor
 		return map;
 	}
 
+	/**
+	 * Convert from {@link ClientRegisterForm} to {@link Client}
+	 * This will not populate the owner and details map
+	 * @param param
+	 * @return
+	 */
+	private Client transformToClient(ClientRegisterForm param){
+		return clientRegisterFormToClientTransformer.transform(param);
+	}
 }

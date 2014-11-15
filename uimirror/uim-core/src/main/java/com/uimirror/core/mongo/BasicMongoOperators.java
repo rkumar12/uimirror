@@ -13,24 +13,29 @@ package com.uimirror.core.mongo;
 /**
  * @author Jay
  */
-public interface BasicMongoOperators {
-	String SET = "$set";
-	String LESSTHANEQUEAL = "$lte";
-	String GREATERTHANEQUEAL = "$gte";
-	String GREATERTHAN = "$gt";
-	String ELEMENT_MATCH = "$elemMatch";
-	String PULL = "$pull";
-	String EXISTS = "$exists";
-	String EACH = "$each";
-	String ADD_TO_SET = "$addToSet";
-	String NOT = "$not";
-	String NOT_EQUAL = "$ne";
-	String OR = "$or";
-	String INCREAMENT = "$inc";
+public class BasicMongoOperators {
 	
-	String GEO_2SPEHERE_INDEX = "2dsphere";
-	String GEOMETERY = "$geometry";
-	String NEAR = "$near";
-	String MIN_DISTANCE = "$minDistance";
-	String MAX_DISTANCE = "$maxDistance";
+	//Prevent instance
+	private BasicMongoOperators(){
+		//NOP
+	}
+	public static final String SET = "$set";
+	public static final String LESSTHANEQUEAL = "$lte";
+	public static final String GREATERTHANEQUEAL = "$gte";
+	public static final String GREATERTHAN = "$gt";
+	public static final String ELEMENT_MATCH = "$elemMatch";
+	public static final String PULL = "$pull";
+	public static final String EXISTS = "$exists";
+	public static final String EACH = "$each";
+	public static final String ADD_TO_SET = "$addToSet";
+	public static final String NOT = "$not";
+	public static final String NOT_EQUAL = "$ne";
+	public static final String OR = "$or";
+	public static final String INCREAMENT = "$inc";
+	
+	public static final String GEO_2SPEHERE_INDEX = "2dsphere";
+	public static final String GEOMETERY = "$geometry";
+	public static final String NEAR = "$near";
+	public static final String MIN_DISTANCE = "$minDistance";
+	public static final String MAX_DISTANCE = "$maxDistance";
 }

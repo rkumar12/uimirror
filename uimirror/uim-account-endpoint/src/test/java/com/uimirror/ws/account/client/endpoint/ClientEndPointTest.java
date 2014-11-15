@@ -37,10 +37,10 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
+import com.uimirror.account.StartApp;
+import com.uimirror.account.endpoint.ClientAccountEndPoint;
 import com.uimirror.core.auth.AuthConstants;
-import com.uimirror.ouath.client.form.RegisterConstants;
-import com.uimirror.ws.account.StartApp;
-import com.uimirror.ws.account.endpoint.ClientAccountEndPoint;
+import com.uimirror.ouath.client.form.ClientRegisterConstants;
 
 /**
  * Integration test case for the {@link ClientAccountEndPoint}
@@ -56,9 +56,9 @@ public class ClientEndPointTest {
 	@Test
 	public void createClientTest(){
 		MultiValueMap<String, String> param = new LinkedMultiValueMap<String, String>();
-		param.add(RegisterConstants.NAME, "UIM_MOBILE");
-		param.add(RegisterConstants.APP_URL, "http://uimirror.com");
-		param.add(RegisterConstants.REDIRECT_URL, "http://uimirror.com");
+		param.add(ClientRegisterConstants.NAME, "UIM_MOBILE");
+		param.add(ClientRegisterConstants.APP_URL, "http://uimirror.com");
+		param.add(ClientRegisterConstants.REDIRECT_URL, "http://uimirror.com");
 		SimpleClientHttpRequestFactory s = new SimpleClientHttpRequestFactory() {
 			@Override
 			protected void prepareConnection(HttpURLConnection connection, String httpMethod) throws IOException {

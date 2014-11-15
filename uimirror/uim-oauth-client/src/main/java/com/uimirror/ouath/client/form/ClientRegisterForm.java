@@ -17,6 +17,8 @@ import java.util.Set;
 
 import javax.ws.rs.FormParam;
 
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang.builder.StandardToStringStyle;
 import org.springframework.util.StringUtils;
 
 import com.uimirror.core.Constants;
@@ -38,14 +40,17 @@ public final class ClientRegisterForm extends AuthenticatedPrincipal implements 
 
 	private static final long serialVersionUID = -1215523730014366150L;
 	
-	@FormParam(RegisterConstants.NAME)
+	@FormParam(ClientRegisterConstants.NAME)
 	private String name;
 	
-	@FormParam(RegisterConstants.REDIRECT_URL)
+	@FormParam(ClientRegisterConstants.REDIRECT_URL)
 	private String redirectURL;
 	
-	@FormParam(RegisterConstants.APP_URL)
+	@FormParam(ClientRegisterConstants.APP_URL)
 	private String appURL;
+	
+	@FormParam(ClientRegisterConstants.IMAGE)
+	private String image;
 
 	public String getName() {
 		return name;
@@ -57,6 +62,10 @@ public final class ClientRegisterForm extends AuthenticatedPrincipal implements 
 
 	public String getAppURL() {
 		return WebUtil.getURLDomain(appURL);
+	}
+
+	public String getImage() {
+		return image;
 	}
 
 	/* (non-Javadoc)
@@ -72,14 +81,14 @@ public final class ClientRegisterForm extends AuthenticatedPrincipal implements 
 		Set<String> fields = new HashSet<String>();
 		Map<String, Object> errors = new LinkedHashMap<String, Object>(5);
 		if(!StringUtils.hasText(getName()))
-			fields.add(RegisterConstants.NAME);
+			fields.add(ClientRegisterConstants.NAME);
 		if(!StringUtils.hasText(getRedirectURL()))
-			fields.add(RegisterConstants.REDIRECT_URL);
+			fields.add(ClientRegisterConstants.REDIRECT_URL);
 		if(!StringUtils.hasText(getAppURL()))
-			fields.add(RegisterConstants.APP_URL);
+			fields.add(ClientRegisterConstants.APP_URL);
 		if(!WebUtil.isValidAppAndRedirectURL(getAppURL(), getRedirectURL())){
-			fields.add(RegisterConstants.APP_URL);
-			fields.add(RegisterConstants.REDIRECT_URL);
+			fields.add(ClientRegisterConstants.APP_URL);
+			fields.add(ClientRegisterConstants.REDIRECT_URL);
 		}
 		if(fields.size() > 0){
 			errors.put(Constants.FIELDS, fields);
@@ -94,8 +103,11 @@ public final class ClientRegisterForm extends AuthenticatedPrincipal implements 
 
 	@Override
 	public String toString() {
-		return "ClientRegisterForm [name=" + name + ", redirectURL=" + redirectURL
-				+ ", appURL=" + appURL + "]";
+		StandardToStringStyle style = new StandardToStringStyle();
+	    style.setFieldSeparator(", ");
+	    style.setUseClassName(false);
+	    style.setUseIdentityHashCode(false);
+	    return new ReflectionToStringBuilder(this, style).toString();
 	}
 	
 }

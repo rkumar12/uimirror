@@ -10,14 +10,16 @@
  *******************************************************************************/
 package com.uimirror.core.user;
 
+import static com.uimirror.core.mongo.feature.BasicDBFields.ID;
 import static com.uimirror.core.user.UserAccountLogDBFields.CREATED_ON;
 import static com.uimirror.core.user.UserAccountLogDBFields.DETAILS;
 import static com.uimirror.core.user.UserAccountLogDBFields.MODIFIED_ON;
-import static com.uimirror.core.user.UserDBFields.ID;
 
 import java.util.Map;
 import java.util.WeakHashMap;
 
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.StandardToStringStyle;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
@@ -169,7 +171,10 @@ public class AccountLogs extends AbstractBeanBasedDocument<AccountLogs> implemen
 
 	@Override
 	public String toString() {
-		return "AccountLogs [createdOn=" + createdOn + ", modifiedOn="
-				+ modifiedOn + ", details=" + details + "]";
+		StandardToStringStyle style = new StandardToStringStyle();
+	    style.setFieldSeparator(", ");
+	    style.setUseClassName(false);
+	    style.setUseIdentityHashCode(false);
+	    return new ReflectionToStringBuilder(this, style).toString();
 	}
 }

@@ -19,9 +19,9 @@ import com.uimirror.core.crypto.MatcherServiceImpl;
 import com.uimirror.core.mail.EmailBeanInitializr;
 import com.uimirror.core.rest.extra.JsonResponseTransFormer;
 import com.uimirror.core.rest.extra.ResponseTransFormer;
-import com.uimirror.ouath.client.conf.BeanOfOAuthClient;
+import com.uimirror.ouath.client.conf.BeanOfClient;
 import com.uimirror.sso.conf.SSOBeanInitializer;
-import com.uimirror.user.conf.UserBeanInitializer;
+import com.uimirror.user.UserBeanInitializer;
 
 /**
  * Initialize or configures the service bean getting used for this application
@@ -32,7 +32,7 @@ import com.uimirror.user.conf.UserBeanInitializer;
 	, BeanOfAuthManagers.class, BeanOfAuthProviders.class
 	, BeanOfTransformers.class, EmailBeanInitializr.class
 	, BeanOfBackGroundProcessor.class, BeanOfSchedulers.class
-	, SSOBeanInitializer.class, BeanOfOAuthClient.class
+	, SSOBeanInitializer.class, BeanOfClient.class
 	, UserBeanInitializer.class})
 public class AuthBeanIntitializer {
 

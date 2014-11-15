@@ -10,8 +10,13 @@
  *******************************************************************************/
 package com.uimirror.ouath.client.store;
 
-import java.util.LinkedHashMap;
+import static com.uimirror.core.mongo.feature.BasicDBFields.ID;
+import static com.uimirror.ouath.client.ClientDBFields.API_KEY;
+import static com.uimirror.ouath.client.ClientDBFields.APP_URL;
+import static com.uimirror.ouath.client.ClientDBFields.STATUS;
+
 import java.util.Map;
+import java.util.WeakHashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -22,6 +27,7 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.uimirror.core.dao.AbstractMongoStore;
 import com.uimirror.core.dao.DBException;
+import com.uimirror.core.dao.MongoStoreHelper;
 import com.uimirror.core.user.AccountStatus;
 import com.uimirror.ouath.client.Client;
 import com.uimirror.ouath.client.ClientDBFields;
@@ -33,7 +39,6 @@ import com.uimirror.ouath.client.ClientDBFields;
  */
 public class PersistedClientMongoStore extends AbstractMongoStore<Client> implements ClientStore{
 	
-	private final static String CLIENT_BASIC_SEQ = "cbs";
 	/**
 	 * Assign/ Create collection from the given {@link DBCollection}
 	 * @param collection
@@ -64,7 +69,7 @@ public class PersistedClientMongoStore extends AbstractMongoStore<Client> implem
 	 */
 	@Override
 	public Client findClientById(String clientId, String ... fields) throws DBException {
-		Map<String, Object> projections = new LinkedHashMap<String, Object>();
+		Map<String, Object> projections = new WeakHashMap<String, Object>();
 		for(String field: fields){
 			projections.put(field, 1);
 		}
@@ -77,7 +82,7 @@ public class PersistedClientMongoStore extends AbstractMongoStore<Client> implem
 	@Override
 	public Client findActieveClientByApiKey(String apiKey) throws DBException{
 		Map<String, Object> apiKeyQuery = getApiKeyQuery(apiKey);
-		apiKeyQuery.put(ClientDBFields.STATUS, AccountStatus.ACTIVE.getStatus());
+		apiKeyQuery.put(STATUS, AccountStatus.ACTIVE.getStatus());
 		return queryFirstRecord(apiKeyQuery);
 	}
 
@@ -86,8 +91,8 @@ public class PersistedClientMongoStore extends AbstractMongoStore<Client> implem
 	 */
 	@Override
 	public Client findActieveClientById(String clientId) throws DBException{
-		Map<String, Object> idQuery = getIdMap(clientId);
-		idQuery.put(ClientDBFields.STATUS, AccountStatus.ACTIVE.getStatus());
+		Map<String, Object> idQuery = MongoStoreHelper.getIdMap(clientId);
+		idQuery.put(STATUS, AccountStatus.ACTIVE.getStatus());
 		return queryFirstRecord(idQuery);
 	}
 	
@@ -98,8 +103,8 @@ public class PersistedClientMongoStore extends AbstractMongoStore<Client> implem
 	 */
 	private Map<String, Object> getApiKeyQuery(String apiKey){
 		Assert.hasText(apiKey, "Api key Query Parameter can't be empty");
-		Map<String, Object> query = new LinkedHashMap<String, Object>(3);
-		query.put(ClientDBFields.API_KEY, apiKey);
+		Map<String, Object> query = new WeakHashMap<String, Object>(3);
+		query.put(API_KEY, apiKey);
 		return query;
 	}
 
@@ -109,7 +114,7 @@ public class PersistedClientMongoStore extends AbstractMongoStore<Client> implem
 	@Override
 	protected void ensureIndex() {
 		DBObject obj = new BasicDBObject(ClientDBFields.APP_URL, 1);
-		getCollection().createIndex(obj);;
+		getCollection().createIndex(obj);
 	}
 
 	/* (non-Javadoc)
@@ -117,10 +122,10 @@ public class PersistedClientMongoStore extends AbstractMongoStore<Client> implem
 	 */
 	@Override
 	public Client findClientByAppUrl(String url) throws DBException {
-		Map<String, Object> query = new LinkedHashMap<String, Object>(3);
-		query.put(ClientDBFields.APP_URL, url);
-		Map<String, Object> fields = new LinkedHashMap<String, Object>(3);
-		fields.put(ClientDBFields.ID, 1);
+		Map<String, Object> query = new WeakHashMap<String, Object>(3);
+		query.put(APP_URL, url);
+		Map<String, Object> fields = new WeakHashMap<String, Object>(3);
+		fields.put(ID, 1);
 		return queryFirstRecord(query, fields);
 	}
 	

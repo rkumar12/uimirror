@@ -69,7 +69,7 @@
 
 	<logger name="org.springframework.integration" level="${log.level}" />
 	
-	<logger name="com.uimirror.ws.account" level="${log.level}" additivity="false">
+	<logger name="com.uimirror.account" level="${log.level}" additivity="false">
 		<appender-ref ref="CONSOLE" />
 	</logger>
 	

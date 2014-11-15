@@ -10,6 +10,8 @@
  *******************************************************************************/
 package com.uimirror.user.store;
 
+import static com.uimirror.core.user.UserDBFields.EMAIL;
+
 import java.util.Map;
 import java.util.WeakHashMap;
 
@@ -18,7 +20,6 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.uimirror.core.dao.AbstractMongoStore;
 import com.uimirror.core.user.DefaultUser;
-import com.uimirror.core.user.UserDBFields;
 
 /**
  * A temp store for the user information.
@@ -66,7 +67,7 @@ public class PersistedDefaultUserMongoStore extends AbstractMongoStore<DefaultUs
 	 */
 	private Map<String, Object> getEmailQuery(String email){
 		Map<String, Object> map = new WeakHashMap<String, Object>(3);
-		map.put(UserDBFields.EMAIL, email);
+		map.put(EMAIL, email);
 		return map;
 	}
 
@@ -83,7 +84,7 @@ public class PersistedDefaultUserMongoStore extends AbstractMongoStore<DefaultUs
 	 * Creates index on email
 	 */
 	private void ensureIndexOnEmail(){
-		DBObject email = new BasicDBObject(UserDBFields.EMAIL, 1);
+		DBObject email = new BasicDBObject(EMAIL, 1);
 		getCollection().createIndex(email);
 	}
 
