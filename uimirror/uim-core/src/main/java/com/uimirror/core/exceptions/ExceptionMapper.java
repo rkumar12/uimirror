@@ -23,8 +23,8 @@ public interface ExceptionMapper {
 	/**
 	 * Contracts define the exception to which it needs to be translated.
 	 * 
-	 * @param exceptionToMap
-	 * @return
+	 * @param exceptionToMap which exception to be maped
+	 * @return new throwable for the application specific
 	 */
 	Throwable mapIt(Throwable exceptionToMap);
 }

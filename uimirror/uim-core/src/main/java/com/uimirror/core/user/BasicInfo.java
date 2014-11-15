@@ -97,7 +97,7 @@ public final class BasicInfo extends AbstractBeanBasedDocument<BasicInfo> implem
 	/**
 	 * Serialize the current state that needs to be persisted to the system.
 	 * 
-	 * @return
+	 * @return {@link Map} with the current state
 	 */
 	public Map<String, Object> serailize() {
 		Map<String, Object> state = new WeakHashMap<String, Object>(16);

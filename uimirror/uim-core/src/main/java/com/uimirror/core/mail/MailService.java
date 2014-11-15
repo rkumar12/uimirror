@@ -27,8 +27,8 @@ import org.thymeleaf.context.Context;
 public class MailService  extends AbstractMailService{
 
 	/**
-	 * @param mailSender
-	 * @param templateEngine
+	 * @param mailSender sender of the mail
+	 * @param templateEngine which engine will be used
 	 */
 	public MailService(JavaMailSender mailSender, TemplateEngine templateEngine) {
 		super(mailSender, templateEngine);

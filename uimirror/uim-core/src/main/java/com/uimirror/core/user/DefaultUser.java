@@ -174,8 +174,8 @@ public final class DefaultUser extends AbstractBeanBasedDocument<DefaultUser> im
 	
 	/**
 	 * Updates the User info
-	 * @param basicInfo
-	 * @return
+	 * @param userInfo to be updated
+	 * @return a new instance
 	 */
 	public DefaultUser updateInfo(BasicInfo userInfo){
 		return new DefaultUserBuilder(getProfileId()).
@@ -188,7 +188,7 @@ public final class DefaultUser extends AbstractBeanBasedDocument<DefaultUser> im
 	
 	/**
 	 * Updates the User Credentials
-	 * @param credentials cedentials
+	 * @param userCredentials cedentials
 	 * @return user object
 	 */
 	public DefaultUser updateCredentials(Credentials userCredentials){
@@ -202,7 +202,7 @@ public final class DefaultUser extends AbstractBeanBasedDocument<DefaultUser> im
 	
 	/**
 	 * Updates the User Details
-	 * @param details details
+	 * @param userDetails details
 	 * @return user instance
 	 */
 	public DefaultUser updateDetails(BasicDetails userDetails){
@@ -216,7 +216,7 @@ public final class DefaultUser extends AbstractBeanBasedDocument<DefaultUser> im
 	
 	/**
 	 * Updates the User Details
-	 * @param accountLogs 
+	 * @param userAccountLogs  to be updated
 	 * @return user instance
 	 */
 	public DefaultUser updateLogs(AccountLogs userAccountLogs){

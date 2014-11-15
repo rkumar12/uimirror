@@ -18,9 +18,9 @@ public interface MatcherService<S, D> {
 	
 	/**
 	 * <p>This will match with source and destination</p>
-	 * @param src
-	 * @param des
-	 * @return
+	 * @param src which will be matched
+	 * @param des with which matching will happen
+	 * @return <code>true</code> if matched else <code>false</code>
 	 */
 	boolean isMatching(S src, D des);
 }

@@ -38,7 +38,7 @@ public class DOB{
 	private final String locale;
 
 	/**Validates the given DOB to be in yyyy-mm-dd format
-	 * @return
+	 * @return <code>true</code> if date is in valid format
 	 */
 	public boolean isValidFormat() {
 		return DateTimeUtil.isAValidDate(dob);

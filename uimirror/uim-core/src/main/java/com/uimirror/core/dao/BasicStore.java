@@ -147,8 +147,8 @@ public interface BasicStore<T extends MongoDocumentSerializer<T>> {
 	 * Update the document based on the query specified.
 	 * The update map should have the proper $SET commands
 	 * This will insert when no match found with multi option as false.
-	 * @param query
-	 * @param toUpdate
+	 * @param query to be updated
+	 * @param toUpdate values to be updated
 	 * @return number of record updated
 	 * @throws DBException in case of any exception
 	 */

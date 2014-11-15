@@ -34,9 +34,9 @@ public class BearerTokenExtractor implements TokenExtractor {
 	
 	/**
 	 * Extracts the access token from the header parameters
-	 * @param header
-	 * @param queryParam
-	 * @return
+	 * @param header from where token will be extracted
+	 * @param queryParam query param from which token extracted if not present in header
+	 * @return ouath2 token if found else null
 	 */
 	public static String extractAccessToken(String header, String queryParam) {
 		// first check the header...
@@ -51,8 +51,8 @@ public class BearerTokenExtractor implements TokenExtractor {
 
 	/**
 	 * Extract the OAuth bearer token from a header.
-	 * @param header
-	 * @return
+	 * @param header header from where token will be extracted
+	 * @return extracted token else <code>null</code>
 	 */
 	protected static String extractHeaderToken(String header) {
 		if(StringUtils.hasText(header)){

@@ -48,8 +48,8 @@ public class BackgroundMailService extends AbstractBackgroundProcessor<Map<Strin
 	}
 	
 	/**
-	 * @param locale
-	 * @return
+	 * @param locale loacle to be used for the context
+	 * @return reterived context
 	 */
 	public Context getContext(Locale locale){
 		return mailService.getContext(locale);
@@ -65,8 +65,8 @@ public class BackgroundMailService extends AbstractBackgroundProcessor<Map<Strin
 	
 	/**
 	 * Creates the Job List
-	 * @param param
-	 * @return
+	 * @param paramusing these params new thread will be spermed to send email
+	 * @return new thread instance
 	 */
 	private List<Runnable> createJobs(Map<String, Object> param){
 		List<Runnable> backgrounds = new ArrayList<Runnable>();

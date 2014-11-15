@@ -52,6 +52,7 @@ public interface MongoDocumentSerializer<T> {
 	
 	/**
 	 * Will update the id field into the bean and copying the other existing details.
+	 * @param id id to be updated in the document, when id is generated from the sequence
 	 * @return restored object
 	 */
 	public T updateId(String id);

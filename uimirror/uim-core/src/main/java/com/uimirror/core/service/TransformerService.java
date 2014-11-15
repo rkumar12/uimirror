@@ -23,8 +23,8 @@ public interface TransformerService<P,R> {
 	 * While defining the implementation for the transformer,
 	 * make sure it should do the basic operation from the source type 
 	 * to destination type conversion
-	 * @param src
-	 * @return
+	 * @param src which needs to be transformed
+	 * @return resultant object
 	 */
 	R transform(P src);
 }

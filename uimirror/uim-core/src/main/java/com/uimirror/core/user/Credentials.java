@@ -115,7 +115,7 @@ public class Credentials extends AbstractBeanBasedDocument<Credentials> implemen
 	/**
 	 * Create a map that needs to be persisted
 	 * @return state in a {@link Map}
-	 * @throws IllegalStateException 
+	 * @throws IllegalStateException  when the state is not valid
 	 */
 	@Override
 	public Map<String, Object> writeToMap() throws IllegalStateException{

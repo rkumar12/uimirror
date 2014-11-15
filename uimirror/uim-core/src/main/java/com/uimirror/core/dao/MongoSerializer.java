@@ -26,8 +26,8 @@ public abstract class MongoSerializer extends MongoInitializer{
 
 	/**
 	 * Assign/ Create collection from the given {@link DB}
-	 * @param db
-	 * @param collectionName
+	 * @param db inside of which data base document will be stored
+	 * @param collectionName collection inside the DB
 	 */
 	public MongoSerializer(DB db, String collectionName) {
 		super(db, collectionName);
@@ -35,9 +35,9 @@ public abstract class MongoSerializer extends MongoInitializer{
 
 	/**
 	 * Assign/ Create collection from the given {@link Mongo}
-	 * @param mongo
-	 * @param dbName
-	 * @param collectionName
+	 * @param mongo mongo connection 
+	 * @param dbName data base name
+	 * @param collectionName collection name
 	 */
 	public MongoSerializer(Mongo mongo, String dbName, String collectionName){
 		super(mongo, dbName, collectionName);
@@ -45,7 +45,7 @@ public abstract class MongoSerializer extends MongoInitializer{
 	
 	/**
 	 * Assign/ Create collection from the given {@link DBCollection}
-	 * @param collection
+	 * @param collection where documents will e stored
 	 */
 	public MongoSerializer(DBCollection collection){
 		super(collection);
@@ -53,8 +53,8 @@ public abstract class MongoSerializer extends MongoInitializer{
 	/**
 	 * <p>Defines contract how a object class while saving will be serialized</p>
 	 * This gives a default implementation of object getting converted to {@link Map}
-	 * @param src
-	 * @return
+	 * @param src source from which state will be serailized
+	 * @return {@link Map} of the serailized details
 	 */
 	public Map<String, Object> toMap(Object src){
 		return BeanToMap.toMap(src);

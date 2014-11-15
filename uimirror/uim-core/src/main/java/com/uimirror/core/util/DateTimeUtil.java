@@ -110,6 +110,7 @@ public class DateTimeUtil {
 	/**
 	 * validates date to dd-MM-yyyy format
 	 * @param date which will be checked
+	 * @param format format to which it will be transformed
 	 * @return boolean <code>true</code> if the provided date is valid
 	 */
 	public static boolean isAValidDate(String date, String format) {

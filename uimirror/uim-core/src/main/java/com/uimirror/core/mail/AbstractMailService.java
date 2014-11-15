@@ -45,8 +45,8 @@ public class AbstractMailService {
     }
 	/**
 	 * gets the context using the locale
-	 * @param locale
-	 * @return
+	 * @param locale basics of the locale, the context will be reterived
+	 * @return context
 	 */
 	public Context getContext(Locale locale){
 		locale = locale == null ? Locale.ENGLISH : locale;
@@ -56,12 +56,13 @@ public class AbstractMailService {
 	
 	/**
 	 * Builds the message which needs to be sent
-	 * @param sub
-	 * @param to
-	 * @param ctx
-	 * @param templateName
-	 * @return
-	 * @throws MessagingException
+	 * @param sub subject of the mail
+	 * @param to whom mail will be send
+	 * @param from from whom mail is sending
+	 * @param ctx context
+	 * @param templateName which template will be used for the mail sending
+	 * @return a message that will be send over email
+	 * @throws MessagingException if no message found
 	 */
 	public MimeMessage createInlineMessage(final String sub, final String to, final String from, final Context ctx, final String templateName) throws MessagingException{
 		final MimeMessage mimeMessage = this.mailSender.createMimeMessage();

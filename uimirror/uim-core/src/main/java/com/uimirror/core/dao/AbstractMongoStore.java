@@ -48,8 +48,8 @@ public abstract class AbstractMongoStore<T extends MongoDocumentSerializer<T>> i
 
 	/**
 	 * Assign/ Create collection from the given {@link DBCollection}
-	 * @param collection
-	 * @param claz
+	 * @param collection where doucment will be stored
+	 * @param claz destination class which will participate in seralization and deserailization
 	 */
 	public AbstractMongoStore(DBCollection collection, Class<? extends AbstractBeanBasedDocument<T>> claz){
 		this.seqName = null;
@@ -119,7 +119,7 @@ public abstract class AbstractMongoStore<T extends MongoDocumentSerializer<T>> i
 	 * Delete the document based on the object query specified,
 	 * If empty, then whole documents in the collection.
 	 * 
-	 * @param obj
+	 * @param obj which will be deleted, basically query string
 	 * @return {@link WriteResult}
 	 */
 	protected WriteResult delete(DBObject obj){
