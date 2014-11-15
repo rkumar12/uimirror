@@ -20,8 +20,8 @@ import org.springframework.beans.factory.annotation.Value;
 
 import com.uimirror.ws.api.filter.PoweredByResponseFilter;
 import com.uimirror.ws.api.filter.UimCORSFilter;
+import com.uimirror.ws.api.security.feature.PreAuthorizeDynamicFeature;
 import com.uimirror.ws.api.security.filter.AccessTokenResponseFilter;
-import com.uimirror.ws.api.security.filter.feature.PreAuthorizeDynamicFeature;
 
 public class JerssyApplicationInitializer extends ResourceConfig{
 	protected static final Logger LOG = LoggerFactory.getLogger(JerssyApplicationInitializer.class);

@@ -8,22 +8,18 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.ws.api.security.ouath;
-
-import java.security.Principal;
+package com.uimirror.ws.api.security;
 
 import javax.ws.rs.container.ContainerRequestContext;
 
+import com.uimirror.core.Processor;
+import com.uimirror.core.auth.AccessToken;
+
 /**
+ * A Marker interface that every processor needs to be implemented which will be used to populate 
+ * the security context.
  * @author Jay
  */
-public interface TokenExtractor {
+public interface AccessTokenProcessor extends Processor<ContainerRequestContext, AccessToken>{
 
-	/**
-	 * Extract a token value from an incoming request without authentication.
-	 * 
-	 * @param request the current ServletRequest
-	 * @return an authentication token whose principal is an access token (or null if there is none)
-	 */
-	public Principal extract(ContainerRequestContext request); 
 }

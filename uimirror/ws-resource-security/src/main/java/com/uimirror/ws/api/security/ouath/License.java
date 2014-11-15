@@ -16,6 +16,7 @@ import com.uimirror.core.Constants;
  * <p>This has license for the user services</p>
  * @author Jay
  */
+@Deprecated
 public enum License {
 
 	BASIC("1"),

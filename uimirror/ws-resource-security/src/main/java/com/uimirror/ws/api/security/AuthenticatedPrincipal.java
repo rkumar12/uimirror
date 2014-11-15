@@ -36,7 +36,7 @@ public class AuthenticatedPrincipal extends ClientMetaForm implements Serializab
 	
 	/**
 	 * Gets the {@link AccessToken} if present else null
-	 * @return
+	 * @return token of this context
 	 */
 	public AccessToken getToken(){
 		AccessToken token = (AccessToken)securityContext.getUserPrincipal();
@@ -45,7 +45,7 @@ public class AuthenticatedPrincipal extends ClientMetaForm implements Serializab
 	
 	/**
 	 * Gets the owner of the {@link AccessToken} if present else null
-	 * @return
+	 * @return owner of the token.
 	 */
 	public String getOwner(){
 		AccessToken token = getToken();
@@ -54,7 +54,7 @@ public class AuthenticatedPrincipal extends ClientMetaForm implements Serializab
 	
 	/**
 	 * Gets the client of the {@link AccessToken} if present else null
-	 * @return
+	 * @return client of the token.
 	 */
 	public String getClient(){
 		AccessToken token = getToken();
@@ -63,8 +63,7 @@ public class AuthenticatedPrincipal extends ClientMetaForm implements Serializab
 	
 	/**
 	 * Gets the scope of the {@link AccessToken} if present else null
-	 * 
-	 * @return
+	 * @return scope of the token.
 	 */
 	public Scope getScope(){
 		AccessToken token = getToken();

@@ -27,7 +27,7 @@ public abstract class AuthenticationException extends BaseRunTimeException{
 	/**
      * Constructs an {@code AuthenticationException} with the specified message and root cause.
      *
-     *@param errorCode
+     * @param errorCode error code
      * @param msg the detail message
      * @param t the root cause
      */
@@ -37,7 +37,7 @@ public abstract class AuthenticationException extends BaseRunTimeException{
 
     /**
      * Constructs an {@code AuthenticationException} with the specified message and no root cause.
-     *@param errorCode
+     * @param errorCode error code
      * @param msg the detail message
      */
     public AuthenticationException(int errorCode, String msg) {

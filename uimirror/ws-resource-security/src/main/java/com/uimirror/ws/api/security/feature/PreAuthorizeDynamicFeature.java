@@ -8,7 +8,11 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.ws.api.security.filter.feature;
+package com.uimirror.ws.api.security.feature;
+
+import static com.uimirror.core.auth.AuthConstants.AUTHORIZATION_TOKEN;
+import static com.uimirror.core.auth.AuthConstants.TOKEN_ENCRYPTION_STARTEGY;
+import static com.uimirror.core.auth.SecurityConstants.BEARER;
 
 import java.io.IOException;
 
@@ -20,16 +24,16 @@ import javax.ws.rs.container.ResourceInfo;
 import javax.ws.rs.core.FeatureContext;
 
 import org.glassfish.jersey.server.model.AnnotatedMethod;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 
 import com.uimirror.core.Priorities;
-import com.uimirror.core.Processor;
 import com.uimirror.core.auth.AccessToken;
-import com.uimirror.core.auth.AuthConstants;
-import com.uimirror.core.auth.SecurityConstants;
 import com.uimirror.core.auth.Token;
 import com.uimirror.core.rest.extra.UnAuthorizedException;
+import com.uimirror.ws.api.security.AccessTokenProcessor;
 import com.uimirror.ws.api.security.annotation.PreAuthorize;
 
 /**
@@ -39,8 +43,10 @@ import com.uimirror.ws.api.security.annotation.PreAuthorize;
  * @author Jay
  */
 public class PreAuthorizeDynamicFeature implements DynamicFeature{
-	//Doing Autowering as there was no other options to bind this
-	private @Autowired Processor<ContainerRequestContext, AccessToken> accessTokenProcessor;
+
+	//Autowering as there was no other options to bind this
+	private @Autowired AccessTokenProcessor accessTokenProcessor;
+	private static final Logger LOG = LoggerFactory.getLogger(PreAuthorizeDynamicFeature.class);
 	
 	@Override
     public void configure(final ResourceInfo resourceInfo, final FeatureContext configuration) {
@@ -56,16 +62,22 @@ public class PreAuthorizeDynamicFeature implements DynamicFeature{
 	@Priority(Priorities.TOKENVALIDATION) // authorization filter - should go after any authentication filters
     private static class PreAuthorizeRequestFilter implements ContainerRequestFilter {
 
-		private Processor<ContainerRequestContext, AccessToken> accessTokenProcessor;
+		private AccessTokenProcessor accessTokenProcessor;
+		private static final String DFLT_SPACE = " ";
 
-        PreAuthorizeRequestFilter(Processor<ContainerRequestContext, AccessToken> accessTokenProcessor) {
+        PreAuthorizeRequestFilter(AccessTokenProcessor accessTokenProcessor) {
             this.accessTokenProcessor = accessTokenProcessor;
         }
 
         @Override
         public void filter(ContainerRequestContext requestContext) throws IOException {
         	//update and return the authenticated token
-        	AccessToken token = accessTokenProcessor.invoke(requestContext);
+        	AccessToken token = null;
+        	try{
+        		token = accessTokenProcessor.invoke(requestContext);
+        	}catch(Exception e){
+        		LOG.error("[SECURITY-CRITICAL]- Something went wrong while getting the token {}",e);
+        	}
         	if(token == null)
         		throw new UnAuthorizedException();
         	putBackNewToken(requestContext, token);
@@ -73,17 +85,17 @@ public class PreAuthorizeDynamicFeature implements DynamicFeature{
         
         /**
          * Put Back The Authorization token into the header.
-         * @param requestContext
-         * @param accessToken
+         * @param requestContext request context container
+         * @param accessToken token object
          */
         public void putBackNewToken(ContainerRequestContext requestContext, AccessToken accessToken){
         	Token token = accessToken.getToken();
-        	String accessKey = SecurityConstants.BEARER+" "+token.getToken();
+        	String accessKey = BEARER+DFLT_SPACE+token.getToken();
         	String pharse = token.getParaphrase();
-        	requestContext.getHeaders().remove(AuthConstants.AUTHORIZATION_TOKEN);
-        	requestContext.getHeaders().add(AuthConstants.AUTHORIZATION_TOKEN, accessKey);
+        	requestContext.getHeaders().remove(AUTHORIZATION_TOKEN);
+        	requestContext.getHeaders().add(AUTHORIZATION_TOKEN, accessKey);
         	if(StringUtils.hasText(pharse))
-        		requestContext.getHeaders().add(AuthConstants.TOKEN_ENCRYPTION_STARTEGY, pharse);
+        		requestContext.getHeaders().add(TOKEN_ENCRYPTION_STARTEGY, pharse);
         }
     }
 

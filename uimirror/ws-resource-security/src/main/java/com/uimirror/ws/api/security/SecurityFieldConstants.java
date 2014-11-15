@@ -8,14 +8,19 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.ws.api.security.common;
+package com.uimirror.ws.api.security;
 
 /**
  * <p>This contains the data base field name as key</p>
  * @author Jayaram
  *
  */
-public interface SecurityFieldConstants {
+public class SecurityFieldConstants {
+	
+	//Prevent instance
+	private SecurityFieldConstants(){
+		//NOP
+	}
 
 	//Common Fields
 	public static final String _ID = "_id";

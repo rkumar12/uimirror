@@ -26,14 +26,14 @@ import com.uimirror.core.auth.AuthConstants;
  * This response filter will put back the authorization code to the caller in the head section
  * caller needs to handle it.
  * 
+ * This has been @deprecated in the favor of the accessTokenProcessor service implementation
+ * default implementor is  
  * @author Jayaram
  */
+@Deprecated
 public class AccessTokenResponseFilter implements ContainerResponseFilter{
     
     protected static final Logger LOG = LoggerFactory.getLogger(AccessTokenResponseFilter.class);
-
-    public AccessTokenResponseFilter() {
-    }
 
 	@Override
 	public void filter(ContainerRequestContext cRequest, ContainerResponseContext cResponse) throws IOException {

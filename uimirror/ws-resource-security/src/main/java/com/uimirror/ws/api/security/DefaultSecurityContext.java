@@ -11,20 +11,17 @@
 package com.uimirror.ws.api.security;
 
 import java.security.Principal;
-
 import javax.ws.rs.core.SecurityContext;
-
 import com.uimirror.core.auth.AccessToken;
 
 /**
+ * Default Security context for the Uimirror WS API
  * @author Jay
  */
 public class DefaultSecurityContext implements SecurityContext{
 
 	private final AccessToken token;
-	/**
-	 * 
-	 */
+
 	public DefaultSecurityContext(AccessToken token) {
 		this.token = token;
 	}
@@ -42,7 +39,6 @@ public class DefaultSecurityContext implements SecurityContext{
 	 */
 	@Override
 	public boolean isUserInRole(String role) {
-		// TODO Auto-generated method stub
 		return token == null ? Boolean.FALSE  : Boolean.TRUE;
 	}
 
@@ -59,7 +55,7 @@ public class DefaultSecurityContext implements SecurityContext{
 	 */
 	@Override
 	public String getAuthenticationScheme() {
-		return SecurityContext.BASIC_AUTH;
+		return BASIC_AUTH;
 	}
 
 }

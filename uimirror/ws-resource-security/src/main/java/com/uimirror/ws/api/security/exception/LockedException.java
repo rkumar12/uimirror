@@ -13,6 +13,7 @@ package com.uimirror.ws.api.security.exception;
 import com.uimirror.core.ErrorCodes;
 
 /**
+ * If account is locked.
  * @author Jay
  */
 public class LockedException extends AccountStatusException{

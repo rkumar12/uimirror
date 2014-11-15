@@ -22,7 +22,7 @@ public class InvalidTokenException extends AccountStatusException{
 	private static final long serialVersionUID = -7623018440294937442L;
 
 	/**
-	 * This might because of account has been disabled due to some reason.
+	 * Provided token might not be valid.
 	 */
 	public InvalidTokenException() {
 		super(ErrorCodes._498, "Invalid Token");

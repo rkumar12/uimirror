@@ -24,7 +24,7 @@ import com.uimirror.core.auth.SecurityConstants;
 import com.uimirror.core.rest.extra.UnAuthorizedException;
 import com.uimirror.core.service.TransformerService;
 import com.uimirror.sso.auth.OAuth2Authentication;
-import com.uimirror.ws.api.security.common.SecurityFieldConstants;
+import com.uimirror.ws.api.security.SecurityFieldConstants;
 
 /**
  * A transformer implementation which will transform the {@linkplain ContainerRequestContext}

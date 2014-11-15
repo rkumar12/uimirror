@@ -1,3 +1,4 @@
+package com.uimirror.ws.api.security.feature;
 ///*******************************************************************************
 // * Copyright (c) 2014 Uimirror.
 // * All rights reserved. This program and the accompanying materials
@@ -8,7 +9,7 @@
 // * Contributors:
 // * Uimirror Team
 // *******************************************************************************/
-//package com.uimirror.ws.api.security.filter.feature;
+//package com.uimirror.ws.api.security.feature;
 //
 //import java.io.IOException;
 //

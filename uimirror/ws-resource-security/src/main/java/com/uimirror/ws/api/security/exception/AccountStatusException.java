@@ -21,8 +21,8 @@ public abstract class AccountStatusException extends AuthenticationException{
 	private static final long serialVersionUID = 5754524137547753112L;
 
 	/**
-	 * @param errorCode
-	 * @param msg
+	 * @param errorCode error code
+	 * @param msg error message
 	 */
 	public AccountStatusException(int errorCode, String msg) {
 		super(errorCode, msg);
@@ -30,9 +30,9 @@ public abstract class AccountStatusException extends AuthenticationException{
 	
 	/**
 	 * 
-	 * @param errorCode
-	 * @param msg
-	 * @param t
+	 * @param errorCode error code
+	 * @param msg error message
+	 * @param t throwable exception
 	 */
 	public AccountStatusException(int errorCode, String msg, Throwable t){
 		super(errorCode, msg, t);

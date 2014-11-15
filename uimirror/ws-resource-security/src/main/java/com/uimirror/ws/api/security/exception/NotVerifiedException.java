@@ -22,7 +22,7 @@ public class NotVerifiedException extends AccountStatusException{
 	private static final long serialVersionUID = -7623018440294937442L;
 
 	/**
-	 * This might because of account has been disabled due to some reason.
+	 * Account is not verified
 	 */
 	public NotVerifiedException() {
 		super(ErrorCodes._428, "Account has not yet verified");
