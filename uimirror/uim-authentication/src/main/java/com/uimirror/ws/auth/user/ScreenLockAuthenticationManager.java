@@ -10,6 +10,9 @@
  *******************************************************************************/
 package com.uimirror.ws.auth.user;
 
+import static com.uimirror.core.Constants.IP;
+import static com.uimirror.core.Constants.USER_AGENT;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -139,9 +142,15 @@ public class ScreenLockAuthenticationManager implements AuthenticationManager{
 		long expiresOn = getExpiresOn(instructions);
 		String requestor = prevToken.getClient();
 		String owner = userCredentials.getProfileId();
-		return new DefaultAccessToken(token, owner, requestor
-				, expiresOn, tokenType, prevToken.getScope()
-				, getNotes(details), getInstructions(instructions));
+//		return new DefaultAccessToken(token, owner, requestor
+//				, expiresOn, tokenType, prevToken.getScope()
+//				, getNotes(details), getInstructions(instructions));
+		
+		return new DefaultAccessToken.TokenBuilder(token).
+				addOwner(owner).addClient(requestor).
+				addExpire(expiresOn).addType(tokenType).
+				addScope(prevToken.getScope()).addNotes(getNotes(details)).
+				addInstructions(getInstructions(instructions)).build();
 	}
 
 	/**
@@ -173,8 +182,8 @@ public class ScreenLockAuthenticationManager implements AuthenticationManager{
 	 */
 	private Map<String, Object> getNotes(Map<String, Object> details){
 		Map<String, Object> notes = new LinkedHashMap<String, Object>(5);
-		notes.put(AuthConstants.IP, details.get(AuthConstants.IP));
-		notes.put(AuthConstants.USER_AGENT, details.get(AuthConstants.USER_AGENT));
+		notes.put(IP, details.get(IP));
+		notes.put(USER_AGENT, details.get(USER_AGENT));
 		return notes;
 	}
 	

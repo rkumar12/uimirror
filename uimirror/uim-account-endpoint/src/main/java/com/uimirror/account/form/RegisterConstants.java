@@ -10,18 +10,22 @@
  *******************************************************************************/
 package com.uimirror.account.form;
 
-import com.uimirror.core.Parameters;
 
 /**
  * Contains constants for the user register form
  * @author Jay
  */
-public interface RegisterConstants extends Parameters{
+public class RegisterConstants{
+	
+	//Prevent instance
+	private RegisterConstants(){
+		//NOP
+	}
 
-	String FIRST_NAME = "first_name";
-	String LAST_NAME = "last_name";
-	String EMAIl = "email";
-	String GENDER = "gender";
-	String DATE_OF_BIRTH = "dob";
-	String PASSWORD = "password";
+	public static final String FIRST_NAME = "first_name";
+	public static final String LAST_NAME = "last_name";
+	public static final String EMAIl = "email";
+	public static final String GENDER = "gender";
+	public static final String DATE_OF_BIRTH = "dob";
+	public static final String PASSWORD = "password";
 }

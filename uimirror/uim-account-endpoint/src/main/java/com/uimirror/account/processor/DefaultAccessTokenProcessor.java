@@ -16,7 +16,6 @@ import javax.ws.rs.core.SecurityContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.uimirror.core.Processor;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.Authentication;
 import com.uimirror.core.auth.Scope;
@@ -59,7 +58,9 @@ public class DefaultAccessTokenProcessor implements AccessTokenProcessor{
 		//Step 2- Authenticate and issue a token if required and store the same
 		//AccessToken authPrincipal = renewIfRequired((AccessToken)auth.getPrincipal());
 		LOG.debug("[END]- Authenticating the user and trying to to get the authentication details.");
-		AccessToken token = new DefaultAccessToken(new Token("123",null), "12", "123", 123, TokenType.ACCESS, Scope.READ);;
+		//AccessToken token = new DefaultAccessToken(new Token("123",null), "12", "123", 123, TokenType.ACCESS, Scope.READ);;
+		AccessToken token = new DefaultAccessToken.TokenBuilder(new Token("123",null)).
+				addClient("12").addOwner("123").addExpire(123).addType(TokenType.ACCESS).addScope(Scope.READ).build();
 		token = token.eraseEsential();
 		SecurityContext context = new DefaultSecurityContext(token);
 		param.setSecurityContext(context);

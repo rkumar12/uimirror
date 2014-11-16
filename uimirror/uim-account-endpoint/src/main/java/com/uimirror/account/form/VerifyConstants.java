@@ -10,14 +10,18 @@
  *******************************************************************************/
 package com.uimirror.account.form;
 
-import com.uimirror.core.Parameters;
 
 /**
  * Contains constants for the user register form
  * @author Jay
  */
-public interface VerifyConstants extends Parameters{
+public class VerifyConstants {
+	
+	//Prevent instance
+	private VerifyConstants(){
+		//NOP
+	}
 
-	String SOURCE = "source";
-	String CODE = "code";
+	public static final String SOURCE = "source";
+	public static final String CODE = "code";
 }

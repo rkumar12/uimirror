@@ -113,13 +113,13 @@ public class LoginFormAuthProvider implements AuthenticationProvider{
 			Client client = getClient(token.getClient(), ClientDBFields.NAME);
 			inst.put(ClientDBFields.NAME, client.getName());
 			inst.put(AuthConstants.SCOPE, token.getScope().getScope());
-			token = token.updateInstructions(null, inst);
+			token = token.updateInstructions(inst, Boolean.TRUE);
 			auth = new LoginAuthentication(token);
 		}else if(TokenType.SECRET.equals(token.getType())){
 			Map<String, Object> inst = new LinkedHashMap<String, Object>(5);
 			Client client = getClient(token.getClient(), ClientDBFields.REDIRECT_URI);
 			inst.put(ClientDBFields.REDIRECT_URI, client.getRedirectURI());
-			token = token.updateInstructions(null, inst);
+			token = token.updateInstructions(inst, Boolean.TRUE);
 			auth = new LoginAuthentication(token);
 		}
 		return auth;

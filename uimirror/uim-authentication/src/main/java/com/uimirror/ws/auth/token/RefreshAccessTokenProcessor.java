@@ -118,7 +118,15 @@ public class RefreshAccessTokenProcessor implements Processor<AuthenticatedHeade
 		String owner = prev_token.getOwner();
 		//Get Expires On
 		long expiresOn = getExpiresOn(instructions);
-		return new DefaultAccessToken(token, owner, requestor, expiresOn, type, scope, notes, instructions);
+		return new DefaultAccessToken.TokenBuilder(token).
+				addOwner(owner).
+				addClient(requestor).
+				addExpire(expiresOn).
+				addType(type).
+				addScope(scope).
+				addNotes(notes).
+				addInstructions(instructions).build();
+//		return new DefaultAccessToken(token, owner, requestor, expiresOn, type, scope, notes, instructions);
 	}
 	
 	/**

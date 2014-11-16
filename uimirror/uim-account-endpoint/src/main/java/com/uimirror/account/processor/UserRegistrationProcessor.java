@@ -10,6 +10,9 @@
  *******************************************************************************/
 package com.uimirror.account.processor;
 
+import static com.uimirror.core.Constants.IP;
+import static com.uimirror.core.Constants.USER_AGENT;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -97,7 +100,8 @@ public class UserRegistrationProcessor implements Processor<RegisterForm, String
 		Authentication auth = apiKeyToAuthTransformer.transform(param);
 		//Client client = apiKeyAuthenticateProcessor.invoke(auth);
 		//TODO fix this delete this once testing over
-		Client client = new Client("12", null, null, null, null, null, null, 0l, null, null);
+//		Client client = new Client("12", null, null, null, null, null, null, 0l, null, null);
+		Client client = new Client.ClientBuilder("12").build();
 		return client;
 	}
 	
@@ -155,14 +159,22 @@ public class UserRegistrationProcessor implements Processor<RegisterForm, String
 		if(verifyToken != null)
 			instructions.put(AuthConstants.WEB_VERIFY_TOKEN, verifyToken);
 		Map<String, Object> notes = new LinkedHashMap<String, Object>(5);
-		notes.put(AuthConstants.IP, ip);
-		notes.put(AuthConstants.USER_AGENT, userAgent);
+		notes.put(IP, ip);
+		notes.put(USER_AGENT, userAgent);
 		Token token = TokenGenerator.getNewOneWithOutPharse();
 		TokenType type = TokenType.SECRET;
 		Scope scope = Scope.READWRITE;
 		String requestor = clientId;
 		String owner = profileId;
-		return new DefaultAccessToken(token, owner, requestor, expiresOn, type, scope, notes, instructions);
+//		return new DefaultAccessToken(token, owner, requestor, expiresOn, type, scope, notes, instructions);
+		return new DefaultAccessToken.TokenBuilder(token).
+				addOwner(owner).
+				addClient(requestor).
+				addExpire(expiresOn).
+				addType(type).
+				addScope(scope).
+				addNotes(notes).
+				addInstructions(instructions).build();
 	}
 
 }

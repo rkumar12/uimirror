@@ -33,7 +33,12 @@ public class LoginFormToAuthTransformer implements TransformerService<LoginForm,
 		Assert.notNull(src, "Source Can't be empty");
 		//Validate the form
 		src.isValid();
-		return new LoginAuthentication(src.getToken(),src.getUserId(), src.getPassword(), src.getKeepMeLogedIn(), src.getIp(), src.getUserAgent());
+		//return new LoginAuthentication(src.getToken(),src.getUserId(), src.getPassword(), src.getKeepMeLogedIn(), src.getIp(), src.getUserAgent());
+		return new LoginAuthentication.LoginAuthBuilder(src.getToken()).addUserId(src.getUserId()).
+				addPassword(src.getPassword()).
+				addKeepMeLoggedIn().
+				addIp(src.getIp()).
+				addAgent(src.getUserAgent()).build();
 	}
 
 }

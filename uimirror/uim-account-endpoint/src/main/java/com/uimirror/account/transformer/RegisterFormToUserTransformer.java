@@ -17,7 +17,6 @@ import org.springframework.util.Assert;
 
 import com.uimirror.account.core.Password;
 import com.uimirror.account.form.RegisterForm;
-import com.uimirror.core.DOB;
 import com.uimirror.core.service.TransformerService;
 import com.uimirror.core.user.AccountLogs;
 import com.uimirror.core.user.AccountState;
@@ -49,12 +48,26 @@ public class RegisterFormToUserTransformer implements TransformerService<Registe
 		Credentials credentials = createCredentials(src);
 		AccountLogs logs = createLogs();
 		BasicDetails details = createDetails(src);
-		return new DefaultUser(basicInfo, credentials, details, logs);
+		return new DefaultUser.DefaultUserBuilder(null).
+				addBasicInfo(basicInfo).
+				addCredentials(credentials).
+				addDetails(details).
+				addLogs(logs).build();
+//		return new DefaultUser(basicInfo, credentials, details, logs);
 	}
 	
 	private BasicInfo createUserInfo(RegisterForm form){
-		BasicInfo user = new BasicInfo(null, form.getFirstName()
-				, form.getLastName(), form.getEmail(), form.getGender(), AccountStatus.ACTIVE, AccountState.NEW);
+		
+		BasicInfo user = new BasicInfo.BasicInfoBuilder(null).
+				addFirstName(form.getFirstName()).
+				addLastName(form.getLastName()).
+				addEmail(form.getEmail()).
+				addGender(form.getGender()).
+				addStatus(AccountStatus.ACTIVE).
+				addState(AccountState.NEW).
+				build();
+//		BasicInfo user = new BasicInfo(null, form.getFirstName()
+//				, form.getLastName(), form.getEmail(), form.getGender(), AccountStatus.ACTIVE, AccountState.NEW);
 		return user;
 	}
 	
@@ -62,14 +75,21 @@ public class RegisterFormToUserTransformer implements TransformerService<Registe
 		Password password = form.getPassword();
 		List<String> userNames = new ArrayList<String>();
 		userNames.add(form.getEmail());
-		return new Credentials(null, userNames, password.getPassword(), null, AccountState.NEW, AccountStatus.ACTIVE, password.getParaphrase(), null);
+		return new Credentials.CredentialsBuilder(null).
+				addUserNames(userNames).
+				addPassword(password.getPassword()).
+				addState(AccountState.NEW).
+				addStatus(AccountStatus.ACTIVE).
+				addEncStartegy(password.getParaphrase()).build();
+//		return new Credentials(null, userNames, password.getPassword(), null, AccountState.NEW, AccountStatus.ACTIVE, password.getParaphrase(), null);
 	}
 	
 	private AccountLogs createLogs(){
-		return new AccountLogs(null, DateTimeUtil.getCurrentSystemUTCEpoch(), 0l, null);
+		return new AccountLogs.LogBuilder(null).updatedCreatedOn(DateTimeUtil.getCurrentSystemUTCEpoch()).build();
+//		return new AccountLogs(null, DateTimeUtil.getCurrentSystemUTCEpoch(), 0l, null);
 	}
 	private BasicDetails createDetails(RegisterForm form){
-		DOB dob = new DOB(form.getDateOfBirth());
+//		DOB dob = new DOB(form.getDateOfBirth());
 		//return new BasicDetails(null, null, null, dob, null);
 		//TODO fix me
 		return null;
