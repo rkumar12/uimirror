@@ -10,8 +10,11 @@
  *******************************************************************************/
 package com.uimirror.sso.manager;
 
-import java.util.LinkedHashMap;
+import static com.uimirror.core.Constants.IP;
+import static com.uimirror.core.Constants.USER_AGENT;
+
 import java.util.Map;
+import java.util.WeakHashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -142,9 +145,18 @@ public class OTPAuthenticationManager implements AuthenticationManager{
 		String requestor = prevToken.getClient();
 		String owner = prevToken.getOwner();
 		
-		return new DefaultAccessToken(token, owner, requestor
-				, expiresOn, tokenType, prevToken.getScope()
-				, getNotes(details), getInstructions(intsructions, tokenType));
+//		return new DefaultAccessToken(token, owner, requestor
+//				, expiresOn, tokenType, prevToken.getScope()
+//				, getNotes(details), getInstructions(intsructions, tokenType));
+		
+		return new DefaultAccessToken.TokenBuilder(token).
+				addClient(requestor).
+				addOwner(owner).
+				addExpire(expiresOn).
+				addType(tokenType).
+				addScope(prevToken.getScope()).
+				addNotes(getNotes(getNotes(details))).
+				addInstructions(getInstructions(intsructions, tokenType)).build();
 	}
 	
 	/**
@@ -209,11 +221,7 @@ public class OTPAuthenticationManager implements AuthenticationManager{
 	 * @return
 	 */
 	private long getExpiresInterval(Map<String, Object> instructions){
-		long expires = 0l;
-		if(instructions.get(AuthConstants.INST_AUTH_EXPIRY_INTERVAL) != null){
-			expires = (long)instructions.get(AuthConstants.INST_AUTH_EXPIRY_INTERVAL);
-		}
-		return expires;
+		return (long)instructions.getOrDefault(AuthConstants.INST_AUTH_EXPIRY_INTERVAL, 0l);
 	}
 	
 	/**
@@ -222,9 +230,9 @@ public class OTPAuthenticationManager implements AuthenticationManager{
 	 * @return
 	 */
 	private Map<String, Object> getNotes(Map<String, Object> details){
-		Map<String, Object> notes = new LinkedHashMap<String, Object>(5);
-		notes.put(AuthConstants.IP, details.get(AuthConstants.IP));
-		notes.put(AuthConstants.USER_AGENT, details.get(AuthConstants.USER_AGENT));
+		Map<String, Object> notes = new WeakHashMap<String, Object>(5);
+		notes.put(IP, details.get(IP));
+		notes.put(USER_AGENT, details.get(USER_AGENT));
 		return notes;
 	}
 	
@@ -234,7 +242,7 @@ public class OTPAuthenticationManager implements AuthenticationManager{
 	 * @return
 	 */
 	private Map<String, Object> getInstructions(Map<String, Object> prevInstructions, TokenType type){
-		Map<String, Object> instructions = new LinkedHashMap<String, Object>(5);
+		Map<String, Object> instructions = new WeakHashMap<String, Object>(5);
 		instructions.put(AuthConstants.INST_AUTH_EXPIRY_INTERVAL, getExpiresInterval(prevInstructions));
 		if(TokenType.USER_PERMISSION.equals(type)){
 			instructions.put(AuthConstants.INST_NEXT_STEP, AuthConstants.INST_NEXT_CLIENT_AUTHORIZATION);

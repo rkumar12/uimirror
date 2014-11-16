@@ -16,12 +16,16 @@ import com.uimirror.core.mongo.feature.BasicDBFields;
  * Contains all the DB fields required for user authorized clients
  * @author Jay
  */
-public interface UserAuthorizedClientDBFields extends BasicDBFields{
+public class UserAuthorizedClientDBFields extends BasicDBFields{
+	//Prevent instance
+	private UserAuthorizedClientDBFields(){
+		//NOP
+	}
 	
 	//User authorized clients mapped fields
-	String CLIENTS = "clients";
-	String CLIENT_ID = "client_id";
-	String SCOPE = "scope";
+	public static final String CLIENTS = "clients";
+	public static final String CLIENT_ID = "client_id";
+	public static final String SCOPE = "scope";
 	
-	String CLIENT_ARRAY_MATCH_DOC = CLIENTS+".$";
+	public static final String CLIENT_ARRAY_MATCH_DOC = CLIENTS+".$";
 }

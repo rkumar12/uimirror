@@ -10,6 +10,8 @@
  *******************************************************************************/
 package com.uimirror.sso.transformer;
 
+import static com.uimirror.core.Constants.IP;
+import static com.uimirror.core.Constants.USER_AGENT;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.MultivaluedMap;
 
@@ -41,8 +43,8 @@ public class RequestToAuthTransformer implements TransformerService<ContainerReq
 	@Override
 	public OAuth2Authentication transform(ContainerRequestContext src) {
 		Assert.notNull(src, "Source Can't be empty");
-		String ip = src.getHeaderString(AuthConstants.IP);
-		String host = src.getHeaderString(AuthConstants.USER_AGENT);
+		String ip = src.getHeaderString(IP);
+		String host = src.getHeaderString(USER_AGENT);
 		return new OAuth2Authentication(extractAccessToken(src), ip, host);
 	}
 	

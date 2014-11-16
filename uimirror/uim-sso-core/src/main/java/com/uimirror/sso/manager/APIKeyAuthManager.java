@@ -10,8 +10,11 @@
  *******************************************************************************/
 package com.uimirror.sso.manager;
 
-import java.util.LinkedHashMap;
+import static com.uimirror.core.Constants.IP;
+import static com.uimirror.core.Constants.USER_AGENT;
+
 import java.util.Map;
+import java.util.WeakHashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -108,7 +111,14 @@ public class APIKeyAuthManager implements AuthenticationManager{
 		String requestor = client.getClientId();
 		long expire = 0l;
 		Map<String, Object> details = (Map<String, Object>)auth.getDetails();
-		return new DefaultAccessToken(token, null, requestor, expire, type, getScope(details), getNotes(details), getInstructions());
+		//return new DefaultAccessToken(token, null, requestor, expire, type, getScope(details), getNotes(details), getInstructions());
+		return new DefaultAccessToken.TokenBuilder(token).
+				addClient(requestor).
+				addExpire(expire).
+				addType(type).
+				addScope(getScope(details)).
+				addNotes(getNotes(details)).
+				addInstructions(getInstructions()).build();
 	}
 	
 	/**
@@ -117,9 +127,9 @@ public class APIKeyAuthManager implements AuthenticationManager{
 	 * @return
 	 */
 	private Map<String, Object> getNotes(Map<String, Object> details){
-		Map<String, Object> notes = new LinkedHashMap<String, Object>(5);
-		notes.put(AuthConstants.IP, details.get(AuthConstants.IP));
-		notes.put(AuthConstants.USER_AGENT, details.get(AuthConstants.USER_AGENT));
+		Map<String, Object> notes = new WeakHashMap<String, Object>(5);
+		notes.put(IP, details.get(IP));
+		notes.put(USER_AGENT, details.get(USER_AGENT));
 		return notes;
 	}
 	
@@ -129,7 +139,7 @@ public class APIKeyAuthManager implements AuthenticationManager{
 	 * @return
 	 */
 	private Map<String, Object> getInstructions(){
-		Map<String, Object> instructions = new LinkedHashMap<String, Object>(5);
+		Map<String, Object> instructions = new WeakHashMap<String, Object>(5);
 		instructions.put(AuthConstants.INST_NEXT_STEP, AuthConstants.INST_NEXT_USER_AUTH);
 		return instructions;
 	}

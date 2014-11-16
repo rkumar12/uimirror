@@ -32,7 +32,16 @@ public class SecretKeyToAuthTransformer implements TransformerService<ClientSecr
 		Assert.notNull(src, "Source Can't be empty");
 		//Validate the form
 		src.isValid();
-		return new OAuth2SecretKeyAuthentication(src.getSecretCode(), src.getRedirectURI(), src.getClientId(), src.getClientSecret(), src.getIp(), src.getUserAgent());
+		//return new OAuth2SecretKeyAuthentication(src.getSecretCode(), src.getRedirectURI(), src.getClientId(), src.getClientSecret(), src.getIp(), src.getUserAgent());
+		
+		return new OAuth2SecretKeyAuthentication.OAuth2SecretKeyBuilder(src.getSecretCode()).
+				addRedirectURI(src.getRedirectURI()).
+				addApiKey(src.getClientId()).
+				addClientSecret(src.getClientSecret()).
+				addIp(src.getIp()).
+				addAgent(src.getUserAgent()).
+				build();
+				
 	}
 
 }

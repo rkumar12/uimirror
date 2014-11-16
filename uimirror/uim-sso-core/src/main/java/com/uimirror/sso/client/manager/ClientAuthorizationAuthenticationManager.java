@@ -10,6 +10,7 @@
  *******************************************************************************/
 package com.uimirror.sso.client.manager;
 
+import static com.uimirror.core.Constants.*;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -114,9 +115,18 @@ public class ClientAuthorizationAuthenticationManager implements AuthenticationM
 		Scope scope = getTokenScope(details);
 		Map<String, Object> intsructions = prevToken.getInstructions();
 		long expiresOn = determineExpiresOn(tokenType, intsructions);
-		return new DefaultAccessToken(token, owner, requestor
-				, expiresOn, tokenType, scope
-				, getNotes(details), getInstructions(intsructions));
+		return new DefaultAccessToken.TokenBuilder(token).
+				addOwner(owner).
+				addClient(requestor).
+				addExpire(expiresOn).
+				addType(tokenType).
+				addScope(scope).
+				addNotes(getNotes(details)).
+				addInstructions(getInstructions(intsructions)).
+				build();
+//		return new DefaultAccessToken(token, owner, requestor
+//				, expiresOn, tokenType, scope
+//				, getNotes(details), getInstructions(intsructions));
 	}
 
 	/**
@@ -201,8 +211,8 @@ public class ClientAuthorizationAuthenticationManager implements AuthenticationM
 	 */
 	private Map<String, Object> getNotes(Map<String, Object> details){
 		Map<String, Object> notes = new LinkedHashMap<String, Object>(5);
-		notes.put(AuthConstants.IP, details.get(AuthConstants.IP));
-		notes.put(AuthConstants.USER_AGENT, details.get(AuthConstants.USER_AGENT));
+		notes.put(IP, details.get(IP));
+		notes.put(USER_AGENT, details.get(USER_AGENT));
 		return notes;
 	}
 	

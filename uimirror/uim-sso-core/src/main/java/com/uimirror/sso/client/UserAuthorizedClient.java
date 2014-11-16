@@ -11,9 +11,9 @@
 package com.uimirror.sso.client;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.WeakHashMap;
 
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -44,7 +44,7 @@ public class UserAuthorizedClient extends AbstractBeanBasedDocument<UserAuthoriz
 	@Override
 	public UserAuthorizedClient readFromMap(Map<String, Object> src) {
 		//Validate the source shouldn't be empty
-		validateSource(src);
+		isValidSource(src);
 		//Initialize the state
 		return init(src);
 	}
@@ -163,12 +163,12 @@ public class UserAuthorizedClient extends AbstractBeanBasedDocument<UserAuthoriz
 	 * @return
 	 */
 	private Map<String, Object> serailize() {
-		Map<String, Object> map = new LinkedHashMap<String, Object>(10);
+		Map<String, Object> map = new WeakHashMap<String, Object>(10);
 		map.put(UserAuthorizedClientDBFields.ID, this.getId());
 		List<Map<String, Object>> clients = new ArrayList<Map<String,Object>>(getClients().size());
 		
 		getClients().forEach((client) -> {
-			Map<String, Object> c = new LinkedHashMap<String, Object>();
+			Map<String, Object> c = new WeakHashMap<String, Object>();
 			c.put(UserAuthorizedClientDBFields.CLIENT_ID, client.getClientId());
 			c.put(UserAuthorizedClientDBFields.SCOPE, client.getScope().getScope());
 			c.put(UserAuthorizedClientDBFields.ON, client.getOn());

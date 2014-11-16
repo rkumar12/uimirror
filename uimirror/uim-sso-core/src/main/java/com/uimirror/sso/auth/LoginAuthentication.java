@@ -12,6 +12,7 @@ package com.uimirror.sso.auth;
 
 import java.util.Map;
 
+import com.uimirror.core.Builder;
 import com.uimirror.core.auth.AuthConstants;
 import com.uimirror.core.auth.token.AccessTokenFields;
 import com.uimirror.sso.auth.OAuth2Authentication;
@@ -30,17 +31,52 @@ public class LoginAuthentication extends OAuth2Authentication{
 
 	private static final long serialVersionUID = -4739920105672151406L;
 	
-	/**
-	 * @param token
-	 * @param userId
-	 * @param password
-	 * @param keepMeLoggedIn
-	 * @param ip
-	 * @param userAgent
-	 */
-	public LoginAuthentication(String token, String userId, String password, boolean keepMeLoggedIn, String ip, String userAgent) {
-		super(token, ip, userAgent);
-		init(userId, password, keepMeLoggedIn);
+	public static class LoginAuthBuilder implements Builder<LoginAuthentication>{
+		
+		private String token; 
+		private String userId;
+		private String password;
+		private boolean keepMeLoggedIn;
+		private String ip;
+		private String userAgent;
+		
+		public LoginAuthBuilder(String token){
+			this.token = token;
+		}
+		public LoginAuthBuilder addUserId(String userId){
+			this.userId = userId;
+			return this;
+		}
+		public LoginAuthBuilder addPassword(String password){
+			this.password = password;
+			return this;
+		}
+		public LoginAuthBuilder addKeepMeLoggedIn(){
+			this.keepMeLoggedIn = Boolean.TRUE;
+			return this;
+		}
+		
+		public LoginAuthBuilder addIp(String ip){
+			this.ip = ip;
+			return this;
+		}
+		public LoginAuthBuilder addAgent(String userAgent){
+			this.userAgent = userAgent;
+			return this;
+		}
+
+		/* (non-Javadoc)
+		 * @see com.uimirror.core.Builder#build()
+		 */
+		@Override
+		public LoginAuthentication build() {
+			return new LoginAuthentication(this);
+		}
+		
+	}
+	private LoginAuthentication(LoginAuthBuilder builder){
+		super(builder.token, builder.ip, builder.userAgent);
+		init(builder.userId, builder.password, builder.keepMeLoggedIn);
 	}
 
 	/**

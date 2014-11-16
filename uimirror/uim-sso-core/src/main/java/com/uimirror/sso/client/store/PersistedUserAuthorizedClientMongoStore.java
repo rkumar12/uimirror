@@ -11,9 +11,9 @@
 package com.uimirror.sso.client.store;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.WeakHashMap;
 
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
@@ -21,6 +21,7 @@ import org.springframework.util.StringUtils;
 
 import com.mongodb.DBCollection;
 import com.uimirror.core.dao.AbstractMongoStore;
+import com.uimirror.core.dao.MongoStoreHelper;
 import com.uimirror.core.mongo.BasicMongoOperators;
 import com.uimirror.core.rest.extra.IllegalArgumentException;
 import com.uimirror.sso.client.ClientAuthorizedScope;
@@ -62,7 +63,7 @@ public class PersistedUserAuthorizedClientMongoStore extends AbstractMongoStore<
 	 */
 	@Override
 	public List<UserAuthorizedClient> getAllAuthroziedClient(String profileId) {
-		return getByQuery(getIdMap(profileId));
+		return getByQuery(MongoStoreHelper.getIdMap(profileId));
 	}
 	
 	/**
@@ -84,8 +85,8 @@ public class PersistedUserAuthorizedClientMongoStore extends AbstractMongoStore<
 	 * @return
 	 */
 	private Map<String, Object> getClientIdScopeSerachQuery(String profileId, String clientId, String scope){
-		Map<String, Object> query = getIdMap(profileId);
-		Map<String, Object> elementMatchQuery = new LinkedHashMap<String, Object>(5);
+		Map<String, Object> query = MongoStoreHelper.getIdMap(profileId);
+		Map<String, Object> elementMatchQuery = new WeakHashMap<String, Object>(5);
 		elementMatchQuery.put(BasicMongoOperators.ELEMENT_MATCH, getArrayFindCreteria(clientId, scope));
 		query.put(UserAuthorizedClientDBFields.CLIENTS, elementMatchQuery);
 		return query;
@@ -98,7 +99,7 @@ public class PersistedUserAuthorizedClientMongoStore extends AbstractMongoStore<
 	 * @return
 	 */
 	private Map<String, Object> getArrayFindCreteria(String clientId, String scope){
-		Map<String, Object> query = new LinkedHashMap<String, Object>(5);
+		Map<String, Object> query = new WeakHashMap<String, Object>(5);
 		if(StringUtils.hasText(clientId))
 			query.put(UserAuthorizedClientDBFields.CLIENT_ID, clientId);
 		if(StringUtils.hasText(scope))
@@ -111,7 +112,7 @@ public class PersistedUserAuthorizedClientMongoStore extends AbstractMongoStore<
 	 * @return
 	 */
 	private Map<String, Object> getSingleMatchedArrayProj(){
-		Map<String, Object> fields = new LinkedHashMap<String, Object>(5);
+		Map<String, Object> fields = new WeakHashMap<String, Object>(5);
 		fields.put(UserAuthorizedClientDBFields.CLIENT_ARRAY_MATCH_DOC, 1);
 		return fields;
 	}
@@ -158,11 +159,11 @@ public class PersistedUserAuthorizedClientMongoStore extends AbstractMongoStore<
 	 * @return
 	 */
 	private Map<String, Object> prepareClientEachAddToSetMap(List<Map<String, Object>> clientDocs){
-		Map<String, Object> eachMap = new LinkedHashMap<String, Object>(3);
+		Map<String, Object> eachMap = new WeakHashMap<String, Object>(3);
 		//eachMap.put(BasicMongoOperators.EACH, clientDocs);
 		eachMap.put(UserAuthorizedClientDBFields.CLIENTS, clientDocs.get(0));
 		//Map<String, Object> clientsMap = getClientsMap(clientDocs);
-		Map<String, Object> addToSetMap = new LinkedHashMap<String, Object>(3);
+		Map<String, Object> addToSetMap = new WeakHashMap<String, Object>(3);
 		addToSetMap.put(BasicMongoOperators.ADD_TO_SET, eachMap);
 		return addToSetMap;
 	}
@@ -173,7 +174,7 @@ public class PersistedUserAuthorizedClientMongoStore extends AbstractMongoStore<
 	 * @return
 	 */
 	private Map<String, Object> getClientIdMap(String clientId){
-		Map<String, Object> fields = new LinkedHashMap<String, Object>(5);
+		Map<String, Object> fields = new WeakHashMap<String, Object>(5);
 		fields.put(UserAuthorizedClientDBFields.CLIENT_ID, clientId);
 		return fields;
 	}
@@ -184,7 +185,7 @@ public class PersistedUserAuthorizedClientMongoStore extends AbstractMongoStore<
 	 * @return
 	 */
 	private Map<String, Object> prepareClientPullMap(Map<String, Object> map){
-		Map<String, Object> pullClientMap = new LinkedHashMap<String, Object>(5);
+		Map<String, Object> pullClientMap = new WeakHashMap<String, Object>(5);
 		pullClientMap.put(BasicMongoOperators.PULL, getClientsMap(map));
 		return pullClientMap;
 	}
@@ -195,7 +196,7 @@ public class PersistedUserAuthorizedClientMongoStore extends AbstractMongoStore<
 	 * @return
 	 */
 	private Map<String, Object> getClientsMap(Map<String, Object> map){
-		Map<String, Object> clientMap = new LinkedHashMap<String, Object>(5);
+		Map<String, Object> clientMap = new WeakHashMap<String, Object>(5);
 		clientMap.put(UserAuthorizedClientDBFields.CLIENTS, map);
 		return clientMap;
 	}

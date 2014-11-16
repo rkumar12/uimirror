@@ -10,10 +10,12 @@
  *******************************************************************************/
 package com.uimirror.sso;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import static com.uimirror.core.Constants.IP;
+import static com.uimirror.core.Constants.USER_AGENT;
 
-import com.uimirror.core.Parameters;
+import java.util.Map;
+import java.util.WeakHashMap;
+
 import com.uimirror.core.auth.Authentication;
 
 /**
@@ -31,8 +33,8 @@ public abstract class AbstractAuthentication implements Authentication{
 	
 	/**
 	 * Initialize the basic ip and user Agent map
-	 * @param ip
-	 * @param userAgent
+	 * @param ip user's ip
+	 * @param userAgent user's requesting agent
 	 */
 	public AbstractAuthentication(String ip, String userAgent) {
 		initClientMetaDetails(ip, userAgent);
@@ -42,9 +44,9 @@ public abstract class AbstractAuthentication implements Authentication{
 	}
 	
 	private void initClientMetaDetails(String ip, String userAgent){
-		Map<String, Object> details = new LinkedHashMap<String, Object>(5);
-		details.put(Parameters.IP, ip);
-		details.put(Parameters.USER_AGENT, userAgent);
+		Map<String, Object> details = new WeakHashMap<String, Object>(5);
+		details.put(IP, ip);
+		details.put(USER_AGENT, userAgent);
 		setDetails(details);
 	}
 
@@ -53,7 +55,7 @@ public abstract class AbstractAuthentication implements Authentication{
 	 */
 	@Override
 	public Object getDetails() {
-		return details == null ? new LinkedHashMap<String, Object>(5) : details;
+		return details == null ? new WeakHashMap<String, Object>(5) : details;
 	}
 	
 	public void setDetails(Object details) {

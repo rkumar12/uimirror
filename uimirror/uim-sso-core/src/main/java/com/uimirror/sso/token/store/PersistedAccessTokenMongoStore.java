@@ -79,7 +79,7 @@ public class PersistedAccessTokenMongoStore extends AbstractMongoStore<DefaultAc
 	 * @return
 	 */
 	private Map<String, Object> buildValidTokenQuery(String token){
-		Map<String, Object> query = getIdMap(token);
+		Map<String, Object> query = MongoStoreHelper.getIdMap(token);
 		query.put(AccessTokenFields.AUTH_TKN_EXPIRES, buildTimeValidQuery());
 		return query;
 	}
@@ -130,7 +130,7 @@ public class PersistedAccessTokenMongoStore extends AbstractMongoStore<DefaultAc
 	 */
 	@Override
 	public AccessToken getUserRegisteredWOTPToken(String profileId)throws DBException {
-		Map<String, Object> query = getIdMap(profileId);
+		Map<String, Object> query = MongoStoreHelper.getIdMap(profileId);
 		query.put(AccessTokenFields.AUTH_TKN_INSTRUCTIONS+"."+AuthConstants.WEB_VERIFY_TOKEN, MongoStoreHelper.getExistQuery(Boolean.TRUE));
 		return queryFirstRecord(query);
 	}

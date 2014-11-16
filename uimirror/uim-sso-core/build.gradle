@@ -35,5 +35,22 @@ publishing {
         }
 	}
 }
+jacoco {
+	applyTo run
+}
+
+task applicationCodeCoverageReport(type:JacocoReport){
+	executionData run
+	sourceSets sourceSets.main
+}
+
+jacocoTestReport {
+	reports {
+		xml.enabled true
+		csv.enabled false
+		html.destination "${buildDir}/coverage"
+	}
+}
+defaultTasks 'clean', 'build', 'intsall', 'publishToMavenLocal'
 
 defaultTasks 'clean', 'build', 'intsall', 'publishToMavenLocal'

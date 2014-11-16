@@ -12,6 +12,10 @@ package com.uimirror.sso.auth;
 
 import java.util.Map;
 
+import org.springframework.util.StringUtils;
+
+import com.uimirror.core.Builder;
+import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.AuthConstants;
 import com.uimirror.core.auth.Scope;
 import com.uimirror.core.auth.token.AccessTokenFields;
@@ -27,61 +31,33 @@ import com.uimirror.sso.AbstractAuthentication;
  * 
  * @author Jay
  */
-public class APIKeyAuthentication extends AbstractAuthentication{
+public final class APIKeyAuthentication extends AbstractAuthentication{
 
 	private static final long serialVersionUID = 347196781678243458L;
-	private Object token;
 
-	/**
-	 * @param clientId
-	 * @param redirectUrl
-	 * @param scope
-	 */
-	public APIKeyAuthentication(String clientId, String redirectUrl, Scope scope) {
-		init(clientId, redirectUrl, scope);
-	}
-	/**
-	 * @param clientId
-	 * @param redirectUrl
-	 * @param scope
-	 * @param ip
-	 * @param userAgent
-	 */
-	public APIKeyAuthentication(String clientId, String redirectUrl, Scope scope, String ip, String userAgent) {
-		super(ip, userAgent);
-		init(clientId, redirectUrl, scope);
-	}
+	private AccessToken token;
 	
 	/**
-	 * @param tokenPrincipal
-	 * @param details
+	 * @param tokenPrincipal authenticated token principal
+	 * @param details details associated with this token
 	 */
-	public APIKeyAuthentication(Object tokenPrincipal, Map<String, Object> details) {
+	public APIKeyAuthentication(AccessToken tokenPrincipal, Map<String, Object> details) {
 		this.token = tokenPrincipal;
 		setDetails(details);
 		setAuthenticated(Boolean.TRUE);
 	}
 	/**
-	 * @param tokenPrincipal
+	 * @param tokenPrincipal authenticated token principal
 	 */
-	public APIKeyAuthentication(Object tokenPrincipal) {
+	public APIKeyAuthentication(AccessToken tokenPrincipal) {
 		this.token = tokenPrincipal;
 		setAuthenticated(Boolean.TRUE);
 	}
 	
 	/**
-	 * @param clientId
-	 * @param redirectUrl
-	 * @param scope
-	 */
-	private void init(String clientId, String redirectUrl, Scope scope){
-		initDetails(redirectUrl, clientId, scope);
-	}
-	
-	/**
 	 * Along with the basic details, it will populate the client redirect URI and client ID
 	 * @param redirectUrl
-	 * @param clientId
+	 * @param apiKey
 	 * @param scope
 	 */
 	private void initDetails(String redirectUrl, String clientId, Scope scope){
@@ -118,7 +94,6 @@ public class APIKeyAuthentication extends AbstractAuthentication{
 	}
 	
 	/**
-	 * Compute the owner for this Authentication
 	 * @return
 	 */
 	private String computePrincipalOwner(){
@@ -135,6 +110,57 @@ public class APIKeyAuthentication extends AbstractAuthentication{
 	@Override
 	public String toString() {
 		return "OAuth2APIKeyAuthentication [token=" + token + "]";
+	}
+	
+	public static class APIKeyBuilder implements Builder<APIKeyAuthentication>{
+		
+		private String apiKey;
+		private String redirectUrl; 
+		private Scope scope; 
+		private String ip; 
+		private String userAgent;
+		
+		public APIKeyBuilder(String apiKey){
+			this.apiKey = apiKey;
+		}
+		
+		public APIKeyBuilder addRedirectURI(String redirectUri){
+			this.redirectUrl = redirectUri;
+			return this;
+		}
+		
+		public APIKeyBuilder addScope(String scope){
+			if(!StringUtils.hasText(scope))
+				throw new IllegalArgumentException("Scope is invalid.");
+			this.scope = Scope.getEnum(scope);
+			return this;
+		}
+		public APIKeyBuilder addScope(Scope scope){
+			this.scope = scope;
+			return this;
+		}
+		public APIKeyBuilder addIP(String ip){
+			this.ip = ip;
+			return this;
+		}
+		public APIKeyBuilder addUserAgent(String agent){
+			this.userAgent = agent;
+			return this;
+		}
+
+		/* (non-Javadoc)
+		 * @see com.uimirror.core.Builder#build()
+		 */
+		@Override
+		public APIKeyAuthentication build() {
+			return new APIKeyAuthentication(this);
+		}
+		
+	}
+	
+	private APIKeyAuthentication(APIKeyBuilder builder){
+		super(builder.ip, builder.userAgent);
+		initDetails(builder.redirectUrl, builder.apiKey, builder.scope);
 	}
 
 }

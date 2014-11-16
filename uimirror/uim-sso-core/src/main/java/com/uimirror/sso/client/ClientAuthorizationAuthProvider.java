@@ -10,8 +10,8 @@
  *******************************************************************************/
 package com.uimirror.sso.client;
 
-import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.WeakHashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -127,10 +127,10 @@ public class ClientAuthorizationAuthProvider implements AuthenticationProvider{
 			return null;
 		AccessToken token = (AccessToken)authenticated.getPrincipal();
 		if(TokenType.SECRET.equals(token.getType())){
-			Map<String, Object> inst = new LinkedHashMap<String, Object>(5);
+			Map<String, Object> inst = new WeakHashMap<String, Object>(5);
 			Client client = getClient(token.getClient(), ClientDBFields.REDIRECT_URI);
 			inst.put(ClientDBFields.REDIRECT_URI, client.getRedirectURI());
-			token = token.updateInstructions(null, inst);
+			token = token.updateInstructions(inst, Boolean.TRUE);
 			authenticated = new LoginAuthentication(token);
 		}
 		return authenticated;

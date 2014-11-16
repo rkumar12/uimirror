@@ -32,7 +32,12 @@ public class APIKeyToAuthTransformer implements TransformerService<ClientAPIForm
 		Assert.notNull(src, "Source Can't be empty");
 		//Validate the form
 		src.isValid();
-		return new APIKeyAuthentication(src.getClientId(), src.getRedirectURI(), src.getScope(), src.getIp(), src.getUserAgent());
+		return new APIKeyAuthentication.APIKeyBuilder(src.getClientId()).
+				addRedirectURI(src.getRedirectURI()).
+				addScope(src.getScope()).
+				addIP(src.getIp()).
+				addUserAgent(src.getUserAgent()).build();
+//		return new APIKeyAuthentication(src.getClientId(), src.getRedirectURI(), src.getScope(), src.getIp(), src.getUserAgent());
 	}
 
 }
