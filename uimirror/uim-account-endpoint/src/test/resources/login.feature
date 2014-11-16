@@ -1,11 +1,11 @@
-@medium
-Feature: Searching location by location id
+@large
+Feature: Login
 
   Background: 
-    Given I made a rest call with "<locationId>" as GET parameter
-    And I hit the url
+    Given I gave "<user_id>", "<password>"
+    And I hit the Authenticate button
 
-  Scenario Outline: Search Location with an invalid Location Id
+  Scenario Outline: Login success with otp screen
     Then I got response as "<code>"
 
     Examples: 
