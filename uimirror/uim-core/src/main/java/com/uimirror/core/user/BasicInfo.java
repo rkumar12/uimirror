@@ -66,6 +66,17 @@ public final class BasicInfo extends AbstractBeanBasedDocument<BasicInfo> implem
 				addStatus(accountStatus).build();
 	}
 
+	public BasicInfo enable() {
+		return new BasicInfoBuilder(getProfileId()).
+				addEmail(email).
+				addFirstName(firstName).
+				addGender(gender).
+				addLastName(lastName).
+				addState(AccountState.ENABLED).
+				addStatus(accountStatus).build();
+	}
+	
+
 	@Override
 	public Map<String, Object> writeToMap() {
 		// First check if it represents a valid state then can be serialized

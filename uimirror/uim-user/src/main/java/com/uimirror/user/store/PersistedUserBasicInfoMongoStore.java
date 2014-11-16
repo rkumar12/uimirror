@@ -10,8 +10,8 @@
  *******************************************************************************/
 package com.uimirror.user.store;
 
-import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.WeakHashMap;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
@@ -73,7 +73,7 @@ public class PersistedUserBasicInfoMongoStore extends AbstractMongoStore<BasicIn
 	 * @return
 	 */
 	private Map<String, Object> statusQuery(AccountStatus accountStatus){
-		Map<String, Object> update = new LinkedHashMap<String, Object>(3);
+		Map<String, Object> update = new WeakHashMap<String, Object>(3);
 		update.put(UserDBFields.ACCOUNT_STATUS, accountStatus);
 		return update;
 	}
@@ -109,7 +109,7 @@ public class PersistedUserBasicInfoMongoStore extends AbstractMongoStore<BasicIn
 	 * @return
 	 */
 	private Map<String, Object> stateQuery(AccountState accountState){
-		Map<String, Object> update = new LinkedHashMap<String, Object>(3);
+		Map<String, Object> update = new WeakHashMap<String, Object>(3);
 		update.put(UserDBFields.ACCOUNT_STATE, accountState);
 		return update;
 	}
@@ -120,7 +120,7 @@ public class PersistedUserBasicInfoMongoStore extends AbstractMongoStore<BasicIn
 	 * @return
 	 */
 	private Map<String, Object> emailMap(String email){
-		Map<String, Object> map = new LinkedHashMap<String, Object>(3);
+		Map<String, Object> map = new WeakHashMap<String, Object>(3);
 		map.put(UserDBFields.EMAIL, email);
 		return map;
 	}

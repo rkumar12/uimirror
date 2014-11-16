@@ -8,30 +8,28 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.sso.conf;
+package com.uimirror.account.conf;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ServiceLocatorFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-import com.uimirror.core.crypto.CryptoMatcherService;
-import com.uimirror.sso.core.PasswordMatcher;
+import com.uimirror.core.mail.EmailBeanInitializr;
+import com.uimirror.core.util.thread.BackgroundProcessorFactory;
 
 /**
  * @author Jay
  */
 @Configuration
-@Import({BeanOfAuthManager.class, BeanOfAuthProvider.class
-	, BeanOfStore.class
-	, BeanOfAuthProcessor.class, BeanOfTransformers.class
-	, BeanOfBackGroundProcessor.class, BeanOfDaoIntitializer.class})
-public class SSOBeanInitializer {
+@Import({EmailBeanInitializr.class})
+public class BeanOfBackGroundProcessor {
 
 	@Bean
-	@Autowired
-	public PasswordMatcher passwordMatcher(CryptoMatcherService cryptoMatcherService){
-		return new PasswordMatcher(cryptoMatcherService);
+	public ServiceLocatorFactoryBean backgroundProcessorFactory(){
+		ServiceLocatorFactoryBean sb = new ServiceLocatorFactoryBean();
+		sb.setServiceLocatorInterface(BackgroundProcessorFactory.class);
+		return sb;
 	}
 
 }

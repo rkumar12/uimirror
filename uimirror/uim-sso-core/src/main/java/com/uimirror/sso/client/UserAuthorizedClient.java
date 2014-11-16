@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
 
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang.builder.StandardToStringStyle;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
@@ -177,5 +179,16 @@ public class UserAuthorizedClient extends AbstractBeanBasedDocument<UserAuthoriz
 		map.put(UserAuthorizedClientDBFields.CLIENTS, clients);
 		return map;
 	}
+
+	@Override
+	public String toString() {
+		StandardToStringStyle style = new StandardToStringStyle();
+		style.setFieldSeparator(", ");
+		style.setUseClassName(false);
+		style.setUseIdentityHashCode(false);
+		return new ReflectionToStringBuilder(this, style).toString();
+	}
+	
+	
 	
 }

@@ -25,7 +25,7 @@ public interface UserCredentialsStore {
 	Credentials getCredentialsByProfileId(String identifier) throws DBException;
 	
 	/**
-	 * This will mark the account status as actieve
+	 * This will mark the account state as enables
 	 * @param profileId user's id
 	 * @return number of record got affected ideally it should be 1
 	 * @throws DBException

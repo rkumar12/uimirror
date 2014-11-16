@@ -12,9 +12,11 @@ package com.uimirror.account.processor;
 
 import static com.uimirror.core.Constants.IP;
 import static com.uimirror.core.Constants.USER_AGENT;
+import static com.uimirror.core.auth.AuthConstants.DEFAULT_EMAIL_LINK_EXPIRY_INTERVAL;
+import static com.uimirror.core.auth.AuthConstants.INST_NEXT_ACCOUNT_VERIFY;
 
-import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.WeakHashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,26 +27,25 @@ import com.uimirror.core.Processor;
 import com.uimirror.core.RandomKeyGenerator;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.AuthConstants;
-import com.uimirror.core.auth.Authentication;
 import com.uimirror.core.auth.Scope;
 import com.uimirror.core.auth.Token;
 import com.uimirror.core.auth.TokenType;
 import com.uimirror.core.auth.token.DefaultAccessToken;
+import com.uimirror.core.auth.token.DefaultAccessToken.TokenBuilder;
+import com.uimirror.core.dao.RecordNotFoundException;
 import com.uimirror.core.exceptions.ApplicationExceptionMapper;
 import com.uimirror.core.extra.MapException;
 import com.uimirror.core.mail.BackgroundMailService;
 import com.uimirror.core.rest.extra.ApplicationException;
 import com.uimirror.core.rest.extra.ResponseTransFormer;
-import com.uimirror.core.service.TransformerService;
 import com.uimirror.core.service.ValidatorService;
 import com.uimirror.core.user.DefaultUser;
+import com.uimirror.core.util.DateTimeUtil;
 import com.uimirror.core.util.thread.BackgroundProcessorFactory;
 import com.uimirror.ouath.client.Client;
-import com.uimirror.sso.auth.APIKeyAuthentication;
-import com.uimirror.sso.client.AllowAuthorizationClientProcessor;
-import com.uimirror.sso.form.ClientAPIForm;
+import com.uimirror.ouath.client.store.ClientStore;
 import com.uimirror.sso.token.TokenGenerator;
-import com.uimirror.sso.token.store.AccessTokenStore;
+import com.uimirror.user.store.AccountTokenStore;
 
 /**
  * Processor for the user account creation, it will first check for the user existence
@@ -62,14 +63,12 @@ import com.uimirror.sso.token.store.AccessTokenStore;
 public class UserRegistrationProcessor implements Processor<RegisterForm, String>{
 
 	protected static final Logger LOG = LoggerFactory.getLogger(UserRegistrationProcessor.class);
-	private @Autowired Processor<Authentication, Client> apiKeyAuthenticateProcessor;
+	private @Autowired ClientStore persistedClientMongoStore;
 	private @Autowired Processor<RegisterForm, DefaultUser> createUserProcessor;
-	private @Autowired TransformerService<ClientAPIForm, APIKeyAuthentication> apiKeyToAuthTransformer;
-	private @Autowired AccessTokenStore persistedAccessTokenMongoStore;
 	private @Autowired BackgroundProcessorFactory<Map<String, Object>, Object> backgroundMailService;
-	private @Autowired BackgroundProcessorFactory<AccessToken, Object> allowAuthorizationClientProcessor;
 	private @Autowired ResponseTransFormer<String> jsonResponseTransFormer;
 	private @Autowired ValidatorService<String> userRegistrationValidationService;
+	private @Autowired AccountTokenStore persistedAccountTokenMongoStore;
 
 	public UserRegistrationProcessor() {
 		// NOP
@@ -82,13 +81,15 @@ public class UserRegistrationProcessor implements Processor<RegisterForm, String
 	@MapException(use=ApplicationExceptionMapper.NAME)
 	public String invoke(RegisterForm param) throws ApplicationException {
 		LOG.info("[START]- Registering a new User.");
-		//Step -1 Create Client
+		//Step -1 Get the client such as mobile app or web app of uimirror
 		Client client = authenticateAndGetClient(param);
 		//Step -2 Validate User, If necessary, pull out the previous token and send back to the verify page
-		//userRegistrationValidationService.validate(param.getEmail());
+		userRegistrationValidationService.validate(param.getEmail());
 		DefaultUser user = createUserProcessor.invoke(param);
-		AccessToken token = getNewToken(client, user, param);
+		AccessToken token = issueToken(client, user, param);
 		LOG.info("[END]- Registering a new User.");
+		//TODO fix me, delete below line before code release
+		LOG.debug("[INTERNAL]- token.eraseEsential()"+token.eraseEsential());
 		return jsonResponseTransFormer.doTransForm(token.eraseEsential().toResponseMap());
 	}
 	
@@ -97,84 +98,90 @@ public class UserRegistrationProcessor implements Processor<RegisterForm, String
 	 * @return
 	 */
 	private Client authenticateAndGetClient(RegisterForm param){
-		Authentication auth = apiKeyToAuthTransformer.transform(param);
-		//Client client = apiKeyAuthenticateProcessor.invoke(auth);
-		//TODO fix this delete this once testing over
-//		Client client = new Client("12", null, null, null, null, null, null, 0l, null, null);
-		Client client = new Client.ClientBuilder("12").build();
+		Client client = null;
+		try{
+			client = persistedClientMongoStore.findClientByApiKey(param.getClientId());
+		}catch(RecordNotFoundException e){
+			LOG.error("[MINOR-ERROR]- Recevied Request for user registeration from a invalid client");
+			//TODO fix this delete this once testing over
+			client = new Client.ClientBuilder("12").build();
+		}
 		return client;
 	}
 	
-	private AccessToken getNewToken(Client client, DefaultUser user, RegisterForm form){
+	private AccessToken issueToken(Client client, DefaultUser user, RegisterForm form){
 		String clientId = client.getClientId();
 		String owner = user.getUserInfo().getProfileId();
 		String ip = form.getIp();
 		String userAgent = form.getUserAgent();
-		grantEmailToken(clientId, owner, ip, userAgent);
-		AccessToken token = grantWebToken(clientId, owner, ip, userAgent);
+		String verifyCode = RandomKeyGenerator.randomString(5);
+		AccessToken token = grantWebToken(clientId, owner, ip, userAgent, verifyCode);
+		grantEmailToken(clientId, owner, ip, userAgent, verifyCode);
 		return token;
 	}
 	
 	/**
-	 * @param clientId
-	 * @param proifleId
-	 * @param ip
-	 * @param userAgent
-	 * @return
+	 * Grants a new Token to be entered in the web test box
+	 * @param clientId from which source request came from
+	 * @param proifleId newly created user
+	 * @param ip user's source
+	 * @param userAgent user's device agent
+	 * @param verifyCode 
+	 * @return new Token
 	 */
-	private AccessToken grantWebToken(String clientId, String proifleId, String ip, String userAgent){
-		String token = RandomKeyGenerator.randomString(5);
-		AccessToken access_token = grantToken(clientId, proifleId, ip, userAgent, 0l, token);
-		persistedAccessTokenMongoStore.store(access_token);
+	private AccessToken grantWebToken(String clientId, String proifleId, String ip, String userAgent, String verifyCode){
+		AccessToken access_token = grantToken(clientId, proifleId, ip, userAgent, 0l, verifyCode);
+		persistedAccountTokenMongoStore.store(access_token);
 		return access_token;
 	}
 	/**
-	 * @param clientId
-	 * @param proifleId
-	 * @param ip
-	 * @param userAgent
-	 * @return
+	 * Grants a email link token and send the mail to the user.
+	 * @param clientId from which source request came from
+	 * @param proifleId newly created user
+	 * @param ip user's source
+	 * @param userAgent user's device agent
+	 * @param verifyCode which will be sent to the user's email
 	 */
-	private void grantEmailToken(String clientId, String proifleId, String ip, String userAgent){
-		AccessToken token =  grantToken(clientId, proifleId, ip, userAgent, AuthConstants.DEFAULT_EXPIRY_INTERVAL, null);
-		persistedAccessTokenMongoStore.store(token);
+	private void grantEmailToken(String clientId, String proifleId, String ip, String userAgent, String verifyCode){
+		AccessToken token =  grantToken(clientId, proifleId, ip, userAgent, DEFAULT_EMAIL_LINK_EXPIRY_INTERVAL, null);
+		persistedAccountTokenMongoStore.store(token);
 		//TODO process mail i.e for latter
 		backgroundMailService.getProcessor(BackgroundMailService.NAME).invoke(null);
-		allowAuthorizationClientProcessor.getProcessor(AllowAuthorizationClientProcessor.NAME).invoke(token);
 	}
 	
 	/**
-	 * @param clientId
-	 * @param profileId
-	 * @param ip
-	 * @param userAgent
-	 * @param expiresOn
-	 * @param verifyToken
-	 * @return
+	 * Creates a new {@link TokenType#TEMPORAL} with the provided details and store that token for the further reference
+	 * @param clientId from which source request came from
+	 * @param proifleId newly created user
+	 * @param ip user's source
+	 * @param userAgent user's device agent
+	 * @param expiresOn interval for the token to get expiry
+	 * @param verifyToken issued token
+	 * @return new Access Token
 	 */
 	private AccessToken grantToken(String clientId, String profileId, String ip, String userAgent, long expiresOn, String verifyToken){
-		Map<String, Object> instructions = new LinkedHashMap<String, Object>(3);
-		instructions.put(AuthConstants.INST_AUTH_EXPIRY_INTERVAL, AuthConstants.DEFAULT_EXPIRY_INTERVAL);
-		instructions.put(AuthConstants.INST_NEXT_STEP, AuthConstants.INST_NEXT_ACCOUNT_VERIFY);
+		Token token = TokenGenerator.getNewOneWithOutPharse();
+		TokenBuilder tokenBuilder = new DefaultAccessToken.TokenBuilder(token);
+		
+		Map<String, Object> instructions = new WeakHashMap<String, Object>(3);
+		instructions.put(AuthConstants.INST_NEXT_STEP, INST_NEXT_ACCOUNT_VERIFY);
+		
 		if(verifyToken != null)
 			instructions.put(AuthConstants.WEB_VERIFY_TOKEN, verifyToken);
-		Map<String, Object> notes = new LinkedHashMap<String, Object>(5);
+		tokenBuilder.addInstructions(instructions);
+		Map<String, Object> notes = new WeakHashMap<String, Object>(5);
 		notes.put(IP, ip);
 		notes.put(USER_AGENT, userAgent);
-		Token token = TokenGenerator.getNewOneWithOutPharse();
-		TokenType type = TokenType.SECRET;
-		Scope scope = Scope.READWRITE;
-		String requestor = clientId;
-		String owner = profileId;
-//		return new DefaultAccessToken(token, owner, requestor, expiresOn, type, scope, notes, instructions);
-		return new DefaultAccessToken.TokenBuilder(token).
-				addOwner(owner).
-				addClient(requestor).
-				addExpire(expiresOn).
-				addType(type).
-				addScope(scope).
-				addNotes(notes).
-				addInstructions(instructions).build();
+		tokenBuilder.addNotes(notes);
+		tokenBuilder.addType(TokenType.SECRET);
+		tokenBuilder.addScope(Scope.READWRITE);
+		tokenBuilder.addOwner(profileId);
+		tokenBuilder.addClient(clientId);
+		if(expiresOn > 0l){
+			expiresOn = DateTimeUtil.addToCurrentUTCTimeConvertToEpoch(expiresOn);
+			tokenBuilder.addExpire(expiresOn);
+		}
+		return tokenBuilder.build();
 	}
 
 }

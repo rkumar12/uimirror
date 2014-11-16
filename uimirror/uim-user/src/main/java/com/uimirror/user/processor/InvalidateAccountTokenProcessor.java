@@ -8,36 +8,37 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.account.processor;
+package com.uimirror.user.processor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.WeakHashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 
-import com.uimirror.core.user.AccountState;
+import com.uimirror.core.auth.token.AccessTokenFields;
 import com.uimirror.core.util.thread.AbstractBackgroundProcessor;
-import com.uimirror.user.store.UserCredentialsStore;
+import com.uimirror.user.store.AccountTokenStore;
 
 /**
- * Set of operation that needs to be handled if user account is in {@link AccountState#DISABLED}
- * This will try to enable the account.
+ * Set of operation that needs to be handled for the account token removal
  * <ol>
- * <li>Set the account state as enabled in credentials and basic user profile</li>
+ * <li>Delete the issued tokens based on the profile id</li>
  * </ol> 
  * @author Jay
  */
-//TODO User basic should have state, so implement that as well
-public class UserRestoreProcessor extends AbstractBackgroundProcessor<String, Object>{
+public class InvalidateAccountTokenProcessor extends AbstractBackgroundProcessor<String, Object>{
 
-	protected static final Logger LOG = LoggerFactory.getLogger(UserRestoreProcessor.class);
+	protected static final Logger LOG = LoggerFactory.getLogger(InvalidateAccountTokenProcessor.class);
 	
-	public static final String NAME = "URP";
-	private @Autowired UserCredentialsStore persistedUserCredentialMongoStore;
+	public static final String NAME = "INVATP";
+	private @Autowired AccountTokenStore persistedAccountTokenMongoStore;
 
-	public UserRestoreProcessor(){
+	public InvalidateAccountTokenProcessor(){
 		super(1);
 	}
 	
@@ -45,29 +46,33 @@ public class UserRestoreProcessor extends AbstractBackgroundProcessor<String, Ob
 	 * @see com.uimirror.account.auth.controller.BackgroundProcessor#invoke(java.lang.Object)
 	 */
 	@Override
-	public void invoke(String profileId){
-		LOG.debug("[START]- Enabling/ Restoring user.");
+	public void invoke(final String profileId){
+		if(!StringUtils.hasText(profileId))
+			return;
+		LOG.debug("[START]- Deleting the token issued for the account creation.");
 		getAdaptor().submitTasks(createJobs(profileId));
-		LOG.debug("[END]- Enabling/ Restoring user.");
+		LOG.debug("[END]- Deleting the token issued for the account creation.");
 	}
 	
 	/**
 	 * Creates the Job List
-	 * @param token
-	 * @return
+	 * @param profileId for which account token needs to be deleted
+	 * @return list of background jobs
 	 */
 	private List<Runnable> createJobs(String profileId){
 		List<Runnable> backgrounds = new ArrayList<Runnable>();
 		backgrounds.add(new RunInBackGround(profileId));
 		return backgrounds;
 	}
-	
+
 	/**
-	 * Enable account in the credentials
+	 * On basics of profile id, it will delete all the issued token
 	 * @param profileId
 	 */
-	private void enableInCredentials(String profileId){
-		persistedUserCredentialMongoStore.enableAccount(profileId);
+	private void delete(String profileId){
+		Map<String, Object> query = new WeakHashMap<String, Object>(3);
+		query.put(AccessTokenFields.AUTH_TKN_OWNER, profileId);
+		persistedAccountTokenMongoStore.deleteByQuery(query);
 	}
 
 	/**
@@ -86,8 +91,8 @@ public class UserRestoreProcessor extends AbstractBackgroundProcessor<String, Ob
 		 */
 		@Override
 		public void run() {
-			//Step 1- Enable in Credentials first
-			enableInCredentials(profileId);
+			//Mark as Expired 
+			delete(profileId);
 		}
 		
 	}

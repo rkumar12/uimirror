@@ -84,7 +84,7 @@ public class LoginFormAuthProvider implements AuthenticationProvider{
 	}
 	
 	/**
-	 * Stores the {@link AccessToken} using {@link AccessTokenStore}
+	 * Stores the {@link AccessToken} using {@link AccountTokenStore}
 	 * @param token
 	 */
 	private void storeAuthenticatedPrincipal(AccessToken token){

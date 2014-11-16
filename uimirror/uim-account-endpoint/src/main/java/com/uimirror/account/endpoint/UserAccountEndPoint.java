@@ -37,12 +37,9 @@ import com.uimirror.core.Processor;
 public class UserAccountEndPoint {
 
   private static Logger LOG = LoggerFactory.getLogger(UserAccountEndPoint.class);
-  private @Autowired Processor<VerifyForm, String> verifyActivateUserAccountProcessor;
+  private @Autowired Processor<VerifyForm, String> VerifyUserAccountProcessor;
   private @Autowired Processor<RegisterForm, String> userRegistrationProcessor;
 
-  public UserAccountEndPoint() {
-    // NOP
-  }
 
   /**
    * De-serialize the Register form submitted and try to authenticate the client id , to validate if
@@ -90,7 +87,7 @@ public class UserAccountEndPoint {
   @Path(AccountEndPointConstant.VERIFY)
   public Object verify(@BeanParam VerifyForm form) {
     LOG.info("[ENTRY]- Received requst for new user registeration verifications.");
-    Object response = verifyActivateUserAccountProcessor.invoke(form);
+    Object response = VerifyUserAccountProcessor.invoke(form);
     LOG.info("[EXIT]- Received requst for new user registeration verifications.");
     return response;
   }

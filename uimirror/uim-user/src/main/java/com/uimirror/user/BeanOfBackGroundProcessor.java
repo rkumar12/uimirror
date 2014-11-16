@@ -19,6 +19,7 @@ import com.uimirror.core.user.DefaultUser;
 import com.uimirror.core.util.thread.BackgroundProcessor;
 import com.uimirror.user.processor.BackGroundCreateMissingUserProcessor;
 import com.uimirror.user.processor.BackGroundCreateUserProcessor;
+import com.uimirror.user.processor.InvalidateAccountTokenProcessor;
 
 /**
  * Initialize or configures the service bean getting used for this application
@@ -37,6 +38,12 @@ public class BeanOfBackGroundProcessor {
 	@Scope(value=ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 	public BackgroundProcessor<DefaultUser, Object> backGroundCreateMissingUserProcessor(){
 		return new BackGroundCreateMissingUserProcessor();
+	}
+	
+	@Bean(name=InvalidateAccountTokenProcessor.NAME)
+	@Scope(value=ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+	public BackgroundProcessor<String, Object> invalidateAccountTokenProcessor(){
+		return new InvalidateAccountTokenProcessor();
 	}
 
 }

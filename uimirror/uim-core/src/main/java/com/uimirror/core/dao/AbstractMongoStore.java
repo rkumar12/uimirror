@@ -232,6 +232,29 @@ public abstract class AbstractMongoStore<T extends MongoDocumentSerializer<T>> i
 		return getCollection().update(MongoStoreHelper.convertToDBObject(q), MongoStoreHelper.convertToDBObject(u), nomatchInsert, multi);
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.uimirror.core.dao.BasicStore#findAndModify(java.util.Map, java.util.Map, java.util.Map)
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	@MapException(use=MongoExceptionMapper.NAME)
+	public T findAndModify(Map<String, Object> query, Map<String, Object> fields, Map<String, Object> toUpdate) throws DBException{
+		DBObject result = getCollection().
+		findAndModify(MongoStoreHelper.convertToDBObject(query), 
+				MongoStoreHelper.convertToDBObject(fields), null, Boolean.FALSE, 
+				MongoStoreHelper.convertToDBObject(toUpdate), Boolean.TRUE, Boolean.FALSE);
+		return result == null ? null : t.readFromMap(result.toMap());
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.uimirror.core.dao.BasicStore#findAndModify(java.util.Map, java.util.Map)
+	 */
+	@Override
+	public T findAndModify(Map<String, Object> query, Map<String, Object> toUpdate) throws DBException{
+		LOG.debug("[SINGLE]- Getting an object based on the Query specified that needs to be updated");
+		return findAndModify(query, null, toUpdate);
+	}
+	
 	/**
 	 * Concerts the {@linkplain DBCursor} into list of {@linkplain T}
 	 * @param cursor document cursor

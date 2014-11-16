@@ -10,13 +10,18 @@
  *******************************************************************************/
 package com.uimirror.account.form;
 
+import static com.uimirror.account.form.RegisterConstants.*;
+
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.ws.rs.FormParam;
+import javax.ws.rs.QueryParam;
 
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang.builder.StandardToStringStyle;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.util.StringUtils;
 
@@ -43,23 +48,32 @@ public final class RegisterForm extends ClientAPIForm implements BeanValidatorSe
 
 	private static final long serialVersionUID = -1215523730014366150L;
 	
-	@FormParam(RegisterConstants.FIRST_NAME)
+	@FormParam(FIRST_NAME)
 	private String firstName;
 	
-	@FormParam(RegisterConstants.LAST_NAME)
+	@FormParam(LAST_NAME)
 	private String lastName;
 	
-	@FormParam(RegisterConstants.EMAIl)
+	@FormParam(EMAIl)
 	private String email;
 	
-	@FormParam(RegisterConstants.PASSWORD)
+	@FormParam(PASSWORD)
 	private String password;
 	
-	@FormParam(RegisterConstants.GENDER)
+	@FormParam(GENDER)
 	private String gender;
 	
-	@FormParam(RegisterConstants.DATE_OF_BIRTH)
+	@FormParam(DATE_OF_BIRTH)
 	private String dateOfBirth;
+	
+	@QueryParam(LANGUAGE)
+	private String language;
+	
+	@QueryParam(COUNTRY_CODE)
+	private String countryCode;
+	
+	@QueryParam(TIMEZONE)
+	private String timeZone;
 	
 	public String getFirstName() {
 		return StringUtils.capitalize(firstName);
@@ -89,6 +103,18 @@ public final class RegisterForm extends ClientAPIForm implements BeanValidatorSe
 		return dateOfBirth;
 	}
 
+	public String getLanguage() {
+		return language;
+	}
+
+	public String getCountryCode() {
+		return countryCode;
+	}
+
+	public String getTimeZone() {
+		return timeZone;
+	}
+
 	/* (non-Javadoc)
 	 * @see com.uimirror.core.service.BeanValidatorService#isValid()
 	 */
@@ -106,35 +132,37 @@ public final class RegisterForm extends ClientAPIForm implements BeanValidatorSe
 		List<String> fields = new ArrayList<String>();
 		String ageLimitMessage = null;
 		String errorMessage = null;
+		//Check Meta Info before starting
+		if(!StringUtils.hasText(getTimeZone()))
+			fields.add(TIMEZONE);
 		//matches the Name first
 		if(!StringUtils.hasText(getFirstName()) || !StringRegexUtil.isValidName(getFirstName()))
-			fields.add(RegisterConstants.FIRST_NAME);
+			fields.add(FIRST_NAME);
 		/*If last name is null then checks for the first name.*/
 		if(StringUtils.hasText(getLastName())){
 			if(!StringRegexUtil.isValidName(getLastName()))
-					fields.add(RegisterConstants.LAST_NAME);
+					fields.add(LAST_NAME);
 		}else{
-			if(!fields.contains(RegisterConstants.FIRST_NAME)){
-				fields.add(RegisterConstants.LAST_NAME);
+			if(!fields.contains(FIRST_NAME)){
+				fields.add(LAST_NAME);
 			}
 		}
-		
 		//EMail Match
 		if(!StringUtils.hasText(getEmail()) || ! isAValidEmail(getEmail()))
-			fields.add(RegisterConstants.EMAIl);
+			fields.add(EMAIl);
 		//Gender match
 		if(!StringUtils.hasText(gender) || getGender() == null)
-			fields.add(RegisterConstants.GENDER);
+			fields.add(GENDER);
 		//DOB
 		if(!StringUtils.hasText(getDateOfBirth()) || !DateTimeUtil.isAValidDate(getDateOfBirth()))
-			fields.add(RegisterConstants.DATE_OF_BIRTH);
+			fields.add(DATE_OF_BIRTH);
 			//Check Age limit
 		else if(!DateTimeUtil.isAgeAboveEighteen(getDateOfBirth(), null))
 			ageLimitMessage=MessageUtil.getAgeLimitMessage();
 		if(!StringUtils.hasText(password))
-			fields.add(RegisterConstants.PASSWORD);
+			fields.add(PASSWORD);
 		else if(!StringRegexUtil.isPasswordFollowingThePolicy(password))
-			fields.add(RegisterConstants.PASSWORD);
+			fields.add(PASSWORD);
 				
 		if(fields.size() > 0 ){
 			Map<String, Object> errors = new LinkedHashMap<String, Object>(9);
@@ -142,7 +170,7 @@ public final class RegisterForm extends ClientAPIForm implements BeanValidatorSe
 			errorMessage = MessageUtil.getErrorMessage(fields);
 			if(ageLimitMessage != null)
 				errorMessage+= ageLimitMessage;
-			if(fields.contains(RegisterConstants.PASSWORD))
+			if(fields.contains(PASSWORD))
 				errorMessage+= "Password must be 6 Charecter long with out any space.";
 			errors.put(Constants.MESSAGE, errorMessage);
 			informIllegalArgument(errors);
@@ -170,10 +198,11 @@ public final class RegisterForm extends ClientAPIForm implements BeanValidatorSe
 
 	@Override
 	public String toString() {
-		return "ClientRegisterForm [firstName="
-				+ firstName + ", lastName=" + lastName + ", email=" + email
-				+ ", password=[*******], gender=" + gender
-				+ ", dateOfBirth=" + dateOfBirth + "]";
+		StandardToStringStyle style = new StandardToStringStyle();
+	    style.setFieldSeparator(", ");
+	    style.setUseClassName(false);
+	    style.setUseIdentityHashCode(false);
+	    return new ReflectionToStringBuilder(this, style).toString();
 	}
 
 }

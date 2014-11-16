@@ -55,7 +55,8 @@ public class WebAppInitializer extends SpringBootServletInitializer {
         params.put("javax.ws.rs.Application","com.uimirror.account.conf.JerssyApplicationInitializer");
         //params.put("jersey.config.server.provider.classnames","com.uimirror.api.filter.SecurityContextFilter,com.uimirror.challenge.config.filter.UimCORSFilter, com.uimirror.api.filter.PoweredByResponseFilter");
         registration.setInitParameters(params);
-        registration.addUrlMappings(contextPath+"/*");
+//        registration.addUrlMappings(contextPath+"/*");
+        registration.addUrlMappings("/*");
         return registration;
     }
     

@@ -10,6 +10,8 @@
  *******************************************************************************/
 package com.uimirror.user.store;
 
+import java.util.List;
+
 import com.uimirror.core.dao.DBException;
 import com.uimirror.core.dao.RecordNotFoundException;
 import com.uimirror.core.user.DefaultUser;
@@ -32,6 +34,24 @@ public interface DefaultUserStore {
 	 * @throws DBException if any internal or syntax error found
 	 */
 	DefaultUser getByProfileId(String profileId) throws DBException;
+	
+	/**
+	 * Retrieves the list of the profile id whose created time is before given time
+	 * 
+	 * @param serach creteria
+	 * @return list of DefaultUser matching to the query
+	 * @throws DBException
+	 */
+	List<DefaultUser> getUnVerifiedAccountBefore(int minutes) throws DBException;
+	
+	/**
+	 * Retrieves user by the profile id
+	 * 
+	 * @param profileId on which basics document will be retrieved and updated
+	 * @return found object else {@link RecordNotFoundException}
+	 * @throws DBException if any internal or syntax error found
+	 */
+	DefaultUser enableAccount(String profileId) throws DBException;
 	
 	/**
 	 * Retrieves user by the email id

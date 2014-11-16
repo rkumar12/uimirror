@@ -154,6 +154,28 @@ public interface BasicStore<T extends MongoDocumentSerializer<T>> {
 	 */
 	int updateByQueryInsertWhenNoMatchWithOutMulti(Map<String, Object> query, Map<String, Object> toUpdate) throws DBException;
 	
+	/**
+	 * This find and modify the document and return the new updated document.
+	 * in case no records found or updated, returns null
+	 * @param query based on which document needs to be retrieved
+	 * @param fields for projection
+	 * @param toUpdate value that needs to be updated
+	 * @return new updated document
+	 * @throws DBException
+	 */
+	T findAndModify(Map<String, Object> query, Map<String, Object> fields, Map<String, Object> toUpdate) throws DBException;
+	
+	/**
+	 * This find and modify the document and return the new updated document.
+	 * This doesn't have projection fields so use it for minimal field operation.
+	 * in case no records found or updated, returns null
+	 * @param query based on which document needs to be retrieved
+	 * @param toUpdate value that needs to be updated
+	 * @return new updated document
+	 * @throws DBException
+	 */
+	T findAndModify(Map<String, Object> query, Map<String, Object> toUpdate) throws DBException;
+	
 	/**Gets the collection being used for this store
 	 * @return where document will be persisted.
 	 */

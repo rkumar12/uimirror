@@ -29,7 +29,8 @@ import com.uimirror.user.UserBeanInitializer;
 @Configuration
 @Import({DaoBeanIntitializer.class ,BeanOfProcessor.class
 	, BeanOfTransformer.class ,BeanOfValidator.class
-	, BeanOfClient.class, UserBeanInitializer.class, SSOBeanInitializer.class})
+	, BeanOfClient.class, UserBeanInitializer.class, SSOBeanInitializer.class
+	, BeanOfBackGroundProcessor.class, BeanOfExceptionIntitializer.class})
 public class BeanIntitializer {
 
 	@Bean(name=JsonResponseTransFormer.NAME)

@@ -18,10 +18,11 @@ import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.dao.RecordNotFoundException;
 import com.uimirror.core.rest.extra.AlreadyExistException;
 import com.uimirror.core.service.ValidatorService;
+import com.uimirror.core.user.AccountState;
 import com.uimirror.core.user.BasicInfo;
 import com.uimirror.core.user.DefaultUser;
 import com.uimirror.core.util.thread.BackgroundProcessorFactory;
-import com.uimirror.sso.token.store.AccessTokenStore;
+import com.uimirror.user.store.AccountTokenStore;
 import com.uimirror.user.store.DefaultUserStore;
 import com.uimirror.user.store.UserBasicInfoStore;
 
@@ -36,7 +37,7 @@ import com.uimirror.user.store.UserBasicInfoStore;
 public class UserRegistrationValidationService implements ValidatorService<String>{
 
 	protected static final Logger LOG = LoggerFactory.getLogger(UserRegistrationValidationService.class);
-	private @Autowired AccessTokenStore persistedAccessTokenMongoStore;
+	private @Autowired AccountTokenStore persistedAccountTokenMongoStore;
 	private @Autowired DefaultUserStore persistedDefaultUserMongoStore;
 	private @Autowired UserBasicInfoStore persistedUserBasicInfoMongoStore;
 	private @Autowired BackgroundProcessorFactory<DefaultUser, Object> backGroundCreateMissingUserProcessor;
@@ -52,15 +53,28 @@ public class UserRegistrationValidationService implements ValidatorService<Strin
 	public boolean validate(String src) {
 		DefaultUser user = checkInTempStore(src);
 		if(user != null){
-			AccessToken earillerToken = getIssuedToken(user.getUserInfo().getProfileId());
-			earillerToken = earillerToken == null ? null : earillerToken.eraseEsential();
-			throw new AlreadyExistException(earillerToken.toResponseMap());
+			reportAccountExistWithRef(user.getUserInfo().getProfileId());
 		}
 		BasicInfo userInfo = checkInInfoStore(src);
 		if(userInfo != null){
-			throw new AlreadyExistException("User is Already exist with us");
+			if(userInfo.getAccountState() == AccountState.NEW){
+				reportAccountExistWithRef(userInfo.getProfileId());
+			}else{
+				throw new AlreadyExistException("User is Already exist with us");
+			}
 		}
 		return Boolean.TRUE;
+	}
+	
+	private void reportAccountExistWithRef(String profileId){
+		AccessToken earillerToken = null;
+		try{
+			earillerToken = getIssuedToken(profileId);
+		}catch(RecordNotFoundException e){
+			//NOP
+		}
+		earillerToken = earillerToken == null ? null : earillerToken.eraseEsential();
+		throw new AlreadyExistException(earillerToken.toResponseMap());
 	}
 	
 	/**
@@ -71,7 +85,8 @@ public class UserRegistrationValidationService implements ValidatorService<Strin
 		DefaultUser user = null;
 		try{
 			user = persistedDefaultUserMongoStore.getByEmail(email);
-			backGroundCreateMissingUserProcessor.getProcessor(BackGroundCreateMissingUserProcessor.NAME).invoke(user);
+//			if(user.isNew())
+//				backGroundCreateMissingUserProcessor.getProcessor(BackGroundCreateMissingUserProcessor.NAME).invoke(user);
 		}catch(RecordNotFoundException e){
 			//NOP
 		}
@@ -98,7 +113,7 @@ public class UserRegistrationValidationService implements ValidatorService<Strin
 	 * @return
 	 */
 	private AccessToken getIssuedToken(String profileId){
-		return persistedAccessTokenMongoStore.getUserRegisteredWOTPToken(profileId);
+		return persistedAccountTokenMongoStore.getUserRegisteredWOTPToken(profileId);
 	}
 
 }

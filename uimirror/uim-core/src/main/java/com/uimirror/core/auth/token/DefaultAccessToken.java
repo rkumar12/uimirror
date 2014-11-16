@@ -106,7 +106,8 @@ public final class DefaultAccessToken extends AbstractAccessToken<DefaultAccessT
 		if(StringUtils.hasText(getOwner()))
 			map.put(AUTH_TKN_OWNER, this.owner);
 		map.put(AUTH_TKN_CLIENT, this.client);
-		map.put(AUTH_TKN_EXPIRES, this.expire);
+		if(this.expire > 0l)
+			map.put(AUTH_TKN_EXPIRES, this.expire);
 		if(!CollectionUtils.isEmpty(notes))
 			map.put(AUTH_TKN_NOTES, this.notes);
 		if(!CollectionUtils.isEmpty(instructions))

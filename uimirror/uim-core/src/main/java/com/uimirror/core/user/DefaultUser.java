@@ -107,6 +107,22 @@ public final class DefaultUser extends AbstractBeanBasedDocument<DefaultUser> im
 				build();
 	}
 	
+	public boolean isActive(){
+		if(basicInfo != null)
+			return basicInfo.getAccountStatus() == AccountStatus.ACTIVE;
+		else if(credentials != null)
+			return credentials.getAccountStatus() == AccountStatus.ACTIVE;
+		return Boolean.FALSE;
+	}
+	
+	public boolean isNew(){
+		if(basicInfo != null)
+			return basicInfo.getAccountState() == AccountState.NEW;
+		else if(credentials != null)
+			return credentials.getAccountState() == AccountState.NEW;
+		return Boolean.FALSE;
+	}
+	
 	public static class DefaultUserBuilder implements Builder<DefaultUser>{
 		private String profileId;
 		private BasicInfo userInfo;

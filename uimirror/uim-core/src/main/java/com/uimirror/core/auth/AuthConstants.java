@@ -42,6 +42,7 @@ public class AuthConstants{
 	
 	//Default refresh period is 30 Mins
 	public static final int DEFAULT_EXPIRY_INTERVAL = 30;
+	public static final int DEFAULT_EMAIL_LINK_EXPIRY_INTERVAL = 24*60;
 	public static final int KEEP_ME_LOGED_IN_EXPIRY_INTERVAL = 24*60;
 	
 	//For Client specific screen

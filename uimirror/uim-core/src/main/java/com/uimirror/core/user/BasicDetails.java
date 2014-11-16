@@ -112,8 +112,12 @@ public class BasicDetails extends AbstractBeanBasedDocument<BasicDetails> implem
 		if(StringUtils.hasText(getPresentAddress()))
 			state.put(PRESENT_ADDRESS, getPresentAddress());
 		state.put(DATE_OF_BIRTH, getDateOfBirth().toMap());
-		if(getMetaInfo() != null)
-			state.put(META_INFO, getMetaInfo().toMap());
+
+		if(getMetaInfo() != null){
+			Map<String, Object> meta_info = getMetaInfo().toMap();
+			if(!CollectionUtils.isEmpty(meta_info))
+				state.put(META_INFO, getMetaInfo().toMap());
+		}
 		if(!CollectionUtils.isEmpty(getDetails()))
 			state.put(INFO, getDetails());
 		return state;

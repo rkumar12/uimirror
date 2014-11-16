@@ -108,13 +108,14 @@ public class MetaInfo {
 		
 	}
 	
-	public MetaInfo(MetaBuilder builder){
-		if(builder == null)
-			throw new IllegalArgumentException("Can't create the state from the given source");
-		Locale loc = new Locale(builder.lang, builder.countryCode);
-		this.locale = loc.toString();
+	private MetaInfo(MetaBuilder builder){
+		Locale loc = null;
+		if(StringUtils.hasText(builder.lang) && StringUtils.hasText(builder.countryCode)){
+			loc = new Locale(builder.lang, builder.countryCode);
+			this.locale = loc.toString();
+		}
 		this.timeZone = TimeZone.getTimeZone(builder.timeZoneName).getID();
-		if(builder.currency == null){
+		if(builder.currency == null && loc != null){
 			try{
 				this.currency = Currency.getInstance(loc).getCurrencyCode();
 			}catch(IllegalArgumentException e){

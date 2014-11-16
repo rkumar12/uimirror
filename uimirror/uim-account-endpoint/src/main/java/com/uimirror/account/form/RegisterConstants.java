@@ -28,4 +28,7 @@ public class RegisterConstants{
 	public static final String GENDER = "gender";
 	public static final String DATE_OF_BIRTH = "dob";
 	public static final String PASSWORD = "password";
+	public static final String TIMEZONE = "tz";
+	public static final String COUNTRY_CODE = "country";
+	public static final String LANGUAGE = "lang";
 }

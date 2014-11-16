@@ -8,33 +8,36 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.sso.token.store;
+package com.uimirror.user.store;
 
-import java.util.LinkedHashMap;
-import java.util.List;
+import static com.uimirror.core.auth.token.AccessTokenFields.AUTH_TKN_EXPIRES;
+import static com.uimirror.core.auth.token.AccessTokenFields.AUTH_TKN_INSTRUCTIONS;
+import static com.uimirror.core.auth.token.AccessTokenFields.AUTH_TKN_OWNER;
+import static com.uimirror.core.mongo.BasicMongoOperators.LESSTHANEQUEAL;
+
 import java.util.Map;
+import java.util.WeakHashMap;
 
 import com.mongodb.DBCollection;
 import com.uimirror.core.auth.AccessToken;
-import com.uimirror.core.auth.token.AccessTokenFields;
+import com.uimirror.core.auth.AuthConstants;
 import com.uimirror.core.auth.token.DefaultAccessToken;
 import com.uimirror.core.dao.AbstractMongoStore;
 import com.uimirror.core.dao.DBException;
 import com.uimirror.core.dao.MongoStoreHelper;
-import com.uimirror.core.mongo.BasicMongoOperators;
 import com.uimirror.core.util.DateTimeUtil;
 
 /**
- * A Basic MONGO store for the access token  
+ * A Basic MONGO store for the newly created accounts  
  * @author Jay
  */
-public class PersistedAccessTokenMongoStore extends AbstractMongoStore<DefaultAccessToken> implements AccessTokenStore {
+public class PersistedAccountTokenMongoStore extends AbstractMongoStore<DefaultAccessToken> implements AccountTokenStore {
 	
 	/**
 	 * Assign/ Create collection from the given {@link DBCollection}
 	 * @param collection
 	 */
-	public PersistedAccessTokenMongoStore(DBCollection collection){
+	public PersistedAccountTokenMongoStore(DBCollection collection){
 		super(collection, DefaultAccessToken.class);
 	}
 	
@@ -62,15 +65,6 @@ public class PersistedAccessTokenMongoStore extends AbstractMongoStore<DefaultAc
 	public AccessToken getValid(String token) throws DBException {
 		return queryFirstRecord(buildValidTokenQuery(token));
 	}
-
-	/* (non-Javadoc)
-	 * @see com.uimirror.account.auth.dao.AccessTokenStore#getByOwner(java.lang.String)
-	 */
-	@Override
-	public List<AccessToken> getByOwner(String ownerId) throws DBException {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
 	/**
 	 * Builds the query for retrieval of the token by ID and expires
@@ -79,7 +73,7 @@ public class PersistedAccessTokenMongoStore extends AbstractMongoStore<DefaultAc
 	 */
 	private Map<String, Object> buildValidTokenQuery(String token){
 		Map<String, Object> query = MongoStoreHelper.getIdMap(token);
-		query.put(AccessTokenFields.AUTH_TKN_EXPIRES, buildTimeValidQuery());
+		query.put(AUTH_TKN_EXPIRES, buildTimeValidQuery());
 		return query;
 	}
 	
@@ -88,28 +82,8 @@ public class PersistedAccessTokenMongoStore extends AbstractMongoStore<DefaultAc
 	 * @return
 	 */
 	private Map<String, Object> buildTimeValidQuery(){
-		Map<String, Object> query = new LinkedHashMap<String, Object>(3);
-		query.put(BasicMongoOperators.LESSTHANEQUEAL, DateTimeUtil.getCurrentSystemUTCEpoch());
-		return query;
-	}
-
-	/* (non-Javadoc)
-	 * @see com.uimirror.account.auth.dao.AccessTokenStore#markAsExpired(java.lang.String)
-	 */
-	@Override
-	public int markAsExpired(String token) throws DBException {
-		Map<String, Object> setQuery = new LinkedHashMap<String, Object>(3);
-		setQuery.put(BasicMongoOperators.SET, getExpiryNowMap());
-		return updateById(token, setQuery);
-	}
-	
-	/**
-	 * Creates the map for the token expire fields to mark as now
-	 * @return
-	 */
-	private Map<String, Object> getExpiryNowMap(){
-		Map<String, Object> query = new LinkedHashMap<String, Object>(3);
-		query.put(AccessTokenFields.AUTH_TKN_EXPIRES, DateTimeUtil.getCurrentSystemUTCEpoch());
+		Map<String, Object> query = new WeakHashMap<String, Object>(3);
+		query.put(LESSTHANEQUEAL, DateTimeUtil.getCurrentSystemUTCEpoch());
 		return query;
 	}
 
@@ -120,6 +94,20 @@ public class PersistedAccessTokenMongoStore extends AbstractMongoStore<DefaultAc
 	protected void ensureIndex() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	/**
+	 * gets the web registered verify token field
+	 * @param profileId
+	 * @return
+	 * @throws DBException
+	 */
+	@Override
+	public AccessToken getUserRegisteredWOTPToken(String profileId)throws DBException {
+		Map<String, Object> query = new WeakHashMap<String, Object>(4);
+		query.put(AUTH_TKN_OWNER, profileId);
+		query.put(AUTH_TKN_INSTRUCTIONS+"."+AuthConstants.WEB_VERIFY_TOKEN, MongoStoreHelper.getExistQuery(Boolean.TRUE));
+		return queryFirstRecord(query);
 	}
 	
 }

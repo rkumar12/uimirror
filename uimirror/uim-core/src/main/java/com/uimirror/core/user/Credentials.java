@@ -78,6 +78,17 @@ public class Credentials extends AbstractBeanBasedDocument<Credentials> implemen
 				addUserNames(userNames).build();
 	}
 
+	public Credentials enable() {
+		return new CredentialsBuilder(getProfileId()).
+				addEncStartegy(encryptionStratgy).
+				addInstructions(instructions).
+				addPassword(password).
+				addScreenPassword(screenPassword).
+				addState(AccountState.ENABLED).
+				addStatus(accountStatus).
+				addUserNames(userNames).build();
+	}
+
 	/* (non-Javadoc)
 	 * @see com.uimirror.core.mongo.feature.MongoDocumentSerializer#initFromMap(java.util.Map)
 	 */

@@ -16,6 +16,7 @@ import static com.uimirror.core.user.UserAuthDBFields.USER_ID;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.WeakHashMap;
 
 import org.springframework.util.Assert;
 
@@ -74,7 +75,7 @@ public class PersistedUserCredentialMongoStore extends AbstractMongoStore<Creden
 	 */
 	@Override
 	public void enableAccount(String profileId) throws DBException {
-		Map<String, Object> set = new LinkedHashMap<String, Object>(3);
+		Map<String, Object> set = new WeakHashMap<String, Object>(3);
 		set.put(SET, getAccountStateMap(AccountState.ENABLED));
 		updateById(profileId, set);
 	}

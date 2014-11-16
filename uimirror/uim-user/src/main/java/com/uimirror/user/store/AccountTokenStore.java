@@ -8,9 +8,8 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.sso.token.store;
+package com.uimirror.user.store;
 
-import java.util.List;
 import java.util.Map;
 
 import com.uimirror.core.auth.AccessToken;
@@ -23,7 +22,7 @@ import com.uimirror.core.dao.RecordNotFoundException;
  *  
  * @author Jay
  */
-public interface AccessTokenStore {
+public interface AccountTokenStore {
 
 	/**
 	 * Stores the generated {@link AccessToken}
@@ -46,15 +45,16 @@ public interface AccessTokenStore {
 	 * @throws DBException
 	 */
 	AccessToken getValid(String token) throws DBException;
+
 	/**
-	 * Retrieves the list of {@linkplain AccessToken} issued to the owner from
-	 * various sources.
+	 * Retrieve any token available for the user, which he tries to register but due 
+	 * to some reason it was unsuccessful.
 	 * returns <code>null</code> if no record found
-	 * @param ownerId
+	 * @param profileId
 	 * @return
 	 * @throws DBException
 	 */
-	List<AccessToken> getByOwner(String ownerId) throws DBException;
+	AccessToken getUserRegisteredWOTPToken(String profileId) throws DBException;
 	
 	/**
 	 * Delete documents based on the search criteria
@@ -63,12 +63,5 @@ public interface AccessTokenStore {
 	 * @throws DBException
 	 */
 	int deleteByQuery(Map<String, Object> query) throws DBException;
-	
-	/**
-	 * Mark the token issued for the client as expired
-	 * @param clientId
-	 * @throws DBException
-	 */
-	int markAsExpired(String token)throws DBException;
 	
 }

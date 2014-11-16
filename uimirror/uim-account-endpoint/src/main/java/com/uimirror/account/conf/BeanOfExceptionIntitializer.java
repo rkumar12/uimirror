@@ -8,16 +8,17 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.sso.conf;
+package com.uimirror.account.conf;
 
 import org.springframework.beans.factory.config.ServiceLocatorFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.uimirror.core.dao.MongoExceptionMapper;
+import com.uimirror.core.exceptions.ApplicationExceptionMapper;
 import com.uimirror.core.exceptions.ExceptionMapper;
 import com.uimirror.core.exceptions.ExceptionMapperFactory;
-import com.uimirror.sso.exception.AuthExceptionMapper;
-import com.uimirror.sso.exception.AuthToApplicationExceptionMapper;
+import com.uimirror.core.extra.MapExceptionAspect;
 
 /**
  * Initialize or configures the service bean getting used for this application
@@ -33,14 +34,19 @@ public class BeanOfExceptionIntitializer {
 		return sb;
 	}
 	
-	@Bean(name=AuthToApplicationExceptionMapper.NAME)
-	public ExceptionMapper authToApplicationExceptionMapper(){
-		return new AuthToApplicationExceptionMapper();
+	@Bean(name=MongoExceptionMapper.NAME)
+	public ExceptionMapper mongoExceptionMapper(){
+		return new MongoExceptionMapper();
 	}
 	
-	@Bean(name=AuthExceptionMapper.NAME)
-	public ExceptionMapper authExceptionMapper(){
-		return new AuthExceptionMapper();
+	@Bean(name=ApplicationExceptionMapper.NAME)
+	public ExceptionMapper applicationExceptionMapper(){
+		return new ApplicationExceptionMapper();
+	}
+	
+	@Bean
+	public MapExceptionAspect mapExceptionAspect(){
+		return new MapExceptionAspect();
 	}
 
 }

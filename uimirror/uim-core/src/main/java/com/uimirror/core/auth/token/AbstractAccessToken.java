@@ -15,7 +15,6 @@ import static com.uimirror.core.auth.token.AccessTokenFields.ENCRYPT_STARTEGY;
 import static com.uimirror.core.auth.token.AccessTokenFields.TOKEN;
 import static com.uimirror.core.auth.token.AccessTokenFields.TYPE;
 
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.WeakHashMap;
 
@@ -222,7 +221,7 @@ public abstract class AbstractAccessToken<T> extends AbstractBeanBasedDocument<T
 	 */
 	@Override
 	public Map<String, Object> toResponseMap() {
-		Map<String, Object> rs = new LinkedHashMap<String, Object>(15);
+		Map<String, Object> rs = new WeakHashMap<String, Object>(15);
 		rs.put(TOKEN, token.getToken());
 		if(StringUtils.hasText(token.getParaphrase()))
 			rs.put(ENCRYPT_STARTEGY, token.getParaphrase());

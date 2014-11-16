@@ -12,6 +12,8 @@ package com.uimirror.account.form;
 
 import javax.ws.rs.FormParam;
 
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang.builder.StandardToStringStyle;
 import org.springframework.util.StringUtils;
 
 import com.uimirror.core.form.AuthenticatedHeaderForm;
@@ -73,7 +75,11 @@ public final class VerifyForm extends AuthenticatedHeaderForm implements BeanVal
 
   @Override
   public String toString() {
-    return "VerifyForm [source=" + source + ", code=" + code + "]";
+	  StandardToStringStyle style = new StandardToStringStyle();
+	  style.setFieldSeparator(", ");
+	  style.setUseClassName(false);
+	  style.setUseIdentityHashCode(false);
+	  return new ReflectionToStringBuilder(this, style).toString();
   }
 
 }

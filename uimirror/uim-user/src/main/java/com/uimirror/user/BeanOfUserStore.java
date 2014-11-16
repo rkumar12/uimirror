@@ -16,7 +16,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.mongodb.DBCollection;
+import com.uimirror.user.store.AccountTokenStore;
 import com.uimirror.user.store.DefaultUserStore;
+import com.uimirror.user.store.PersistedAccountTokenMongoStore;
 import com.uimirror.user.store.PersistedDefaultUserMongoStore;
 import com.uimirror.user.store.PersistedUserAccountLogMongoStore;
 import com.uimirror.user.store.PersistedUserBasicDetailsMongoStore;
@@ -40,6 +42,13 @@ public class BeanOfUserStore {
 	public DefaultUserStore persistedDefaultUserMongoStore(@Qualifier("userTempCol") DBCollection collection, @Qualifier("userBasicInfoSeqCol") DBCollection seqCollection){
 		return new PersistedDefaultUserMongoStore(collection, seqCollection);
 	}
+	
+	@Bean
+	@Autowired
+	public AccountTokenStore persistedAccountTokenMongoStore(@Qualifier("userTempTokenCol") DBCollection collection){
+		return new PersistedAccountTokenMongoStore(collection);
+	}
+	
 	@Bean
 	@Autowired
 	public UserAccountLogStore persistedUserAccountLogMongoStore(@Qualifier("userLogsCol") DBCollection collection){

@@ -118,7 +118,7 @@ public class BackGroundCreateMissingUserProcessor extends AbstractBackgroundProc
 		String profileId = credentials.getProfileId();
 		try{
 			persistedUserCredentialMongoStore.getCredentialsByProfileId(profileId);
-		}catch(Exception e){
+		}catch(RecordNotFoundException e){
 			persistedUserCredentialMongoStore.store(credentials);
 		}
 	}

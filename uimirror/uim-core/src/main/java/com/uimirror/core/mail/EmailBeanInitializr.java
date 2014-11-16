@@ -16,8 +16,10 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.thymeleaf.spring4.SpringTemplateEngine;
@@ -79,6 +81,7 @@ public class EmailBeanInitializr {
 	}
 	
 	@Bean(name=BackgroundMailService.NAME)
+	@Scope(value=ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 	public BackgroundProcessor<Map<String, Object>, Object> backgroundMailService(MailService mailService){
 		BackgroundMailService bgMailService = new BackgroundMailService();
 		bgMailService.setMailService(mailService);

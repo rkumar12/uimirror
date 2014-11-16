@@ -19,8 +19,6 @@ import com.uimirror.core.Processor;
 import com.uimirror.core.rest.extra.ApplicationException;
 import com.uimirror.core.service.TransformerService;
 import com.uimirror.core.user.DefaultUser;
-import com.uimirror.core.util.thread.BackgroundProcessorFactory;
-import com.uimirror.user.processor.BackGroundCreateUserProcessor;
 import com.uimirror.user.store.DefaultUserStore;
 
 /**
@@ -41,11 +39,7 @@ public class CreateUserProcessor implements Processor<RegisterForm, DefaultUser>
 	protected static final Logger LOG = LoggerFactory.getLogger(CreateUserProcessor.class);
 	private @Autowired TransformerService<RegisterForm, DefaultUser> registerFormToUser;
 	private @Autowired DefaultUserStore persistedDefaultUserMongoStore;
-	private @Autowired BackgroundProcessorFactory<DefaultUser, Object> backgroundProcessorFactory; 
-
-	public CreateUserProcessor() {
-		// NOP
-	}
+	//private @Autowired BackgroundProcessorFactory<DefaultUser, Object> backgroundProcessorFactory; 
 
 	/* (non-Javadoc)
 	 * @see com.uimirror.core.Processor#invoke(java.lang.Object)
@@ -56,15 +50,15 @@ public class CreateUserProcessor implements Processor<RegisterForm, DefaultUser>
 		DefaultUser user = registerFormToUser.transform(param);
 		//Step 1- Create a flat user in temp collection first
 		user = createUerBasic(user);
-		//Step 2- Invoke a background process which will create user in different different collection separately
-		createUserInBackGround(user);
+//		//Step 2- Invoke a background process which will create user in different different collection separately
+//		createUserInBackGround(user);
 		LOG.info("[END]- Registering a new User.");
 		return user;
 	}
 
-	private void createUserInBackGround(DefaultUser user){
-		backgroundProcessorFactory.getProcessor(BackGroundCreateUserProcessor.NAME).invoke(user);
-	}
+//	private void createUserInBackGround(DefaultUser user){
+//		backgroundProcessorFactory.getProcessor(BackGroundCreateUserProcessor.NAME).invoke(user);
+//	}
 
 	/**
 	 * Create Basic Profile and get the updated user

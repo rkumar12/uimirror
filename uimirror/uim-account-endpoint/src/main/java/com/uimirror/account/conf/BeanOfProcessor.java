@@ -18,7 +18,7 @@ import com.uimirror.account.form.VerifyForm;
 import com.uimirror.account.processor.CreateUserProcessor;
 import com.uimirror.account.processor.DefaultAccessTokenProcessor;
 import com.uimirror.account.processor.UserRegistrationProcessor;
-import com.uimirror.account.processor.VerifyActivateUserAccountProcessor;
+import com.uimirror.account.processor.VerifyUserAccountProcessor;
 import com.uimirror.core.Processor;
 import com.uimirror.core.user.DefaultUser;
 import com.uimirror.ws.api.security.AccessTokenProcessor;
@@ -33,7 +33,7 @@ public class BeanOfProcessor {
 
   @Bean
   public Processor<VerifyForm, String> verifyActivateUserAccountProcessor() {
-    return new VerifyActivateUserAccountProcessor();
+    return new VerifyUserAccountProcessor();
   }
   
   @Bean

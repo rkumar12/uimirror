@@ -10,9 +10,11 @@
  *******************************************************************************/
 package com.uimirror.sso.client;
 
-import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.WeakHashMap;
 
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang.builder.StandardToStringStyle;
 import org.springframework.util.StringUtils;
 
 import com.uimirror.core.auth.Scope;
@@ -83,7 +85,7 @@ public class ClientAuthorizedScope implements BeanValidatorService{
 	 * @return
 	 */
 	public Map<String, Object> toMap(){
-		Map<String, Object> clients = new LinkedHashMap<String, Object>(5);
+		Map<String, Object> clients = new WeakHashMap<String, Object>(5);
 		clients.put(UserAuthorizedClientDBFields.CLIENT_ID, getClientId());
 		clients.put(UserAuthorizedClientDBFields.SCOPE, getScope().getScope());
 		clients.put(UserAuthorizedClientDBFields.ON, getOn());
@@ -115,5 +117,16 @@ public class ClientAuthorizedScope implements BeanValidatorService{
 			valid = Boolean.FALSE;
 		return valid;
 	}
+
+	@Override
+	public String toString() {
+		StandardToStringStyle style = new StandardToStringStyle();
+		style.setFieldSeparator(", ");
+		style.setUseClassName(false);
+		style.setUseIdentityHashCode(false);
+		return new ReflectionToStringBuilder(this, style).toString();
+	}
+	
+	
 	
 }
