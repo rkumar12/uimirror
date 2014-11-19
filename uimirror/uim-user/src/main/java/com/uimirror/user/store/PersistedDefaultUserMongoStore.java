@@ -119,7 +119,7 @@ public class PersistedDefaultUserMongoStore extends AbstractMongoStore<DefaultUs
 		Map<String, Object> lessThanquery = new WeakHashMap<String, Object>(3);
 		lessThanquery.put(LESSTHANEQUEAL, DateTimeUtil.minusToCurrentUTCTimeConvertToEpoch(minutes));
 		Map<String, Object> query = new WeakHashMap<String, Object>();
-		query.put(CREATED_ON, query);
+		query.put(CREATED_ON, lessThanquery);
 		Map<String, Object> fields = new WeakHashMap<String, Object>(3);
 		fields.put(ID, 1);
 		return getByQuery(query, fields);

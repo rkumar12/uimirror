@@ -38,4 +38,6 @@ public class BasicMongoOperators {
 	public static final String NEAR = "$near";
 	public static final String MIN_DISTANCE = "$minDistance";
 	public static final String MAX_DISTANCE = "$maxDistance";
+	
+	public static final String NATURAL_SORT = "$natural";
 }

@@ -28,6 +28,12 @@ public interface BasicStore<T extends MongoDocumentSerializer<T>> {
 	 * @return next sequence
 	 */
 	String getNextSequence();
+	
+	/**
+	 * Gets the current sequence for the document
+	 * @return current sequence number
+	 */
+	String getCurrentSequence();
 
 	/**
 	 * Stores the document by calling 

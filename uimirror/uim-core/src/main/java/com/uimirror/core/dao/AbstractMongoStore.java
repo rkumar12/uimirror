@@ -345,6 +345,19 @@ public abstract class AbstractMongoStore<T extends MongoDocumentSerializer<T>> i
 	    return res.get("seq").toString();
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.uimirror.core.dao.BasicStore#getCurrentSequence()
+	 */
+	@Override
+	public String getCurrentSequence() {
+		if(getSeqName() == null)
+			return null;
+		// this object represents your "query", its analogous to a WHERE clause in SQL
+	    DBObject query = new BasicDBObject(1);
+	    query.put(BasicDBFields.ID, seqName); // where _id = the input sequence name
+	    DBObject result = getSeqCollection().findOne(query);
+	    return result == null ? null : String.valueOf(result.get("seq"));
+	}
 	/**
 	 * Returns the sequence name being used
 	 * @return sequence name

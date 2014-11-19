@@ -8,18 +8,27 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.user;
+package com.uimirror.core.job;
 
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
+import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.Warning;
+
+import org.junit.Before;
+import org.junit.Test;
 
 /**
- * All Configuration details that required for the user account process
  * @author Jay
  */
-@Configuration
-@Import({BeanOfUserStore.class, BeanOfValidator.class
-	, BeanOfBackGroundProcessor.class, BeanOfSchedulers.class})
-public class UserBeanInitializer {
+public class JobTest {
 
+	private SimpleJob job;
+	
+	@Before
+	public void setUp(){
+	}
+	@Test
+	public void testEquals() {
+		EqualsVerifier.forClass(SimpleJob.class).suppress(Warning.NONFINAL_FIELDS).verify();
+	}
+	
 }

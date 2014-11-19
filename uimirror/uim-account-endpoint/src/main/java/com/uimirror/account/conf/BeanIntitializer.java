@@ -13,6 +13,7 @@ package com.uimirror.account.conf;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 import com.uimirror.core.crypto.CryptoMatcherService;
 import com.uimirror.core.crypto.MatcherServiceImpl;
@@ -31,6 +32,7 @@ import com.uimirror.user.UserBeanInitializer;
 	, BeanOfTransformer.class ,BeanOfValidator.class
 	, BeanOfClient.class, UserBeanInitializer.class, SSOBeanInitializer.class
 	, BeanOfBackGroundProcessor.class, BeanOfExceptionIntitializer.class})
+@EnableScheduling
 public class BeanIntitializer {
 
 	@Bean(name=JsonResponseTransFormer.NAME)
