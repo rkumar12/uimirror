@@ -12,7 +12,6 @@ package com.uimirror.ouath.client.provider;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.uimirror.core.Processor;
 import com.uimirror.core.rest.extra.ApplicationException;
@@ -34,8 +33,8 @@ import com.uimirror.ouath.client.store.ClientStore;
 public class CreateClientAccountProvider implements Processor<Client, Client>{
 
 	protected static final Logger LOG = LoggerFactory.getLogger(CreateClientAccountProvider.class);
-	private @Autowired ValidatorService<Client> clientAccountValidator;
-	private @Autowired ClientStore persistedClientMongoStore;
+	private ValidatorService<Client> clientAccountValidator;
+	private ClientStore persistedClientMongoStore;
 
 	/* (non-Javadoc)
 	 * @see com.uimirror.core.Processor#invoke(java.lang.Object)
@@ -49,6 +48,14 @@ public class CreateClientAccountProvider implements Processor<Client, Client>{
 		client = persistedClientMongoStore.store(client);
 		LOG.info("[END]- Registering a new Client.");
 		return client;
+	}
+
+	public void setClientAccountValidator(ValidatorService<Client> clientAccountValidator) {
+		this.clientAccountValidator = clientAccountValidator;
+	}
+
+	public void setPersistedClientMongoStore(ClientStore persistedClientMongoStore) {
+		this.persistedClientMongoStore = persistedClientMongoStore;
 	}
 
 }

@@ -19,7 +19,6 @@ import java.util.Map;
 import java.util.WeakHashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.util.Assert;
 
 import com.mongodb.BasicDBObject;
@@ -44,7 +43,7 @@ public class PersistedClientMongoStore extends AbstractMongoStore<Client> implem
 	 * @param collection
 	 */
 	@Autowired
-	public PersistedClientMongoStore(@Qualifier("clientBasicInfoCol") DBCollection collection, @Qualifier("clientBasicInfoSeqCol") DBCollection seqCollection){
+	public PersistedClientMongoStore(DBCollection collection, DBCollection seqCollection){
 		super(collection, seqCollection, CLIENT_BASIC_SEQ, Client.class);
 	}
 

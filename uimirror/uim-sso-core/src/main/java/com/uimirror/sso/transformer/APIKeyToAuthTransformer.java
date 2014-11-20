@@ -37,7 +37,6 @@ public class APIKeyToAuthTransformer implements TransformerService<ClientAPIForm
 				addScope(src.getScope()).
 				addIP(src.getIp()).
 				addUserAgent(src.getUserAgent()).build();
-//		return new APIKeyAuthentication(src.getClientId(), src.getRedirectURI(), src.getScope(), src.getIp(), src.getUserAgent());
 	}
 
 }

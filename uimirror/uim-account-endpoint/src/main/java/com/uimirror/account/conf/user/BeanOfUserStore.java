@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.user;
+package com.uimirror.account.conf.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -39,7 +39,8 @@ public class BeanOfUserStore {
 	//****Stores for the User****
 	@Bean
 	@Autowired
-	public DefaultUserStore persistedDefaultUserMongoStore(@Qualifier("userTempCol") DBCollection collection, @Qualifier("userBasicInfoSeqCol") DBCollection seqCollection){
+	public DefaultUserStore persistedDefaultUserMongoStore(@Qualifier("userTempCol") DBCollection collection, 
+			@Qualifier("userBasicInfoSeqCol") DBCollection seqCollection){
 		return new PersistedDefaultUserMongoStore(collection, seqCollection);
 	}
 	

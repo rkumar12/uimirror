@@ -10,12 +10,11 @@
  *******************************************************************************/
 package com.uimirror.ouath.client.processor;
 
-import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.WeakHashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.uimirror.core.Processor;
 import com.uimirror.core.exceptions.ApplicationExceptionMapper;
@@ -42,9 +41,9 @@ import com.uimirror.ouath.client.form.ClientRegisterForm;
 public class CreateClientAccountProcessor implements Processor<ClientRegisterForm, String>{
 
 	protected static final Logger LOG = LoggerFactory.getLogger(CreateClientAccountProcessor.class);
-	private @Autowired Processor<Client, Client> createClientAccountProvider;
-	private @Autowired ResponseTransFormer<String> jsonResponseTransFormer;
-	private @Autowired TransformerService<ClientRegisterForm, Client> clientRegisterFormToClientTransformer;
+	private Processor<Client, Client> createClientAccountProvider;
+	private ResponseTransFormer<String> jsonResponseTransFormer;
+	private TransformerService<ClientRegisterForm, Client> clientRegisterFormToClientTransformer;
 
 	public CreateClientAccountProcessor() {
 		// NOP
@@ -70,7 +69,7 @@ public class CreateClientAccountProcessor implements Processor<ClientRegisterFor
 	 * @return
 	 */
 	private Map<String, Object> cleanClient(Client client){
-		Map<String, Object> map = new LinkedHashMap<String, Object>();
+		Map<String, Object> map = new WeakHashMap<String, Object>();
 		map.put(ClientDBFields.API_KEY, client.getApiKey());
 		map.put(ClientDBFields.SECRET, client.getSecret());
 		return map;
@@ -85,4 +84,20 @@ public class CreateClientAccountProcessor implements Processor<ClientRegisterFor
 	private Client transformToClient(ClientRegisterForm param){
 		return clientRegisterFormToClientTransformer.transform(param);
 	}
+
+	public void setCreateClientAccountProvider(
+			Processor<Client, Client> createClientAccountProvider) {
+		this.createClientAccountProvider = createClientAccountProvider;
+	}
+
+	public void setJsonResponseTransFormer(
+			ResponseTransFormer<String> jsonResponseTransFormer) {
+		this.jsonResponseTransFormer = jsonResponseTransFormer;
+	}
+
+	public void setClientRegisterFormToClientTransformer(
+			TransformerService<ClientRegisterForm, Client> clientRegisterFormToClientTransformer) {
+		this.clientRegisterFormToClientTransformer = clientRegisterFormToClientTransformer;
+	}
+	
 }

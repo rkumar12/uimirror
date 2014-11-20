@@ -17,7 +17,6 @@ import java.util.WeakHashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 
 import com.uimirror.core.auth.token.AccessTokenFields;
@@ -36,7 +35,7 @@ public class InvalidateAccountTokenProcessor extends AbstractBackgroundProcessor
 	protected static final Logger LOG = LoggerFactory.getLogger(InvalidateAccountTokenProcessor.class);
 	
 	public static final String NAME = "INVATP";
-	private @Autowired AccountTokenStore persistedAccountTokenMongoStore;
+	private AccountTokenStore persistedAccountTokenMongoStore;
 
 	public InvalidateAccountTokenProcessor(){
 		super(1);
@@ -103,6 +102,11 @@ public class InvalidateAccountTokenProcessor extends AbstractBackgroundProcessor
 	@Override
 	public Object getResult() {
 		return getResults();
+	}
+
+	public void setPersistedAccountTokenMongoStore(
+			AccountTokenStore persistedAccountTokenMongoStore) {
+		this.persistedAccountTokenMongoStore = persistedAccountTokenMongoStore;
 	}
 
 }

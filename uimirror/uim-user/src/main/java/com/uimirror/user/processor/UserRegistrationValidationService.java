@@ -12,7 +12,6 @@ package com.uimirror.user.processor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.dao.RecordNotFoundException;
@@ -21,7 +20,6 @@ import com.uimirror.core.service.ValidatorService;
 import com.uimirror.core.user.AccountState;
 import com.uimirror.core.user.BasicInfo;
 import com.uimirror.core.user.DefaultUser;
-import com.uimirror.core.util.thread.BackgroundProcessorFactory;
 import com.uimirror.user.store.AccountTokenStore;
 import com.uimirror.user.store.DefaultUserStore;
 import com.uimirror.user.store.UserBasicInfoStore;
@@ -37,10 +35,9 @@ import com.uimirror.user.store.UserBasicInfoStore;
 public class UserRegistrationValidationService implements ValidatorService<String>{
 
 	protected static final Logger LOG = LoggerFactory.getLogger(UserRegistrationValidationService.class);
-	private @Autowired AccountTokenStore persistedAccountTokenMongoStore;
-	private @Autowired DefaultUserStore persistedDefaultUserMongoStore;
-	private @Autowired UserBasicInfoStore persistedUserBasicInfoMongoStore;
-	private @Autowired BackgroundProcessorFactory<DefaultUser, Object> backGroundCreateMissingUserProcessor;
+	private AccountTokenStore persistedAccountTokenMongoStore;
+	private DefaultUserStore persistedDefaultUserMongoStore;
+	private UserBasicInfoStore persistedUserBasicInfoMongoStore;
 	
 	public UserRegistrationValidationService() {
 		// NOP
@@ -53,12 +50,12 @@ public class UserRegistrationValidationService implements ValidatorService<Strin
 	public boolean validate(String src) {
 		DefaultUser user = checkInTempStore(src);
 		if(user != null){
-			reportAccountExistWithRef(user.getUserInfo().getProfileId());
+			reportAccountExistWithRef(user.getUserInfo().getProfileId(), Boolean.TRUE);
 		}
 		BasicInfo userInfo = checkInInfoStore(src);
 		if(userInfo != null){
 			if(userInfo.getAccountState() == AccountState.NEW){
-				reportAccountExistWithRef(userInfo.getProfileId());
+				reportAccountExistWithRef(userInfo.getProfileId(), Boolean.FALSE);
 			}else{
 				throw new AlreadyExistException("User is Already exist with us");
 			}
@@ -66,10 +63,11 @@ public class UserRegistrationValidationService implements ValidatorService<Strin
 		return Boolean.TRUE;
 	}
 	
-	private void reportAccountExistWithRef(String profileId){
+	private void reportAccountExistWithRef(String profileId, boolean getPrevtoken){
 		AccessToken earillerToken = null;
 		try{
-			earillerToken = getIssuedToken(profileId);
+			if(getPrevtoken)
+				earillerToken = getIssuedToken(profileId);
 		}catch(RecordNotFoundException e){
 			//NOP
 		}
@@ -85,8 +83,6 @@ public class UserRegistrationValidationService implements ValidatorService<Strin
 		DefaultUser user = null;
 		try{
 			user = persistedDefaultUserMongoStore.getByEmail(email);
-//			if(user.isNew())
-//				backGroundCreateMissingUserProcessor.getProcessor(BackGroundCreateMissingUserProcessor.NAME).invoke(user);
 		}catch(RecordNotFoundException e){
 			//NOP
 		}
@@ -114,6 +110,21 @@ public class UserRegistrationValidationService implements ValidatorService<Strin
 	 */
 	private AccessToken getIssuedToken(String profileId){
 		return persistedAccountTokenMongoStore.getUserRegisteredWOTPToken(profileId);
+	}
+
+	public void setPersistedAccountTokenMongoStore(
+			AccountTokenStore persistedAccountTokenMongoStore) {
+		this.persistedAccountTokenMongoStore = persistedAccountTokenMongoStore;
+	}
+
+	public void setPersistedDefaultUserMongoStore(
+			DefaultUserStore persistedDefaultUserMongoStore) {
+		this.persistedDefaultUserMongoStore = persistedDefaultUserMongoStore;
+	}
+
+	public void setPersistedUserBasicInfoMongoStore(
+			UserBasicInfoStore persistedUserBasicInfoMongoStore) {
+		this.persistedUserBasicInfoMongoStore = persistedUserBasicInfoMongoStore;
 	}
 
 }

@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.user;
+package com.uimirror.account.conf.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -17,6 +17,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 import com.uimirror.core.job.store.SimpleJobStore;
 import com.uimirror.user.schedular.DeleteUnVerifiedUserScheduler;
+import com.uimirror.user.store.AccountTokenStore;
+import com.uimirror.user.store.DefaultUserStore;
 
 /**
  * Initialize or configures the service bean getting used for this application
@@ -24,13 +26,17 @@ import com.uimirror.user.schedular.DeleteUnVerifiedUserScheduler;
  */
 @Configuration
 @EnableScheduling
-public class BeanOfSchedulers {
+public class BeanOfUserSchedulers {
 
 	//****Scheduler Tasks****
 	@Bean
 	@Autowired
-	public DeleteUnVerifiedUserScheduler deleteOrphanUserScheduler(SimpleJobStore persistedAccountJobMongoStore){
-		return new DeleteUnVerifiedUserScheduler(persistedAccountJobMongoStore);
+	public DeleteUnVerifiedUserScheduler deleteOrphanUserScheduler(SimpleJobStore persistedAccountJobMongoStore,
+			DefaultUserStore persistedDefaultUserMongoStore, AccountTokenStore persistedAccountTokenMongoStore){
+		DeleteUnVerifiedUserScheduler dunvus = new DeleteUnVerifiedUserScheduler(persistedAccountJobMongoStore);
+		dunvus.setPersistedAccountTokenMongoStore(persistedAccountTokenMongoStore);
+		dunvus.setPersistedDefaultUserMongoStore(persistedDefaultUserMongoStore);
+		return dunvus;
 	}
 	//****Scheduler Tasks end****
 }

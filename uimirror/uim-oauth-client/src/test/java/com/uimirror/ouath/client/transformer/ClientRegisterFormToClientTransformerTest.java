@@ -24,8 +24,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.uimirror.core.service.TransformerService;
+import com.uimirror.ouath.client.BeanOfClient;
 import com.uimirror.ouath.client.Client;
-import com.uimirror.ouath.client.conf.BeanOfClient;
 import com.uimirror.ouath.client.conf.ClientTestMissingBean;
 import com.uimirror.ouath.client.form.ClientRegisterForm;
 import com.uimirror.ouath.client.store.ClientStore;

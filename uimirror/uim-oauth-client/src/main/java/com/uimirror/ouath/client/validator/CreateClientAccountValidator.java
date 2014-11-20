@@ -12,7 +12,6 @@ package com.uimirror.ouath.client.validator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.uimirror.core.dao.RecordNotFoundException;
 import com.uimirror.core.service.ValidatorService;
@@ -34,7 +33,7 @@ import com.uimirror.ouath.client.store.ClientStore;
 public class CreateClientAccountValidator implements ValidatorService<Client>{
 
 	protected static final Logger LOG = LoggerFactory.getLogger(CreateClientAccountValidator.class);
-	private @Autowired ClientStore persistedClientMongoStore;
+	private ClientStore persistedClientMongoStore;
 
 	public CreateClientAccountValidator() {
 		// NOP
@@ -77,5 +76,8 @@ public class CreateClientAccountValidator implements ValidatorService<Client>{
 		return client;
 	}
 
+	public void setPersistedClientMongoStore(ClientStore persistedClientMongoStore) {
+		this.persistedClientMongoStore = persistedClientMongoStore;
+	}
 
 }

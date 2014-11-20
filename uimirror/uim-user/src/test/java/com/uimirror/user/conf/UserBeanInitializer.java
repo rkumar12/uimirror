@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.user;
+package com.uimirror.user.conf;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;

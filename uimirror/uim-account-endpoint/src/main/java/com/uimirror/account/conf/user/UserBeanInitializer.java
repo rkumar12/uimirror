@@ -8,25 +8,18 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.user;
+package com.uimirror.account.conf.user;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import com.uimirror.core.service.ValidatorService;
-import com.uimirror.user.processor.UserRegistrationValidationService;
+import org.springframework.context.annotation.Import;
 
 /**
- * Contains the bean definition for all the user and client process
- * 
+ * All Configuration details that required for the user account process
  * @author Jay
  */
 @Configuration
-public class BeanOfValidator {
-
-  @Bean
-  public ValidatorService<String> userRegistrationValidationService() {
-	  return new UserRegistrationValidationService();
-  }
+@Import({BeanOfUserStore.class, BeanOfUserValidator.class
+	, BeanOfUserBackGroundProcessor.class, BeanOfUserSchedulers.class})
+public class UserBeanInitializer {
 
 }

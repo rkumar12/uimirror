@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.ouath.client.conf;
+package com.uimirror.ouath.client;
 
 import java.net.UnknownHostException;
 
@@ -24,6 +24,7 @@ import com.mongodb.Mongo;
 import com.uimirror.core.Processor;
 import com.uimirror.core.mongo.DBCollectionUtil;
 import com.uimirror.core.mongo.MongoDbFactory;
+import com.uimirror.core.rest.extra.ResponseTransFormer;
 import com.uimirror.core.service.TransformerService;
 import com.uimirror.core.service.ValidatorService;
 import com.uimirror.ouath.client.Client;
@@ -73,8 +74,10 @@ public class BeanOfClient {
 	}
 	
 	@Bean
-	public ValidatorService<Client> clientAccountValidator() {
-		return new CreateClientAccountValidator();
+	public ValidatorService<Client> clientAccountValidator(ClientStore persistedClientMongoStore) {
+		CreateClientAccountValidator ccav = new CreateClientAccountValidator();
+		ccav.setPersistedClientMongoStore(persistedClientMongoStore);
+		return ccav;
 	}
 	
 	@Bean
@@ -83,13 +86,23 @@ public class BeanOfClient {
 	}
 	
 	@Bean
-	public Processor<ClientRegisterForm, String> createClientAccountProcessor() {
-		return new CreateClientAccountProcessor();
+	@Autowired
+	public Processor<ClientRegisterForm, String> createClientAccountProcessor(Processor<Client, Client> createClientAccountProvider,
+			ResponseTransFormer<String> jsonResponseTransFormer, TransformerService<ClientRegisterForm, Client> clientRegisterFormToClientTransformer) {
+		CreateClientAccountProcessor ccap = new CreateClientAccountProcessor();
+		ccap.setClientRegisterFormToClientTransformer(clientRegisterFormToClientTransformer);
+		ccap.setCreateClientAccountProvider(createClientAccountProvider);
+		ccap.setJsonResponseTransFormer(jsonResponseTransFormer);
+		return ccap;
 	}
 	
 	@Bean
-	public Processor<Client, Client> createClientAccountProvider() {
-		return new CreateClientAccountProvider();
+	public Processor<Client, Client> createClientAccountProvider(ValidatorService<Client> clientAccountValidator,
+			ClientStore persistedClientMongoStore) {
+		CreateClientAccountProvider ccap = new CreateClientAccountProvider();
+		ccap.setClientAccountValidator(clientAccountValidator);
+		ccap.setPersistedClientMongoStore(persistedClientMongoStore);
+		return ccap;
 	}
 
 }

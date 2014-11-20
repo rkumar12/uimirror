@@ -15,7 +15,6 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.uimirror.core.user.AccountLogs;
 import com.uimirror.core.user.BasicDetails;
@@ -41,11 +40,11 @@ public class BackGroundCreateUserProcessor extends AbstractBackgroundProcessor<D
 	protected static final Logger LOG = LoggerFactory.getLogger(BackGroundCreateUserProcessor.class);
 	
 	public static final String NAME = "BGCUP";
-	private @Autowired DefaultUserStore persistedDefaultUserMongoStore;
-	private @Autowired UserBasicInfoStore persistedUserBasicInfoMongoStore;
-	private @Autowired UserCredentialsStore persistedUserCredentialMongoStore;
-	private @Autowired UserBasicDetailsStore persistedUserBasicDetailsMongoStore;
-	private @Autowired UserAccountLogStore persistedUserAccountLogMongoStore;
+	private DefaultUserStore persistedDefaultUserMongoStore;
+	private UserBasicInfoStore persistedUserBasicInfoMongoStore;
+	private UserCredentialsStore persistedUserCredentialMongoStore;
+	private UserBasicDetailsStore persistedUserBasicDetailsMongoStore;
+	private UserAccountLogStore persistedUserAccountLogMongoStore;
 
 	public BackGroundCreateUserProcessor(){
 		super(1);
@@ -160,6 +159,31 @@ public class BackGroundCreateUserProcessor extends AbstractBackgroundProcessor<D
 	@Override
 	public Object getResult() {
 		return getResults();
+	}
+
+	public void setPersistedDefaultUserMongoStore(
+			DefaultUserStore persistedDefaultUserMongoStore) {
+		this.persistedDefaultUserMongoStore = persistedDefaultUserMongoStore;
+	}
+
+	public void setPersistedUserBasicInfoMongoStore(
+			UserBasicInfoStore persistedUserBasicInfoMongoStore) {
+		this.persistedUserBasicInfoMongoStore = persistedUserBasicInfoMongoStore;
+	}
+
+	public void setPersistedUserCredentialMongoStore(
+			UserCredentialsStore persistedUserCredentialMongoStore) {
+		this.persistedUserCredentialMongoStore = persistedUserCredentialMongoStore;
+	}
+
+	public void setPersistedUserBasicDetailsMongoStore(
+			UserBasicDetailsStore persistedUserBasicDetailsMongoStore) {
+		this.persistedUserBasicDetailsMongoStore = persistedUserBasicDetailsMongoStore;
+	}
+
+	public void setPersistedUserAccountLogMongoStore(
+			UserAccountLogStore persistedUserAccountLogMongoStore) {
+		this.persistedUserAccountLogMongoStore = persistedUserAccountLogMongoStore;
 	}
 
 }

@@ -15,22 +15,23 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
+import com.uimirror.account.conf.client.BeanOfClient;
+import com.uimirror.account.conf.user.UserBeanInitializer;
 import com.uimirror.core.crypto.CryptoMatcherService;
 import com.uimirror.core.crypto.MatcherServiceImpl;
 import com.uimirror.core.rest.extra.JsonResponseTransFormer;
 import com.uimirror.core.rest.extra.ResponseTransFormer;
-import com.uimirror.ouath.client.conf.BeanOfClient;
 import com.uimirror.sso.conf.SSOBeanInitializer;
-import com.uimirror.user.UserBeanInitializer;
 
 /**
  * Initialize or configures the service bean getting used for this application
  * @author Jay
  */
+//TODO do something to remove the SSO bean depedancy
 @Configuration
 @Import({DaoBeanIntitializer.class ,BeanOfProcessor.class
-	, BeanOfTransformer.class ,BeanOfValidator.class
-	, BeanOfClient.class, UserBeanInitializer.class, SSOBeanInitializer.class
+	, BeanOfTransformer.class ,BeanOfValidator.class, SSOBeanInitializer.class
+	, BeanOfClient.class, UserBeanInitializer.class
 	, BeanOfBackGroundProcessor.class, BeanOfExceptionIntitializer.class})
 @EnableScheduling
 public class BeanIntitializer {

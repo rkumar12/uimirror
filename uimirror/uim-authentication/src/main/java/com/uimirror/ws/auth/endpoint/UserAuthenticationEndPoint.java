@@ -46,10 +46,6 @@ public class UserAuthenticationEndPoint{
 	private @Autowired Processor<ScreenLockAuthenticationForm, String> screenLockAuthProcessor;
 	private @Autowired Processor<OTPAuthenticationForm, String> otpAuthProcessor;
 	
-	public UserAuthenticationEndPoint() {
-		//NOP
-	}
-	
 	/**
 	 * De-serialize the authentication form submitted
 	 * and try to authenticate the eariller token issued, to validate if the request is from a valid source
@@ -86,7 +82,6 @@ public class UserAuthenticationEndPoint{
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Path(AuthenticationEndPointConstant.LOGIN_PATH)
 	public Object login(@BeanParam LoginForm loginForm){
-		//TODO Failing exception for the token decryption check that out
 		LOG.info("[ENTRY]- Received requst for user authentication by user name and password");
 		Object response = loginFormAuthProcessor.invoke(loginForm);
 		LOG.info("[EXIT]- Received requst for user authentication by user name and password");

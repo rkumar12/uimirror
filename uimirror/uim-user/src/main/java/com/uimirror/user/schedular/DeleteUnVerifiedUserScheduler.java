@@ -16,7 +16,6 @@ import java.util.WeakHashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import com.uimirror.core.auth.token.AccessTokenFields;
@@ -36,8 +35,8 @@ import com.uimirror.user.store.DefaultUserStore;
 public class DeleteUnVerifiedUserScheduler {
 
 	private SimpleJobStore simpleJobStore;
-	private @Autowired DefaultUserStore persistedDefaultUserMongoStore;
-	private @Autowired AccountTokenStore persistedAccountTokenMongoStore;
+	private DefaultUserStore persistedDefaultUserMongoStore;
+	private AccountTokenStore persistedAccountTokenMongoStore;
 	private static final Logger LOG = LoggerFactory.getLogger(DeleteUnVerifiedUserScheduler.class);
 	private static final String JOB_NAME = "Delete Temp User";
 	
@@ -92,5 +91,21 @@ public class DeleteUnVerifiedUserScheduler {
 	public DeleteUnVerifiedUserScheduler(SimpleJobStore simpleJobStore) {
 		this.simpleJobStore = simpleJobStore;
 	}
+
+	public void setSimpleJobStore(SimpleJobStore simpleJobStore) {
+		this.simpleJobStore = simpleJobStore;
+	}
+
+	public void setPersistedDefaultUserMongoStore(
+			DefaultUserStore persistedDefaultUserMongoStore) {
+		this.persistedDefaultUserMongoStore = persistedDefaultUserMongoStore;
+	}
+
+	public void setPersistedAccountTokenMongoStore(
+			AccountTokenStore persistedAccountTokenMongoStore) {
+		this.persistedAccountTokenMongoStore = persistedAccountTokenMongoStore;
+	}
+	
+	
 	
 }

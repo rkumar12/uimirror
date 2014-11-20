@@ -21,7 +21,6 @@ import org.springframework.beans.factory.annotation.Value;
 import com.uimirror.ws.api.filter.PoweredByResponseFilter;
 import com.uimirror.ws.api.filter.UimCORSFilter;
 import com.uimirror.ws.api.security.feature.PreAuthorizeDynamicFeature;
-import com.uimirror.ws.api.security.filter.AccessTokenResponseFilter;
 
 public class JerssyApplicationInitializer extends ResourceConfig{
 	protected static final Logger LOG = LoggerFactory.getLogger(JerssyApplicationInitializer.class);
@@ -41,7 +40,6 @@ public class JerssyApplicationInitializer extends ResourceConfig{
 //        register(UserLicenseAllowedDynamicFeature.class);
 //        register(ClientLicenseAllowedDynamicFeature.class);
 		register(PreAuthorizeDynamicFeature.class);
-		register(AccessTokenResponseFilter.class);
 		register(PoweredByResponseFilter.class);
 		register(UimCORSFilter.class);
         register(UriConnegFilter.class);
