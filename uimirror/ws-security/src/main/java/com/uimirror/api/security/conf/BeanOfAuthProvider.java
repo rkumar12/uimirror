@@ -94,12 +94,25 @@ public class BeanOfAuthProvider {
 	}
 	
 	@Bean
-	public AuthenticationProvider screenLockAuthProvider(){
-		return new ScreenLockAuthProvider();
+	@Autowired
+	public AuthenticationProvider screenLockAuthProvider(AuthenticationManager screenLockAuthManager, 
+			AccessTokenProvider persistedAccessTokenProvider){
+		ScreenLockAuthProvider screenLockAuthProvider = new ScreenLockAuthProvider();
+		screenLockAuthProvider.setPersistedAccessTokenProvider(persistedAccessTokenProvider);
+		screenLockAuthProvider.setScreenLockAuthManager(screenLockAuthManager);
+		return screenLockAuthProvider;
 	}
 	
 	@Bean
-	public AuthenticationProvider loginFormAuthProvider(){
+	@Autowired
+	public AuthenticationProvider loginFormAuthProvider(AuthenticationManager loginFormAuthManager,
+			AccessTokenProvider persistedAccessTokenProvider, BackgroundProcessorFactory<AccessToken, Object> backgroundProcessorFactory,
+			ClientStore persistedClientStore){
+		LoginFormAuthProvider loginFormAuthProvider = new LoginFormAuthProvider();
+		loginFormAuthProvider.setBackgroundProcessorFactory(backgroundProcessorFactory);
+		loginFormAuthProvider.setLoginFormAuthManager(loginFormAuthManager);
+		loginFormAuthProvider.setPersistedAccessTokenProvider(persistedAccessTokenProvider);
+		loginFormAuthProvider.setPersistedClientStore(persistedClientStore);
 		return new LoginFormAuthProvider();
 	}
 	// ****Access Token providers end****

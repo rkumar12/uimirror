@@ -18,7 +18,6 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
@@ -54,8 +53,8 @@ public class SecretKeyAuthManager implements AuthenticationManager, MatcherServi
 	
 	protected static final Logger LOG = LoggerFactory.getLogger(SecretKeyAuthManager.class);
 	
-	private @Autowired ClientStore persistedClientStore;
-	private @Autowired AccessTokenProvider persistedAccessTokenProvider;
+	private ClientStore persistedClientStore;
+	private AccessTokenProvider persistedAccessTokenProvider;
 
 	/* (non-Javadoc)
 	 * @see com.uimirror.core.auth.AuthenticationManager#authenticate(com.uimirror.core.auth.Authentication)

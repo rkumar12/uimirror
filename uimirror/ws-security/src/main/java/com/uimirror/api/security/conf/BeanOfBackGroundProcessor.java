@@ -26,6 +26,7 @@ import com.uimirror.core.service.TransformerService;
 import com.uimirror.core.util.thread.BackgroundProcessor;
 import com.uimirror.sso.client.UserAuthorizedClient;
 import com.uimirror.sso.token.InvalidateTokenProcessor;
+import com.uimirror.user.store.UserCredentialsStore;
 
 /**
  * Initialize or configures the service bean getting used for this application
@@ -59,14 +60,22 @@ public class BeanOfBackGroundProcessor {
 	
 	@Bean(name=UserRestoreProcessor.NAME)
 	@Scope(value=ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-	public BackgroundProcessor<String, Object> userRestoreProcessor(){
-		return new UserRestoreProcessor();
+	@Autowired
+	public BackgroundProcessor<String, Object> userRestoreProcessor(UserCredentialsStore persistedUserCredentialMongoStore){
+		UserRestoreProcessor userRestoreProcessor = new UserRestoreProcessor();
+		userRestoreProcessor.setPersistedUserCredentialMongoStore(persistedUserCredentialMongoStore);
+		return userRestoreProcessor;
 	}
 	
 	@Bean(name=OTPMailProcessor.NAME)
 	@Scope(value=ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-	public BackgroundProcessor<AccessToken, Object> otpMailProcessor(){
-		return new OTPMailProcessor();
+	@Autowired
+	public BackgroundProcessor<AccessToken, Object> otpMailProcessor(TransformerService<AccessToken, UserAuthorizedClient> tokenToAuthorizedClientTransformer,
+			Processor<UserAuthorizedClient, Object> allowClientprocessor){
+		OTPMailProcessor otpMailProcessor = new OTPMailProcessor();
+		otpMailProcessor.setAllowClientprocessor(allowClientprocessor);
+		otpMailProcessor.setTokenToAuthorizedClientTransformer(tokenToAuthorizedClientTransformer);
+		return otpMailProcessor;
 	}
 
 }

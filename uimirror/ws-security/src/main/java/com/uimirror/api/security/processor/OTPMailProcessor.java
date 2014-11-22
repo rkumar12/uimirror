@@ -15,7 +15,6 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.uimirror.core.Processor;
 import com.uimirror.core.auth.AccessToken;
@@ -36,8 +35,8 @@ public class OTPMailProcessor extends AbstractBackgroundProcessor<AccessToken, O
 	protected static final Logger LOG = LoggerFactory.getLogger(OTPMailProcessor.class);
 	
 	public static final String NAME = "OTPMP";
-	private @Autowired TransformerService<AccessToken, UserAuthorizedClient> tokenToAuthorizedClientTransformer;
-	private @Autowired Processor<UserAuthorizedClient, Object> allowClientprocessor;
+	private TransformerService<AccessToken, UserAuthorizedClient> tokenToAuthorizedClientTransformer;
+	private Processor<UserAuthorizedClient, Object> allowClientprocessor;
 
 	public OTPMailProcessor(){
 		super(1);
@@ -113,6 +112,16 @@ public class OTPMailProcessor extends AbstractBackgroundProcessor<AccessToken, O
 	@Override
 	public Object getResult() {
 		return getResults();
+	}
+
+	public void setTokenToAuthorizedClientTransformer(
+			TransformerService<AccessToken, UserAuthorizedClient> tokenToAuthorizedClientTransformer) {
+		this.tokenToAuthorizedClientTransformer = tokenToAuthorizedClientTransformer;
+	}
+
+	public void setAllowClientprocessor(
+			Processor<UserAuthorizedClient, Object> allowClientprocessor) {
+		this.allowClientprocessor = allowClientprocessor;
 	}
 
 }

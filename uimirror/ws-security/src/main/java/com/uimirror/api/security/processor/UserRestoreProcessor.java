@@ -15,7 +15,6 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.uimirror.core.user.AccountState;
 import com.uimirror.core.util.thread.AbstractBackgroundProcessor;
@@ -35,7 +34,7 @@ public class UserRestoreProcessor extends AbstractBackgroundProcessor<String, Ob
 	protected static final Logger LOG = LoggerFactory.getLogger(UserRestoreProcessor.class);
 	
 	public static final String NAME = "URP";
-	private @Autowired UserCredentialsStore persistedUserCredentialMongoStore;
+	private UserCredentialsStore persistedUserCredentialMongoStore;
 
 	public UserRestoreProcessor(){
 		super(1);
@@ -100,4 +99,9 @@ public class UserRestoreProcessor extends AbstractBackgroundProcessor<String, Ob
 		return getResults();
 	}
 
+	public void setPersistedUserCredentialMongoStore(
+			UserCredentialsStore persistedUserCredentialMongoStore) {
+		this.persistedUserCredentialMongoStore = persistedUserCredentialMongoStore;
+	}
+	
 }

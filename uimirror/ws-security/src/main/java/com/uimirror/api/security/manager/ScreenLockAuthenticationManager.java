@@ -18,7 +18,6 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 
 import com.uimirror.core.auth.AccessToken;
@@ -52,9 +51,9 @@ public class ScreenLockAuthenticationManager implements AuthenticationManager{
 	
 	protected static final Logger LOG = LoggerFactory.getLogger(ScreenLockAuthenticationManager.class);
 	
-	private @Autowired UserCredentialsStore userCredentialStore;
-	private @Autowired AccessTokenProvider persistedAccessTokenProvider;
-	private @Autowired PasswordMatcher passwordMatcher;
+	private UserCredentialsStore userCredentialStore;
+	private AccessTokenProvider persistedAccessTokenProvider;
+	private PasswordMatcher passwordMatcher;
 
 	/* (non-Javadoc)
 	 * @see com.uimirror.core.auth.AuthenticationManager#authenticate(com.uimirror.core.auth.Authentication)
@@ -196,5 +195,21 @@ public class ScreenLockAuthenticationManager implements AuthenticationManager{
 		Map<String, Object> instructions = new LinkedHashMap<String, Object>(5);
 		instructions.put(AuthConstants.INST_AUTH_EXPIRY_INTERVAL, getExpiresInterval(prevInstructions));
 		return instructions;
+	}
+
+
+	public void setUserCredentialStore(UserCredentialsStore userCredentialStore) {
+		this.userCredentialStore = userCredentialStore;
+	}
+
+
+	public void setPersistedAccessTokenProvider(
+			AccessTokenProvider persistedAccessTokenProvider) {
+		this.persistedAccessTokenProvider = persistedAccessTokenProvider;
+	}
+
+
+	public void setPasswordMatcher(PasswordMatcher passwordMatcher) {
+		this.passwordMatcher = passwordMatcher;
 	}
 }

@@ -14,7 +14,6 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.Authentication;
@@ -34,8 +33,8 @@ import com.uimirror.sso.auth.provider.AuthenticationProvider;
 public class ScreenLockAuthProvider implements AuthenticationProvider{
 
 	private static final Logger LOG = LoggerFactory.getLogger(ScreenLockAuthProvider.class);
-	private @Autowired AuthenticationManager screenLockAuthManager;
-	private @Autowired AccessTokenProvider persistedAccessTokenProvider;
+	private AuthenticationManager screenLockAuthManager;
+	private AccessTokenProvider persistedAccessTokenProvider;
 
 	/* (non-Javadoc)
 	 * @see com.uimirror.core.auth.controller.AuthenticationProvider#getAuthenticateToken(com.uimirror.core.auth.bean.Authentication)
@@ -84,6 +83,15 @@ public class ScreenLockAuthProvider implements AuthenticationProvider{
 	@Override
 	public boolean supports(Class<?> authentication) {
 		return ScreenLockAuthentication.class.isAssignableFrom(authentication);
+	}
+
+	public void setScreenLockAuthManager(AuthenticationManager screenLockAuthManager) {
+		this.screenLockAuthManager = screenLockAuthManager;
+	}
+
+	public void setPersistedAccessTokenProvider(
+			AccessTokenProvider persistedAccessTokenProvider) {
+		this.persistedAccessTokenProvider = persistedAccessTokenProvider;
 	}
 
 }

@@ -23,11 +23,14 @@ import com.uimirror.api.security.manager.ScreenLockAuthenticationManager;
 import com.uimirror.api.security.manager.SecretKeyAuthManager;
 import com.uimirror.core.Processor;
 import com.uimirror.core.auth.Authentication;
+import com.uimirror.core.util.thread.BackgroundProcessorFactory;
 import com.uimirror.ouath.client.Client;
 import com.uimirror.ouath.client.store.ClientStore;
 import com.uimirror.sso.AuthenticationManager;
+import com.uimirror.sso.PasswordMatcher;
 import com.uimirror.sso.auth.provider.AccessTokenProvider;
 import com.uimirror.sso.client.store.UserAuthorizedClientStore;
+import com.uimirror.user.store.UserCredentialsStore;
 
 /**
  * @author Jay
@@ -78,13 +81,28 @@ public class BeanOfAuthManager {
 	}
 	
 	@Bean
-	public AuthenticationManager screenLockAuthManager(){
-		return new ScreenLockAuthenticationManager();
+	@Autowired
+	public AuthenticationManager screenLockAuthManager(UserCredentialsStore userCredentialStore,
+			AccessTokenProvider persistedAccessTokenProvider, PasswordMatcher passwordMatcher){
+		ScreenLockAuthenticationManager screenLockAuthenticationManager = new ScreenLockAuthenticationManager();
+		screenLockAuthenticationManager.setPasswordMatcher(passwordMatcher);
+		screenLockAuthenticationManager.setPersistedAccessTokenProvider(persistedAccessTokenProvider);
+		screenLockAuthenticationManager.setUserCredentialStore(userCredentialStore);
+		return screenLockAuthenticationManager;
 	}
 	
 	@Bean
-	public AuthenticationManager loginFormAuthManager(){
-		return new LoginFormAuthenticationManager();
+	@Autowired
+	public AuthenticationManager loginFormAuthManager(UserCredentialsStore userCredentialStore,
+			AccessTokenProvider persistedAccessTokenProvider, PasswordMatcher passwordMatcher, 
+			UserAuthorizedClientStore persistedUserAuthorizedClientStore, BackgroundProcessorFactory<String, Object> backgroundProcessorFactory){
+		LoginFormAuthenticationManager loginFormAuthenticationManager = new LoginFormAuthenticationManager();
+		loginFormAuthenticationManager.setBackgroundProcessorFactory(backgroundProcessorFactory);
+		loginFormAuthenticationManager.setPasswordMatcher(passwordMatcher);
+		loginFormAuthenticationManager.setPersistedAccessTokenProvider(persistedAccessTokenProvider);
+		loginFormAuthenticationManager.setPersistedUserAuthorizedClientStore(persistedUserAuthorizedClientStore);
+		loginFormAuthenticationManager.setUserCredentialStore(userCredentialStore);
+		return loginFormAuthenticationManager;
 	}
 	//****Authentication managers end****
 

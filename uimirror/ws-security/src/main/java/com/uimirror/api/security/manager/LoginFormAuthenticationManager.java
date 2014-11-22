@@ -18,7 +18,6 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 
 import com.uimirror.api.security.processor.UserRestoreProcessor;
@@ -71,11 +70,11 @@ public class LoginFormAuthenticationManager implements AuthenticationManager{
 	
 	protected static final Logger LOG = LoggerFactory.getLogger(LoginFormAuthenticationManager.class);
 	
-	private @Autowired UserCredentialsStore userCredentialStore;
-	private @Autowired AccessTokenProvider persistedAccessTokenProvider;
-	private @Autowired PasswordMatcher passwordMatcher;
-	private @Autowired UserAuthorizedClientStore persistedUserAuthorizedClientStore;
-	private @Autowired BackgroundProcessorFactory<String, Object> backgroundProcessorFactory; 
+	private UserCredentialsStore userCredentialStore;
+	private AccessTokenProvider persistedAccessTokenProvider;
+	private PasswordMatcher passwordMatcher;
+	private UserAuthorizedClientStore persistedUserAuthorizedClientStore;
+	private BackgroundProcessorFactory<String, Object> backgroundProcessorFactory; 
 
 	/* (non-Javadoc)
 	 * @see com.uimirror.core.auth.AuthenticationManager#authenticate(com.uimirror.core.auth.Authentication)
@@ -335,6 +334,29 @@ public class LoginFormAuthenticationManager implements AuthenticationManager{
 		boolean restore = Boolean.FALSE;
 		restore = AccountState.DISABLED.equals(userCredentials.getAccountState()) ? Boolean.TRUE : Boolean.FALSE;
 		return restore;
+	}
+
+	public void setUserCredentialStore(UserCredentialsStore userCredentialStore) {
+		this.userCredentialStore = userCredentialStore;
+	}
+
+	public void setPersistedAccessTokenProvider(
+			AccessTokenProvider persistedAccessTokenProvider) {
+		this.persistedAccessTokenProvider = persistedAccessTokenProvider;
+	}
+
+	public void setPasswordMatcher(PasswordMatcher passwordMatcher) {
+		this.passwordMatcher = passwordMatcher;
+	}
+
+	public void setPersistedUserAuthorizedClientStore(
+			UserAuthorizedClientStore persistedUserAuthorizedClientStore) {
+		this.persistedUserAuthorizedClientStore = persistedUserAuthorizedClientStore;
+	}
+
+	public void setBackgroundProcessorFactory(
+			BackgroundProcessorFactory<String, Object> backgroundProcessorFactory) {
+		this.backgroundProcessorFactory = backgroundProcessorFactory;
 	}
 
 }

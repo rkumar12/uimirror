@@ -15,7 +15,6 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.uimirror.api.security.processor.OTPMailProcessor;
 import com.uimirror.core.auth.AccessToken;
@@ -48,10 +47,10 @@ import com.uimirror.user.store.AccountTokenStore;
 public class LoginFormAuthProvider implements AuthenticationProvider{
 
 	private static final Logger LOG = LoggerFactory.getLogger(LoginFormAuthProvider.class);
-	private @Autowired AuthenticationManager loginFormAuthManager;
-	private @Autowired AccessTokenProvider persistedAccessTokenProvider;
-	private @Autowired BackgroundProcessorFactory<AccessToken, Object> backgroundProcessorFactory;
-	private @Autowired ClientStore persistedClientStore;
+	private AuthenticationManager loginFormAuthManager;
+	private AccessTokenProvider persistedAccessTokenProvider;
+	private BackgroundProcessorFactory<AccessToken, Object> backgroundProcessorFactory;
+	private ClientStore persistedClientStore;
 	
 	/* (non-Javadoc)
 	 * @see com.uimirror.ws.auth.auth.controller.AuthenticationProvider#authenticate(com.uimirror.core.auth.Authentication)
@@ -154,6 +153,24 @@ public class LoginFormAuthProvider implements AuthenticationProvider{
 	@Override
 	public boolean supports(Class<?> authentication) {
 		return LoginAuthentication.class.isAssignableFrom(authentication);
+	}
+
+	public void setLoginFormAuthManager(AuthenticationManager loginFormAuthManager) {
+		this.loginFormAuthManager = loginFormAuthManager;
+	}
+
+	public void setPersistedAccessTokenProvider(
+			AccessTokenProvider persistedAccessTokenProvider) {
+		this.persistedAccessTokenProvider = persistedAccessTokenProvider;
+	}
+
+	public void setBackgroundProcessorFactory(
+			BackgroundProcessorFactory<AccessToken, Object> backgroundProcessorFactory) {
+		this.backgroundProcessorFactory = backgroundProcessorFactory;
+	}
+
+	public void setPersistedClientStore(ClientStore persistedClientStore) {
+		this.persistedClientStore = persistedClientStore;
 	}
 
 }
