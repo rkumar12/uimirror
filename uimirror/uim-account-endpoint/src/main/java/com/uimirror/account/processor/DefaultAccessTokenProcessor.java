@@ -16,6 +16,7 @@ import javax.ws.rs.core.SecurityContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.uimirror.api.security.DefaultSecurityContext;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.Authentication;
 import com.uimirror.core.auth.Scope;
@@ -25,8 +26,7 @@ import com.uimirror.core.auth.token.DefaultAccessToken;
 import com.uimirror.core.exceptions.ApplicationExceptionMapper;
 import com.uimirror.core.extra.MapException;
 import com.uimirror.core.rest.extra.ApplicationException;
-import com.uimirror.ws.api.security.AccessTokenProcessor;
-import com.uimirror.ws.api.security.DefaultSecurityContext;
+import com.uimirror.sso.processor.AccessTokenProcessor;
 
 /**
  * A Manager which will validate the incoming request and try to authenticate

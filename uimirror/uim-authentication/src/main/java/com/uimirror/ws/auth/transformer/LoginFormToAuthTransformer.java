@@ -13,7 +13,6 @@ package com.uimirror.ws.auth.transformer;
 import org.springframework.util.Assert;
 
 import com.uimirror.core.service.TransformerService;
-import com.uimirror.ouath.client.form.ClientRegisterForm;
 import com.uimirror.sso.auth.LoginAuthentication;
 import com.uimirror.ws.auth.form.LoginForm;
 

@@ -5,7 +5,7 @@ version = 1.0
 
 dependencies {
 	compile project(':uim-core')
-	compile project(':ws-resource-security')
+	//compile project(':ws-security')
 	compile group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet', version: jerseyVersion
 }
 

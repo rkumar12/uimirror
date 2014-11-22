@@ -21,7 +21,7 @@ import com.uimirror.account.processor.UserRegistrationProcessor;
 import com.uimirror.account.processor.VerifyUserAccountProcessor;
 import com.uimirror.core.Processor;
 import com.uimirror.core.user.DefaultUser;
-import com.uimirror.ws.api.security.AccessTokenProcessor;
+import com.uimirror.sso.processor.AccessTokenProcessor;
 
 /**
  * Contains the bean definition for all the authentication controller process

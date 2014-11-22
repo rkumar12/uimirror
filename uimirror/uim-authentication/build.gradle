@@ -13,7 +13,7 @@ configurations.all {
 
 dependencies {
 	compile project(':uim-core')
-	compile project(':ws-resource-security')
+	compile project(':ws-security')
 	compile project(':ws-filters')
 	compile project(':uim-oauth-client')
 	compile project(':uim-sso-core')
@@ -52,7 +52,7 @@ applicationDefaultJvmArgs = ["-Denv=dev"
 	, "-Dnio.port=8443"
 	, "-Xmx3g"
 	, "-XX:MaxNewSize=2g"
-	, "-XX:NewSize=1g"
+	, "-XX:NewSize=64m"
 	, "-XX:SurvivorRatio=16"
 	, "-XX:+UseParNewGC"
 	, "-XX:+UseConcMarkSweepGC"

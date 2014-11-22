@@ -15,10 +15,6 @@ import com.uimirror.core.rest.extra.ApplicationException;
 import com.uimirror.core.rest.extra.IllegalArgumentException;
 import com.uimirror.core.rest.extra.InternalException;
 import com.uimirror.core.rest.extra.UnAuthorizedException;
-import com.uimirror.ws.api.security.exception.BadCredentialsException;
-import com.uimirror.ws.api.security.exception.DisabledException;
-import com.uimirror.ws.api.security.exception.InvalidTokenException;
-import com.uimirror.ws.api.security.exception.LockedException;
 
 /**
  * This translate authentication DB exception to 
@@ -88,7 +84,7 @@ public class AuthToApplicationExceptionMapper implements ExceptionMapper{
 	}
 	
 	private boolean isInternal(Throwable e){
-		return e instanceof com.uimirror.ws.api.security.exception.InternalException; 
+		return e instanceof com.uimirror.sso.exception.InternalException; 
 	}
 	
 	private ApplicationException translateToInternal(){

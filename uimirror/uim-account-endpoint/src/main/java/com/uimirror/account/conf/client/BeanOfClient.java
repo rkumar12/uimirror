@@ -21,6 +21,9 @@ import org.springframework.context.annotation.Configuration;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.Mongo;
+import com.uimirror.account.client.ClientRegisterForm;
+import com.uimirror.account.client.ClientRegisterFormToClientTransformer;
+import com.uimirror.account.client.CreateClientAccountProcessor;
 import com.uimirror.core.Processor;
 import com.uimirror.core.mongo.DBCollectionUtil;
 import com.uimirror.core.mongo.MongoDbFactory;
@@ -28,12 +31,9 @@ import com.uimirror.core.rest.extra.ResponseTransFormer;
 import com.uimirror.core.service.TransformerService;
 import com.uimirror.core.service.ValidatorService;
 import com.uimirror.ouath.client.Client;
-import com.uimirror.ouath.client.form.ClientRegisterForm;
-import com.uimirror.ouath.client.processor.CreateClientAccountProcessor;
 import com.uimirror.ouath.client.provider.CreateClientAccountProvider;
 import com.uimirror.ouath.client.store.ClientStore;
 import com.uimirror.ouath.client.store.PersistedClientMongoStore;
-import com.uimirror.ouath.client.transformer.ClientRegisterFormToClientTransformer;
 import com.uimirror.ouath.client.validator.CreateClientAccountValidator;
 
 /**

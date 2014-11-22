@@ -13,9 +13,6 @@ package com.uimirror.sso.exception;
 import com.uimirror.core.dao.DBException;
 import com.uimirror.core.dao.RecordNotFoundException;
 import com.uimirror.core.exceptions.ExceptionMapper;
-import com.uimirror.ws.api.security.exception.AuthenticationException;
-import com.uimirror.ws.api.security.exception.BadCredentialsException;
-import com.uimirror.ws.api.security.exception.InternalException;
 
 /**
  * This translate authentication DB exception to 

@@ -49,6 +49,9 @@ subprojects {
 		compile (group: 'ch.qos.logback', name: 'logback-classic', version: qosLogBackVersion){
 			exclude group: 'org.slf4j', module: 'slf4j-api' //by both name and group
 		}
+		compile 'commons-codec:commons-codec:1.5'
+		compile 'commons-lang:commons-lang:2.6'
+		compile 'javax.annotation:javax.annotation-api:1.2'
 		compile (group: 'ch.qos.logback', name: 'logback-core', version: qosLogBackVersion)
 		compile (group: 'org.codehaus.janino', name: 'janino', version: janinoVersion)
 		//Logging End

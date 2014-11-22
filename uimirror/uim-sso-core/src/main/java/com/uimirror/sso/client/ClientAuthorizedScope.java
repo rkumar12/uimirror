@@ -15,6 +15,7 @@ import java.util.WeakHashMap;
 
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang.builder.StandardToStringStyle;
+import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 import com.uimirror.core.auth.Scope;
@@ -33,56 +34,44 @@ public class ClientAuthorizedScope implements BeanValidatorService{
 	private long on;
 
 	/**
-	 * @param clientId
-	 * @param scope
-	 * @param on
+	 * Creates the instance of the authorized client scope.
+	 * @param clientId of the client
+	 * @param scope which scope has been assigned
+	 * @param on which date it has been granted
 	 */
 	public ClientAuthorizedScope(String clientId, Scope scope, long on) {
-		super();
+		Assert.hasText(clientId, "Client Id is required");
+		Assert.notNull(scope, "Scope can't be empty");
 		this.clientId = clientId;
 		this.scope = scope;
 		this.on = on;
 	}
 	
 	/**
-	 * @param clientId
-	 * @param scope
+	 * Gets the current approval with the given scope for the given client.
+	 * @param clientId of the client
+	 * @param scope which operations client can perform
+	 * @return instance of {@link ClientAuthorizedScope}
 	 */
-	public ClientAuthorizedScope(String clientId, Scope scope) {
-		super();
-		this.clientId = clientId;
-		this.scope = scope;
-		this.on = DateTimeUtil.getCurrentSystemUTCEpoch();
+	public static ClientAuthorizedScope approveClient(String clientId, Scope scope){
+		return new ClientAuthorizedScope(clientId, scope, DateTimeUtil.getCurrentSystemUTCEpoch());
 	}
 	
 	/**
-	 * @param clientId
-	 * @param scope
-	 * @param on
+	 * @param clientId of the client
+	 * @param scope which has been assigned to the client
+	 * @param on which date it has been granted
 	 */
 	public ClientAuthorizedScope(String clientId, String scope, long on) {
-		super();
 		this.clientId = clientId;
 		if(StringUtils.hasText(scope))
 			this.scope = Scope.getEnum(scope);
 		this.on = on;
-	}
-	
-	/**
-	 * @param clientId
-	 * @param scope
-	 */
-	public ClientAuthorizedScope(String clientId, String scope) {
-		super();
-		this.clientId = clientId;
-		if(StringUtils.hasText(scope))
-			this.scope = Scope.getEnum(scope);
-		this.on = DateTimeUtil.getCurrentSystemUTCEpoch();
 	}
 	
 	/**
 	 * Converts the current state to the serailizable map
-	 * @return
+	 * @return a map instance
 	 */
 	public Map<String, Object> toMap(){
 		Map<String, Object> clients = new WeakHashMap<String, Object>(5);

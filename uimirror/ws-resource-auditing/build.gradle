@@ -18,24 +18,7 @@ dependencies {
 	compile (group: 'org.springframework', name: 'spring-context-support', version: springVersion)
 	//Spring ENd
 	//Jersey Start
-	compile (group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet', version: jerseyVersion){
-		exclude module: 'javax.annotation-api'
-		exclude module: 'aopalliance-repackaged'
-		exclude module: 'javax.inject'
-		exclude module: 'hk2-api'
-		exclude module: 'hk2-locator'
-		exclude module: 'hk2-utils'
-		exclude module: 'tiger-types'
-		exclude module: 'osgi-resource-locator'
-		exclude module: 'jersey-guava'
-		exclude module: 'jersey-container-servlet-core'
-		exclude module: 'jersey-container-servlet'
-		exclude module: 'jersey-common'
-		exclude module: 'jersey-server'
-		exclude module: 'jersey-client'
-		exclude module: 'jersey-container-servlet'
-		
-	}
+	compile (group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet', version: jerseyVersion)
 	//Jersey END
 }
 

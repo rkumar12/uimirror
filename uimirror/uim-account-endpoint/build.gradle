@@ -13,7 +13,7 @@ configurations.all {
 
 dependencies {
 	//compile project(':uim-core')
-	compile project(':ws-resource-security')
+	compile project(':ws-security')
 	compile project(':ws-filters')
 	compile project(':uim-oauth-client')
 	compile project(':uim-sso-core')

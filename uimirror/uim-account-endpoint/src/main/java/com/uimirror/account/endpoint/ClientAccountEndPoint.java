@@ -23,9 +23,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.uimirror.account.client.ClientRegisterForm;
 import com.uimirror.core.Processor;
-import com.uimirror.ouath.client.form.ClientRegisterForm;
-import com.uimirror.ws.api.security.annotation.PreAuthorize;
+import com.uimirror.sso.core.PreAuthorize;
 
 /**
  * End point for the various client operation

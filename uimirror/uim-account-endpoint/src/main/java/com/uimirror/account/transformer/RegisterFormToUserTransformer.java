@@ -15,6 +15,7 @@ import java.util.List;
 
 import org.springframework.util.Assert;
 
+import com.uimirror.account.client.ClientRegisterForm;
 import com.uimirror.account.core.Password;
 import com.uimirror.account.form.RegisterForm;
 import com.uimirror.core.DOB;
@@ -28,7 +29,6 @@ import com.uimirror.core.user.Credentials;
 import com.uimirror.core.user.DefaultUser;
 import com.uimirror.core.user.MetaInfo;
 import com.uimirror.core.util.DateTimeUtil;
-import com.uimirror.ouath.client.form.ClientRegisterForm;
 
 /**
  * A transformer implementation which will transform the {@linkplain ClientRegisterForm}

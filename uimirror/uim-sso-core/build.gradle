@@ -4,8 +4,8 @@ group = "com.uimirror.api"
 version = 1.0
 
 dependencies {
-	//compile project(':uim-core')
-	compile project(':uim-oauth-client')
+	compile project(':uim-core')
+	//compile project(':uim-oauth-client')
 	compile group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet', version: jerseyVersion
 }
 

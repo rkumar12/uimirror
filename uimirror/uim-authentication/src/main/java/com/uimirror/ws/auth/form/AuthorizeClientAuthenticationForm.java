@@ -18,7 +18,7 @@ import com.uimirror.core.auth.Scope;
 import com.uimirror.core.form.AuthenticatedHeaderForm;
 import com.uimirror.core.rest.extra.IllegalArgumentException;
 import com.uimirror.core.service.BeanValidatorService;
-import com.uimirror.sso.client.Approval;
+import com.uimirror.sso.Approval;
 
 /**
  * Converts the {@link FormParam} provided in the POST request for the

@@ -14,11 +14,7 @@ import org.springframework.beans.factory.config.ServiceLocatorFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.uimirror.core.auth.AccessToken;
-import com.uimirror.core.util.thread.BackgroundProcessor;
 import com.uimirror.core.util.thread.BackgroundProcessorFactory;
-import com.uimirror.ws.auth.processor.OTPMailProcessor;
-import com.uimirror.ws.auth.processor.UserRestoreProcessor;
 
 /**
  * Initialize or configures the service bean getting used for this application
@@ -34,14 +30,6 @@ public class BeanOfBackGroundProcessor {
 		return sb;
 	}
 	
-	@Bean(name=UserRestoreProcessor.NAME)
-	public BackgroundProcessor<String, Object> userRestoreProcessor(){
-		return new UserRestoreProcessor();
-	}
 	
-	@Bean(name=OTPMailProcessor.NAME)
-	public BackgroundProcessor<AccessToken, Object> otpMailProcessor(){
-		return new OTPMailProcessor();
-	}
 
 }

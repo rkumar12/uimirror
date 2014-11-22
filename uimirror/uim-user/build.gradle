@@ -3,7 +3,8 @@ group = "com.uimirror.api"
 version = 1.0
 
 dependencies {
-	compile project(':uim-sso-core')
+	//compile project(':uim-sso-core')
+	compile project(':uim-core')
 	compile group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet', version: jerseyVersion
 }
 

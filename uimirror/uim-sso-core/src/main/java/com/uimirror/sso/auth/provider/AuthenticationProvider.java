@@ -13,7 +13,7 @@ package com.uimirror.sso.auth.provider;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.Authentication;
 import com.uimirror.sso.AuthenticationManager;
-import com.uimirror.ws.api.security.exception.AuthenticationException;
+import com.uimirror.sso.exception.AuthenticationException;
 
 /**
  * Handles the authentication request, and process the authentication

@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.uimirror.account.form.VerifyForm;
 import com.uimirror.account.form.VerifySource;
+import com.uimirror.api.security.processor.AllowAuthorizationClientProcessor;
 import com.uimirror.core.Processor;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.Scope;
@@ -42,14 +43,13 @@ import com.uimirror.core.rest.extra.UnAuthorizedException;
 import com.uimirror.core.user.DefaultUser;
 import com.uimirror.core.util.DateTimeUtil;
 import com.uimirror.core.util.thread.BackgroundProcessorFactory;
-import com.uimirror.sso.client.AllowAuthorizationClientProcessor;
-import com.uimirror.sso.token.AccessTokenProvider;
+import com.uimirror.sso.auth.provider.AccessTokenProvider;
+import com.uimirror.sso.exception.InvalidTokenException;
 import com.uimirror.sso.token.TokenGenerator;
 import com.uimirror.user.processor.BackGroundCreateUserProcessor;
 import com.uimirror.user.processor.InvalidateAccountTokenProcessor;
 import com.uimirror.user.store.AccountTokenStore;
 import com.uimirror.user.store.DefaultUserStore;
-import com.uimirror.ws.api.security.exception.InvalidTokenException;
 
 /**
  * Processor That will be responsible for the Account Verifications purpose

@@ -14,13 +14,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
+import com.uimirror.api.security.conf.SSOBeanInitializer;
 import com.uimirror.core.crypto.CryptoMatcherService;
 import com.uimirror.core.crypto.MatcherServiceImpl;
 import com.uimirror.core.mail.EmailBeanInitializr;
 import com.uimirror.core.rest.extra.JsonResponseTransFormer;
 import com.uimirror.core.rest.extra.ResponseTransFormer;
 import com.uimirror.ouath.client.BeanOfClient;
-import com.uimirror.sso.conf.SSOBeanInitializer;
 import com.uimirror.user.conf.UserBeanInitializer;
 
 /**
@@ -29,7 +29,6 @@ import com.uimirror.user.conf.UserBeanInitializer;
  */
 @Configuration
 @Import({BeanOfExceptionIntitializer.class, BeanOfAuthProcessor.class
-	, BeanOfAuthManagers.class, BeanOfAuthProviders.class
 	, BeanOfTransformers.class, EmailBeanInitializr.class
 	, BeanOfBackGroundProcessor.class, BeanOfSchedulers.class
 	, SSOBeanInitializer.class, BeanOfClient.class

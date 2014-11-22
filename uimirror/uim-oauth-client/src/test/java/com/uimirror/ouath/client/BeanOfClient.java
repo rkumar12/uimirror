@@ -27,13 +27,9 @@ import com.uimirror.core.mongo.MongoDbFactory;
 import com.uimirror.core.rest.extra.ResponseTransFormer;
 import com.uimirror.core.service.TransformerService;
 import com.uimirror.core.service.ValidatorService;
-import com.uimirror.ouath.client.Client;
-import com.uimirror.ouath.client.form.ClientRegisterForm;
-import com.uimirror.ouath.client.processor.CreateClientAccountProcessor;
 import com.uimirror.ouath.client.provider.CreateClientAccountProvider;
 import com.uimirror.ouath.client.store.ClientStore;
 import com.uimirror.ouath.client.store.PersistedClientMongoStore;
-import com.uimirror.ouath.client.transformer.ClientRegisterFormToClientTransformer;
 import com.uimirror.ouath.client.validator.CreateClientAccountValidator;
 
 /**
@@ -80,21 +76,21 @@ public class BeanOfClient {
 		return ccav;
 	}
 	
-	@Bean
-	public TransformerService<ClientRegisterForm, Client> clientRegisterFormToClientTransformer(){
-		return new ClientRegisterFormToClientTransformer();
-	}
-	
-	@Bean
-	@Autowired
-	public Processor<ClientRegisterForm, String> createClientAccountProcessor(Processor<Client, Client> createClientAccountProvider,
-			ResponseTransFormer<String> jsonResponseTransFormer, TransformerService<ClientRegisterForm, Client> clientRegisterFormToClientTransformer) {
-		CreateClientAccountProcessor ccap = new CreateClientAccountProcessor();
-		ccap.setClientRegisterFormToClientTransformer(clientRegisterFormToClientTransformer);
-		ccap.setCreateClientAccountProvider(createClientAccountProvider);
-		ccap.setJsonResponseTransFormer(jsonResponseTransFormer);
-		return ccap;
-	}
+//	@Bean
+//	public TransformerService<ClientRegisterForm, Client> clientRegisterFormToClientTransformer(){
+//		return new ClientRegisterFormToClientTransformer();
+//	}
+//	
+//	@Bean
+//	@Autowired
+//	public Processor<ClientRegisterForm, String> createClientAccountProcessor(Processor<Client, Client> createClientAccountProvider,
+//			ResponseTransFormer<String> jsonResponseTransFormer, TransformerService<ClientRegisterForm, Client> clientRegisterFormToClientTransformer) {
+//		CreateClientAccountProcessor ccap = new CreateClientAccountProcessor();
+//		ccap.setClientRegisterFormToClientTransformer(clientRegisterFormToClientTransformer);
+//		ccap.setCreateClientAccountProvider(createClientAccountProvider);
+//		ccap.setJsonResponseTransFormer(jsonResponseTransFormer);
+//		return ccap;
+//	}
 	
 	@Bean
 	public Processor<Client, Client> createClientAccountProvider(ValidatorService<Client> clientAccountValidator,

@@ -18,6 +18,8 @@ import com.uimirror.core.auth.token.AccessTokenFields;
 import com.uimirror.sso.AbstractAuthentication;
 
 /**
+ * When ever user/client tries to get authenticated to the system,
+ * they need to have token.
  * AccessToken <code>Authentication</code> objects.
  * <p>
  * Implementations which use this class should be immutable.

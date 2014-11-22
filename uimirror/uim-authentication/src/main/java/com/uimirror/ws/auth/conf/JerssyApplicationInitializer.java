@@ -18,9 +18,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 
+import com.uimirror.api.security.feature.PreAuthorizeDynamicFeature;
 import com.uimirror.ws.api.filter.PoweredByResponseFilter;
 import com.uimirror.ws.api.filter.UimCORSFilter;
-import com.uimirror.ws.api.security.feature.PreAuthorizeDynamicFeature;
 
 public class JerssyApplicationInitializer extends ResourceConfig{
 	protected static final Logger LOG = LoggerFactory.getLogger(JerssyApplicationInitializer.class);

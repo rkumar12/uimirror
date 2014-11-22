@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-import javax.annotation.Priority;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerResponseContext;
 import javax.ws.rs.container.ContainerResponseFilter;
@@ -27,7 +26,6 @@ import org.glassfish.jersey.server.model.AnnotatedMethod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.uimirror.core.Priorities;
 import com.uimirror.core.util.thread.SubmitAndForgetAdapter;
 import com.uimirror.ws.api.audit.Audit;
 import com.uimirror.ws.api.audit.annotations.ClientAudit;
@@ -70,7 +68,7 @@ public class AuditDynamicFeature implements DynamicFeature {
 
 	}
 	
-	@Priority(Priorities.CLIENT_AUDIT_RESPONSE)//It should be just before any of the response filter to commit the response 
+	//@Priority(Priorities.CLIENT_AUDIT_RESPONSE)//It should be just before any of the response filter to commit the response 
 	private static class AuditResponseFilter implements ContainerResponseFilter{
 
 		private final AuditService auditService;

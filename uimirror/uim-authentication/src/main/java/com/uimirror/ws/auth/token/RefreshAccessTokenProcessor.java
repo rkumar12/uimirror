@@ -32,7 +32,7 @@ import com.uimirror.core.service.TransformerService;
 import com.uimirror.core.util.DateTimeUtil;
 import com.uimirror.core.util.thread.BackgroundProcessorFactory;
 import com.uimirror.sso.auth.OAuth2Authentication;
-import com.uimirror.sso.token.AccessTokenProvider;
+import com.uimirror.sso.auth.provider.AccessTokenProvider;
 import com.uimirror.sso.token.InvalidateTokenProcessor;
 import com.uimirror.sso.token.TokenGenerator;
 

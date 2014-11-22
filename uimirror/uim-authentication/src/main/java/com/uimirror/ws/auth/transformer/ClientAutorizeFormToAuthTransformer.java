@@ -13,7 +13,7 @@ package com.uimirror.ws.auth.transformer;
 import org.springframework.util.Assert;
 
 import com.uimirror.core.service.TransformerService;
-import com.uimirror.sso.client.ClientAuthorizationAuthentication;
+import com.uimirror.sso.auth.ClientAuthorizationAuthentication;
 import com.uimirror.ws.auth.form.AuthorizeClientAuthenticationForm;
 
 /**

@@ -11,10 +11,10 @@
 package com.uimirror.sso;
 
 import com.uimirror.core.auth.Authentication;
-import com.uimirror.ws.api.security.exception.AuthenticationException;
-import com.uimirror.ws.api.security.exception.BadCredentialsException;
-import com.uimirror.ws.api.security.exception.DisabledException;
-import com.uimirror.ws.api.security.exception.LockedException;
+import com.uimirror.sso.exception.AuthenticationException;
+import com.uimirror.sso.exception.BadCredentialsException;
+import com.uimirror.sso.exception.DisabledException;
+import com.uimirror.sso.exception.LockedException;
 
 
 /**

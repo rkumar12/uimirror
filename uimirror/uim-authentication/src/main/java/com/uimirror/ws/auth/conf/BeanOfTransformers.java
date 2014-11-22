@@ -14,10 +14,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.uimirror.core.service.TransformerService;
+import com.uimirror.sso.auth.ClientAuthorizationAuthentication;
 import com.uimirror.sso.auth.LoginAuthentication;
 import com.uimirror.sso.auth.OTPAuthentication;
 import com.uimirror.sso.auth.ScreenLockAuthentication;
-import com.uimirror.sso.client.ClientAuthorizationAuthentication;
 import com.uimirror.ws.auth.form.AuthorizeClientAuthenticationForm;
 import com.uimirror.ws.auth.form.LoginForm;
 import com.uimirror.ws.auth.form.OTPAuthenticationForm;

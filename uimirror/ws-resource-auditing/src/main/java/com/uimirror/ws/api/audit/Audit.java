@@ -76,7 +76,7 @@ public final class Audit  extends AbstractBeanBasedDocument implements Serializa
 	 * @param m 
 	 */
 	public Audit(Map<String, Object> m){
-		super(m);
+		//super(m);
 		this.id = (String)m.get(AuditFieldConstants._ID);
 		this.requestTime = (long)m.get(AuditFieldConstants._RQ_TIME);
 		this.responseTime = (long)m.get(AuditFieldConstants._RS_TIME);
