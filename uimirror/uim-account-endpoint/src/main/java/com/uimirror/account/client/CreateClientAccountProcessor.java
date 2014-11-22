@@ -57,7 +57,7 @@ public class CreateClientAccountProcessor implements Processor<ClientRegisterFor
 		LOG.info("[START]- Registering a new Client.");
 		//Step -1 Transform to the desired type
 		Client client = transformToClient(param);
-		client =createClientAccountProvider.invoke(client);
+		client = createClientAccountProvider.invoke(client);
 		LOG.info("[END]- Registering a new Client.");
 		return jsonResponseTransFormer.doTransForm(cleanClient(client));
 	}

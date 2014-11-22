@@ -66,8 +66,7 @@ public class VerifyUserAccountProcessor implements Processor<VerifyForm, String>
 	private @Autowired ResponseTransFormer<String> jsonResponseTransFormer;
 	private @Autowired BackgroundProcessorFactory<AccessToken, Object> allowAuthorizationClientProcessor;
 	private @Autowired DefaultUserStore persistedDefaultUserMongoStore;
-	@Qualifier("backgroundProcessorFactory")
-	private @Autowired BackgroundProcessorFactory<DefaultUser, Object> backgroundCreateUserProcessorFactory;
+	private @Qualifier("backgroundProcessorFactory") @Autowired BackgroundProcessorFactory<DefaultUser, Object> backgroundCreateUserProcessorFactory;
 
 	/**
 	 *  Verify the provided details, validate the token,

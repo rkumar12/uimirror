@@ -52,14 +52,14 @@ public class ClientRegisterFormToClientTransformer implements TransformerService
 	 * @return
 	 */
 	private String getApiKey(){
-		return RandomKeyGenerator.randomSecureString(8);
+		return RandomKeyGenerator.randomSecureString(16);
 	}
 	
 	/**
 	 * @return
 	 */
 	private String getSecretKey(){
-		return RandomKeyGenerator.randomSecureString(6);
+		return RandomKeyGenerator.randomSecureString(10);
 	}
 
 }

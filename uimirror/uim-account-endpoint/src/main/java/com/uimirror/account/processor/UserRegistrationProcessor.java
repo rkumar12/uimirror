@@ -88,8 +88,6 @@ public class UserRegistrationProcessor implements Processor<RegisterForm, String
 		DefaultUser user = createUserProcessor.invoke(param);
 		AccessToken token = issueToken(client, user, param);
 		LOG.info("[END]- Registering a new User.");
-		//TODO fix me, delete below line before code release
-		LOG.debug("[INTERNAL]- token.eraseEsential()"+token.eraseEsential());
 		return jsonResponseTransFormer.doTransForm(token.eraseEsential().toResponseMap());
 	}
 	
@@ -103,8 +101,6 @@ public class UserRegistrationProcessor implements Processor<RegisterForm, String
 			client = persistedClientMongoStore.findClientByApiKey(param.getClientId());
 		}catch(RecordNotFoundException e){
 			LOG.error("[MINOR-ERROR]- Recevied Request for user registeration from a invalid client");
-			//TODO fix this delete this once testing over
-			client = new Client.ClientBuilder("12").build();
 		}
 		return client;
 	}

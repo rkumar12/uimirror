@@ -14,9 +14,11 @@ package com.uimirror.account.endpoint;
  * This contains all the URL path for the account end points.
  * @author Jay
  */
-public interface ClientEndPointConstant {
-	String HOME = "/";
-	String CLIENT = HOME+"client";
-	String CREATE = "/create";
-	String VERIFY = "/verify";
+public class ClientEndPointConstant {
+	private ClientEndPointConstant(){
+		//NOP prevent insatance
+	}
+	public static final String HOME = "/";
+	public static final String CLIENT = HOME+"client";
+	public static final String CREATE = "/create";
 }
