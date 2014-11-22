@@ -112,15 +112,16 @@ public class OTPAuthProvider implements AuthenticationProvider{
 			Client client = getClient(token.getClient());
 			inst.put(ClientDBFields.NAME, client.getName());
 			inst.put(AuthConstants.SCOPE, token.getScope().getScope());
+			inst.put(ClientDBFields.ID, client.getClientId());
+			inst.put(ClientDBFields.IMAGE, client.getImage());
 			token = token.updateInstructions(inst, Boolean.TRUE);
-			auth = new OTPAuthentication(token);
 		}else if(TokenType.SECRET.equals(token.getType())){
 			Map<String, Object> inst = new WeakHashMap<String, Object>(5);
 			Client client = getClient(token.getClient(), ClientDBFields.REDIRECT_URI);
 			inst.put(ClientDBFields.REDIRECT_URI, client.getRedirectURI());
-			token = token.updateInstructions(inst, Boolean.TRUE);
-			auth = new OTPAuthentication(token);
+			token = token.updateInstructions(inst, Boolean.FALSE);
 		}
+		auth = new OTPAuthentication(token);
 		return auth;
 	}
 	

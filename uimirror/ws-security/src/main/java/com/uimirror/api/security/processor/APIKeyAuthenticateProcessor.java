@@ -64,9 +64,9 @@ public class APIKeyAuthenticateProcessor implements Processor<Authentication, Cl
 	 * @return
 	 */
 	private Client getClientDetails(Authentication authentication){
-		LOG.debug("[START]- Reteriving acteive Client By api Key");
+		LOG.debug("[START]- Reteriving active Client By api Key");
 		Client client = reteriveClient(authentication.getName());
-		LOG.debug("[END]- Reteriving acteive Client By api Key");
+		LOG.debug("[END]- Reteriving active Client By api Key");
 		return client;
 	}
 	

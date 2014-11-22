@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.uimirror.core.Processor;
 import com.uimirror.core.auth.AccessToken;
+import com.uimirror.core.form.AuthenticatedHeaderForm;
 import com.uimirror.ws.auth.form.LoginForm;
 import com.uimirror.ws.auth.form.OTPAuthenticationForm;
 import com.uimirror.ws.auth.form.ScreenLockAuthenticationForm;
@@ -45,6 +46,7 @@ public class UserAuthenticationEndPoint{
 	private @Autowired Processor<LoginForm, String> loginFormAuthProcessor;
 	private @Autowired Processor<ScreenLockAuthenticationForm, String> screenLockAuthProcessor;
 	private @Autowired Processor<OTPAuthenticationForm, String> otpAuthProcessor;
+	private @Autowired Processor<AuthenticatedHeaderForm, String> logOutAuthProcessor;
 	
 	/**
 	 * De-serialize the authentication form submitted
@@ -119,9 +121,9 @@ public class UserAuthenticationEndPoint{
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Path(AuthenticationEndPointConstant.TWO_FACTO_PATH)
 	public Object otp(@BeanParam OTPAuthenticationForm form){
-		LOG.info("[ENTRY]- Received request for 2 Factor OTP Authentication");
+		LOG.info("[ENTRY]- Received request for OTP Authentication");
 		Object response = otpAuthProcessor.invoke(form);
-		LOG.info("[EXIT]- Received request for 2 Factor OTP Authentication");
+		LOG.info("[EXIT]- Received request for OTP Authentication");
 		return response;
 	}
 	
@@ -130,7 +132,7 @@ public class UserAuthenticationEndPoint{
 	 * if necessary, it will renew the token and send back. 
 	 * @param form
 	 * @return
-	 *///TODO final remove
+	 */
 	@POST
 	@Produces({ "application/x-javascript", MediaType.APPLICATION_JSON })
 	@JSONP(queryParam="cb", callback="callback")
@@ -140,6 +142,33 @@ public class UserAuthenticationEndPoint{
 		LOG.info("[ENTRY]- Received request for unlocking screen");
 		Object response = screenLockAuthProcessor.invoke(form);
 		LOG.info("[EXIT]- Received request for unlocking screen");
+		return response;
+	}
+	
+	/**
+	 * De-serialize the authentication form submitted
+	 * and in-validate the provided token.
+	 * 
+	 * POST https://api.oauth2server.com/login
+     *	Authorization=authorization_code
+     * in case of success
+     * 
+     * response {
+     *	"msg":"sucess"
+	 *	}
+	 * 
+	 * @param form {@link AuthenticatedHeaderForm}
+	 * @return response with the action performed
+	 */
+	@POST
+	@Produces({ "application/x-javascript", MediaType.APPLICATION_JSON })
+	@JSONP(queryParam="cb", callback="callback")
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	@Path(AuthenticationEndPointConstant.LOGOUT_PATH)
+	public Object loggOut(@BeanParam AuthenticatedHeaderForm form){
+		LOG.info("[ENTRY]- Received requst for user authentication by user name and password");
+		Object response = logOutAuthProcessor.invoke(form);
+		LOG.info("[EXIT]- Received requst for user authentication by user name and password");
 		return response;
 	}
 	

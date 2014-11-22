@@ -57,7 +57,7 @@ public class ScreenLockAuthProcessor implements Processor<ScreenLockAuthenticati
 		param = null;
 		LOG.debug("[END]- Generating a new accesstoken based on the previous accesstoken and password for screen unlock {}", auth);
 		//Remove Unnecessary information from the accessToken Before Sending to the user
-		Authentication authToken = generateToken(auth);
+		Authentication authToken = validateAndIssueToken(auth);
 		AccessToken token = (AccessToken)authToken.getPrincipal();
 		return jsonResponseTransFormer.doTransForm(token.toResponseMap());
 	}
@@ -77,7 +77,7 @@ public class ScreenLockAuthProcessor implements Processor<ScreenLockAuthenticati
 	 * @param auth
 	 * @return
 	 */
-	private Authentication generateToken(Authentication auth){
+	private Authentication validateAndIssueToken(Authentication auth){
 		return screenLockAuthProvider.authenticate(auth);
 	}
 

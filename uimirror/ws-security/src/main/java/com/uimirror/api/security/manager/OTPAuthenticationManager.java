@@ -141,16 +141,10 @@ public class OTPAuthenticationManager implements AuthenticationManager{
 		Token token = generateToken(tokenType);
 		//Get Expires On
 		long expiresOn = getExpiresOn(intsructions, tokenType);
-		String requestor = prevToken.getClient();
-		String owner = prevToken.getOwner();
-		
-//		return new DefaultAccessToken(token, owner, requestor
-//				, expiresOn, tokenType, prevToken.getScope()
-//				, getNotes(details), getInstructions(intsructions, tokenType));
-		
+
 		return new DefaultAccessToken.TokenBuilder(token).
-				addClient(requestor).
-				addOwner(owner).
+				addClient(prevToken.getClient()).
+				addOwner(prevToken.getOwner()).
 				addExpire(expiresOn).
 				addType(tokenType).
 				addScope(prevToken.getScope()).

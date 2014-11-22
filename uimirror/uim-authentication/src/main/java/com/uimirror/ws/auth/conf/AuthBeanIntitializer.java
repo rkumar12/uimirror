@@ -20,8 +20,7 @@ import com.uimirror.core.crypto.MatcherServiceImpl;
 import com.uimirror.core.mail.EmailBeanInitializr;
 import com.uimirror.core.rest.extra.JsonResponseTransFormer;
 import com.uimirror.core.rest.extra.ResponseTransFormer;
-import com.uimirror.ouath.client.BeanOfClient;
-import com.uimirror.user.conf.UserBeanInitializer;
+import com.uimirror.ws.auth.conf.client.BeanOfClient;
 
 /**
  * Initialize or configures the service bean getting used for this application
@@ -31,8 +30,7 @@ import com.uimirror.user.conf.UserBeanInitializer;
 @Import({BeanOfExceptionIntitializer.class, BeanOfAuthProcessor.class
 	, BeanOfTransformers.class, EmailBeanInitializr.class
 	, BeanOfBackGroundProcessor.class, BeanOfSchedulers.class
-	, SSOBeanInitializer.class, BeanOfClient.class
-	, UserBeanInitializer.class})
+	, SSOBeanInitializer.class, BeanOfClient.class})
 public class AuthBeanIntitializer {
 
 	@Bean(name=JsonResponseTransFormer.NAME)

@@ -10,8 +10,8 @@
  *******************************************************************************/
 package com.uimirror.api.security.provider;
 
-import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.WeakHashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -108,17 +108,19 @@ public class LoginFormAuthProvider implements AuthenticationProvider{
 	private Authentication includeClientIfRequired(Authentication auth) {
 		AccessToken token = (AccessToken)auth.getPrincipal();
 		if(TokenType.USER_PERMISSION.equals(token.getType())){
-			Map<String, Object> inst = new LinkedHashMap<String, Object>(5);
-			Client client = getClient(token.getClient(), ClientDBFields.NAME);
+			Map<String, Object> inst = new WeakHashMap<String, Object>(5);
+			Client client = getClient(token.getClient(), ClientDBFields.NAME, ClientDBFields.IMAGE);
 			inst.put(ClientDBFields.NAME, client.getName());
+			inst.put(ClientDBFields.IMAGE, client.getImage());
+			inst.put(ClientDBFields.ID, client.getClientId());
 			inst.put(AuthConstants.SCOPE, token.getScope().getScope());
 			token = token.updateInstructions(inst, Boolean.TRUE);
 			auth = new LoginAuthentication(token);
 		}else if(TokenType.SECRET.equals(token.getType())){
-			Map<String, Object> inst = new LinkedHashMap<String, Object>(5);
+			Map<String, Object> inst = new WeakHashMap<String, Object>(5);
 			Client client = getClient(token.getClient(), ClientDBFields.REDIRECT_URI);
 			inst.put(ClientDBFields.REDIRECT_URI, client.getRedirectURI());
-			token = token.updateInstructions(inst, Boolean.TRUE);
+			token = token.updateInstructions(inst, Boolean.FALSE);
 			auth = new LoginAuthentication(token);
 		}
 		return auth;
@@ -126,11 +128,12 @@ public class LoginFormAuthProvider implements AuthenticationProvider{
 	
 	/**
 	 * Retrieves the client details based on the client ID
-	 * @param clientId
-	 * @return
+	 * @param clientId of the client
+	 * @param fields which fields needs to be retrieved
+	 * @return Client instance
 	 */
 	private Client getClient(String clientId, String ... fields){
-		Client client = persistedClientStore.findClientById(clientId, ClientDBFields.NAME);
+		Client client = persistedClientStore.findClientById(clientId, fields);
 		return client;
 	}
 	

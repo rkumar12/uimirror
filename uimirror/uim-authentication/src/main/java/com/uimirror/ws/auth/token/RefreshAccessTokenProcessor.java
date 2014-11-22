@@ -20,8 +20,6 @@ import com.uimirror.core.Processor;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.AuthConstants;
 import com.uimirror.core.auth.Authentication;
-import com.uimirror.core.auth.Scope;
-import com.uimirror.core.auth.Token;
 import com.uimirror.core.auth.TokenType;
 import com.uimirror.core.auth.token.DefaultAccessToken;
 import com.uimirror.core.exceptions.ApplicationExceptionMapper;
@@ -111,22 +109,16 @@ public class RefreshAccessTokenProcessor implements Processor<AuthenticatedHeade
 	private AccessToken getNewToken(AccessToken prev_token){
 		Map<String, Object> instructions = prev_token.getInstructions();
 		Map<String, Object> notes = prev_token.getNotes();
-		Token token = TokenGenerator.getNewOneWithOutPharse();
-		TokenType type = TokenType.ACCESS;
-		Scope scope = prev_token.getScope();
-		String requestor = prev_token.getClient();
-		String owner = prev_token.getOwner();
 		//Get Expires On
 		long expiresOn = getExpiresOn(instructions);
-		return new DefaultAccessToken.TokenBuilder(token).
-				addOwner(owner).
-				addClient(requestor).
+		return new DefaultAccessToken.TokenBuilder(TokenGenerator.getNewOneWithOutPharse()).
+				addOwner(prev_token.getOwner()).
+				addClient(prev_token.getClient()).
 				addExpire(expiresOn).
-				addType(type).
-				addScope(scope).
+				addType(TokenType.ACCESS).
+				addScope(prev_token.getScope()).
 				addNotes(notes).
 				addInstructions(instructions).build();
-//		return new DefaultAccessToken(token, owner, requestor, expiresOn, type, scope, notes, instructions);
 	}
 	
 	/**

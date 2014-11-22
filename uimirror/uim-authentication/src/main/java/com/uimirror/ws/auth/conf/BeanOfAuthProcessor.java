@@ -24,6 +24,7 @@ import com.uimirror.ws.auth.form.OTPAuthenticationForm;
 import com.uimirror.ws.auth.form.ScreenLockAuthenticationForm;
 import com.uimirror.ws.auth.processor.APIKeyProcessor;
 import com.uimirror.ws.auth.processor.AuthorizationClientProcessor;
+import com.uimirror.ws.auth.processor.LogOutAuthProcessor;
 import com.uimirror.ws.auth.processor.LoginFormAuthProcessor;
 import com.uimirror.ws.auth.processor.OTPAuthProcessor;
 import com.uimirror.ws.auth.processor.ScreenLockAuthProcessor;
@@ -89,6 +90,11 @@ public class BeanOfAuthProcessor {
 	@Bean
 	public Processor<AuthorizeClientAuthenticationForm, String> authorizationClientProcessor(){
 		return new AuthorizationClientProcessor();
+	}
+
+	@Bean
+	public Processor<AuthenticatedHeaderForm, String> logOutAuthProcessor(){
+		return new LogOutAuthProcessor();
 	}
 
 }

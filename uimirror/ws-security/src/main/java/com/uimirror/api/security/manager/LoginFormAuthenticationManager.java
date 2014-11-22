@@ -180,9 +180,6 @@ public class LoginFormAuthenticationManager implements AuthenticationManager{
 				addScope(prevToken.getScope()).
 				addNotes(getNotes(details)).
 				addInstructions(getInstructions(details, tokenType)).build();
-//		return new DefaultAccessToken(token, owner, requestor
-//				, expiresOn, tokenType, prevToken.getScope()
-//				, getNotes(details), getInstructions(details, tokenType));
 	}
 	
 	/**

@@ -13,8 +13,8 @@ package com.uimirror.api.security.manager;
 import static com.uimirror.core.Constants.IP;
 import static com.uimirror.core.Constants.USER_AGENT;
 
-import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.WeakHashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,8 +24,6 @@ import org.springframework.util.StringUtils;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.AuthConstants;
 import com.uimirror.core.auth.Authentication;
-import com.uimirror.core.auth.Scope;
-import com.uimirror.core.auth.Token;
 import com.uimirror.core.auth.TokenType;
 import com.uimirror.core.auth.token.DefaultAccessToken;
 import com.uimirror.core.extra.MapException;
@@ -136,20 +134,13 @@ public class SecretKeyAuthManager implements AuthenticationManager, MatcherServi
 	 */
 	private AccessToken issueANewToken(AccessToken prevToken, Map<String, Object> details){
 		Map<String, Object> prevInstructions = prevToken.getInstructions(); 
-		Token token = TokenGenerator.getNewOneWithOutPharse();
-		TokenType type = TokenType.ACCESS;
-		String requestor = prevToken.getClient();
-		String owner = prevToken.getOwner();
 		long expire = getTokenExpire(prevInstructions);
-		Scope scope = prevToken.getScope();
-//		return new DefaultAccessToken(token, owner, requestor, expire, type, scope, getNotes(details), getInstructions(prevInstructions));
-		
-		return new DefaultAccessToken.TokenBuilder(token).
-				addClient(requestor).
-				addOwner(owner).
+		return new DefaultAccessToken.TokenBuilder(TokenGenerator.getNewOneWithOutPharse()).
+				addClient(prevToken.getClient()).
+				addOwner(prevToken.getOwner()).
 				addExpire(expire).
-				addType(type).
-				addScope(scope).
+				addType(TokenType.ACCESS).
+				addScope(prevToken.getScope()).
 				addNotes(getNotes(getNotes(details))).
 				addInstructions(getInstructions(prevInstructions)).build();
 	}
@@ -161,9 +152,7 @@ public class SecretKeyAuthManager implements AuthenticationManager, MatcherServi
 	 */
 	private long getTokenExpire(Map<String, Object> instructions){
 		int standtingInstructions = 0;
-		if(instructions.get(AuthConstants.INST_AUTH_EXPIRY_INTERVAL) != null){
-			standtingInstructions = (int) instructions.get(AuthConstants.INST_AUTH_EXPIRY_INTERVAL);
-		}
+		standtingInstructions = (int) instructions.getOrDefault(AuthConstants.INST_AUTH_EXPIRY_INTERVAL, 0);
 		standtingInstructions = standtingInstructions == 0 ? AuthConstants.DEFAULT_EXPIRY_INTERVAL : standtingInstructions;
 		return DateTimeUtil.addToCurrentUTCTimeConvertToEpoch(standtingInstructions);
 	}
@@ -174,7 +163,7 @@ public class SecretKeyAuthManager implements AuthenticationManager, MatcherServi
 	 * @return
 	 */
 	private Map<String, Object> getNotes(Map<String, Object> details){
-		Map<String, Object> notes = new LinkedHashMap<String, Object>(5);
+		Map<String, Object> notes = new WeakHashMap<String, Object>(5);
 		notes.put(IP, details.get(IP));
 		notes.put(USER_AGENT, details.get(USER_AGENT));
 		return notes;
@@ -186,7 +175,7 @@ public class SecretKeyAuthManager implements AuthenticationManager, MatcherServi
 	 * @return
 	 */
 	private Map<String, Object> getInstructions(Map<String, Object> prevInstructions){
-		Map<String, Object> instructions = new LinkedHashMap<String, Object>(5);
+		Map<String, Object> instructions = new WeakHashMap<String, Object>(5);
 		instructions.put(AuthConstants.INST_AUTH_EXPIRY_INTERVAL, prevInstructions.get(AuthConstants.INST_AUTH_EXPIRY_INTERVAL));
 		return instructions;
 	}

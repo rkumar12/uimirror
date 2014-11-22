@@ -25,7 +25,6 @@ import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.AuthConstants;
 import com.uimirror.core.auth.Authentication;
 import com.uimirror.core.auth.Scope;
-import com.uimirror.core.auth.Token;
 import com.uimirror.core.auth.TokenType;
 import com.uimirror.core.auth.token.DefaultAccessToken;
 import com.uimirror.ouath.client.Client;
@@ -105,16 +104,10 @@ public class APIKeyAuthManager implements AuthenticationManager{
 	 */
 	@SuppressWarnings("unchecked")
 	private AccessToken generateToken(Authentication auth, Client client){
-		Token token = TokenGenerator.getNewOne();
-		TokenType type = TokenType.TEMPORAL;
-		String requestor = client.getClientId();
-		long expire = 0l;
 		Map<String, Object> details = (Map<String, Object>)auth.getDetails();
-		//return new DefaultAccessToken(token, null, requestor, expire, type, getScope(details), getNotes(details), getInstructions());
-		return new DefaultAccessToken.TokenBuilder(token).
-				addClient(requestor).
-				addExpire(expire).
-				addType(type).
+		return new DefaultAccessToken.TokenBuilder(TokenGenerator.getNewOne()).
+				addClient(client.getClientId()).
+				addType(TokenType.TEMPORAL).
 				addScope(getScope(details)).
 				addNotes(getNotes(details)).
 				addInstructions(getInstructions()).build();

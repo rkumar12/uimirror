@@ -23,7 +23,6 @@ import org.springframework.util.Assert;
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.AuthConstants;
 import com.uimirror.core.auth.Authentication;
-import com.uimirror.core.auth.Token;
 import com.uimirror.core.auth.TokenType;
 import com.uimirror.core.auth.token.DefaultAccessToken;
 import com.uimirror.core.extra.MapException;
@@ -136,26 +135,19 @@ public class ScreenLockAuthenticationManager implements AuthenticationManager{
 	private AccessToken issueNewToken(AccessToken prevToken, Credentials userCredentials, Authentication authentication) {
 		Map<String, Object> instructions = (Map<String, Object>)prevToken.getInstructions();
 		Map<String, Object> details = (Map<String, Object>)authentication.getDetails();
-		Token token = TokenGenerator.getNewOneWithOutPharse();
-		TokenType tokenType = TokenType.ACCESS;
 		long expiresOn = getExpiresOn(instructions);
-		String requestor = prevToken.getClient();
-		String owner = userCredentials.getProfileId();
-//		return new DefaultAccessToken(token, owner, requestor
-//				, expiresOn, tokenType, prevToken.getScope()
-//				, getNotes(details), getInstructions(instructions));
 		
-		return new DefaultAccessToken.TokenBuilder(token).
-				addOwner(owner).addClient(requestor).
-				addExpire(expiresOn).addType(tokenType).
+		return new DefaultAccessToken.TokenBuilder(TokenGenerator.getNewOneWithOutPharse()).
+				addOwner(userCredentials.getProfileId()).addClient(prevToken.getClient()).
+				addExpire(expiresOn).addType(TokenType.ACCESS).
 				addScope(prevToken.getScope()).addNotes(getNotes(details)).
 				addInstructions(getInstructions(instructions)).build();
 	}
 
 	/**
 	 * Decides the expires interval of the token
-	 * @param instructions
-	 * @return
+	 * @param instructions from where expires needs to be extracted
+	 * @return time in milliseconds
 	 */
 	private long getExpiresOn(Map<String, Object> instructions){
 		return DateTimeUtil.addToCurrentUTCTimeConvertToEpoch(getExpiresInterval(instructions));
@@ -167,11 +159,7 @@ public class ScreenLockAuthenticationManager implements AuthenticationManager{
 	 * @return
 	 */
 	private long getExpiresInterval(Map<String, Object> instructions){
-		long expires = 0l;
-		if(instructions.get(AuthConstants.INST_AUTH_EXPIRY_INTERVAL) != null){
-			expires = (long)instructions.get(AuthConstants.INST_AUTH_EXPIRY_INTERVAL);
-		}
-		return expires;
+		return (long)instructions.getOrDefault(AuthConstants.INST_AUTH_EXPIRY_INTERVAL, 0l);
 	}
 	
 	/**

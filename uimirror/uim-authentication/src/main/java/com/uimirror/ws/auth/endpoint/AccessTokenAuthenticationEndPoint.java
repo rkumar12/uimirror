@@ -50,8 +50,8 @@ public class AccessTokenAuthenticationEndPoint{
 	/**
 	 * Validate the given access token and returns 
 	 * populated token if valid with status code as 304
-	 * This can also generate a new token if necessary with the status code
-	 * as 200
+	 * 
+	 * This won't generate a new token at all.
 	 * 
 	 * @param form
 	 * @return
