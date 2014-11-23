@@ -1,0 +1,10 @@
+apply plugin: "java"
+description = 'UIM-OAuth2 Core'
+ext {
+	uimCoreVersion = '1.0'
+}
+dependencies {
+    compile group: 'org.apache.commons', name: 'commons-lang3', version:'3.1'
+	//UIM-Core
+	compile group: 'com.uimirror.core', name: 'uim-core', version: uimCoreVersion
+}

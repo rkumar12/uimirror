@@ -16,8 +16,8 @@ subprojects  {
 		 qosLogBackVersion = "1.1.2"
 		 jerseyVersion = "2.13"
 		 javaeeApiVersion = "7.0"
-		 springVersion = "4.1.1.RELEASE"
-		 springBootVersion = '1.1.8.RELEASE'
+		 springVersion = "4.1.2.RELEASE"
+		 springBootVersion = '1.1.9.RELEASE'
 		 junitVersion = '4.11'
 		 //gensonVersion = '1.1-RC2'
 		 janinoVersion = '2.7.6'
