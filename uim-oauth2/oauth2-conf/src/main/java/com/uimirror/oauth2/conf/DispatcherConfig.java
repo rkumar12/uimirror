@@ -39,9 +39,8 @@ public class DispatcherConfig extends WebMvcConfigurerAdapter{
 	
 	@Override
 	public void addViewControllers(ViewControllerRegistry registry) {
-		registry.addViewController("/").setViewName("index");
-		registry.addViewController("/index").setViewName("index");
-		registry.addViewController("/greeting").setViewName("greeting");
+		registry.addViewController("/").setViewName("login");
+		registry.addViewController("/login").setViewName("login");
 	}
 	
 	@Bean
@@ -75,6 +74,7 @@ public class DispatcherConfig extends WebMvcConfigurerAdapter{
 	 @Override
 	    public void addResourceHandlers(ResourceHandlerRegistry registry) {
 	        registry.addResourceHandler("/static/**/*").addResourceLocations("classpath:/assets/");
+	        registry.addResourceHandler("/image/**/*").addResourceLocations("classpath:/image/");
 	        registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/").setCachePeriod(0);
 	    }
 	

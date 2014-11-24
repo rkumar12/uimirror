@@ -1,7 +1,6 @@
 rootProject.name = 'uim-oauth2'
 include ':oauth2-conf'
 include ':oauth2-core'
-include ':oauth2-resource'
 
 //project(':location-core').projectDir = "$rootDir/location-core" as File
 //project(':location-store').projectDir = "$rootDir/location-store" as File

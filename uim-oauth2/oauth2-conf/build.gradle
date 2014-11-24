@@ -10,7 +10,6 @@ configurations.all {
 
 dependencies {
 	compile project(':oauth2-core')
-	compile project(':oauth2-resource')
 	compile (group: 'org.springframework', name: 'spring-webmvc', version: springVersion)
 	
 	compile (group: 'javax', name: 'javaee-api', version: javaeeApiVersion)
