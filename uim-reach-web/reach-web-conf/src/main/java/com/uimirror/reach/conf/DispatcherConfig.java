@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror. - initial API and implementation
  *******************************************************************************/
-package com.uimirror.oauth2.conf;
+package com.uimirror.reach.conf;
 
 import java.util.Locale;
 
@@ -41,7 +41,6 @@ public class DispatcherConfig extends WebMvcConfigurerAdapter{
 	public void addViewControllers(ViewControllerRegistry registry) {
 		registry.addViewController("/").setViewName("login");
 		registry.addViewController("/login").setViewName("login");
-		registry.addViewController("/auth").setViewName("auth");
 	}
 	
 	@Bean

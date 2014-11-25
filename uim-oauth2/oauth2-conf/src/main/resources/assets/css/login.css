@@ -1,0 +1,113 @@
+/*!
+ *Copy right UIMirror
+ */
+
+body {
+  background: url('../../image/bg.png');
+}
+
+.panel .slidedown .glyphicon,
+.chat .glyphicon {
+    margin-right: 5px;
+}
+
+.chat-panel .panel-body {
+    height: 350px;
+    overflow-y: scroll;
+}
+
+.login-panel {
+    
+}
+
+.credBox input {
+    background: url("../../image/login-sprite.png") no-repeat scroll 0 0 #ffffff;
+    border: 0px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    /* border-radius: 5px; */
+    margin: 0;
+    padding: 10px 10px 10px 30px;
+    width:100%;
+}
+#username {
+    background-position: 5px -6px !important;
+}
+#password {
+    background-position: 5px -52px !important;
+}
+.credBox input:focus {
+    background-color: #fff;
+    border-color: #e8c291;
+    box-shadow: 0 0 0 1px #e8c291 inset;
+    outline: medium none;
+}
+.submit {
+    background-color: #ffb94b;
+    background-image: -moz-linear-gradient(center top , #fddb6f, #ffb94b);
+    border-color: #d69e31 #e3a037 #d5982d;
+    border-radius: 3px;
+    border-style: solid;
+    border-width: 1px;
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.3) inset;
+    color: #8f5a0a;
+    cursor: pointer;
+    font: normal 15px Arial,Helvetica;
+    padding:7px 25px;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+.input {
+    background:#ffffff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin: 0;
+    padding: 10px;
+    width:100%;
+}
+.input:focus {
+    background-color: #fff;
+    border-color: #e8c291;
+    box-shadow: 0 0 0 1px #e8c291 inset;
+    outline: medium none;
+}
+.login_message{
+ 	/* margin: 15% auto 10px auto !important; */
+    width: auto;
+	}
+.login_message{
+	display: none;
+}
+.login_message > .error{
+	display: block;
+}
+.message {
+    border: 1px solid;
+    /* margin: 0 0 20px 0; */
+}
+.message p {
+    padding: 10px 10px 10px 52px;
+	margin:0;
+}
+.success {
+    background: url("../../image/highlight_line.gif") repeat-x scroll 0 0 #e6efc2;
+    border-color: #c6d881;
+}
+.success p {
+    background: url("../../image/24_tick.png") no-repeat scroll 15px 8px transparent;
+}
+.warning {
+    background: url("../../image/highlight_line.gif") repeat-x scroll 0 0 #fff6bf;
+    border-color: #fdd845;
+}
+
+.error {
+    background: url("../../image/highlight_line.gif") repeat-x scroll 0 0 #fbe3e4;
+    border-color: #fbc7c9;
+}
+.error p {
+    background: url("../../image/24_x_false.png") no-repeat scroll 15px 6px transparent;
+}
+.veryfy{
+	
+}
+	

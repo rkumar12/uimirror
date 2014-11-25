@@ -1,0 +1,80 @@
+body {
+  background: url('../../image/bg.png');
+}
+ul, li{
+	list-style:none;
+}
+a{
+	color:#2da3d5;
+}
+#wrapper {
+    width: 100%;
+}	
+.bd-btm{
+	border-bottom:1px dashed #4d5d70;
+}
+.navbar-default .navbar-collapse, .navbar-default .navbar-form {
+    background: none repeat scroll 0 0 #2da3d5;
+    border-color: #028786;
+}
+.navbar-brand{
+	height:auto;
+}
+.navbar-default{
+	background-color: transparent;
+}
+.mt15{
+	margin-top:15px;
+}
+.mt26{
+	margin-top:26px;
+}
+
+.strip-top{
+	background:url('../../image/strip.png') repeat-x;
+	width:100%;
+	height:56px;
+}
+
+.navbar-default{
+	border:0;
+}
+.navbar-mail-links li a
+{
+	color:#2a3542;
+	font-size:14px;
+	padding-right:15px;
+}
+.fa-user{
+	color:#2da3d5;
+}
+.mt4{
+	margin-top:4px;
+}
+.pb15{
+	padding-bottom:15px;
+}
+.pb20{
+	padding-bottom:20px;
+}
+.um{
+	margin-right:20px;
+	/* background:url(../images/um.png) no-repeat left center; */
+	width:20px;
+	height:20px;
+	float:left;
+}
+.tc-2{
+	color:#000000;
+}
+.f14{
+	font-size:14px;
+}
+.f10{
+	font-size:10px;
+}
+.btn-accept {
+	color: #fff;
+	background-color: #2da3d5;
+	border-color: #357ebd;
+}
