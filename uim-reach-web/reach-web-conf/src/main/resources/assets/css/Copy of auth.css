@@ -1,0 +1,126 @@
+body  {
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 14px;
+	line-height: 1.42857143;
+	color: #333;
+	background-color: #fff;
+}
+#wrap {
+	min-height: 100%;
+	height: auto !important;
+	height: 100%;
+	margin: 0 auto -90px;
+	padding: 0 0 90px;
+}
+
+ul, li{
+	list-style:none;
+}
+a{
+	color:#2da3d5;
+}
+.forgotPwdWrap{
+	margin-left: 45px;
+}
+.credBox input{
+	border: 0px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    border-radius: 0px;
+    margin: 0;
+    padding: 10px 10px 10px 30px;
+}
+.credBox input:focus {
+    background-color: #fff;
+    border-color: #e8c291;
+    box-shadow: 0 0 0 1px #e8c291 inset;
+    outline: medium none;
+}
+.credBox .fa-user, .credBox .fa-key{
+	color:#2da3d5;
+}
+.signupBtn {
+	background-color: #2da3d5;
+	border-color: #2da3d5 #2da3d5 #2da3d5;
+	border-radius: 3px;
+	border-style: solid;
+	border-width: 1px;
+	box-shadow: #2da3d5 0px 0px 1px, #2da3d5 0px 1px 0px inset;
+	color: #2da3d5;
+	cursor: pointer;
+	font: normal 12px Arial, Helvetica;
+	text-shadow: rgba(255, 255, 255, 0.498039) 0px 1px 0px;
+}
+.loginBtn {
+	background-color: rgb(255, 185, 75);
+	border-color: rgb(214, 158, 49) rgb(227, 160, 55) rgb(213, 152, 45);
+	border-radius: 3px;
+	border-style: solid;
+	border-width: 1px;
+	box-shadow: rgba(0, 0, 0, 0.298039) 0px 0px 1px, rgba(255, 255, 255, 0.298039) 0px 1px 0px inset;
+	color: rgb(143, 90, 10);
+	cursor: pointer;
+	font: normal 12px Arial, Helvetica;
+	text-shadow: rgba(255, 255, 255, 0.498039) 0px 1px 0px;
+}
+.bd-btm{
+	border-bottom:1px dashed #4d5d70;
+}
+.navbar-brand{
+	height:auto;
+}
+.navbar-default{
+	background-color: transparent;
+}
+.mt15{
+	margin-top:15px;
+}
+.mt26{
+	margin-top:26px;
+}
+
+.strip-top{
+	background:url('../../image/strip.png') repeat-x;
+	width:100%;
+	height:56px;
+}
+
+.navbar-default{
+	border:0;
+}
+.navbar-mail-links li a
+{
+	color:#2a3542;
+	font-size:14px;
+	padding-right:15px;
+}
+
+.mt4{
+	margin-top:4px;
+}
+.pb15{
+	padding-bottom:15px;
+}
+.pb20{
+	padding-bottom:20px;
+}
+.um{
+	margin-right:20px;
+	/* background:url(../images/um.png) no-repeat left center; */
+	width:20px;
+	height:20px;
+	float:left;
+}
+.tc-2{
+	color:#000000;
+}
+.f14{
+	font-size:14px;
+}
+.f10{
+	font-size:10px;
+}
+.btn-accept {
+	color: #fff;
+	background-color: #2da3d5;
+	border-color: #357ebd;
+}

@@ -1,0 +1,175 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" ng-app="UIMReachBeforeLoginApp">
+
+<head>
+	<link rel="shortcut icon" type="image/x-icon" th:href="@{http://static.uimirror.com/reach/favicon.ico}" />
+    <title th:text="#{reach.before.login.title}">Identify YourSelf</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="description" content="Reach Application for running promo"/>
+    <meta name="author" content="UIMirror"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+</head>
+
+<body>
+	<!-- Reset Password Fragments -->
+	<div th:fragment="resetpassword">
+		<div class="modal-header forGotPwdHeaderWrap">
+			<h3 th:utext="#{reset.password}"></h3>
+        </div>
+        <form ng-submit="reset()" novalidate="true" name="resetPwdForm">
+        	<div class="modal-body forGotPwdBodyWrap">
+				<hr class="colorgraph"/>
+				<div class="alert alert-danger" role="alert" ng-show="error.hasError">
+  					<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+  					<span class="sr-only" th:text="#{error}">Error:</span>
+  					{{error.msg}}
+				</div>
+      			<fieldset>
+        			<span class="help-block" th:utext="#{reset.password.help.block}"></span>
+        			<div class="form-group input-group">
+          				<span class="input-group-addon emailSyb">
+            				@
+          				</span>
+          				<input class="form-control forgotPwdEmail" 
+          					th:placeholder="#{reset.password.email.placeholder}" name="email" type="email" required="true" tabindex="1" 
+          					ng-model="user.email" ng-class="{error: resetPwdForm.email.$dirty &amp;&amp; resetPwdForm.email.$invalid}"/>
+        			</div>
+		   		</fieldset>
+				<hr class="colorgraph"/>
+        	</div>
+        	<div class="modal-footer forGotPwdFooterWrap">
+            	<button type="submit" class="btn uim-btn" ng-click="reset()" tabindex="2" ng-disabled="resetPwdForm.$invalid" th:text="#{reset}">Reset</button>
+            	<button class="btn uim-btn pull-left" ng-click="cancel()" tabindex="3" th:text="#{cancel}">Cancel</button>
+        	</div>
+        </form>
+	</div>
+	<!-- END Reset Password Fragments -->
+	
+	<!-- Register Agreement Fragments -->
+	<div th:fragment="registerAgrement">
+		<div class="modal-header">
+			
+			<h4 class="modal-title" id="myModalLabel" th:text="#{terms.condition}">Terms &amp; Conditions</h4>
+		</div>
+		<form ng-submit="agreed()" name="agreementForm">
+			<div class="modal-body">
+				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique, itaque, modi, aliquam nostrum at sapiente consequuntur natus odio reiciendis perferendis rem nisi tempore possimus ipsa porro delectus quidem dolorem ad.</p>
+				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique, itaque, modi, aliquam nostrum at sapiente consequuntur natus odio reiciendis perferendis rem nisi tempore possimus ipsa porro delectus quidem dolorem ad.</p>
+				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique, itaque, modi, aliquam nostrum at sapiente consequuntur natus odio reiciendis perferendis rem nisi tempore possimus ipsa porro delectus quidem dolorem ad.</p>
+				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique, itaque, modi, aliquam nostrum at sapiente consequuntur natus odio reiciendis perferendis rem nisi tempore possimus ipsa porro delectus quidem dolorem ad.</p>
+				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique, itaque, modi, aliquam nostrum at sapiente consequuntur natus odio reiciendis perferendis rem nisi tempore possimus ipsa porro delectus quidem dolorem ad.</p>
+				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique, itaque, modi, aliquam nostrum at sapiente consequuntur natus odio reiciendis perferendis rem nisi tempore possimus ipsa porro delectus quidem dolorem ad.</p>
+				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique, itaque, modi, aliquam nostrum at sapiente consequuntur natus odio reiciendis perferendis rem nisi tempore possimus ipsa porro delectus quidem dolorem ad.</p>
+			</div>
+			<div class="modal-footer">
+				<button type="submit" class="btn uim-btn" data-dismiss="modal" ng-click="agreed()" th:text="#{i.agree}">I Agree</button>
+				<button type="button" class="btn uim-btn pull-left" ng-click="disagree()" th:text="#{i.disagree}"></button>
+			</div>
+		</form>
+	</div>
+	<!-- Register Agreement Fragments -->
+	<!-- Register Form -->
+	<div th:fragment="registerForm">
+		<div class="modal-header registerHeaderWrap">
+			<h3 th:text="#{register.form.title}">Sign Up.</h3>
+        </div>
+		<hr class="colorgraph"/>
+        <div class="modal-body registerBodyWrap">
+            <form role="form" class="registerForm" ng-submit="register()" novalidate="true" name="registerForm">
+            <div class="alert alert-danger" role="alert" ng-show="error.hasError">
+  				<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+  				<span class="sr-only" th:text="#{error}">Error:</span>
+  				{{error.msg}}
+			</div>
+			<div class="row">
+				<div class="col-xs-12 col-sm-6 col-md-6">
+					<div class="form-group">
+                        <input type="text" name="first_name" 
+                        		id="first_name" class="form-control input-lg" th:placeholder="#{first.name}" 
+                        		tabindex="1" required="required" ng-model="user.firstName"
+                        		ng-class="{error: registerForm.first_name.$dirty &amp;&amp; registerForm.first_name.$invalid}"/>
+					</div>
+				</div>
+				<div class="col-xs-12 col-sm-6 col-md-6">
+					<div class="form-group">
+						<input type="text" name="last_name" 
+							id="last_name" class="form-control input-lg" 
+							th:placeholder="#{last.name}" tabindex="2" ng-model="user.lastName"/>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<input type="email" name="email" id="email" 
+					class="form-control input-lg" th:placeholder="#{email}" 
+					tabindex="3" required="required" ng-model="user.email" 
+					ng-class="{error: registerForm.email.$dirty &amp;&amp; registerForm.email.$invalid}"/>
+			</div>
+			<div class="row">
+				<div class="col-xs-12 col-sm-6 col-md-6">
+				<label for="day" class="registerDOBLable" th:text="#{dob.lable}">Date of Birth: </label>
+				<div id="date2" class="datefield form-group">
+    				<input id="day" type="tel" class="form-control" 
+    					ng-maxlength="2" th:placeholder="#{dob.date}" tabindex="4" ng-model="user.dob.date" name="dob_date" 
+    					ng-class="{error: registerForm.dob_date.$dirty &amp;&amp; registerForm.dob_date.$invalid}"/> /
+    				<input id="month" type="tel" class="form-control" 
+    					ng-maxlength="2" th:placeholder="#{dob.month}" tabindex="5" ng-model="user.dob.month" name="dob_month" 
+    					ng-class="{error: registerForm.dob_month.$dirty &amp;&amp; registerForm.dob_month.$invalid}"/> /
+    				<input id="year" type="tel" class="form-control" ng-maxlength="4" 
+    					ng-minlength="4" th:placeholder="#{dob.year}" tabindex="6" ng-model="user.dob.year"  name="dob_year"
+    					ng-class="{error: registerForm.dob_year.$dirty &amp;&amp; registerForm.dob_year.$invalid}"/>
+				</div>
+				</div>
+				<div class="col-xs-12 col-sm-6 col-md-6">
+				<label for="sex" class="registerGendLable" th:text="#{gender.lable}">Gender: </label>
+				<div class="btn-group">
+  					<button type="button" class="btn btn-default">Female</button>
+  					<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+    					<span class="caret"></span>
+    					<span class="sr-only">Open Menu</span>
+  					</button>
+  					<ul class="dropdown-menu" role="menu">
+    					<li><a href="#">Male</a></li>
+    					<li><a href="#">Female</a></li>
+    					<li><a href="#">Transgender</a></li>
+  					</ul>
+				</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12 col-sm-6 col-md-6">
+					<div class="form-group">
+						<input type="password" name="password" id="password" 
+							class="form-control input-lg" th:placeholder="#{password}" tabindex="7" required="required"
+							ng-model="user.password" ng-class="{error: registerForm.password.$dirty &amp;&amp; registerForm.password.$invalid}"/>
+					</div>
+				</div>
+				<div class="col-xs-12 col-sm-6 col-md-6">
+					<div class="form-group">
+						<input type="password" name="password_confirmation" id="password_confirmation" 
+							class="form-control input-lg" th:placeholder="#{confirm.password}" 
+							tabindex="8" required="required" ng-model="user.confirmpassword" 
+							ng-class="{error: registerForm.password_confirmation.$dirty &amp;&amp; registerForm.password_confirmation.$invalid}"/>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12 col-sm-12 col-md-12" ng-controller="ModalAgreementCtrl">
+					<div th:utext="#{register.agreement.ack}"></div>
+					<input type="checkbox" ng-model="user.isAgreed" class="hidden" name=""/>
+				</div>
+			</div>
+		</form>
+		<hr class="colorgraph"/>
+        </div>
+        <div class="modal-footer registerFooterWrap">
+            <button class="btn uim-btn" ng-disabled="registerForm.$invalid" ng-click="register()" type="submit" tabindex="10" th:text="#{register.signup.btn}">Sign Up</button>
+            <button class="btn uim-btn pull-left" ng-click="cancel()" tabindex="11" th:text="#{cancel}">Cancel</button>
+        </div>
+	</div>	
+	<!-- Register Form -->
+</body>
+</html>

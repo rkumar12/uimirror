@@ -10,22 +10,17 @@
  *******************************************************************************/
 package com.uimirror.reach.controller;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-
 /**
  * @author Jay
  */
-@RestController
-public class Test {
-
-	/**
-	 * 
-	 */
-	@RequestMapping(value="test", method=RequestMethod.GET)
-	public String  test() {
-		return "index.html";
+public class PathConstants {
+	
+	//Prevent instance
+	private PathConstants(){
+		//NOP
 	}
+	
+	public static final String TEMPLATE_PATH = "temp/";
+
 
 }

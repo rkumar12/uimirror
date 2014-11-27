@@ -1,0 +1,68 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" ng-app="UIMReachBeforeLoginApp">
+
+<head>
+	<link rel="shortcut icon" type="image/x-icon" th:href="@{http://static.uimirror.com/reach/favicon.ico}" />
+    <title th:text="#{reach.before.login.title}">Identify YourSelf</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="description" content="Reach Application for running promo"/>
+    <meta name="author" content="UIMirror"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+</head>
+
+<body>
+	<!-- Change New Email Fragments -->
+	<div th:fragment="changeEmail">
+		<div class="modal-header forGotPwdHeaderWrap">
+			<h3 th:utext="#{account.change.email.title}"></h3>
+        </div>
+        <form ng-submit="changeEmail()" novalidate="true" name="changeEmailForm">
+        	<div class="modal-body forGotPwdBodyWrap">
+				<hr class="colorgraph"/>
+				<div class="alert alert-danger" role="alert" ng-show="error.hasError">
+  					<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+  					<span class="sr-only" th:text="#{error}">Error:</span>
+  					{{error.msg}}
+				</div>
+				<span class="help-block" th:utext="#{account.change.email.help.block}"></span>
+      			<div class="row">
+      				<div class="col-xs-12 col-sm-12 col-md-12">
+						<label for="currentEmail" class="registerDOBLable verifyExtraLabel" th:text="#{account.change.email.lable}"></label>
+	        			<div class="form-group input-group">
+	          				<span class="input-group-addon emailSyb">
+	            				@
+	          				</span>
+	          				<input class="form-control forgotPwdEmail" id="currentEmail"
+	          					name="email" type="email" ng-model="user.email" readonly="readonly"/>
+	        			</div>
+        			</div>
+        		</div>
+        		<div class="row">
+        			<div class="col-xs-12 col-sm-12 col-md-12">
+						<label for="newEmail" class="registerDOBLable" th:text="#{account.change.new.email.lable}">New Email: </label>
+						<div class="form-group input-group">
+	          				<span class="input-group-addon emailSyb">
+    	        				@
+        	  				</span>
+          					<input class="form-control forgotPwdEmail" id="newEmail"
+          						th:placeholder="#{account.change.new.email.placeholder}" name="newEmail" type="email" required="true" tabindex="1" 
+          						ng-model="user.newEmail" ng-class="{error: changeEmailForm.newEmail.$dirty &amp;&amp; changeEmailForm.newEmail.$invalid}"/>
+        				</div>
+        			</div>
+		   		</div>
+				<hr class="colorgraph"/>
+        	</div>
+        	<div class="modal-footer forGotPwdFooterWrap">
+            	<button type="submit" class="btn uim-btn" ng-click="changeEmail()" tabindex="2"  
+            		ng-disabled="changeEmailForm.$invalid" th:text="#{account.change.email.btn}">Change</button>
+            	<button class="btn uim-btn pull-left" ng-click="cancel()" tabindex="3" th:text="#{cancel}">Cancel</button>
+        	</div>
+        </form>
+	</div>
+	<!-- /Change New Email Fragments -->
+</body>
+</html>

@@ -14,10 +14,12 @@ import java.util.Locale;
 
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -35,14 +37,22 @@ import com.uimirror.core.Constants;
 @Configuration
 @EnableWebMvc
 @Import({ThymeleafConfig.class})
+@ComponentScan(basePackages= {"com.uimirror.reach.controller"})
 public class DispatcherConfig extends WebMvcConfigurerAdapter{
 	
 	@Override
-	public void addViewControllers(ViewControllerRegistry registry) {
-		registry.addViewController("/").setViewName("login");
-		registry.addViewController("/login").setViewName("login");
-	}
+    public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
+        configurer.enable();
+    }
 	
+	@Override
+	public void addViewControllers(ViewControllerRegistry registry) {
+		registry.addViewController("/").setViewName("beforelogin/startapp");
+		registry.addViewController("/login").setViewName("beforelogin/startapp");
+		registry.addViewController("/verify").setViewName("beforelogin/verify");
+		configureTemplateUrl(registry);
+	}
+
 	@Bean
 	 public LocaleChangeInterceptor localeChangeInterceptor(){
 	     LocaleChangeInterceptor localeChangeInterceptor=new LocaleChangeInterceptor();
@@ -72,12 +82,19 @@ public class DispatcherConfig extends WebMvcConfigurerAdapter{
 	 }
 	 
 	 @Override
-	    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-	        registry.addResourceHandler("/static/**/*").addResourceLocations("classpath:/assets/");
-	        registry.addResourceHandler("/image/**/*").addResourceLocations("classpath:/image/");
-	        registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/").setCachePeriod(0);
-	    }
-	
+	 public void addResourceHandlers(ResourceHandlerRegistry registry) {
+		 registry.addResourceHandler("/static/**/*").addResourceLocations("classpath:/assets/");
+		 registry.addResourceHandler("/image/**/*").addResourceLocations("classpath:/image/");
+		 registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/").setCachePeriod(0);
+	 }
+	 
+	 private void configureTemplateUrl(ViewControllerRegistry registry) {
+		 registry.addViewController("/template/resetpassword").setViewName("template/beforelogin/reg_lgn_agrement::resetpassword");
+		 registry.addViewController("/template/register").setViewName("template/beforelogin/reg_lgn_agrement::registerForm");
+		 registry.addViewController("/template/register/agreement").setViewName("template/beforelogin/reg_lgn_agrement::registerAgrement");
+		 registry.addViewController("/template/notification").setViewName("template/uim-noti::notiTemp");
+		 registry.addViewController("/template/changeEmail").setViewName("template/beforelogin/change_email::changeEmail");
+	 }
 	
 	
 }
