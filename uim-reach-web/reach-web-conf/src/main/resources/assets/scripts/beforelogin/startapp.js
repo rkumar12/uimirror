@@ -10,7 +10,15 @@
  */
 
 var UIMReachBeforeLoginApp = angular.module('UIMReachBeforeLoginApp', 
-		['UIMReachBeforeLoginCtrls', 'ngMessages', 'ui.bootstrap', 'cgNotify','sharedServices']);
+		['UIMReachBeforeLoginCtrls', 'ngMessages', 'ui.bootstrap', 'cgNotify','sharedServices', 'AutheticationService']);
+
+
+//When the app loads
+AutheticationService.run(function ($location, UIMAuthServ) {
+  if (UIMAuthServ.isLoggedIn()) {
+	  UIMAuthServ.redirectToUrl();
+  }
+});
 
 
 var sharedServicesModule = angular.module('sharedServices',['ngCookies']);
