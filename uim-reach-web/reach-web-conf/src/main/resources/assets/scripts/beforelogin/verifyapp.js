@@ -59,7 +59,7 @@ sharedServicesModule.factory('UIMVerifyApi', function ($http, ipCookie) {
 	};
 	var formatDataForNewEmail =  function(newEmail) {
 		var _data = {};
-		_data.code = code;
+		_data.token = ipCookie('_uim_tmp_tkn');
 		_data.email = newEmail;
 		return _data;
 	};
