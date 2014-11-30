@@ -125,18 +125,13 @@
 				</div>
 				<div class="col-xs-12 col-sm-6 col-md-6">
 				<label for="sex" class="registerGendLable" th:text="#{gender.lable}">Gender: </label>
-				<div class="btn-group">
-  					<button type="button" class="btn btn-default">Female</button>
-  					<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
-    					<span class="caret"></span>
-    					<span class="sr-only">Open Menu</span>
-  					</button>
-  					<ul class="dropdown-menu" role="menu">
-    					<li><a href="#">Male</a></li>
-    					<li><a href="#">Female</a></li>
-    					<li><a href="#">Transgender</a></li>
-  					</ul>
-				</div>
+					<div class="uimSelect">
+  						<select ng-model="user.sex" name="sex" required="required">
+    						<option th:value="F" th:text="#{gender.female}">Female</option>
+    						<option th:value="M" th:text="#{gender.male}">Male</option>
+    						<option th:value="T" th:text="#{gender.tg}">Trans Gender</option>
+  						</select>
+					</div>
 				</div>
 			</div>
 			<div class="row">

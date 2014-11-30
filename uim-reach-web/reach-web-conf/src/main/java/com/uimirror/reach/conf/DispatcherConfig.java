@@ -50,6 +50,7 @@ public class DispatcherConfig extends WebMvcConfigurerAdapter{
 		registry.addViewController("/").setViewName("beforelogin/startapp");
 		registry.addViewController("/login").setViewName("beforelogin/startapp");
 		registry.addViewController("/verify").setViewName("beforelogin/verify");
+		registry.addViewController("/home").setViewName("dashboard");
 		configureTemplateUrl(registry);
 	}
 

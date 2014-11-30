@@ -19,7 +19,7 @@ UIMReachBeforeLoginCtrls.controller('SignUpModalCtrl', function ($scope, $modal,
 			'lastName'        : null,
 			'email'           : null,
 			'dob'             : null,
-			'sex'             : null,
+			'sex'             : 'F',
 			'password'        : null,
 			'confirmpassword' : null,
 			'isAgreed'        : true

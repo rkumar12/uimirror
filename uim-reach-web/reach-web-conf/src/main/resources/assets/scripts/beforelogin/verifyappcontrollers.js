@@ -81,10 +81,11 @@ UIMReachVerifyCtrls.controller('ChangeEmailModalInstanceCtrl', function ($scope,
 	
 });
 
-UIMReachVerifyCtrls.controller('VerifyAccountCtrl', function ($scope) {
+UIMReachVerifyCtrls.controller('VerifyAccountCtrl', function ($scope, $window) {
 	$scope.master = {};
 	$scope.verify = function (cred) {
 		$scope.master = angular.copy(cred);
 		console.log('verified'+cred.code);
+		$window.location.href='/uim/reach/home';
 	};
 });
