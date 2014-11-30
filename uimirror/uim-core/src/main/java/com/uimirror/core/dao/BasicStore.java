@@ -167,7 +167,7 @@ public interface BasicStore<T extends MongoDocumentSerializer<T>> {
 	 * @param fields for projection
 	 * @param toUpdate value that needs to be updated
 	 * @return new updated document
-	 * @throws DBException
+	 * @throws DBException when any DB error
 	 */
 	T findAndModify(Map<String, Object> query, Map<String, Object> fields, Map<String, Object> toUpdate) throws DBException;
 	
@@ -178,7 +178,7 @@ public interface BasicStore<T extends MongoDocumentSerializer<T>> {
 	 * @param query based on which document needs to be retrieved
 	 * @param toUpdate value that needs to be updated
 	 * @return new updated document
-	 * @throws DBException
+	 * @throws DBException any DB exception
 	 */
 	T findAndModify(Map<String, Object> query, Map<String, Object> toUpdate) throws DBException;
 	

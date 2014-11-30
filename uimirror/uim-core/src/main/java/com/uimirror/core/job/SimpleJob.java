@@ -247,7 +247,7 @@ public class SimpleJob extends AbstractBeanBasedDocument<SimpleJob> implements B
 	/**
 	 * Create a map that needs to be persisted
 	 * @return map of the details
-	 * @throws IllegalStateException 
+	 * @throws IllegalStateException when it can't be serailized
 	 */
 	@Override
 	public Map<String, Object> writeToMap() throws IllegalStateException{

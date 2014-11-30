@@ -44,9 +44,9 @@ public class PersistedSimpleJobMongoStore extends AbstractMongoStore<SimpleJob> 
 	
 	/**
 	 * Assign/ Create collection from the given {@link DBCollection}
-	 * @param collection
-	 * @param seqCollection
-	 * @param seqName
+	 * @param collection colection
+	 * @param seqCollection collection name
+	 * @param seqName sequence name
 	 */
 	public PersistedSimpleJobMongoStore(DBCollection collection, DBCollection seqCollection, String seqName){
 		super(collection, seqCollection, seqName, SimpleJob.class);
@@ -55,7 +55,7 @@ public class PersistedSimpleJobMongoStore extends AbstractMongoStore<SimpleJob> 
 	/**
 	 * Assign/ Create collection from the given {@link DBCollection}, 
 	 * in case of no sequence required
-	 * @param collection
+	 * @param collection collection
 	 */
 	public PersistedSimpleJobMongoStore(DBCollection collection){
 		super(collection, SimpleJob.class);
