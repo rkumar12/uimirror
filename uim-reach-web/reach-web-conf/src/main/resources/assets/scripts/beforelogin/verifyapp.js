@@ -10,49 +10,100 @@
  */
 
 var UIMReachVerifyApp = angular.module('UIMReachVerifyApp', 
-		['UIMReachVerifyCtrls', 'ngMessages', 'ui.bootstrap', 'cgNotify','sharedServices']);
+		['UIMReachVerifyCtrls', 'ngMessages', 'ui.bootstrap', 'cgNotify','AutheticationService', 'sharedServices']);
 
 
-var sharedServicesModule = angular.module('sharedServices',['ngCookies']);
-//where we will store the attempted url
-sharedServicesModule.value('redirectToUrlAfterLogin', { url: '/' });
-sharedServicesModule.value('redirectToVerifyPage', { url: 'verify' });
+//When the app loads
+AutheticationService.run(function ($location, UIMAuthServ) {
+  if (UIMAuthServ.isLoggedIn()) {
+	  UIMAuthServ.redirectToUrl();
+  }
+});
+
+//Verify module has two service, 1- change email and 2- verify account
+var sharedServicesModule = angular.module('sharedServices',['ipCookie']);
 
 //this service will be responsible for authentication and also saving and redirecting to the attempt url when logging in
 
-sharedServicesModule.factory('UIMTempUser', function ($location,  $cookieStore, UIMVerifyApi, redirectToVerifyPage, $window, $rootScope) {
+sharedServicesModule.factory('UIMTempUser', function ($location,  ipCookie, $window) {
 	var user = {};
-	var isValid =  function(user) {
-		if(user.lasName)
-			return true; //TODO convert value to bool
-		return false
-	};
-	var redirectToVerifyPage = function() {
+	var redirectToHomePage = function() {
 		console.log('redirecting'+URL);
-		//$location.path('/uim/reach/verify').replace();
-		//$rootScope.$apply();
-		$window.location.href='/uim/reach/verify';
-		//$scope.$apply();
-		//$location.path(redirectToVerifyPage.url);
+		$window.location.href=URLS.base;
 	};
 	return {
 		getUser: function () {
 			if(!user.email)
-				user = $cookieStore.get('user');
+				user = ipCookie('user');
 			return user; 
 		},
-		replcaeUserCookie: function(user){
-			$cookieStore.put('user', user);
+		replcaeUserCookie: function(email){
+			if(!user.email){
+				user = this.getUser();
+			}
+			user.email = email;
+			ipCookie('user', user);
+		},
+		redirectToLogin: function(){
+			$window.location.href=URLS.base+'login';
 		}
-		
 	};
 });
 
-sharedServicesModule.factory('UIMVerifyApi', function ($http) {
-	  return {
-		  verify: function (user) {
-			  //Write to cookie and return true, thats for latter and process registration
-			  return true;
-		  }
-	  };
+sharedServicesModule.factory('UIMVerifyApi', function ($http, ipCookie) {
+	var formatData =  function(code) {
+		var _data = {};
+		_data.code = code;
+		_data.token = ipCookie('_uim_tmp_tkn');
+		return _data;
+	};
+	var formatDataForNewEmail =  function(newEmail) {
+		var _data = {};
+		_data.code = code;
+		_data.email = newEmail;
+		return _data;
+	};
+	return {
+		verify: function (code) {
+			return $http({
+                method: "get",
+                url: "http://uimirror.com",
+                //transformRequest: transformRequestAsFormPost,
+                data: formatData(code)
+            }).then(function(response) {
+                if(typeof response.data === 'object') {
+                    return response.data;
+                }else {
+                    // invalid response
+                    return $q.reject(response.data);
+                }
+            },function(response) {
+            	return {token:'1'};
+                //TODO uncomment latter
+                //return $q.reject(response.data);
+        	});  
+		},
+		changeEmail: function(newEmail){
+			return $http({
+                method: "get",
+                url: "http://uimirror.com",
+                //transformRequest: transformRequestAsFormPost,
+                data: formatDataForNewEmail(newEmail)
+            }).then(function(response) {
+                if(typeof response.data === 'object') {
+                    return response.data;
+                }else {
+                    // invalid response
+                    return $q.reject(response.data);
+                }
+            },function(response) {
+            	return {status:'success'};
+                //TODO uncomment latter
+                //return $q.reject(response.data);
+        	});
+		},
+		deleteTempCookie: function(){
+			ipCookie.remove('_uim_tmp_tkn');
+		}
+	};
 });

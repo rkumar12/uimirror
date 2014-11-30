@@ -9,7 +9,7 @@
  */
 var UIMReachVerifyCtrls = angular.module("UIMReachVerifyCtrls", []);
 
-UIMReachVerifyCtrls.controller('ChangeEmailModalCtrl', function ($scope, $modal, $location, UIMTempUser) {
+UIMReachVerifyCtrls.controller('ChangeEmailModalCtrl', function ($scope, $modal, UIMTempUser) {
 	$scope.user = {'firstName': null,
 			'email'           : null,
 			'sex'             : null,
@@ -19,6 +19,9 @@ UIMReachVerifyCtrls.controller('ChangeEmailModalCtrl', function ($scope, $modal,
 			'msg':null};
 	$scope.init = function(){
 		var user = UIMTempUser.getUser();
+		if(!user){
+			UIMTempUser.redirectToLogin();
+		}
 		$scope.user.firstName = user.firstName;
 		$scope.user.email = user.email;
 		$scope.user.sex = user.sex;
@@ -41,7 +44,6 @@ UIMReachVerifyCtrls.controller('ChangeEmailModalCtrl', function ($scope, $modal,
 
 		modalInstance.result.then(function (status) {
 			console.log('Verify Completed, Navigate to the Home page'+status);
-			//$location.path('verify')
 		}, function () {
 			console.info('Modal dismissed at: ' + new Date());
 			console.log('show lading end');
@@ -53,39 +55,40 @@ UIMReachVerifyCtrls.controller('ChangeEmailModalCtrl', function ($scope, $modal,
 	// Please note that $modalInstance represents a modal window (instance) dependency.
 	// It is not the same as the $modal service used above.
 
-UIMReachVerifyCtrls.controller('ChangeEmailModalInstanceCtrl', function ($scope, $modalInstance, user, error) {
+UIMReachVerifyCtrls.controller('ChangeEmailModalInstanceCtrl', function ($scope, $modalInstance, user, error, UIMVerifyApi) {
 	$scope.user = user;
 	$scope.error = error;
-
 	$scope.changeEmail = function () {
-		$modalInstance.close('sucess');
-		console.log($scope.user.newEmail);
-		$scope.user.email = $scope.user.newEmail;
-		//Redirect to home page now
-		//UIMRegister.register($scope.user);
-//		if(!$scope.user.isAgreed){
-//			$scope.error.hasError=true;
-//			$scope.error.msg='Please Accept Our Temrs & Condition';
-//		}else{
-//			console.log('Register Completed, Navigate to the verify page'+status);
-//			$modalInstance.close('sucess');
-//		}
-//		
-//		//$modalInstance.close($scope.selected.item);
-//		console.log('Register Completed'+$scope.user.isAgreed);
+		if(!$scope.user.newEmail){
+			$scope.error.hasError = true;
+			$scope.error.msg = 'Please give your new email';
+		}else{
+			UIMVerifyApi.changeEmail($scope.user.newEmail).then(function (rs) {
+				$scope.user.email = $scope.user.newEmail;
+				$modalInstance.close('sucess');
+			}, function (error) {
+				$scope.error.msg = error._msg;
+			});
+		}
 	};
-
 	$scope.cancel = function () {
 		$modalInstance.dismiss('cancel');
 	};
-	
 });
 
-UIMReachVerifyCtrls.controller('VerifyAccountCtrl', function ($scope, $window) {
+UIMReachVerifyCtrls.controller('VerifyAccountCtrl', function ($scope, UIMVerifyApi, UIMAuthServ, UIMTempUser) {
 	$scope.master = {};
+	$scope.error = {'hasError':null,
+			'msg':null}
 	$scope.verify = function (cred) {
 		$scope.master = angular.copy(cred);
-		console.log('verified'+cred.code);
-		$window.location.href='/uim/reach/home';
+		UIMVerifyApi.verify($scope.master.code).then(function (rs) {
+			UIMAuthServ.writeAuthToCookie(rs.token);
+			UIMVerifyApi.deleteTempCookie();
+			UIMTempUser.redirectToHomePage();
+		}, function (error) {
+			$scope.error.hasError = true;
+			$scope.error.msg = error._msg;
+		});
 	};
 });

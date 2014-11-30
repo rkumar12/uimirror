@@ -49,8 +49,11 @@ public class DispatcherConfig extends WebMvcConfigurerAdapter{
 	public void addViewControllers(ViewControllerRegistry registry) {
 		registry.addViewController("/").setViewName("dashboard");
 		registry.addViewController("/login").setViewName("beforelogin/startapp");
+		registry.addViewController("/login/").setViewName("beforelogin/startapp");
 		registry.addViewController("/verify").setViewName("beforelogin/verify");
+		registry.addViewController("/verify/").setViewName("beforelogin/verify");
 		registry.addViewController("/home").setViewName("dashboard");
+		registry.addViewController("/home/").setViewName("dashboard");
 		configureTemplateUrl(registry);
 	}
 
