@@ -78,8 +78,9 @@
 			<h3 th:text="#{register.form.title}">Sign Up.</h3>
         </div>
 		<hr class="colorgraph"/>
+		<form role="form" class="registerForm" ng-submit="register()" novalidate="true" name="registerForm">
         <div class="modal-body registerBodyWrap">
-            <form role="form" class="registerForm" ng-submit="register()" novalidate="true" name="registerForm">
+            
             <div class="alert alert-danger" role="alert" ng-show="error.hasError">
   				<span class="fa fa-exclamation-circle" aria-hidden="true"></span>
   				<span class="sr-only" th:text="#{error}">Error:</span>
@@ -157,13 +158,14 @@
 					<input type="checkbox" ng-model="user.isAgreed" class="hidden" name=""/>
 				</div>
 			</div>
-		</form>
+		
 		<hr class="colorgraph"/>
         </div>
         <div class="modal-footer registerFooterWrap">
             <button class="btn uim-btn" ng-disabled="registerForm.$invalid" type="submit" tabindex="10" th:text="#{register.signup.btn}">Sign Up</button>
             <button class="btn uim-btn pull-left" ng-click="cancel()" tabindex="11" th:text="#{cancel}">Cancel</button>
         </div>
+        </form>
 	</div>	
 	<!-- Register Form -->
 </body>

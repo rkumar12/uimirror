@@ -2,25 +2,26 @@
 
 /**
  * @ngdoc overview
- * @name oauth2
  * @description
- * # oauth2-conf
- *
  * Util module of the application.
  */
 
-var UIMUtilModule = angular.module('UIMUtil', []).service('uimUtil', function() {
-	   // The API
-	this.isValidForm = validateForm;
+var UIMUtilModule = angular.module('UIMUtil', [])
+
+UIMUtilModule.directive('focusOn', function() {
+   return function(scope, elem, attr) {
+      scope.$on('focusOn', function(e, name) {
+        if(name === attr.focusOn) {
+          elem[0].focus();
+        }
+      });
+   };
 });
 
-//UIMUtil.factory('formValidationService', ValidationService);
-
-var validateForm = function(field, validation) {
-	console.log(validation+field.$error[validation]);
-	if(validation){
-	     return (field.$dirty && field.$error[validation]) || field.$error[validation];
-	}
-	return (field.$dirty && field.$invalid) || field.$invalid;
-}
-
+UIMUtilModule.factory('focus', function ($rootScope, $timeout) {
+  return function(name) {
+    $timeout(function (){
+      $rootScope.$broadcast('focusOn', name);
+    });
+  }
+});

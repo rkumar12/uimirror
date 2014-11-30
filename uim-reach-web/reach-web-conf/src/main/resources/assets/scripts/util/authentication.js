@@ -12,13 +12,13 @@
  *
  * Main module of the application.
  */
-var AutheticationService = angular.module('AutheticationService',['ngCookies']);
+var AutheticationService = angular.module('AutheticationService',['ipCookie']);
 
 //Utility URLS, such as home etc
 URLS.home=URLS.base;
 
 //this service will be responsible for authentication and also saving and redirecting to the attempt url when logging in
-AutheticationService.factory('UIMAuthServ', function ($location,  $cookieStore, UIMAuthApi, redirectToVerifyPage, $window, $rootScope) {
+AutheticationService.factory('UIMAuthServ', function ($location,  ipCookie, UIMAuthApi, $window) {
 	return {
 		authenticate: function (cred) {
 			//Write to cookie and return true, thats for latter and process registration
@@ -26,7 +26,7 @@ AutheticationService.factory('UIMAuthServ', function ($location,  $cookieStore, 
 		},
 		isLoggedIn: function () {
 			var loggedIn = false;
-			var token = $cookieStore.get('_tkn');
+			var token = ipCookie('_uim_tkn');
 			if(token)
 				loggedIn = UIMAuthApi.authenticateFromCookie(token);
 			console.log("coming for the authentication check");
@@ -42,21 +42,25 @@ AutheticationService.factory('UIMAuthServ', function ($location,  $cookieStore, 
 			}
 		},
 		redirectToAttemptedUrl: function() {
-			redirectToUrl(URLS.redirectAfterLogin);
+			this.redirectToUrl(URLS.redirectAfterLogin || null);
+		},
+		writeAuthToCookie: function(token){
+			console.log(token);
+//			var cookieConf = {path: '/', expires: 7, expirationUnit: 'days', domain: 'uimirror.com'};
+			var cookieConf = {path: '/', expires: 7, expirationUnit: 'days'};
+			ipCookie('_uim_tkn', token, cookieConf);
 		}
 	};
 });
 
 AutheticationService.factory('UIMAuthApi', function ($http, $q) {
-	var validation_err = {_code: '403', _msg: 'Test'};
+	var validation_err = {_code: '403', _msg: ''};
 	var isValidCred =  function(cred) {
-		var valid = false;
+		var valid = true;
 		if(!cred || !cred.UserName || !cred.Password){
-			console.log('Validation msg');
 			validation_err._msg= 'Invalid Identity.';
-			valid = true;
+			valid = false;
 		}
-		console.log(valid);
 		return valid ? valid : validation_err;
 	};
 	return {
@@ -69,7 +73,31 @@ AutheticationService.factory('UIMAuthApi', function ($http, $q) {
 			if(validation_msg != true){
 				return $q.reject(validation_msg);
 			}
-			return true;
+			return $http({
+                method: "get",
+                url: "http://uimirror.com",
+                //transformRequest: transformRequestAsFormPost,
+                data: {
+                    username: cred.UserName,
+                    password: cred.Password
+                }
+            }).then(function(response) {
+                if (typeof response.data === 'object') {
+                    return response.data;
+                } else {
+                    // invalid response
+                    return $q.reject(response.data);
+                }
+
+            }, function(response) {
+            	if(cred.UserName =='12'){
+            		return {token:'1'};
+            	}else{
+            		return {token:'2'};
+            	}
+                //TODO uncomment latter
+                //return $q.reject(response.data);
+        	});
 		},
 		refreshToken: function (token){
 			//Write to cookie and return true, thats for latter and process registration

@@ -8,8 +8,12 @@
  * Controller of the oAuth2WebApp
  */
 var UIMReachBeforeLoginCtrls = angular.module("UIMReachBeforeLoginCtrls", []);
-
-UIMReachBeforeLoginCtrls.controller('SignUpModalCtrl', function ($scope, $modal, $location) {
+UIMReachBeforeLoginCtrls.controller('SignInFocusCtrl', function ($scope, focus) {
+	$scope.setLoginFcous = function(){
+		focus('userNameFcs');
+	};
+});
+UIMReachBeforeLoginCtrls.controller('SignUpModalCtrl', function ($scope, $modal, UIMRegister) {
 	$scope.dob={
 			'date'  : null,
 			'month' : null,
@@ -45,8 +49,7 @@ UIMReachBeforeLoginCtrls.controller('SignUpModalCtrl', function ($scope, $modal,
 
 		modalInstance.result.then(function (status) {
 			console.log('Register Completed, Navigate to the verify page'+status);
-			console.log('Register Completed'+$scope.user.isAgreed);
-			//$location.path('verify')
+			UIMRegister.redirectToVerifyPage();
 		}, function () {
 			console.info('Modal dismissed at: ' + new Date());
 			console.log('show lading end');
@@ -54,25 +57,17 @@ UIMReachBeforeLoginCtrls.controller('SignUpModalCtrl', function ($scope, $modal,
 	};
 });
 
-	// Please note that $modalInstance represents a modal window (instance) dependency.
-	// It is not the same as the $modal service used above.
-
 UIMReachBeforeLoginCtrls.controller('SignUpModalInstanceCtrl', function ($scope, $modalInstance, user, error, UIMRegister) {
 	$scope.user = user;
 	$scope.error = error;
-
 	$scope.register = function () {
-		UIMRegister.register($scope.user);
-//		if(!$scope.user.isAgreed){
-//			$scope.error.hasError=true;
-//			$scope.error.msg='Please Accept Our Temrs & Condition';
-//		}else{
-//			console.log('Register Completed, Navigate to the verify page'+status);
-//			$modalInstance.close('sucess');
-//		}
-//		
-//		//$modalInstance.close($scope.selected.item);
-//		console.log('Register Completed'+$scope.user.isAgreed);
+		var res = UIMRegister.register($scope.user).then(function (rs) {
+			console.log(res);
+			console.log('testing');
+			$modalInstance.close('sucess');
+		}, function (error) {
+			$scope.error = res;
+		});
 	};
 
 	$scope.cancel = function () {
@@ -163,12 +158,13 @@ UIMReachBeforeLoginCtrls.controller('ModalResetPwdCtrl', function ($scope, $moda
 	  
 });
 
-UIMReachBeforeLoginCtrls.controller('ModalResetPwdInstanceCtrl', function ($scope, $modalInstance, user, error) {
+UIMReachBeforeLoginCtrls.controller('ModalResetPwdInstanceCtrl', function ($scope, $modalInstance, user, error, $http) {
 	  $scope.user = user;
 	  $scope.error = error;
 	  $scope.reset = function () {
 		  console.log(user);
 		  console.log(user.email);
+		  //TODO write the similar kind of service for the reset password similar to the registeration
           $modalInstance.close('sucess');
       }
 

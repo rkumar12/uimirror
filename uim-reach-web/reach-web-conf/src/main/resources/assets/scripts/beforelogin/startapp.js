@@ -10,7 +10,7 @@
  */
 
 var UIMReachBeforeLoginApp = angular.module('UIMReachBeforeLoginApp', 
-		['UIMReachBeforeLoginCtrls', 'ngMessages', 'ui.bootstrap', 'cgNotify','sharedServices', 'AutheticationService']);
+		['UIMReachBeforeLoginCtrls', 'ngMessages', 'ui.bootstrap', 'cgNotify','UIMRegisterService', 'AutheticationService', 'UIMUtil']);
 
 
 //When the app loads
@@ -21,18 +21,15 @@ AutheticationService.run(function ($location, UIMAuthServ) {
 });
 
 
-AutheticationService.controller('LoginCtrl', function ($scope, UIMAuthServ, $cookieStore, $http) {
+AutheticationService.controller('LoginCtrl', function ($scope, UIMAuthServ, $http) {
 	$scope.loginForm = {UserName: "", Password: ""};
-	
-//	if (UIMAuthServ.isLoggedIn())
-//		$location.path('/');
 	$scope.login = function () {
-		console.log('calling');
 		var credentials = {
 				"UserName": $scope.loginForm.UserName,
 				"Password": $scope.loginForm.Password
 		};
-		UIMAuthServ.authenticate(credentials).then(function () {
+		UIMAuthServ.authenticate(credentials).then(function (rs) {
+			UIMAuthServ.writeAuthToCookie(rs.token);
 			UIMAuthServ.redirectToAttemptedUrl();
 		}, function (error) {
 			$scope.ErrorMessage = error._msg;
@@ -42,58 +39,81 @@ AutheticationService.controller('LoginCtrl', function ($scope, UIMAuthServ, $coo
 });
 
 
-var sharedServicesModule = angular.module('sharedServices',['ngCookies']);
-//where we will store the attempted url
-sharedServicesModule.value('redirectToUrlAfterLogin', { url: '/' });
-sharedServicesModule.value('redirectToVerifyPage', { url: 'verify' });
-
-//this service will be responsible for authentication and also saving and redirecting to the attempt url when logging in
-
-sharedServicesModule.factory('UIMRegister', function ($location,  $cookieStore, UIMRegisterApi, redirectToVerifyPage, $window, $rootScope) {
+var UIMRegisterServModule = angular.module('UIMRegisterService',['ipCookie']);
+URLS.verifyPage = URLS.base+'verify';
+UIMRegisterServModule.factory('UIMRegister', function ($location,  ipCookie, UIMRegisterApi, $q, $window) {
+	var validation_err = {'hasError':true, 'msg':null};;
 	var isValid =  function(user) {
-		if(user.lasName)
-			return true; //TODO convert value to bool
-		return false
+		var valid = true;
+		if(!user){
+			valid = false;
+			validation_err.msg = 'Please provide your details.';
+		}else if(user.password != user.confirmpassword){
+			valid = false;
+			validation_err.msg = 'Password is not matching.';
+		}else if(user.isAgreed == false){
+			valid = false;
+			validation_err.msg = 'Please accept our policy.';
+		}
+		return valid ? valid : validation_err;
 	};
-	var redirectToVerifyPage = function() {
-		console.log('redirecting'+URLS.base);
-		//$location.path('/uim/reach/verify').replace();
-		//$rootScope.$apply();
-		$window.location.href='/uim/reach/verify';
-		//$scope.$apply();
-		//$location.path(redirectToVerifyPage.url);
+	var formatData = function(user){
+		var formatedUser = {};
+		formatedUser.firstName = user.firstName;
+		if(user.lastName)
+			formatedUser.lastName = user.lastName;
+		//TODO similarly other fields
+		return formatedUser;
+	};
+	var writeToCookie = function(user, token){
+		delete user.password;
+		delete user.confirmpassword;
+		delete user.isAgreed;
+		ipCookie('user', user);
+		ipCookie('_uim_tmp_tkn', token);
 	};
 	return {
 		register: function (user) {
-			console.log(user);
-			delete user.password;
-			delete user.confirmpassword;
-			delete user.isAgreed;
-			$cookieStore.put('user', user);
-			redirectToVerifyPage();
-			if(isValid(user)){
-				if(UIMRegisterApi.register(user)){
-					delete user.password;
-					delete user.confirmpassword;
-					delete user.isAgreed;
-					$cookieStore.put('user', user);
-					redirectToVerifyPage();
-				}
+			var valid = isValid(user);
+			if(valid == true){
+				return UIMRegisterApi.register(formatData(user)).then(function (rs) {
+					writeToCookie(user, rs.token);
+					return true;
+				}, function (error) {
+					validation_err.msg = error;
+					return $q.reject(validation_err);
+				});
+			}else{
+				return $q.reject(valid);
 			}
-			
-			var error = {'hasError':true,
-					'msg':'Working'};
-			return error; 
+		},
+		redirectToVerifyPage: function() {
+			console.log('redirecting'+URLS.base);
+			$window.location.href=URLS.verifyPage;
 		}
-		
 	};
 });
 
-sharedServicesModule.factory('UIMRegisterApi', function ($http) {
+UIMRegisterServModule.factory('UIMRegisterApi', function ($http) {
 	  return {
 		  register: function (user) {
-			  //Write to cookie and return true, thats for latter and process registration
-			  return true;
+			  return $http({
+	                method: "get",
+	                url: "http://uimirror.com",
+	                //transformRequest: transformRequestAsFormPost,
+	                data: user
+	            }).then(function(response) {
+	                if (typeof response.data === 'object') {
+	                    return response.data;
+	                } else {
+	                    // invalid response
+	                    return $q.reject(response.data);
+	                }
+	            }, function(response) {
+	            	return {token:'1'};
+	                //TODO uncomment latter
+	                //return $q.reject(response.data);
+	        	});
 		  }
 	  };
 });
