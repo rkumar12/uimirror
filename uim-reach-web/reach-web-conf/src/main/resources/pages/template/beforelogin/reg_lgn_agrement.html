@@ -24,7 +24,7 @@
         	<div class="modal-body forGotPwdBodyWrap">
 				<hr class="colorgraph"/>
 				<div class="alert alert-danger" role="alert" ng-show="error.hasError">
-  					<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+  					<span class="fa fa-exclamation-circle" aria-hidden="true"></span>
   					<span class="sr-only" th:text="#{error}">Error:</span>
   					{{error.msg}}
 				</div>
@@ -42,7 +42,7 @@
 				<hr class="colorgraph"/>
         	</div>
         	<div class="modal-footer forGotPwdFooterWrap">
-            	<button type="submit" class="btn uim-btn" ng-click="reset()" tabindex="2" ng-disabled="resetPwdForm.$invalid" th:text="#{reset}">Reset</button>
+            	<button type="submit" class="btn uim-btn" tabindex="2" ng-disabled="resetPwdForm.$invalid" th:text="#{reset}">Reset</button>
             	<button class="btn uim-btn pull-left" ng-click="cancel()" tabindex="3" th:text="#{cancel}">Cancel</button>
         	</div>
         </form>
@@ -66,7 +66,7 @@
 				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique, itaque, modi, aliquam nostrum at sapiente consequuntur natus odio reiciendis perferendis rem nisi tempore possimus ipsa porro delectus quidem dolorem ad.</p>
 			</div>
 			<div class="modal-footer">
-				<button type="submit" class="btn uim-btn" data-dismiss="modal" ng-click="agreed()" th:text="#{i.agree}">I Agree</button>
+				<button type="submit" class="btn uim-btn" data-dismiss="modal" th:text="#{i.agree}">I Agree</button>
 				<button type="button" class="btn uim-btn pull-left" ng-click="disagree()" th:text="#{i.disagree}"></button>
 			</div>
 		</form>
@@ -81,7 +81,7 @@
         <div class="modal-body registerBodyWrap">
             <form role="form" class="registerForm" ng-submit="register()" novalidate="true" name="registerForm">
             <div class="alert alert-danger" role="alert" ng-show="error.hasError">
-  				<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+  				<span class="fa fa-exclamation-circle" aria-hidden="true"></span>
   				<span class="sr-only" th:text="#{error}">Error:</span>
   				{{error.msg}}
 			</div>
@@ -161,7 +161,7 @@
 		<hr class="colorgraph"/>
         </div>
         <div class="modal-footer registerFooterWrap">
-            <button class="btn uim-btn" ng-disabled="registerForm.$invalid" ng-click="register()" type="submit" tabindex="10" th:text="#{register.signup.btn}">Sign Up</button>
+            <button class="btn uim-btn" ng-disabled="registerForm.$invalid" type="submit" tabindex="10" th:text="#{register.signup.btn}">Sign Up</button>
             <button class="btn uim-btn pull-left" ng-click="cancel()" tabindex="11" th:text="#{cancel}">Cancel</button>
         </div>
 	</div>	

@@ -68,6 +68,10 @@ body  {
 .forgotPwdWrap>a{
 	color: #fff;
 }
+.uim_head_error{
+	margin-bottom: 0px !important;
+	padding: 2px !important;
+}
 /*Header End*/
 /*Body Start*/
 .contentWrap{

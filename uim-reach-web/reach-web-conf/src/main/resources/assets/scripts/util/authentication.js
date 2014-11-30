@@ -20,6 +20,10 @@ URLS.home=URLS.base;
 //this service will be responsible for authentication and also saving and redirecting to the attempt url when logging in
 AutheticationService.factory('UIMAuthServ', function ($location,  $cookieStore, UIMAuthApi, redirectToVerifyPage, $window, $rootScope) {
 	return {
+		authenticate: function (cred) {
+			//Write to cookie and return true, thats for latter and process registration
+			return UIMAuthApi.authenticate(cred);
+		},
 		isLoggedIn: function () {
 			var loggedIn = false;
 			var token = $cookieStore.get('_tkn');
@@ -43,19 +47,28 @@ AutheticationService.factory('UIMAuthServ', function ($location,  $cookieStore, 
 	};
 });
 
-AutheticationService.factory('UIMAuthApi', function ($http) {
-	var isValid =  function(user) {
-		if(user.lasName)
-			return true; //TODO convert value to bool
-		return false
+AutheticationService.factory('UIMAuthApi', function ($http, $q) {
+	var validation_err = {_code: '403', _msg: 'Test'};
+	var isValidCred =  function(cred) {
+		var valid = false;
+		if(!cred || !cred.UserName || !cred.Password){
+			console.log('Validation msg');
+			validation_err._msg= 'Invalid Identity.';
+			valid = true;
+		}
+		console.log(valid);
+		return valid ? valid : validation_err;
 	};
 	return {
 		authenticateFromCookie: function (token) {
 			//Write to cookie and return true, thats for latter and process registration
 			return true;
 		},
-		authenticate: function (user) {
-			//Write to cookie and return true, thats for latter and process registration
+		authenticate: function (cred) {
+			var validation_msg = isValidCred(cred);
+			if(validation_msg != true){
+				return $q.reject(validation_msg);
+			}
 			return true;
 		},
 		refreshToken: function (token){

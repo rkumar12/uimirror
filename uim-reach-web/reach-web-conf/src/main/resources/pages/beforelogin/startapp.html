@@ -44,21 +44,32 @@
 					<button type="button " class="btn btn-group-sm navbar-btn uim-btn-sm" 
 						ng-controller="SignUpModalCtrl" ng-click="open()" th:text="#{sign.up}"></button>
 				</div>
-				<div class="navbar-menu navbar-right lgnWrap">
-				<form class="navbar-form  credBox" role="login" method="post" th:action="@{/home}">
+				<div class="navbar-menu navbar-right lgnWrap" ng-controller="LoginCtrl">
+				
+				<form class="navbar-form  credBox" role="login" method="post" novalidate="true" name="loginForm" ng-submit="login()">
+					<div class="form-group">
+						<div class="alert alert-danger uim_head_error" role="alert" ng-show="ErrorMessage">
+  							<span class="fa fa-exclamation-circle" aria-hidden="true"></span>
+  							<span class="sr-only" th:text="#{ErrorMessage}">Error:</span>
+  							{{ErrorMessage}}
+						</div>
+					</div>
  					<div class="form-group">
 	 					<div class="input-group input-group-sm">
   							<span class="input-group-addon headerAddOn"><i class="fa fa-user"></i></span>
-  							<input type="text" class="form-control" name="userid" th:placeholder="#{login.user.id}"/>
+  							<input type="text" class="form-control" name="userid" th:placeholder="#{login.user.id}"  required="required"
+  								ng-model="loginForm.UserName" ng-class="{error: loginForm.userid.$dirty &amp;&amp; loginForm.userid.$invalid &amp;&amp; loginForm.submitted}"/>
 						</div>
  					</div>
  					<div class="form-group">
  						<div class="input-group input-group-sm">
   							<span class="input-group-addon headerAddOn"><i class="fa fa-key"></i></span>
-  							<input type="password" class="form-control" th:placeholder="#{login.passsword}" name="password"/>
+  							<input type="password" class="form-control" th:placeholder="#{login.passsword}" name="password" required="required"
+  								ng-model="loginForm.Password" ng-class="{error: loginForm.password.$dirty &amp;&amp; loginForm.password.$invalid &amp;&amp; loginForm.submitted}"/>
 						</div>
  					</div>
- 					<button type="submit" class="btn btn-group-sm uim-btn-sm" th:text="#{sign.in}"></button>
+ 					<button type="submit" class="btn btn-group-sm uim-btn-sm" th:text="#{sign.in}"
+ 						ng-disabled="loginForm.$invalid"></button>
  					<div style="clear:left;"></div>
  					<div class="form-group">
    						<div class="forgotPwdWrap"><a href="#" ng-controller="ModalResetPwdCtrl" ng-click="open()" th:text="#{login.need.help}"></a></div>

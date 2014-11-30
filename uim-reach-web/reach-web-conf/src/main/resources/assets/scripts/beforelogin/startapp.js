@@ -21,6 +21,27 @@ AutheticationService.run(function ($location, UIMAuthServ) {
 });
 
 
+AutheticationService.controller('LoginCtrl', function ($scope, UIMAuthServ, $cookieStore, $http) {
+	$scope.loginForm = {UserName: "", Password: ""};
+	
+//	if (UIMAuthServ.isLoggedIn())
+//		$location.path('/');
+	$scope.login = function () {
+		console.log('calling');
+		var credentials = {
+				"UserName": $scope.loginForm.UserName,
+				"Password": $scope.loginForm.Password
+		};
+		UIMAuthServ.authenticate(credentials).then(function () {
+			UIMAuthServ.redirectToAttemptedUrl();
+		}, function (error) {
+			$scope.ErrorMessage = error._msg;
+			$scope.loginForm.Password='';
+		});
+	};
+});
+
+
 var sharedServicesModule = angular.module('sharedServices',['ngCookies']);
 //where we will store the attempted url
 sharedServicesModule.value('redirectToUrlAfterLogin', { url: '/' });
