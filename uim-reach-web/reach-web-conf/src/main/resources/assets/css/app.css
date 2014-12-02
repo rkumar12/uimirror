@@ -1,0 +1,199 @@
+body  {
+	font-family: "Georgia,Times,serif";
+	font-size: 14px;
+	line-height: 1.42857143;
+	color: #333;
+	background-color: #fff;
+}
+#wrap {
+	min-height: 100%;
+	height: auto !important;
+	height: 100%;
+	margin: 0 auto -90px;
+	padding: 0 0 90px;
+}
+
+.uim_r_head_wrap{
+	background: #2f2f2f;
+	border-color: #e7e7e7;
+	height: 60px;
+	margin-bottom: 0;
+	padding: 5px 0px;
+}
+.uim_r_logo > .logo{
+	clear: left;
+	height: 40px;
+}
+.uim_r_head_wrap > .container{
+	padding-right: 0px; 
+	padding-left: 0px;
+}
+.uim_r_head_wrap .headerAddOn{
+	background: transparent;
+	border: transparent;
+}
+.uim_r_head_wrap .headerAddOn>.fa{
+	color: #00b3f7;
+	font-size: 14px;
+}
+.uim_r_head_wrap .input-group >input{
+	height: 24px;
+	margin-top: 3px;
+	border: 1px solid;
+}
+.uim_r_head_wrap .input-group >input:focus {
+    background-color: #fff;
+    border-color: #e8c291;
+    box-shadow: 0 0 0 1px #e8c291 inset;
+    outline: medium none;
+}
+.uim_r_logo{
+	margin-top: -12px;
+}
+.uim_r_head_wrap .notiWrap{
+	margin-right: -8px;
+	padding: 15px;
+}
+.uim_r_head_wrap .notiWrap{
+	margin-right: -8px;
+	padding: 15px;
+}
+.uim_r_head_wrap .notiWrap>div.notiContainer{
+	display: inline-block;
+}	
+.uim-btn-sm{
+	background: #00b3f7;
+	color: #fff;
+	padding: 3px 6px;
+	font-size: 12px;
+}
+/*Header End*/
+/*App Header Wrap*/
+.uim_h_greet{
+	color: #fff;
+	font-weight: 800;
+	width:150px;
+    height:50px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+}
+.uim_h_name{
+	color: #fff;
+}
+.uim_h_name:HOVER{
+	color: #fff;
+	text-decoration: underline;
+}
+
+.navbar-center {
+    float: left;
+    padding: 15px;
+    text-align: center;
+}
+.navbar-center-cont {float:none;}
+.navbar-center-cont>a{
+	color: #E8E8E8;
+}
+
+.navbar-center-cont>a.active{
+	color: #FFF;
+}
+.uim_hd_view_optn{
+	color: #FFF;
+}
+.uim_hd_sep{
+	margin-right: 2px;
+	margin-left: 2px;
+}
+	
+/*App Header Wrap End*/
+/*Body Start*/
+.contentWrap{
+	margin-bottom: 20px;
+	margin-top: 20px;
+}
+/*Register Modal*/
+.colorgraph {
+  height: 5px;
+  border-top: 0;
+  background: #c4e17f;
+  border-radius: 5px;
+  background-image: -webkit-linear-gradient(left, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
+  background-image: -moz-linear-gradient(left, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
+  background-image: -o-linear-gradient(left, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
+  background-image: linear-gradient(to right, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
+}
+/*Map*/
+#map-canvas { height: 100%; margin: 0; padding: 0;}
+
+/*Common Validation Messages*/
+input.ng-invalid {
+  border: 1px solid red !important;
+}
+
+.modal-open .modal{
+	background-color: #848080;
+}
+
+/*Select Box*/
+.uimSelect{
+	border: 1px solid #ccc;
+    width: 120px;
+    border-radius: 3px;
+    overflow: hidden;
+    background: #fafafa url("data:image/png;base64,R0lGODlhDwAUAIABAAAAAP///yH5BAEAAAEALAAAAAAPABQAAAIXjI+py+0Po5wH2HsXzmw//lHiSJZmUAAAOw==") no-repeat 90% 50%;
+}
+
+.uimSelect select {
+    padding: 5px 8px;
+    width: 130%;
+    border: none;
+    box-shadow: none;
+    background: transparent;
+    background-image: none;
+    -webkit-appearance: none;
+}
+
+.uimSelect select:focus {
+    outline: none;
+}
+
+
+/**/
+.menu-bar {
+    position: absolute;
+    top: 20px;    
+    left: 50%;
+    height: 14px;
+    margin-left: -10px;
+}
+
+.bars {
+    display: block;
+    width: 20px;
+    height: 3px;    
+    background-color: #333;
+    box-shadow: 0 5px 0 #333, 0 10px 0 #333;
+}
+
+.menu {
+    display: none; 
+    width: 100%;
+    padding: 30px 10px 50px;
+    margin: 0 auto;
+    text-align: center;
+    background-color: #fff;
+}
+.menu ul {
+    margin-bottom: 0;
+}
+.menu a {
+    color: #333; 
+    text-transform: uppercase;
+    opacity: 0.8;
+}
+.menu a:hover {
+    text-decoration: none;
+    opacity: 1;
+}
