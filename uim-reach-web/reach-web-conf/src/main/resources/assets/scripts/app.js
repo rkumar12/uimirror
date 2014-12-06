@@ -14,6 +14,6 @@ var UIMReachApp = angular.module('UIMReachApp',
 
 var UIMReachCtrls = angular.module("UIMReachAppCtrls", []);
 UIMReachCtrls.controller('CollapseDemoCtrl', function ($scope) {
-	$scope.isCollapsed = false;
+	$scope.isCollapsed = true;
 });
 

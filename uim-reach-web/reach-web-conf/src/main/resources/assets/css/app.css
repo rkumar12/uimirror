@@ -108,6 +108,49 @@ body  {
 }
 	
 /*App Header Wrap End*/
+/*Sub Menu Starts*/
+.sub-menu-container{
+	margin-top: -8px;
+	display: none;
+}
+.hasSubmenu.sub-menu-container{
+	display: block;
+}
+.submenu-toggler{
+	background-color: transparent;
+	padding: 0px;
+}
+.submenu-toggler:HOVER, .submenu-toggler:FOCUS{
+	background-color: transparent;
+	outline: none;
+}
+.submenuwrap {
+    padding: 0px 5px 10px;
+    margin: 0 auto;
+}
+.submenuwrap ul.rightmenu {
+    margin-bottom: 0;
+    text-align: right;
+}
+.submenuwrap ul.leftmenu {
+    margin-bottom: 0;
+    text-align: left;
+}
+.submenuwrap a {
+    color: #333; 
+    opacity: 0.8;
+    font-weight: bold;
+}
+.submenuwrap a:hover {
+    text-decoration: none;
+    opacity: 1;
+}
+.submenu-data-container{
+	background-color: #DADADA;
+	margin-top: -26px;
+	margin-bottom: 17px;
+}
+/*Sub Menu end*/
 /*Body Start*/
 .contentWrap{
 	margin-bottom: 20px;
@@ -158,42 +201,70 @@ input.ng-invalid {
 .uimSelect select:focus {
     outline: none;
 }
-
-
-/**/
-.menu-bar {
-    position: absolute;
-    top: 20px;    
-    left: 50%;
-    height: 14px;
-    margin-left: -10px;
+/*Input Boxes*/
+.uim_input{
+	height: 24px;
+	margin-top: 3px;
+	border: 0px solid #CCC;
+	border-bottom: 1px solid #CCC;
+	box-shadow: 0 0 0 0px #e8c291 inset;
+	border-radius: 0px;
 }
-
-.bars {
-    display: block;
-    width: 20px;
-    height: 3px;    
-    background-color: #333;
-    box-shadow: 0 5px 0 #333, 0 10px 0 #333;
-}
-
-.menu {
-    display: none; 
-    width: 100%;
-    padding: 30px 10px 50px;
-    margin: 0 auto;
-    text-align: center;
+.uim_input:focus{
     background-color: #fff;
+    border-color: #e8c291;
+    box-shadow: 0 0 0 1px #e8c291 inset;
+    outline: medium none;
+    border-radius: 6px;
 }
-.menu ul {
-    margin-bottom: 0;
+.noleftrightpad{
+	padding-left: 0px;
+	padding-right: 0px;
 }
-.menu a {
-    color: #333; 
-    text-transform: uppercase;
-    opacity: 0.8;
+.noleftrightmar{
+	margin-left: 0px;
+	margin-right: 0px;
 }
-.menu a:hover {
-    text-decoration: none;
-    opacity: 1;
+
+/*Dash Board starts*/
+.dashBoardContainer{
+	padding-top: 10px;
+	margin-top: -27px;
+}
+.dashBoardContainerWrap{
+	border-top: 1px solid #ccc;
+}
+.dashBoardSettingsContainer{
+}
+.dashBoardMainContainer{
+	border: none;
+	border-left: 1px solid #ccc;
+	border-right: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
+	padding: 5px;
+}
+.dashBoardUtilityContainer{
+	
+}
+
+/*Dash Board Left Filter*/
+.dashBoardSettingsContainer >.header{
+	text-align: center;
+	background-color: #ccc;
+	margin-bottom: 10px;
+	font-weight: bold;
+	font-size: 15px;
+}
+.filterRow >.row{
+	padding-left: 5px;
+	margin-bottom: 5px;
+	margin-left: 0px;
+	margin-right: 0px;
+}
+.fltrHeadings >.title{
+	font-weight: bold;
+	background-color: #ccc;
+}
+.distanceTypeSlWrap{
+	font-size: 14px;
 }
