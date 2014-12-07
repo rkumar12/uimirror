@@ -32,199 +32,24 @@
 <body>
 	<div id="wrap">
 		<!-- Navigation -->
-		<nav class="navbar uim_r_head_wrap" role="navigation" style="margin-bottom: 0">
-			<div class="">
-				<div class="navbar-header">
-					<a class="navbar-brand uim_r_logo" th:href="@{//reach.uimirror.com}">
-						<img th:attr="src=@{/image/logo/reach_logo_75.png},title=#{logo},alt=#{logo}" class="logo"/>
-					</a>
-				</div>
-				<p class="navbar-text uim_h_greet">Hello 
-					<span><a class="uim_h_name" th:href="@{/}">Jayaram</a></span>
-				</p>
-				<div class="navbar-menu navbar-center uim_hd_view_optn">
-					<div class="navbar-center-cont">
-						<a class="active" th:href="@{/}">
-							<i class="fa fa-newspaper-o"></i>
-						</a>
-						<span class="uim_hd_sep">|</span>
-						<a class="" th:href="@{/}">
-							<i class="fa fa-map-marker"></i>
-						</a>
-					</div>
-				</div>
-				<!-- /.navbar-header -->
-				<div class="navbar-menu navbar-right notiWrap">
-					<div class="notiContainer">
-						<span class="dropdown" dropdown="dropdown" on-toggle="toggled(open)">
-	      					<a href="#" class="dropdown-toggle" dropdown-toggle="true">
-	        					<i class="fa fa-inbox"></i><span class="badge">42</span>
-	      					</a>
-	      					<ul class="dropdown-menu">
-	        					<li>
-	          						test
-	        					</li>
-	      					</ul>
-    					</span>
-	    			</div>
-					<div class="notiContainer">
-						<span class="dropdown" dropdown="dropdown" on-toggle="toggled(open)">
-	      					<a href="#" class="dropdown-toggle" dropdown-toggle="true">
-	        					<i class="fa fa-globe"></i><span class="badge">42</span>
-	      					</a>
-	      					<ul class="dropdown-menu">
-	        					<li>
-	          						test
-	        					</li>
-	      					</ul>
-	    				</span>
-	    			</div>
-	    			<div class="notiContainer">
-	    				<span class="dropdown" dropdown="dropdown" on-toggle="toggled(open)">
-	      					<a href="#" class="dropdown-toggle" dropdown-toggle="true">
-	        					<i class="fa fa-cog"></i><span class="badge">42</span>
-	      					</a>
-	      					<ul class="dropdown-menu">
-	        					<li>
-	          						test
-	        					</li>
-	      					</ul>
-    					</span>
-	    			</div>
-    				
-				</div>
-			<!-- /.navbar-fixed top -->
-			</div>
-		</nav><!-- /nav static top -->
-		<div class="container-fluid noleftrightpad sub-menu-container hasSubmenu" ng-controller="CollapseDemoCtrl">
-			<div class="row">
-				<div class="col-md-3"></div>
-				<div class="col-md-3">
-					<button class="btn submenu-toggler" ng-click="isCollapsed = !isCollapsed">
-						<i class="fa fa-bars"></i>
-					</button>
-				</div>
-				<div class="col-md-3"></div>
-			</div>
-			<div class="row submenuwrap submenu-data-container" collapse="isCollapsed">
-				<div class="clearfix"></div>
-				<div class="col-md-6">
-					<div>
-			            <ul class="list-inline leftmenu">
-			                <li><a href="#">Shop Dashboard</a></li>
-			            </ul>   
-	    			</div>
-				</div>
-				<div class="col-md-6">
-					<div>
-			            <ul class="list-inline rightmenu">
-			                <li><a href="#">Create Campagin</a></li>
-			                <li><a href="#">Manage Sop</a></li>
-			            </ul>
-	    			</div>
-				</div>
-			</div>
-		</div>
+		<div th:include="header/header :: head"></div>
+		<!-- /Head ends -->
+		<div th:include="header/submenu :: submenu"></div>
 		<!-- /submenu -->
 		
 		<div class="container-fluid dashBoardContainer">
 			<div class="clearfix"></div>
 			<div class="row dashBoardContainerWrap">
-				<div class="col-md-2 dashBoardSettingsContainer">
-					<div class="row header">Filters</div>
-					<div class="row distanceFltrWrap filterRow">
-						<div class="row fltrHeadings">
-							<span class="title">Distance:</span>
-							<small>Default is 5 KM, Please enter the ditsnace upto which you want to see the details.
-							Please note zero will display result from all over world, which is not supported in map view.</small>
-						</div>
-						<div class="row">
-							<div class="input-group">
-								<input type="text" class="form-control uim_input" placeholder="Distance" value="5"/>
-								<div class="input-group-btn distanceTypeSlWrap">
-	        						<div class="uimSelect uim_input">
-	  									<select name="distanceType" required="required" class="">
-		    								<option th:value="KM">Kilo Meter</option>
-		    								<option th:value="MI" th:text="Miles">Miles</option>
-		    								<option th:value="MT" th:text="Meter">Meter</option>
-	  									</select>
-									</div>
-	      						</div><!-- /btn-group -->
-							</div>
-						</div>
-					</div>
-					<div class="row categoryFltrWrap filterRow">
-						<div class="row fltrHeadings">
-							<span class="title">Category/Podcut:</span>
-							<small>Limit the category to have a better result.<a href="#">manage category</a>.</small>
-						</div>
-						<div class="row">
-							<label for="appeal">Appeal</label>
-							<input type="checkbox" class="form-control uim_input" name="appeal"/>
-						</div>
-					</div>
-					<div class="row categoryFltrWrap filterRow">
-						<div class="row fltrHeadings">
-							<span class="title">Limit Result:</span>
-							<small>Set Number of results to reterived.</small>
-						</div>
-						<div class="row">
-							<div class="input-group">
-								<input type="text" class="form-control uim_input" placeholder="Number Of Results" value="10"/>
-							</div>
-						</div>
-					</div>
-					<div class="row categoryFltrWrap filterRow">
-						<div class="row fltrHeadings">
-							<span class="title">Inculde Other Sales:</span>
-							<small>Select it if you want to serach for the individual/second owner sell.</small>
-						</div>
-						<div class="row">
-							<div class="input-group">
-								<input type="checkbox" class="form-control uim_input" name="appeal"/>
-							</div>
-						</div>
-					</div>
-					<div class="row filterRow">
-						<button type="submit" class="btn uim-btn">Filter</button>
-						<button type="submit" class="btn uim-btn">Save &amp; Filter</button>
-					</div>
+				<div class="col-md-2">
+					<div th:include="filter :: filters"></div>
 				</div><!-- /Filter end -->
+				
 				<div class="col-md-8 dashBoardMainContainer noleftrightpad">
-					<div class="row noleftrightmar">
-						<div class="input-group">
-     						<input type="text" class="form-control locationSerach" th:placeholder="#{serach.loc.in.placeholder}"/>
-     						<span class="input-group-btn">
-       						<button class="btn locationSerachBtn" type="button"><i class="fa fa-search"></i></button>
-     						</span>
-   						</div><!-- /input-group -->
-					</div><!-- /Search Input -->
-					
-					<div class="row noleftrightmar">
-						<div style="height:400px; width:842px;">
-							<div id="map-canvas"></div>
-						</div>
-					</div><!-- /Map -->
+					<div th:include="dashboard/map :: map"></div>
+					<!-- /Map -->
 				</div>
 				<div class="col-md-2 dashBoardUtilityContainer">Test</div>
 			</div>
-		</div>
-		
-
-		<div class="container contentWrap">
-			<div class="row alertRow">
-				<!-- <div class="alert alert-success dealFindInfo" role="alert" th:utext="#{serach.location.info}"></div> -->
-			</div><!-- /info -->
-			<div class="row locationSerachRow">
-				<div class="col-sm-4 col-sm-offset-4 f14">
-					
-				</div>
-			</div><!-- /Serach -->
-			<div class="row" >
-				<div class="col-sm-4 col-sm-offset-4 f14">
-					
-				</div>
-			</div><!-- /map End -->
 		</div>
 	</div>
 	<!--  <script type="text/ng-template" id="RegisterForm.html">

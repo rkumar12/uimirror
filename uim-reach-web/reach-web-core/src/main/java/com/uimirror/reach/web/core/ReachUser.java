@@ -8,24 +8,20 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.reach.controller;
+package com.uimirror.reach.web.core;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author Jay
  */
-@RestController
-public class Test {
+public class ReachUser {
 
-	/**
-	 * 
-	 */
-	@RequestMapping(value="test", method=RequestMethod.GET)
-	public String  test() {
-		return "index.html";
-	}
+	private String profileId;
+	private boolean isAnyShopAdmin;
+	private boolean isAnyOngoingSell;
+	private int numberOfPromos;
+	private boolean isPaymentAuthorized;
 
+	
+	
 }

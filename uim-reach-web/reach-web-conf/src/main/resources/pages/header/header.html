@@ -1,0 +1,84 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<link rel="shortcut icon" type="image/x-icon" th:href="@{http://static.uimirror.com/reach/favicon.ico}" />
+    <title th:text="#{reach.before.login.title}">Identify YourSelf</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="description" content="Reach Application for running promo"/>
+    <meta name="author" content="UIMirror"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+</head>
+
+<body>
+	<div th:fragment="head">
+		<!-- Navigation -->
+		<nav class="navbar uim_r_head_wrap" role="navigation" style="margin-bottom: 0">
+			<div class="">
+				<div class="navbar-header">
+					<a class="navbar-brand uim_r_logo" th:href="@{//reach.uimirror.com}">
+						<img th:attr="src=@{/image/logo/reach_logo_75.png},title=#{logo},alt=#{logo}" class="logo"/>
+					</a>
+				</div>
+				<p class="navbar-text uim_h_greet">Hello 
+					<span><a class="uim_h_name" th:href="@{/}">Jayaram</a></span>
+				</p>
+				<div class="navbar-menu navbar-center uim_hd_view_optn">
+					<div class="navbar-center-cont">
+						<a class="active" th:href="@{/}">
+							<i class="fa fa-newspaper-o"></i>
+						</a>
+						<span class="uim_hd_sep">|</span>
+						<a class="" th:href="@{/}">
+							<i class="fa fa-map-marker"></i>
+						</a>
+					</div>
+				</div>
+				<!-- /.navbar-header -->
+				<div class="navbar-menu navbar-right notiWrap">
+					<div class="notiContainer">
+						<span class="dropdown" dropdown="dropdown" on-toggle="toggled(open)">
+	      					<a href="#" class="dropdown-toggle" dropdown-toggle="true">
+	        					<i class="fa fa-inbox"></i><span class="badge">42</span>
+	      					</a>
+	      					<ul class="dropdown-menu">
+	        					<li>
+	          						test
+	        					</li>
+	      					</ul>
+    					</span>
+	    			</div>
+					<div class="notiContainer">
+						<span class="dropdown" dropdown="dropdown" on-toggle="toggled(open)">
+	      					<a href="#" class="dropdown-toggle" dropdown-toggle="true">
+	        					<i class="fa fa-globe"></i><span class="badge">42</span>
+	      					</a>
+	      					<ul class="dropdown-menu">
+	        					<li>
+	          						test
+	        					</li>
+	      					</ul>
+	    				</span>
+	    			</div>
+	    			<div class="notiContainer">
+	    				<span class="dropdown" dropdown="dropdown" on-toggle="toggled(open)">
+	      					<a href="#" class="dropdown-toggle" dropdown-toggle="true">
+	        					<i class="fa fa-cog"></i><span class="badge">42</span>
+	      					</a>
+	      					<ul class="dropdown-menu">
+	        					<li>
+	          						test
+	        					</li>
+	      					</ul>
+    					</span>
+	    			</div>
+    				
+				</div>
+			<!-- /.navbar-fixed top -->
+			</div>
+		</nav><!-- /nav static top -->
+	</div>
+</body>
+</html>

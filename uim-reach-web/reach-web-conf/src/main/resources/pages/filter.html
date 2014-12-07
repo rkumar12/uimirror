@@ -1,0 +1,90 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<link rel="shortcut icon" type="image/x-icon" th:href="@{http://static.uimirror.com/reach/favicon.ico}" />
+    <title th:text="#{reach.before.login.title}">Identify YourSelf</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="description" content="Reach Application for running promo"/>
+    <meta name="author" content="UIMirror"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+</head>
+
+<body>
+	<div th:fragment="filters">
+		<div class="dashBoardSettingsContainer">
+			<div class="row header">Filters</div>
+			<div class="row distanceFltrWrap filterRow">
+				<div class="row fltrHeadings">
+					<span class="title">Distance:</span>
+					<small>Default is 5 KM, Please enter the ditsnace upto which you want to see the details.
+					Please note zero will display result from all over world, which is not supported in map view.</small>
+				</div>
+				<div class="row">
+					<div class="input-group">
+						<input type="text" class="form-control uim_input" placeholder="Distance" value="5"/>
+						<div class="input-group-btn distanceTypeSlWrap">
+	      						<div class="uimSelect uim_input">
+										<select name="distanceType" required="required" class="">
+	   								<option th:value="KM">Kilo Meter</option>
+	   								<option th:value="MI" th:text="Miles">Miles</option>
+	   								<option th:value="MT" th:text="Meter">Meter</option>
+										</select>
+							</div>
+	    						</div><!-- /btn-group -->
+					</div>
+				</div>
+			</div>
+			<div class="row categoryFltrWrap filterRow">
+				<div class="row fltrHeadings">
+					<span class="title">Category/Podcut:</span>
+					<small>Limit the category to have a better result.<a href="#">manage category</a>.</small>
+				</div>
+				<div class="row">
+					<label for="appeal">Appeal</label>
+					<input type="checkbox" class="form-control uim_input" name="appeal"/>
+				</div>
+			</div>
+			<div class="row limitFltrWrap filterRow">
+				<div class="row fltrHeadings">
+					<span class="title">Limit Result:</span>
+					<small>Set Number of results to reterived.</small>
+				</div>
+				<div class="row">
+					<div class="input-group">
+						<input type="text" class="form-control uim_input" placeholder="Number Of Results" value="10"/>
+					</div>
+				</div>
+			</div>
+			<div class="row sellsFltrWrap filterRow">
+				<div class="row fltrHeadings">
+					<span class="title">Inculde Other Sales:</span>
+					<small>Select it if you want to serach for the individual/second owner sell.</small>
+				</div>
+				<div class="row">
+					<div class="input-group">
+						<input type="checkbox" class="form-control uim_input" name="appeal"/>
+					</div>
+				</div>
+			</div>
+			<div class="row promoFltrWrap filterRow">
+				<div class="row fltrHeadings">
+					<span class="title">Inculde Promos:</span>
+					<small>Select it if you want to serach for current promotions.</small>
+				</div>
+				<div class="row">
+					<div class="input-group">
+						<input type="checkbox" class="form-control uim_input" name="appeal"/>
+					</div>
+				</div>
+			</div>
+			<div class="row filterRow">
+				<button type="submit" class="btn uim-btn">Filter</button>
+				<button type="submit" class="btn uim-btn">Save &amp; Filter</button>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
