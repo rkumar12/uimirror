@@ -39,7 +39,7 @@ import com.uimirror.core.mongo.feature.MongoDocumentSerializer;
  * 
  * @author Jay
  */
-public abstract class AbstractMongoStore<T extends MongoDocumentSerializer<T>> implements BasicStore<T>{
+public abstract class AbstractMongoStore<T extends AbstractBeanBasedDocument<T>> implements BasicStore<T>{
 
 	protected static final Logger LOG = LoggerFactory.getLogger(AbstractMongoStore.class);
 	private T t;
@@ -243,7 +243,7 @@ public abstract class AbstractMongoStore<T extends MongoDocumentSerializer<T>> i
 		findAndModify(MongoStoreHelper.convertToDBObject(query), 
 				MongoStoreHelper.convertToDBObject(fields), null, Boolean.FALSE, 
 				MongoStoreHelper.convertToDBObject(toUpdate), Boolean.TRUE, Boolean.FALSE);
-		return result == null ? null : t.readFromMap(result.toMap());
+		return result == null ? null : (T) t.readFromMap(result.toMap());
 	}
 	
 	/* (non-Javadoc)

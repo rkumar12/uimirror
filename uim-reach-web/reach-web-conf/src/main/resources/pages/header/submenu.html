@@ -15,17 +15,18 @@
 
 <body>
 	<div th:fragment="submenu">
-		<div class="container-fluid noleftrightpad sub-menu-container hasSubmenu" ng-controller="CollapseDemoCtrl">
+		<div class="container-fluid noleftrightpad sub-menu-container hasSubmenu" ng-controller="SubMenuCtrl" 
+			th:attr="ng-init='setKeepSubMenuOpen('+${viewSetting.keepSubmenuClose}+')'">
 			<div class="row">
 				<div class="col-md-3"></div>
 				<div class="col-md-3">
-					<button class="btn submenu-toggler" ng-click="isCollapsed = !isCollapsed">
+					<button class="btn submenu-toggler" ng-click="setKeepSubMenuOpen(!isSubMenuOpen())">
 						<i class="fa fa-bars"></i>
 					</button>
 				</div>
 				<div class="col-md-3"></div>
 			</div>
-			<div class="row submenuwrap submenu-data-container" collapse="isCollapsed">
+			<div class="row submenuwrap submenu-data-container" collapse="isSubMenuOpen()" >
 				<div class="clearfix"></div>
 				<div class="col-md-6">
 					<div>

@@ -45,8 +45,12 @@
 				</div><!-- /Filter end -->
 				
 				<div class="col-md-8 dashBoardMainContainer noleftrightpad">
-					<div th:include="dashboard/map :: map"></div>
-					<!-- /Map -->
+					<div th:if="${viewSetting.landingView == T(com.uimirror.reach.web.core.ReachTypeOfView).USER}">
+						<div th:unless="${viewSetting.textViewOnLanding}">
+							<div th:include="dashboard/map :: map"></div>
+						</div>
+						<!-- /Map -->
+					</div>
 				</div>
 				<div class="col-md-2 dashBoardUtilityContainer">Test</div>
 			</div>

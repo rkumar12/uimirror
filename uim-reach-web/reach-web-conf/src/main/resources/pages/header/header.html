@@ -23,15 +23,15 @@
 					</a>
 				</div>
 				<p class="navbar-text uim_h_greet">Hello 
-					<span><a class="uim_h_name" th:href="@{/}">Jayaram</a></span>
+					<span><a class="uim_h_name" th:href="@{/}" th:text="${user.firstName}">There</a></span>
 				</p>
-				<div class="navbar-menu navbar-center uim_hd_view_optn">
+				<div class="navbar-menu navbar-center uim_hd_view_optn" th:if="${viewSetting.landingView == T(com.uimirror.reach.web.core.ReachTypeOfView).USER}">
 					<div class="navbar-center-cont">
-						<a class="active" th:href="@{/}">
+						<a th:class="${viewSetting.textViewOnLanding}? 'active' : ''" th:href="@{/}">
 							<i class="fa fa-newspaper-o"></i>
 						</a>
 						<span class="uim_hd_sep">|</span>
-						<a class="" th:href="@{/}">
+						<a th:class="${viewSetting.textViewOnLanding}? '' : 'active'" th:href="@{/}">
 							<i class="fa fa-map-marker"></i>
 						</a>
 					</div>
