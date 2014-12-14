@@ -16,13 +16,9 @@
 	<div th:fragment="filters">
 		<div class="dashBoardSettingsContainer">
 			<div class="row header">Filters</div>
-			<div class="row distanceFltrWrap filterRow">
-				<div class="row fltrHeadings">
-					<span class="title">Distance:</span>
-					<small>Default is 5 KM, Please enter the ditsnace upto which you want to see the details.
-					Please note zero will display result from all over world, which is not supported in map view.</small>
-				</div>
-				<div class="row">
+			<div class="distanceFltrWrap filterRow">
+				
+				<div class="">
 					<div class="input-group">
 						<input type="text" class="form-control uim_input" placeholder="Distance" value="5"/>
 						<div class="input-group-btn distanceTypeSlWrap">
@@ -36,18 +32,65 @@
 	    						</div><!-- /btn-group -->
 					</div>
 				</div>
+				<div class=" fltrHeadings">
+					
+					<small>Default is 5 KM, Please enter the ditsnace upto which you want to see the details.
+					Please note zero will display result from all over world, which is not supported in map view.</small>
+				</div>
+				
 			</div>
-			<div class="row categoryFltrWrap filterRow">
-				<div class="row fltrHeadings">
-					<span class="title">Category/Podcut:</span>
+			
+			
+			<div class="row header">Category/Podcut</div>
+				<div class=" fltrHeadings">
 					<small>Limit the category to have a better result.<a href="#">manage category</a>.</small>
 				</div>
-				<div class="row">
-					<label for="appeal">Appeal</label>
-					<input type="checkbox" class="form-control uim_input" name="appeal"/>
+			<div class="row">	
+				<div class="checkbox">
+					<label for="appeal">
+					<input type="checkbox" class="" name="appeal"/>
+					Appeal
+					</label>
 				</div>
+				
+				<div class="checkbox">
+					<label for="book">
+					<input type="checkbox" class="" name="book"/>
+					Book
+					</label>
+				</div>
+				
+				<div class="checkbox">
+					<label for="tv">
+					<input type="checkbox" class="" name="tv"/>
+					Tv
+					</label>
+				</div>	
+				
+				<div class="checkbox">
+					<label for="tv">
+					<input type="checkbox" class="" name="rebook"/>
+					Reebook
+					</label>
+				</div>	
+				
+				
 			</div>
-			<div class="row limitFltrWrap filterRow">
+			<div class=" fltrHeadings">
+				<small>Limit the category to have a better result.<a href="#">manage category</a>.</small>
+			</div>
+			
+			<div class="fltrHeadings">
+					<span class="title">Limit Result:</span>
+					<small>Set Number of results to reterived.</small>
+				</div>
+				
+					<div class="fltrHeadings">
+					<span class="title">Inculde Other Sales:</span>
+					<small>if you want to serach for the individual/second owner sell.</small>
+				</div>
+			
+<!-- 			<div class="row limitFltrWrap filterRow">
 				<div class="row fltrHeadings">
 					<span class="title">Limit Result:</span>
 					<small>Set Number of results to reterived.</small>
@@ -61,7 +104,7 @@
 			<div class="row sellsFltrWrap filterRow">
 				<div class="row fltrHeadings">
 					<span class="title">Inculde Other Sales:</span>
-					<small>Select it if you want to serach for the individual/second owner sell.</small>
+					<small>if you want to serach for the individual/second owner sell.</small>
 				</div>
 				<div class="row">
 					<div class="input-group">
@@ -79,10 +122,12 @@
 						<input type="checkbox" class="form-control uim_input" name="appeal"/>
 					</div>
 				</div>
-			</div>
-			<div class="row filterRow">
-				<button type="submit" class="btn uim-btn">Filter</button>
-				<button type="submit" class="btn uim-btn">Save &amp; Filter</button>
+			</div> -->
+			
+			
+			<div class="filterRow">
+				<button type="submit" class="btn uim-btn-sm">Filter</button>
+				<button type="submit" class="btn uim-btn-sm">Save &amp; Filter</button>
 			</div>
 		</div>
 	</div>

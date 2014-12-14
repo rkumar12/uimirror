@@ -57,9 +57,10 @@
 				<hr class="colorgraph"/>
         	</div>
         	<div class="modal-footer forGotPwdFooterWrap">
-            	<button type="submit" class="btn uim-btn" ng-click="changeEmail()" tabindex="2"  
+        	<button class="btn uim-btn pull-left" ng-click="cancel()" tabindex="3" th:text="#{cancel}">Cancel</button>
+            	<button type="submit" class="btn uim-btn pull-left" ng-click="changeEmail()" tabindex="2"  
             		ng-disabled="changeEmailForm.$invalid" th:text="#{account.change.email.btn}">Change</button>
-            	<button class="btn uim-btn pull-left" ng-click="cancel()" tabindex="3" th:text="#{cancel}">Cancel</button>
+            	
         	</div>
         </form>
 	</div>

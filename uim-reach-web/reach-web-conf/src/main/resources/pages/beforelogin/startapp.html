@@ -29,24 +29,35 @@
     <![endif]-->
 </head>
 
-<body>
+<body >
 	<div id="wrap">
-		<!-- Navigation -->
-		<nav class="navbar uim_r_head_wrap" role="navigation" style="margin-bottom: 0">
-			<div class="container">
-				<div class="navbar-header">
-					<a class="navbar-brand uim_r_logo" th:href="@{//reach.uimirror.com}">
-						<img th:attr="src=@{/image/logo/reach_logo_75.png},title=#{logo},alt=#{logo}" class="logo"/>
-					</a>
+		<div class="uim_loginBg">
+		<div class="colorgraph-bar"></div>
+		
+		<div class="container contentWrap">
+			<div class="row">
+				<div class="col-sm-12 text-center">
+					<div class="uim_r_logo">
+						<a class="" th:href="@{//reach.uimirror.com}">
+							<img th:attr="src=@{/image/logo/reach_logo_75.png},title=#{logo},alt=#{logo}" class="logo"/>
+						</a>
+					</div>
 				</div>
+			</div>
+			
+			<div class="row alertRow">
+			<div class="col-sm-4 col-sm-offset-4">
+				<div class="alert alert-success dealFindInfo" role="alert" th:utext="#{serach.location.info}"></div>
+				</div>
+			</div><!-- /info -->
+			
+			
+			<div class="row">
 				<!-- /.navbar-header -->
-				<div class="pull-right headerSignUp">
-					<button type="button " class="btn btn-group-sm navbar-btn uim-btn-sm" 
-						ng-controller="SignUpModalCtrl" ng-click="open()" th:text="#{sign.up}"></button>
-				</div>
-				<div class="navbar-menu navbar-right lgnWrap" ng-controller="LoginCtrl">
 				
-				<form class="navbar-form  credBox" role="login" method="post" novalidate="true" name="loginForm" ng-submit="login()">
+				<div class="row lgnWrap" ng-controller="LoginCtrl">
+				
+				<form class="col-sm-4 col-sm-offset-4 credBox" role="login" method="post" novalidate="true" name="loginForm" ng-submit="login()">
 					<div class="form-group">
 						<div class="alert alert-danger uim_head_error" role="alert" ng-show="ErrorMessage">
   							<span class="fa fa-exclamation-circle" aria-hidden="true"></span>
@@ -55,55 +66,65 @@
 						</div>
 					</div>
  					<div class="form-group">
-	 					<div class="input-group input-group-sm">
+	 					<div class="input-group">
   							<span class="input-group-addon headerAddOn"><i class="fa fa-user"></i></span>
   							<input type="text" class="form-control" name="userid" th:placeholder="#{login.user.id}"  required="required" focus-on="userNameFcs"
   								ng-model="loginForm.UserName" ng-class="{error: loginForm.userid.$dirty &amp;&amp; loginForm.userid.$invalid &amp;&amp; loginForm.submitted}"/>
 						</div>
  					</div>
  					<div class="form-group">
- 						<div class="input-group input-group-sm">
+ 						<div class="input-group">
   							<span class="input-group-addon headerAddOn"><i class="fa fa-key"></i></span>
   							<input type="password" class="form-control" th:placeholder="#{login.passsword}" name="password" required="required"
   								ng-model="loginForm.Password" ng-class="{error: loginForm.password.$dirty &amp;&amp; loginForm.password.$invalid &amp;&amp; loginForm.submitted}"/>
 						</div>
  					</div>
+ 						
+   						<div class="forgotPwdWrap  text-center"><a href="#" ng-controller="ModalResetPwdCtrl" ng-click="open()" th:text="#{login.need.help}"></a></div>
+ 					
+ 				<div class="form-group  text-center">
  					<button type="submit" class="btn btn-group-sm uim-btn-sm" th:text="#{sign.in}"
  						ng-disabled="loginForm.$invalid"></button>
+ 						
+ 						<button type="button " class="btn btn-group-sm navbar-btn uim-btn-sm" 
+						ng-controller="SignUpModalCtrl" ng-click="open()" th:text="#{sign.up}"></button>
+					</div>	
  					<div style="clear:left;"></div>
- 					<div class="form-group">
-   						<div class="forgotPwdWrap"><a href="#" ng-controller="ModalResetPwdCtrl" ng-click="open()" th:text="#{login.need.help}"></a></div>
- 					</div>
+ 				
+ 					
+ 				
 				</form>
 				</div>
 			<!-- /.navbar-fixed top -->
+			
+			
 			</div>
-		</nav><!-- /nav static top -->
-		<div class="container contentWrap">
-			<div class="row alertRow">
-				<div class="alert alert-success dealFindInfo" role="alert" th:utext="#{serach.location.info}"></div>
-			</div><!-- /info -->
-			<div class="row locationSerachRow">
-				<div class="col-sm-4 col-sm-offset-4 f14">
-					<div class="row">
+			
+			
+			
+			<div class="row ">
+			 <div class="locationSerachRow">
+				<div class="col-sm-6 f14">
+					
 						<div class="input-group">
      						<input type="text" class="form-control locationSerach" th:placeholder="#{serach.loc.in.placeholder}"/>
      						<span class="input-group-btn">
        						<button class="btn locationSerachBtn" type="button"><i class="fa fa-search"></i></button>
      						</span>
    						</div><!-- /input-group -->
-					</div>
+				</div>
 				</div>
 			</div><!-- /Serach -->
 			<div class="row" >
-				<div class="col-sm-4 col-sm-offset-4 f14">
+				<div class="col-sm-12  f14">
 					<div class="row">
-						<div style="height:400px; width:400px;">
+						<div style="height:500px; width:100%;">
 							<div id="map-canvas"></div>
 						</div>
 					</div>
 				</div>
 			</div><!-- /map End -->
+		</div>
 		</div>
 	</div>
 	<!--  <script type="text/ng-template" id="RegisterForm.html">

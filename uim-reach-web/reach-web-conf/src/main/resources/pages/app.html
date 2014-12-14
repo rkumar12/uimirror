@@ -30,7 +30,7 @@
 </head>
 
 <body>
-	<div id="wrap">
+	<div id="wrapper">
 		<!-- Navigation -->
 		<div th:include="header/header :: head"></div>
 		<!-- /Head ends -->
@@ -47,12 +47,53 @@
 				<div class="col-md-8 dashBoardMainContainer noleftrightpad">
 					<div th:if="${viewSetting.landingView == T(com.uimirror.reach.web.core.ReachTypeOfView).USER}">
 						<div th:unless="${viewSetting.textViewOnLanding}">
-							<div th:include="dashboard/map :: map"></div>
+<!-- 							<div th:include="dashboard/map :: map"></div> -->
+							<div th:include="dashboard/text :: news"></div>
 						</div>
 						<!-- /Map -->
 					</div>
 				</div>
-				<div class="col-md-2 dashBoardUtilityContainer">Test</div>
+				<div class="col-md-2 dashBoardUtilityContainer">
+				
+		<div class="row list-group">
+			<a class="list-group-item active" href="#">Quick Links
+             <div class="tooltip-alert"></div> 
+            </a>
+				<a class="list-group-item" href="#"><i class="fa fa-angle-double-right"></i> Manage Promo</a>                 
+				<a class="list-group-item" href="#"><i class="fa fa-angle-double-right"></i> Manage Shop</a>
+				<a class="list-group-item" href="#"><i class="fa fa-angle-double-right"></i> Manage Shop</a>
+				<a class="list-group-item" href="#"><i class="fa fa-angle-double-right"></i> Manage Shop</a>
+		</div>
+				
+		<div class="row list-group">
+			<a class="list-group-item active" href="#">Current Top Promo
+			<div class="tooltip-alert"></div> 
+            </a>
+			<a class="list-group-item" href="#">Arrow <span class="pull-right">40%</span></a>                 
+			<a class="list-group-item" href="#">Reebok <span class="pull-right">30%</span> </a>
+			<a class="list-group-item" href="#">Lee <span class="pull-right">60%</span></a>
+			<a class="list-group-item" href="#">Wrangler <span class="pull-right">50%</span></a>
+		</div>
+				
+		<div class="row list-group">
+			<a class="list-group-item active" href="#">Current 
+             <div class="tooltip-alert"></div> 
+            </a>
+				<a class="list-group-item" href="#"><i class="fa fa-angle-double-right"></i> Appeal Shopper</a>                 
+				<a class="list-group-item" href="#"><i class="fa fa-angle-double-right"></i> Book Shopper</a>
+				<a class="list-group-item" href="#"><i class="fa fa-angle-double-right"></i> Tv Shopper</a>
+				<a class="list-group-item" href="#"><i class="fa fa-angle-double-right"></i> Home Shopper</a>
+				<a class="list-group-item" href="#"><i class="fa fa-angle-double-right"></i> Baby And Kids Shopper</a>
+		</div>	
+		
+			<div class="row list-group">
+				<div class="ad">
+				<img th:attr="src=@{/image/ad.jpg},title=#{ad},alt=#{ad}" class="img-responsive"/>
+					
+				</div>
+			</div>
+				
+				</div>
 			</div>
 		</div>
 	</div>

@@ -18,8 +18,6 @@ import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 import org.thymeleaf.templateresolver.TemplateResolver;
 
-import com.uimirror.core.Constants;
-
 @Configuration
 //@PropertySource("classpath:thymeleaf.properties")
 public class ThymeleafConfig {
@@ -31,7 +29,7 @@ public class ThymeleafConfig {
 		clTemplateResolver.setPrefix("pages/");
 		clTemplateResolver.setSuffix(".html");
 		clTemplateResolver.setTemplateMode("HTML5");
-		clTemplateResolver.setCharacterEncoding(Constants.UTF_8);
+		clTemplateResolver.setCharacterEncoding("utf-8");
 		//clTemplateResolver.setOrder(1);
 		clTemplateResolver.setCacheable(Boolean.TRUE);
 		clTemplateResolver.initialize();

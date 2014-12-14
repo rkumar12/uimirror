@@ -22,7 +22,7 @@
         </div>
         <form ng-submit="reset()" novalidate="true" name="resetPwdForm">
         	<div class="modal-body forGotPwdBodyWrap">
-				<hr class="colorgraph"/>
+				<div class="colorgraph"></div>
 				<div class="alert alert-danger" role="alert" ng-show="error.hasError">
   					<span class="fa fa-exclamation-circle" aria-hidden="true"></span>
   					<span class="sr-only" th:text="#{error}">Error:</span>
@@ -42,8 +42,9 @@
 				<hr class="colorgraph"/>
         	</div>
         	<div class="modal-footer forGotPwdFooterWrap">
-            	<button type="submit" class="btn uim-btn" tabindex="2" ng-disabled="resetPwdForm.$invalid" th:text="#{reset}">Reset</button>
-            	<button class="btn uim-btn pull-left" ng-click="cancel()" tabindex="3" th:text="#{cancel}">Cancel</button>
+        	<button class="btn uim-btn pull-left" ng-click="cancel()" tabindex="3" th:text="#{cancel}">Cancel</button>
+            	<button type="submit" class="btn uim-btn pull-left" tabindex="2" ng-disabled="resetPwdForm.$invalid" th:text="#{reset}">Reset</button>
+            	
         	</div>
         </form>
 	</div>
@@ -76,8 +77,9 @@
 	<div th:fragment="registerForm">
 		<div class="modal-header registerHeaderWrap">
 			<h3 th:text="#{register.form.title}">Sign Up.</h3>
+			<div class="colorgraph"></div>
         </div>
-		<hr class="colorgraph"/>
+		
 		<form role="form" class="registerForm" ng-submit="register()" novalidate="true" name="registerForm">
         <div class="modal-body registerBodyWrap">
             
@@ -86,8 +88,8 @@
   				<span class="sr-only" th:text="#{error}">Error:</span>
   				{{error.msg}}
 			</div>
-			<div class="row">
-				<div class="col-xs-12 col-sm-6 col-md-6">
+			<div class="row mt15">
+				<div class="col-xs-12 col-sm-12 col-md-12">
 					<div class="form-group">
                         <input type="text" name="first_name" 
                         		id="first_name" class="form-control input-lg" th:placeholder="#{first.name}" 
@@ -95,7 +97,9 @@
                         		ng-class="{error: registerForm.first_name.$dirty &amp;&amp; registerForm.first_name.$invalid}"/>
 					</div>
 				</div>
-				<div class="col-xs-12 col-sm-6 col-md-6">
+				</div>
+				<div class="row">	
+				<div class="col-xs-12 col-sm-12 col-md-12">
 					<div class="form-group">
 						<input type="text" name="last_name" 
 							id="last_name" class="form-control input-lg" 
@@ -103,6 +107,7 @@
 					</div>
 				</div>
 			</div>
+			
 			<div class="form-group">
 				<input type="email" name="email" id="email" 
 					class="form-control input-lg" th:placeholder="#{email}" 
@@ -110,40 +115,57 @@
 					ng-class="{error: registerForm.email.$dirty &amp;&amp; registerForm.email.$invalid}"/>
 			</div>
 			<div class="row">
-				<div class="col-xs-12 col-sm-6 col-md-6">
+			<!--  	<div class="col-xs-12 col-sm-12 col-md-12">
 				<label for="day" class="registerDOBLable" th:text="#{dob.lable}">Date of Birth: </label>
-				<div id="date2" class="datefield form-group">
-    				<input id="day" type="tel" class="form-control" 
+				</div>
+				-->
+			<div class="col-xs-12 col-sm-12 col-md-12">
+				<div class="form-group">
+				<div id="date2" class="datefield form-control">
+    				<input id="day" type="tel" class="" 
     					ng-maxlength="2" th:placeholder="#{dob.date}" tabindex="4" ng-model="user.dob.date" name="dob_date" 
     					ng-class="{error: registerForm.dob_date.$dirty &amp;&amp; registerForm.dob_date.$invalid}"/> /
-    				<input id="month" type="tel" class="form-control" 
+    				<input id="month" type="tel" class="" 
     					ng-maxlength="2" th:placeholder="#{dob.month}" tabindex="5" ng-model="user.dob.month" name="dob_month" 
     					ng-class="{error: registerForm.dob_month.$dirty &amp;&amp; registerForm.dob_month.$invalid}"/> /
-    				<input id="year" type="tel" class="form-control" ng-maxlength="4" 
+    				<input id="year" type="tel" class="" ng-maxlength="4" 
     					ng-minlength="4" th:placeholder="#{dob.year}" tabindex="6" ng-model="user.dob.year"  name="dob_year"
     					ng-class="{error: registerForm.dob_year.$dirty &amp;&amp; registerForm.dob_year.$invalid}"/>
 				</div>
 				</div>
-				<div class="col-xs-12 col-sm-6 col-md-6">
+				</div>
+				</div>
+				
+				<div class="row">
+			<!-- 	
+				<div class="col-xs-12 col-sm-12 col-md-12">
 				<label for="sex" class="registerGendLable" th:text="#{gender.lable}">Gender: </label>
-					<div class="uimSelect">
+				</div>
+				-->
+					<div class="col-xs-12 col-sm-12 col-md-12">
+					<div class="form-group">
+					<div class="uimSelect form-control">
   						<select ng-model="user.sex" name="sex" required="required">
     						<option th:value="F" th:text="#{gender.female}">Female</option>
     						<option th:value="M" th:text="#{gender.male}">Male</option>
     						<option th:value="T" th:text="#{gender.tg}">Trans Gender</option>
   						</select>
 					</div>
-				</div>
+					</div>
+					</div>
+						
 			</div>
 			<div class="row">
-				<div class="col-xs-12 col-sm-6 col-md-6">
+				<div class="col-xs-12 col-sm-12 col-md-12">
 					<div class="form-group">
 						<input type="password" name="password" id="password" 
 							class="form-control input-lg" th:placeholder="#{password}" tabindex="7" required="required"
 							ng-model="user.password" ng-class="{error: registerForm.password.$dirty &amp;&amp; registerForm.password.$invalid}"/>
 					</div>
 				</div>
-				<div class="col-xs-12 col-sm-6 col-md-6">
+				</div>
+				<div class="row">
+				<div class="col-xs-12 col-sm-12 col-md-12">
 					<div class="form-group">
 						<input type="password" name="password_confirmation" id="password_confirmation" 
 							class="form-control input-lg" th:placeholder="#{confirm.password}" 
@@ -162,8 +184,8 @@
 		<hr class="colorgraph"/>
         </div>
         <div class="modal-footer registerFooterWrap">
-            <button class="btn uim-btn" ng-disabled="registerForm.$invalid" type="submit" tabindex="10" th:text="#{register.signup.btn}">Sign Up</button>
             <button class="btn uim-btn pull-left" ng-click="cancel()" tabindex="11" th:text="#{cancel}">Cancel</button>
+            <button class="btn uim-btn pull-left" ng-disabled="registerForm.$invalid" type="submit" tabindex="10" th:text="#{register.signup.btn}">Sign Up</button>
         </div>
         </form>
 	</div>	
