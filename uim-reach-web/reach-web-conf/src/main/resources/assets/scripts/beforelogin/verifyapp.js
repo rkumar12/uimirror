@@ -12,7 +12,7 @@
 var UIMReachVerifyApp = angular.module('UIMReachVerifyApp', 
 		['UIMReachVerifyCtrls', 'ngMessages', 'ui.bootstrap', 'cgNotify','AutheticationService', 'sharedServices']);
 
-
+ 
 //When the app loads
 AutheticationService.run(function ($location, UIMAuthServ) {
   if (UIMAuthServ.isLoggedIn()) {
@@ -27,10 +27,6 @@ var sharedServicesModule = angular.module('sharedServices',['ipCookie']);
 
 sharedServicesModule.factory('UIMTempUser', function ($location,  ipCookie, $window) {
 	var user = {};
-	var redirectToHomePage = function() {
-		console.log('redirecting'+URL);
-		$window.location.href=URLS.base;
-	};
 	return {
 		getUser: function () {
 			if(!user.email)
@@ -48,7 +44,7 @@ sharedServicesModule.factory('UIMTempUser', function ($location,  ipCookie, $win
 			$window.location.href=URLS.base+'login';
 		},
 		redirectToHomePage: function(){
-			redirectToHomePage();
+			$window.location.href=URLS.base;
 		}
 	};
 });
