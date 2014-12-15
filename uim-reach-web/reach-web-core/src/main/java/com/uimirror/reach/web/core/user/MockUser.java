@@ -99,7 +99,15 @@ public class MockUser {
 			}
 		}
 		return Boolean.FALSE;
-			
+	}
+
+	public static String getProfileIdByEmail(String email){
+		for(String id : DATA.keySet()){
+			if(email.equals(DATA.get(id).getUserInfo().getEmail())){
+				return DATA.get(id).getUserInfo().getProfileId();
+			}
+		}
+		return null;
 	}
 
 }

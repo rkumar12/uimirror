@@ -36,7 +36,7 @@ public class HomeController {
 		if(DFLT_TOKEN_COOKIE.equals(token))
 			return "redirect: login";
 		//First resolve the profile id;
-		String profileId = resolveProfileId(token);
+		String profileId = token;
 		DefaultUser user = MockUser.getUser(profileId);
 		ReachHomeViewSettings setings = ReachHomeViewSettings.getSettings(profileId);
 		model.addAttribute(ReachHomeViewSettings.NAME , setings);
@@ -44,37 +44,4 @@ public class HomeController {
 		return "app";
 	}
 	
-	/**
-	 * Resolves the profile id from the given token.
-	 * @param token cookie which was issued to the user.
-	 * @return profile id of owner of the token
-	 */
-	private String resolveProfileId(String token){
-		//TODO Dummy Implementation delete this latter
-		String profileId;
-		switch(token){
-		//Basic User /new user
-		case "1":
-			profileId = "1";
-			break;
-		case "2":
-			profileId = "2";
-			break;
-		case "3":
-			profileId = "3";
-			break;
-		case "4":
-			profileId = "4";
-			break;
-		case "5":
-			profileId = "5";
-			break;
-		case "6":
-			profileId = "6";
-			break;
-		default:
-			profileId = "0";
-		}
-		return profileId;
-	}
 }

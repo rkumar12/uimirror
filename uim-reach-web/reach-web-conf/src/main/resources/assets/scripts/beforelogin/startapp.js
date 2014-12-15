@@ -29,6 +29,7 @@ AutheticationService.controller('LoginCtrl', function ($scope, UIMAuthServ, $htt
 				"Password": $scope.loginForm.Password
 		};
 		UIMAuthServ.authenticate(credentials).then(function (rs) {
+			console.log(rs);
 			UIMAuthServ.writeAuthToCookie(rs.token);
 			UIMAuthServ.redirectToAttemptedUrl();
 		}, function (error) {
@@ -41,9 +42,9 @@ AutheticationService.controller('LoginCtrl', function ($scope, UIMAuthServ, $htt
 
 var UIMRegisterServModule = angular.module('UIMRegisterService',['ipCookie']);
 URLS.verifyPage = URLS.base+'verify';
-UTLS.service='http://127.0.0.1:8080/uim/reach';
-UTLS.loginservice='http://127.0.0.1:8080/uim/reach/login';
-UTLS.logincookieservice='http://127.0.0.1:8080/uim/reach/login/cookie';
+URLS.service='http://127.0.0.1:8080/uim/reach';
+URLS.loginservice='http://127.0.0.1:8080/uim/reach/login1';
+URLS.logincookieservice='http://127.0.0.1:8080/uim/reach/login/cookie';
 
 UIMRegisterServModule.factory('UIMRegister', function ($location,  ipCookie, UIMRegisterApi, $q, $window) {
 	var validation_err = {'hasError':true, 'msg':null};;
@@ -108,7 +109,7 @@ UIMRegisterServModule.factory('UIMRegisterApi', function ($http, $q) {
 		  register: function (user) {
 			  return $http({
 	                method: "post",
-	                url: UTLS.service+"/user?tz="+user.tz,
+	                url: URLS.service+"/user?tz="+user.tz,
 	                //transformRequest: transformRequestAsFormPost,
 	                data: user,
 	                headers: {'Content-Type': 'application/x-www-form-urlencoded'},

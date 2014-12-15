@@ -68,7 +68,7 @@ AutheticationService.factory('UIMAuthApi', function ($http, $q) {
 			if(token){
 				$http({
 	                method: "post",
-	                url: UTLS.logincookieservice,
+	                url: URLS.logincookieservice,
 	                //transformRequest: transformRequestAsFormPost,
 	                data: {
 	                	token: token
@@ -82,7 +82,11 @@ AutheticationService.factory('UIMAuthApi', function ($http, $q) {
 	                }
 	            }).then(function(response) {
 	                if (typeof response.data === 'object') {
-	                	return true;
+	                	var rs = response.data;
+	                	if(rs.token)
+	                		return true;
+	                	else
+	                		return false;
 	                } else {
 	                    // invalid response
 	                	return false;
@@ -102,7 +106,7 @@ AutheticationService.factory('UIMAuthApi', function ($http, $q) {
 			}
 			return $http({
                 method: "post",
-                url: UTLS.loginservice,
+                url: URLS.loginservice,
                 //transformRequest: transformRequestAsFormPost,
                 data: {
                 	uid: cred.UserName,
@@ -117,7 +121,12 @@ AutheticationService.factory('UIMAuthApi', function ($http, $q) {
                 }
             }).then(function(response) {
                 if (typeof response.data === 'object') {
-                	return response.data;
+                	var rs = response.data;
+                	if(rs.token)
+                		return rs;
+                	else{
+                		return $q.reject({"_msg":rs.error});
+                	}
                 } else {
                     // invalid response
                     return $q.reject(response.data);
