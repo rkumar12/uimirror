@@ -25,6 +25,7 @@ import com.uimirror.core.user.DefaultUser;
 public class MockUser {
 
 	private static final Map<String, DefaultUser> DATA;
+	private static int nextProfileId;
 	private static BasicInfo info;
 	private static BasicInfo info1;
 	private static BasicInfo info2;
@@ -45,6 +46,7 @@ public class MockUser {
 		DATA.put(u3.getProfileId(), u3);
 		DATA.put(u4.getProfileId(), u4);
 		DATA.put(u5.getProfileId(), u5);
+		nextProfileId=6;
 	}
 	
 	
@@ -78,6 +80,26 @@ public class MockUser {
 	
 	public static DefaultUser getUser(String profileId){
 		return DATA.get(profileId);
+	}
+	
+	public static void createUser(DefaultUser user){
+		DATA.put(Integer.toString(nextProfileId), user);
+		nextProfileId++;
+	}
+	
+	public static String getNextId(){
+		return Integer.toString(nextProfileId);
+	}
+	
+	
+	public static boolean isEmailExists(String email){
+		for(String id : DATA.keySet()){
+			if(email.equals(DATA.get(id).getUserInfo().getEmail())){
+				return Boolean.TRUE;
+			}
+		}
+		return Boolean.FALSE;
+			
 	}
 
 }

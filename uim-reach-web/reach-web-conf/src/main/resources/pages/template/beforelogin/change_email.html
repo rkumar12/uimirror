@@ -20,7 +20,7 @@
 		<div class="modal-header forGotPwdHeaderWrap">
 			<h3 th:utext="#{account.change.email.title}"></h3>
         </div>
-        <form ng-submit="changeEmail()" novalidate="true" name="changeEmailForm">
+        <form novalidate="true" name="changeEmailForm">
         	<div class="modal-body forGotPwdBodyWrap">
 				<hr class="colorgraph"/>
 				<div class="alert alert-danger" role="alert" ng-show="error.hasError">
@@ -58,7 +58,7 @@
         	</div>
         	<div class="modal-footer forGotPwdFooterWrap">
         	<button class="btn uim-btn pull-left" ng-click="cancel()" tabindex="3" th:text="#{cancel}">Cancel</button>
-            	<button type="submit" class="btn uim-btn pull-left" ng-click="changeEmail()" tabindex="2"  
+            <button type="submit" class="btn uim-btn pull-left" ng-click="changeEmail()" tabindex="2"  
             		ng-disabled="changeEmailForm.$invalid" th:text="#{account.change.email.btn}">Change</button>
             	
         	</div>

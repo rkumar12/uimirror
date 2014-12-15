@@ -41,6 +41,10 @@ AutheticationService.controller('LoginCtrl', function ($scope, UIMAuthServ, $htt
 
 var UIMRegisterServModule = angular.module('UIMRegisterService',['ipCookie']);
 URLS.verifyPage = URLS.base+'verify';
+UTLS.service='http://127.0.0.1:8080/uim/reach';
+UTLS.loginservice='http://127.0.0.1:8080/uim/reach/login';
+UTLS.logincookieservice='http://127.0.0.1:8080/uim/reach/login/cookie';
+
 UIMRegisterServModule.factory('UIMRegister', function ($location,  ipCookie, UIMRegisterApi, $q, $window) {
 	var validation_err = {'hasError':true, 'msg':null};;
 	var isValid =  function(user) {
@@ -59,10 +63,16 @@ UIMRegisterServModule.factory('UIMRegister', function ($location,  ipCookie, UIM
 	};
 	var formatData = function(user){
 		var formatedUser = {};
-		formatedUser.firstName = user.firstName;
-		if(user.lastName)
-			formatedUser.lastName = user.lastName;
-		//TODO similarly other fields
+		formatedUser.first_name = user.first_name;
+		if(user.last_name)
+			formatedUser.last_name = user.last_name;
+		formatedUser.email = user.email;
+		formatedUser.dob = user.dob.year+'-'+user.dob.month+'-'+user.dob.date;
+		formatedUser.password = user.password;
+		formatedUser.gender = user.sex;
+		var tz = jstz.determine();
+		if(tz)
+			formatedUser.tz=tz.name();
 		return formatedUser;
 	};
 	var writeToCookie = function(user, token){
@@ -88,30 +98,42 @@ UIMRegisterServModule.factory('UIMRegister', function ($location,  ipCookie, UIM
 			}
 		},
 		redirectToVerifyPage: function() {
-			console.log('redirecting'+URLS.base);
 			$window.location.href=URLS.verifyPage;
 		}
 	};
 });
 
-UIMRegisterServModule.factory('UIMRegisterApi', function ($http) {
+UIMRegisterServModule.factory('UIMRegisterApi', function ($http, $q) {
 	  return {
 		  register: function (user) {
 			  return $http({
-	                method: "get",
-	                url: "http://uimirror.com",
+	                method: "post",
+	                url: UTLS.service+"/user?tz="+user.tz,
 	                //transformRequest: transformRequestAsFormPost,
-	                data: user
+	                data: user,
+	                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+	                transformRequest: function(obj) {
+	                    var str = [];
+	                    for(var p in obj)
+	                    str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+	                    return str.join("&");
+	                }
 	            }).then(function(response) {
 	                if (typeof response.data === 'object') {
-	                    return response.data;
+	                	var rs = response.data;
+	                    if(rs.token){
+	                    	console.log(rs.token);
+	                    	return rs;
+	                    }else if(rs.error){
+	                    	return $q.reject(rs.error);
+	                    }
+	                    //TODO take care about error
 	                } else {
 	                    // invalid response
-	                    return $q.reject(response.data);
+	                    return $q.reject('OOps Something Went wrong!!!');
 	                }
 	            }, function(response) {
-	            	return {token:'1'};
-	                //TODO uncomment latter
+	            	return response.token;
 	                //return $q.reject(response.data);
 	        	});
 		  }

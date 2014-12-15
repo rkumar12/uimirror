@@ -19,8 +19,8 @@ UIMReachBeforeLoginCtrls.controller('SignUpModalCtrl', function ($scope, $modal,
 			'month' : null,
 			'year'  : null
 	};
-	$scope.user = {'firstName': null,
-			'lastName'        : null,
+	$scope.user = {'first_name': null,
+			'last_name'        : null,
 			'email'           : null,
 			'dob'             : null,
 			'sex'             : 'F',
@@ -28,7 +28,7 @@ UIMReachBeforeLoginCtrls.controller('SignUpModalCtrl', function ($scope, $modal,
 			'confirmpassword' : null,
 			'isAgreed'        : true
 	};
-	$scope.error = {'hasError':null,
+	$scope.error = {'hasError':false,
 			'msg':null};
 
 	$scope.open = function (size) {
@@ -63,10 +63,9 @@ UIMReachBeforeLoginCtrls.controller('SignUpModalInstanceCtrl', function ($scope,
 	$scope.register = function () {
 		var res = UIMRegister.register($scope.user).then(function (rs) {
 			console.log(res);
-			console.log('testing');
 			$modalInstance.close('sucess');
 		}, function (error) {
-			$scope.error = res;
+			$scope.error = error;
 		});
 	};
 

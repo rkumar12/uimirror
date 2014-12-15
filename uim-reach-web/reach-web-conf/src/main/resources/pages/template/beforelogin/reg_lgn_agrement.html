@@ -20,7 +20,7 @@
 		<div class="modal-header forGotPwdHeaderWrap">
 			<h3 th:utext="#{reset.password}"></h3>
         </div>
-        <form ng-submit="reset()" novalidate="true" name="resetPwdForm">
+        <form novalidate="true" name="resetPwdForm">
         	<div class="modal-body forGotPwdBodyWrap">
 				<div class="colorgraph"></div>
 				<div class="alert alert-danger" role="alert" ng-show="error.hasError">
@@ -43,7 +43,7 @@
         	</div>
         	<div class="modal-footer forGotPwdFooterWrap">
         	<button class="btn uim-btn pull-left" ng-click="cancel()" tabindex="3" th:text="#{cancel}">Cancel</button>
-            	<button type="submit" class="btn uim-btn pull-left" tabindex="2" ng-disabled="resetPwdForm.$invalid" th:text="#{reset}">Reset</button>
+            <button type="submit" ng-click="reset()" class="btn uim-btn pull-left" tabindex="2" ng-disabled="resetPwdForm.$invalid" th:text="#{reset}">Reset</button>
             	
         	</div>
         </form>
@@ -56,7 +56,7 @@
 			
 			<h4 class="modal-title" id="myModalLabel" th:text="#{terms.condition}">Terms &amp; Conditions</h4>
 		</div>
-		<form ng-submit="agreed()" name="agreementForm">
+		<form name="agreementForm">
 			<div class="modal-body">
 				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique, itaque, modi, aliquam nostrum at sapiente consequuntur natus odio reiciendis perferendis rem nisi tempore possimus ipsa porro delectus quidem dolorem ad.</p>
 				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique, itaque, modi, aliquam nostrum at sapiente consequuntur natus odio reiciendis perferendis rem nisi tempore possimus ipsa porro delectus quidem dolorem ad.</p>
@@ -67,7 +67,7 @@
 				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique, itaque, modi, aliquam nostrum at sapiente consequuntur natus odio reiciendis perferendis rem nisi tempore possimus ipsa porro delectus quidem dolorem ad.</p>
 			</div>
 			<div class="modal-footer">
-				<button type="submit" class="btn uim-btn" data-dismiss="modal" th:text="#{i.agree}">I Agree</button>
+				<button type="submit" class="btn uim-btn" data-dismiss="modal" ng-click="agreed()" th:text="#{i.agree}">I Agree</button>
 				<button type="button" class="btn uim-btn pull-left" ng-click="disagree()" th:text="#{i.disagree}"></button>
 			</div>
 		</form>
@@ -80,7 +80,7 @@
 			<div class="colorgraph"></div>
         </div>
 		
-		<form role="form" class="registerForm" ng-submit="register()" novalidate="true" name="registerForm">
+		<form role="form" class="registerForm" novalidate="true" name="registerForm">
         <div class="modal-body registerBodyWrap">
             
             <div class="alert alert-danger" role="alert" ng-show="error.hasError">
@@ -93,7 +93,7 @@
 					<div class="form-group">
                         <input type="text" name="first_name" 
                         		id="first_name" class="form-control input-lg" th:placeholder="#{first.name}" 
-                        		tabindex="1" required="required" ng-model="user.firstName"
+                        		tabindex="1" required="required" ng-model="user.first_name"
                         		ng-class="{error: registerForm.first_name.$dirty &amp;&amp; registerForm.first_name.$invalid}"/>
 					</div>
 				</div>
@@ -103,7 +103,7 @@
 					<div class="form-group">
 						<input type="text" name="last_name" 
 							id="last_name" class="form-control input-lg" 
-							th:placeholder="#{last.name}" tabindex="2" ng-model="user.lastName"/>
+							th:placeholder="#{last.name}" tabindex="2" ng-model="user.last_name"/>
 					</div>
 				</div>
 			</div>
@@ -185,7 +185,7 @@
         </div>
         <div class="modal-footer registerFooterWrap">
             <button class="btn uim-btn pull-left" ng-click="cancel()" tabindex="11" th:text="#{cancel}">Cancel</button>
-            <button class="btn uim-btn pull-left" ng-disabled="registerForm.$invalid" type="submit" tabindex="10" th:text="#{register.signup.btn}">Sign Up</button>
+            <button class="btn uim-btn pull-left" ng-click="register()" ng-disabled="registerForm.$invalid" type="submit" tabindex="10" th:text="#{register.signup.btn}">Sign Up</button>
         </div>
         </form>
 	</div>	

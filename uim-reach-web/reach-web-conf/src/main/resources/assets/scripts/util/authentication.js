@@ -65,8 +65,35 @@ AutheticationService.factory('UIMAuthApi', function ($http, $q) {
 	};
 	return {
 		authenticateFromCookie: function (token) {
-			//Write to cookie and return true, thats for latter and process registration
-			return true;
+			if(token){
+				$http({
+	                method: "post",
+	                url: UTLS.logincookieservice,
+	                //transformRequest: transformRequestAsFormPost,
+	                data: {
+	                	token: token
+	                },
+	                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+	                transformRequest: function(obj) {
+	                    var str = [];
+	                    for(var p in obj)
+	                    	str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+	                    return str.join("&");
+	                }
+	            }).then(function(response) {
+	                if (typeof response.data === 'object') {
+	                	return true;
+	                } else {
+	                    // invalid response
+	                	return false;
+	                }
+
+	            }, function(response) {
+	                return false;
+	        	});
+			}else{
+				return false;
+			}
 		},
 		authenticate: function (cred) {
 			var validation_msg = isValidCred(cred);
@@ -74,29 +101,30 @@ AutheticationService.factory('UIMAuthApi', function ($http, $q) {
 				return $q.reject(validation_msg);
 			}
 			return $http({
-                method: "get",
-                url: "http://uimirror.com",
+                method: "post",
+                url: UTLS.loginservice,
                 //transformRequest: transformRequestAsFormPost,
                 data: {
-                    username: cred.UserName,
-                    password: cred.Password
+                	uid: cred.UserName,
+                	pwd: cred.Password
+                },
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                transformRequest: function(obj) {
+                    var str = [];
+                    for(var p in obj)
+                    	str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                    return str.join("&");
                 }
             }).then(function(response) {
                 if (typeof response.data === 'object') {
-                    return response.data;
+                	return response.data;
                 } else {
                     // invalid response
                     return $q.reject(response.data);
                 }
 
             }, function(response) {
-            	if(cred.UserName =='12'){
-            		return {token:'1'};
-            	}else{
-            		return {token:'2'};
-            	}
-                //TODO uncomment latter
-                //return $q.reject(response.data);
+                return $q.reject(response.data);
         	});
 		},
 		refreshToken: function (token){
