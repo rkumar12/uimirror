@@ -46,6 +46,9 @@ sharedServicesModule.factory('UIMTempUser', function ($location,  ipCookie, $win
 		},
 		redirectToLogin: function(){
 			$window.location.href=URLS.base+'login';
+		},
+		redirectToHomePage: function(){
+			redirectToHomePage();
 		}
 	};
 });
@@ -104,6 +107,7 @@ sharedServicesModule.factory('UIMVerifyApi', function ($http, ipCookie) {
 		},
 		deleteTempCookie: function(){
 			ipCookie.remove('_uim_tmp_tkn');
+			ipCookie.remove('user');
 		}
 	};
 });
