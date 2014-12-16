@@ -1,6 +1,0 @@
-rootProject.name = 'uim-reach-web'
-include ':reach-web-core'
-include ':reach-web-conf'
-
-//project(':reach-web-conf').projectDir = "$rootDir/reach-web-conf" as File
-//project(':reach-web-core').projectDir = "$rootDir/reach-web-core" as File

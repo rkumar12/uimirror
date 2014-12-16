@@ -12,7 +12,7 @@ dependencies {
 	compile project(':location-google')
 	compile project(':location-store')
 	//ws-filters
-	compile group: 'com.uimirror.ws.api', name: 'ws-filters', version: wsFiltersVersion
+	compile group: 'com.uimirror.api', name: 'ws-filters', version: wsFiltersVersion
 	//ws-resource-secuirity
 	compile group: 'com.uimirror.ws.api', name: 'ws-resource-security', version: wsSecurityVersion
 	
