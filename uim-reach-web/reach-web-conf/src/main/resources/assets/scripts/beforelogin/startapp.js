@@ -11,7 +11,7 @@
 
 var UIMReachBeforeLoginApp = angular.module('UIMReachBeforeLoginApp', 
 		['UIMReachBeforeLoginCtrls', 'ngMessages', 'ui.bootstrap', 'cgNotify','UIMRegisterService', 'AutheticationService', 'UIMUtil']);
-
+ 
 
 //When the app loads
 AutheticationService.run(function ($location, UIMAuthServ) {
