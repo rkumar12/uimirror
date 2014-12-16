@@ -1,7 +1,0 @@
-version = 1.0
-description = 'RTP Shop'
-dependencies {
-	compile project(':rtp-core')
-}
-
-defaultTasks 'clean', 'build'

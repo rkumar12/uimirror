@@ -1,7 +1,0 @@
-apply plugin: "java"
-description = 'RTP Campaign'
-version = 1.0
-dependencies {
-	compile project(':rtp-shop')
-}
-defaultTasks 'clean', 'build'

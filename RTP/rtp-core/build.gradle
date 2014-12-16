@@ -1,8 +1,0 @@
-description = 'RTP Core'
-version = 1.0
-dependencies {
-	//UIM-Core
-	compile group: 'com.uimirror.core', name: 'uim-core', version: uimCoreVersion
-}
-
-defaultTasks 'clean', 'build'
