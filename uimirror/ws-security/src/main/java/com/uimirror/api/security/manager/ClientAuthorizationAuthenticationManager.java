@@ -42,7 +42,7 @@ import com.uimirror.sso.token.TokenGenerator;
 /**
  * Implementation of {@link AuthenticationManager#authenticate(Authentication)}
  * to validate the user provided details are valid or not.
- * if valid details, it will return the Authenticated Details {@linkplain AuthenticatedDetails}
+ * if valid details, it will return the Authenticated Details {@linkplain ClientAuthorizationAuthentication}
  * Steps are as below
  * <ol>
  * <li>Validate the previous token</li>

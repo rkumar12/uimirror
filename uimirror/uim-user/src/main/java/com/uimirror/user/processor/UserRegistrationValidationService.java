@@ -28,7 +28,6 @@ import com.uimirror.user.store.UserBasicInfoStore;
  * Processor for the user account validation, it will check if the user provided email has been
  * already exists with us, if exists, then it tries to find if that user has recently registered but not yet verified
  * his account, so tries to send him back to the verify page.
- * </ol>
  * 
  * @author Jay
  */

@@ -23,10 +23,7 @@ import com.uimirror.core.service.BeanValidatorService;
 /**
  * Converts the {@link QueryParam} provided in the POST request to get
  * a access key.
- * POST https://api.oauth2server.com/token?grant_type=authorization_code&code=AUTH_CODE_HERE&
- * redirect_uri=REDIRECT_URI&
- * client_id=CLIENT_ID&
- * client_secret=CLIENT_SECRET
+ * POST https://api.oauth2server.com/token?grant_type=authorization_codeAMP;code=AUTH_CODE_HEREAMP;redirect_uri=REDIRECT_URIAMP;client_id=CLIENT_IDAMP;client_secret=CLIENT_SECRET
  * @author Jay
  */
 public class ClientSecretKeyForm extends ClientMetaForm implements BeanValidatorService{

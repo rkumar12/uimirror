@@ -23,42 +23,42 @@ public interface UserAuthorizedClientStore {
 
 	/**
 	 * Find the client that has been authorized by the user
-	 * @param profileId
-	 * @param clientId
-	 * @return
+	 * @param profileId as first parameter
+	 * @param clientId as second parameter
+	 * @return a authorized client 
 	 */
 	UserAuthorizedClient findAuthrorizedClient(String profileId, String clientId);
 	
 	/**
 	 * Find the clients that has been authorized by the user with given scope
 	 * 
-	 * @param profileId
-	 * @param clientId
-	 * @param scope
-	 * @return
+	 * @param profileId as first parameter
+	 * @param clientId as second parameter
+	 * @param scope as third parameter
+	 * @return a authorized client 
 	 */
 	UserAuthorizedClient findAuthrorizedClient(String profileId, String clientId, String scope);
 	
 	/**
 	 * Get all the authorized clients by the user.
 	 * 
-	 * @param profileId
-	 * @return
+	 * @param profileId passed as parameter
+	 * @return list of authorised client
 	 */
 	List<UserAuthorizedClient> getAllAuthroziedClient(String profileId);
 	
 	/**
 	 * This will pull the client from the authorization list
-	 * @param profileId
-	 * @param clientId
-	 * @return 
+	 * @param profileId is a parameter
+	 * @param clientId is second parameter
+	 * @return a integer value
 	 */
 	int unAuthorizeAClient(String profileId, String clientId);
 	
 	/**
 	 * This will authorize the client specified, will try to add to the list
-	 * @param userAuthorizedClient
-	 * @return
+	 * @param userAuthorizedClient is parameter
+	 * @return a integer value 
 	 */
 	int authorizeClient(UserAuthorizedClient userAuthorizedClient);
 

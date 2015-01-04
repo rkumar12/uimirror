@@ -168,8 +168,8 @@ public final class Client extends AbstractBeanBasedDocument<Client> implements B
 	
 	/**
 	 * Create a map that needs to be persisted
-	 * @return
-	 * @throws IllegalStateException 
+	 * @return a map of state of object
+	 * @throws IllegalStateException when object state is invalid
 	 */
 	@Override
 	public Map<String, Object> writeToMap() throws IllegalStateException{
@@ -203,7 +203,7 @@ public final class Client extends AbstractBeanBasedDocument<Client> implements B
 	
 	/**
 	 * Serialize the current state that needs to be persisted to the system.
-	 * @return
+	 * @return a map of state
 	 */
 	public Map<String, Object> serailize(){
 		Map<String, Object> state = new WeakHashMap<String, Object>(16);

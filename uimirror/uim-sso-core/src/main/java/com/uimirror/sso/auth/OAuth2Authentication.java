@@ -24,7 +24,7 @@ import com.uimirror.sso.AbstractAuthentication;
  * <p>
  * Implementations which use this class should be immutable.
  * Should accomodate the following details
- * accessToken=code&
+ * accessToken=codeAMP;
  * tokenEncryptionStartegy=parapharse
  * 
  * @author Jay
@@ -74,6 +74,7 @@ public class OAuth2Authentication extends AbstractAuthentication{
 	
 	/**
 	 * Any subclass who wants to update the credentials can populate here
+	 * @param  credentials as parameter
 	 */
 	protected void updateCredentials(Map<String, String> credentials){
 		this.credentials = credentials;
@@ -105,7 +106,7 @@ public class OAuth2Authentication extends AbstractAuthentication{
 	
 	/**
 	 * Compute the owner for this Authentication
-	 * @return
+	 * @return owner as string
 	 */
 	@SuppressWarnings("unchecked")
 	protected String computePrincipalOwner(){

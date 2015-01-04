@@ -20,9 +20,9 @@ import com.uimirror.sso.auth.OAuth2Authentication;
  * <p>
  * Implementations which use this class should be immutable.
  * Should accomodate the following details
- * accessToken=code&
+ * accessToken=codeAMP;
  * tokenEncryptionStartegy=parapharse
- * &password=password
+ * AMP;password=password
  * @author Jay
  */
 public class ScreenLockAuthentication extends OAuth2Authentication{
@@ -30,18 +30,18 @@ public class ScreenLockAuthentication extends OAuth2Authentication{
 	private static final long serialVersionUID = 3795112886906141341L;
 
 	/**
-	 * @param token
-	 * @param password
+	 * @param token as parameter
+	 * @param password as parameter
 	 */
 	public ScreenLockAuthentication(String token, String password) {
 		super(token);
 		init(password);
 	}
 	/**
-	 * @param token
-	 * @param password
-	 * @param ip
-	 * @param userAgent
+	 * @param token as parameter
+	 * @param password as parameter
+	 * @param ip as parameter
+	 * @param userAgent as parameter
 	 */
 	public ScreenLockAuthentication(String token, String password, String ip, String userAgent) {
 		super(token, ip, userAgent);
@@ -49,30 +49,30 @@ public class ScreenLockAuthentication extends OAuth2Authentication{
 	}
 
 	/**
-	 * @param tokenPrincipal
-	 * @param details
+	 * @param tokenPrincipal as parameter
+	 * @param details as parameter
 	 */
 	public ScreenLockAuthentication(Object tokenPrincipal, Map<String, Object> details) {
 		super(tokenPrincipal, details);
 	}
 	
 	/**
-	 * @param tokenPrincipal
+	 * @param tokenPrincipal as parameter
 	 */
 	public ScreenLockAuthentication(Object tokenPrincipal) {
 		super(tokenPrincipal);
 	}
 	
 	/**
-	 * @param password
+	 * @param password as parameter
 	 */
 	private void init(String password){
 		addCrdentials(password);
 	}
 	
 	/**
-	 * @param password
-	 */
+	 * @param password as parameter
+	 */ 
 	@SuppressWarnings("unchecked")
 	private void addCrdentials(String password){
 		Map<String, String> credentials = (Map<String, String>)getCredentials();

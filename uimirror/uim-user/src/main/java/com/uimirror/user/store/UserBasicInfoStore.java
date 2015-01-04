@@ -21,51 +21,51 @@ public interface UserBasicInfoStore {
 
 	/**
 	 * Retrieves the document based on the profile id
-	 * @param profileId
-	 * @return
+	 * @param profileId as parameter
+	 * @return basicInfo object
 	 */
 	BasicInfo getUserInfoByProfileId(String profileId);
 	
 	/**
 	 * Retrieves the document based on the email
-	 * @param profileId
-	 * @return
+	 * @param email as parameter
+	 * @return basicInfo object
 	 */
 	BasicInfo getUserInfoByEmail(String email);
 
 	/**
 	 * Delete all the logs present for the user in his log
-	 * @param profileId
+	 * @param profileId as parameter
 	 */
 	void deleteByprofileId(String profileId);
 	
 	/**
 	 * Activates the Basic Info by the Profile ID
-	 * @param profileId
+	 * @param profileId as parameter
 	 */
 	void activateByprofileId(String profileId);
 	
 	/**
 	 * Deactivate the Basic Info by the Profile ID
-	 * @param profileId
+	 * @param profileId as parameter
 	 */
 	void blockByprofileId(String profileId);
 	
 	/**
 	 * Enables the Basic Info by the Profile ID
-	 * @param profileId
+	 * @param profileId as parameter
 	 */
 	void enableByprofileId(String profileId);
 	
 	/**
 	 * Enables the Basic Info by the Profile ID
-	 * @param profileId
+	 * @param profileId as parameter
 	 */
 	void disableByprofileId(String profileId);
 	
 	/**
-	 * @param user
-	 * @return
+	 * @param user as parameter
+	 * @return basicInfo object
 	 */
 	BasicInfo store(BasicInfo user);
 }

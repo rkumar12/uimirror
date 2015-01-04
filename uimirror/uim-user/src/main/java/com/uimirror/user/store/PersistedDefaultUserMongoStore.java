@@ -40,7 +40,8 @@ public class PersistedDefaultUserMongoStore extends AbstractMongoStore<DefaultUs
 	
 	/**
 	 * Assign/ Create collection from the given {@link DBCollection}
-	 * @param collection
+	 * @param collection as parameter
+	 * @param seqCollection as parameter
 	 */
 	public PersistedDefaultUserMongoStore(DBCollection collection, DBCollection seqCollection){
 		super(collection, seqCollection, USER_BASIC_INFO_SEQ, DefaultUser.class);
@@ -71,9 +72,9 @@ public class PersistedDefaultUserMongoStore extends AbstractMongoStore<DefaultUs
 	}
 	
 	/**
-	 * Get A Query for the email query.
-	 * @param email
-	 * @return
+	 * Get A Query for the email  query.
+	 * @param email as parameter
+	 * @return a map
 	 */
 	private Map<String, Object> getEmailQuery(String email){
 		Map<String, Object> map = new WeakHashMap<String, Object>(3);

@@ -23,9 +23,9 @@ import com.uimirror.sso.AbstractAuthentication;
  * <p>
  * Implementations which use this class should be immutable.
  * Should accomodate the following details
- * code=AUTH_CODE_HERE&
- * redirect_uri=REDIRECT_URI&
- * client_id=CLIENT_ID&
+ * code=AUTH_CODE_HEREAMP;
+ * redirect_uri=REDIRECT_URIAMP;
+ * client_id=CLIENT_IDAMP;
  * client_secret=CLIENT_SECRET
  * 
  * @author Jay

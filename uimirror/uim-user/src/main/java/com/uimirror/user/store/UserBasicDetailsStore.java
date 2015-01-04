@@ -22,19 +22,20 @@ public interface UserBasicDetailsStore {
 
 	/**
 	 * Retrieves the document based on the profile id
-	 * @param profileId
-	 * @return
+	 * @param profileId as parameter
+	 * @return basicDetails object
 	 */
 	BasicDetails getUserInfoByProfileId(String profileId);
 
 	/**
 	 * Delete details by profile id
-	 * @param profileId
+	 * @param profileId as parameter
 	 */
 	void deleteByprofileId(String profileId);
 	
 	/**
-	 * @param details
+	 * @param details as parameter
+	 * @return basic Details object
 	 */
 	BasicDetails store(BasicDetails details);
 	

@@ -36,7 +36,7 @@ public class ClientAlreadyExistException extends ExceptionInJson{
 	
 	/**
 	 * <p>Construct the response with user provided message</p>
-	 * @param message
+	 * @param message Detailed Exception Message
 	 */
 	public ClientAlreadyExistException(String message) {
 		super(CODE, message);
@@ -44,7 +44,7 @@ public class ClientAlreadyExistException extends ExceptionInJson{
 	
 	/**
 	 * <p>Construct the response with user provided message</p>
-	 * @param message
+	 * @param message exception Message
 	 */
 	public ClientAlreadyExistException(Map<String, Object> message) {
 		super(CODE, message);

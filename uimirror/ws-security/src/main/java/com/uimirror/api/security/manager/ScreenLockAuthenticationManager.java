@@ -42,7 +42,7 @@ import com.uimirror.user.store.UserCredentialsStore;
 /**
  * Implementation of {@link AuthenticationManager#authenticate(Authentication)}
  * to validate the user provided details are valid or not.
- * if valid details, it will return the Authenticated Details {@linkplain AuthenticatedDetails}
+ * if valid details, it will return the Authenticated Details {@linkplain ScreenLockAuthentication}
  * 
  * @author Jay
  */

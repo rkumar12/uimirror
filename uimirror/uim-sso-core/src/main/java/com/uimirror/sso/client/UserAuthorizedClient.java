@@ -52,9 +52,8 @@ public class UserAuthorizedClient extends AbstractBeanBasedDocument<UserAuthoriz
 	}
 	
 	/**
-	 * @param id
-	 * @param clients
-	 * @param on
+	 * @param id as parameter 
+	 * @param clients  as parameter 
 	 */
 	public UserAuthorizedClient(String id, List<ClientAuthorizedScope> clients){
 		this.setId(id);
@@ -100,7 +99,7 @@ public class UserAuthorizedClient extends AbstractBeanBasedDocument<UserAuthoriz
 
 	/**
 	 * Gets the List of client that has 
-	 * @return
+	 * @return list of  ClientAuthorizedScope object
 	 */
 	public List<ClientAuthorizedScope> getClients() {
 		return clients == null ? new ArrayList<ClientAuthorizedScope>(5) : clients;
@@ -112,7 +111,7 @@ public class UserAuthorizedClient extends AbstractBeanBasedDocument<UserAuthoriz
 	
 	/**
 	 * gets the matching client ID
-	 * @return
+	 * @return String value 
 	 */
 	public String getMatchingClientId(){
 		if(isMatched())
@@ -123,7 +122,7 @@ public class UserAuthorizedClient extends AbstractBeanBasedDocument<UserAuthoriz
 	
 	/**
 	 * Gets the matching clients scope
-	 * @return
+	 * @return Scope object
 	 */
 	public Scope getMatchingClientScope(){
 		return getMathcingClient() == null ? null : getMathcingClient().getScope();
@@ -131,7 +130,7 @@ public class UserAuthorizedClient extends AbstractBeanBasedDocument<UserAuthoriz
 	
 	/**
 	 * Returns the matching client by given query
-	 * @return
+	 * @return ClientAuthorizedScope object
 	 */
 	public ClientAuthorizedScope getMathcingClient(){
 		if(isMatched())
@@ -142,7 +141,7 @@ public class UserAuthorizedClient extends AbstractBeanBasedDocument<UserAuthoriz
 	
 	/**
 	 * Checks if the returned client has any matching clients
-	 * @return
+	 * @return true or false
 	 */
 	private boolean isMatched(){
 		return !CollectionUtils.isEmpty(getClients()) && getClients().size() == 1;
@@ -162,7 +161,7 @@ public class UserAuthorizedClient extends AbstractBeanBasedDocument<UserAuthoriz
 	
 	/**
 	 * Creates the {@link Map} that will be serialized over the network
-	 * @return
+	 * @return map of objects
 	 */
 	private Map<String, Object> serailize() {
 		Map<String, Object> map = new WeakHashMap<String, Object>(10);
