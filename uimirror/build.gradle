@@ -12,10 +12,10 @@ subprojects  {
 	ext {
 		slf4jVersion = "1.7.7"
 		qosLogBackVersion = "1.1.2"
-		jerseyVersion = "2.13"
+		jerseyVersion = "2.14"
 		javaeeApiVersion = "7.0"
-		springVersion = "4.1.2.RELEASE"
-		springBootVersion = '1.1.9.RELEASE'
+		springVersion = "4.1.4.RELEASE"
+		springBootVersion = '1.2.1.RELEASE'
 		junitVersion = '4.11'
 		//gensonVersion = '1.1-RC2'
 		janinoVersion = '2.7.6'
