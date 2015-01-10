@@ -21,9 +21,9 @@ import com.uimirror.sso.Approval;
  * <p>
  * Implementations which use this class should be immutable.
  * Should accomodate the following details
- * accessToken=code&
+ * accessToken=codeAMP;
  * tokenEncryptionStartegy=parapharse
- * &scope=r&approval=A
+ * AMP;scope=rAMP;approval=A
  *  
  * @author Jay
  */
@@ -32,9 +32,9 @@ public class ClientAuthorizationAuthentication extends OAuth2Authentication{
 	private static final long serialVersionUID = 3795112886906141341L;
 	
 	/**
-	 * @param token
-	 * @param scope
-	 * @param approval
+	 * @param token as parameter
+	 * @param scope as parameter 
+	 * @param approval as parameter
 	 */
 	public ClientAuthorizationAuthentication(String token, Scope scope, Approval approval) {
 		super(token);
@@ -42,11 +42,11 @@ public class ClientAuthorizationAuthentication extends OAuth2Authentication{
 	}
 
 	/**
-	 * @param token
-	 * @param scope
-	 * @param approval
-	 * @param ip
-	 * @param userAgent
+	 * @param token as parameter
+	 * @param scope as parameter
+	 * @param approval as parameter
+	 * @param ip as parameter
+	 * @param userAgent as parameter
 	 */
 	public ClientAuthorizationAuthentication(String token, Scope scope, Approval approval, String ip, String userAgent) {
 		super(token, ip, userAgent);
@@ -54,15 +54,15 @@ public class ClientAuthorizationAuthentication extends OAuth2Authentication{
 	}
 
 	/**
-	 * @param tokenPrincipal
-	 * @param details
+	 * @param tokenPrincipal as first parameter
+	 * @param details as second parameter
 	 */
 	public ClientAuthorizationAuthentication(Object tokenPrincipal, Map<String, Object> details) {
 		super(tokenPrincipal, details);
 	}
 	
 	/**
-	 * @param tokenPrincipal
+	 * @param tokenPrincipal as parameter
 	 */
 	public ClientAuthorizationAuthentication(Object tokenPrincipal) {
 		super(tokenPrincipal);

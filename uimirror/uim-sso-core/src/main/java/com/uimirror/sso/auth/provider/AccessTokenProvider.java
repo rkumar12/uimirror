@@ -23,22 +23,21 @@ public interface AccessTokenProvider {
 	/**
 	 * Based on the {@link Authentication} principal, it will try to create a {@link AccessToken}
 	 * 
-	 * @param token
-	 * @return
+	 * @param token as parameter
 	 */
 	void store(AccessToken token);
 	
 	/**
 	 * Gets the valid token from the token ID specified.
-	 * @param token
-	 * @return
+	 * @param token as parameter
+	 * @return access token  
 	 */
 	AccessToken getValid(String token);
 	
 	/**
 	 * Gets the valid token from the token ID specified.
-	 * @param token
-	 * @return
+	 * @param token as parameter
+	 * @return access token
 	 */
 	AccessToken get(String token);
 

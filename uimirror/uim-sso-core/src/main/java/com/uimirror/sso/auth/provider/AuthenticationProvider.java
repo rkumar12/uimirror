@@ -18,7 +18,6 @@ import com.uimirror.sso.exception.AuthenticationException;
 /**
  * Handles the authentication request, and process the authentication
  * using {@linkplain AuthenticationManager#authenticate(Authentication)}
- * or using {@linkplain RefreshAccessTokenProcessor}
  * on successful authentication a {@linkplain AccessToken} get issued to the 
  * client/user
  *   
@@ -54,7 +53,7 @@ public interface AuthenticationProvider {
      * <p>Selection of an <code>AuthenticationProvider</code> capable of performing authentication is
      * conducted at runtime the <code>ProviderManager</code>.</p>
      *
-     * @param authentication
+     * @param authentication the authentication request object using generics.
      *
      * @return <code>true</code> if the implementation can more closely evaluate the <code>Authentication</code> class
      *         presented

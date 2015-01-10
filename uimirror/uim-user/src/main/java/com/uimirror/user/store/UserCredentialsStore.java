@@ -27,8 +27,7 @@ public interface UserCredentialsStore {
 	/**
 	 * This will mark the account state as enables
 	 * @param profileId user's id
-	 * @return number of record got affected ideally it should be 1
-	 * @throws DBException
+	 * @throws DBException if any error or syntax error
 	 */
 	void enableAccount(String profileId) throws DBException;
 	

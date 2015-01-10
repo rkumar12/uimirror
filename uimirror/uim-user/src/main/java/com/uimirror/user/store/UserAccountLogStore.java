@@ -21,20 +21,20 @@ public interface UserAccountLogStore {
 
 	/**
 	 * Retrieves the document based on the profile id
-	 * @param profileId
-	 * @return
+	 * @param profileId as parameter
+	 * @return account logs object
 	 */
 	AccountLogs getLogsByProfileId(String profileId);
 
 	/**
 	 * Delete all the logs present for the user in his log
-	 * @param profileId
+	 * @param profileId as parameter
 	 */
 	void deleteByprofileId(String profileId);
 	
 	/**
-	 * @param logs
-	 * @return
+	 * @param logs as parameter
+	 * @return account Logs
 	 */
 	AccountLogs store(AccountLogs logs);
 }

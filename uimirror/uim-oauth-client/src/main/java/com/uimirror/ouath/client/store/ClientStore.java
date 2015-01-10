@@ -24,22 +24,23 @@ public interface ClientStore {
 	 * Query a {@link Client} record by the apiKey
 	 * 
 	 * @param apiKey if invalid will throw {@link IllegalArgumentException}
-	 * @return
+	 * @return a valid client Object by key
 	 */
 	Client findClientByApiKey(String apiKey)  throws DBException;
 	
 	/**
 	 * Query a Client By client ID
 	 * @param clientId if invalid throw {@link IllegalArgumentException}
-	 * @return
+	 * @return a valid client using client Id
 	 */
 	Client findClientById(String clientId) throws DBException;
 	
 	/**
 	 * Query a Client By client ID
 	 * @param clientId if invalid throw {@link IllegalArgumentException}
-	 * @param fields
-	 * @return
+	 * @param clientId as first parameter
+	 * @param fields as second parameter 
+	 * @return a client using client Id and other parameters
 	 */
 	Client findClientById(String clientId, String ... fields) throws DBException;
 	
@@ -47,30 +48,31 @@ public interface ClientStore {
 	 * Query a client by apiKey
 	 * 
 	 * @param apiKey if invalid throw {@link IllegalArgumentException}
-	 * @return
+	 * @return a valid active client using api key
 	 */
 	Client findActieveClientByApiKey(String apiKey) throws DBException;
 	
 	/**
 	 * query a active client by client id
 	 * @param clientId if invalid throw {@link IllegalArgumentException}
-	 * @return
+	 * @return a valid active client using client Id
 	 */
 	Client findActieveClientById(String clientId) throws DBException;
 	
 	/**
 	 * Finds Client by App URL
 	 * Make sure, it only retrieves the app URL and name of the client
-	 * @param url
-	 * @return
-	 * @throws DBException
+	 * @param  url as parameters
+	 * @return a valid client
+	 * @throws DBException when url not found
 	 */
 	Client findClientByAppUrl(String url) throws DBException;
 	
 	/**
 	 * Stores client in document
-	 * @param client
-	 * @throws DBException
+	 * @param client passing as parameter
+	 * @return a valid client
+	 * @throws DBException when valid client not found in DB
 	 */
 	Client store(Client client) throws DBException;
 	

@@ -34,11 +34,8 @@ public class PersistedAccessTokenProvider implements AccessTokenProvider{
 
 	/**
 	 * This will generate a new {@linkplain AccessToken} using
-	 * {@linkplain RefreshAccessTokenProcessor#generateToken(Authentication, AuthenticatedDetails)}
 	 * 
-	 * @param auth
-	 * @param authDetails
-	 * @return
+	 * @param token as parameter
 	 */
 	@Override
 	public void store(AccessToken token) {
@@ -49,8 +46,8 @@ public class PersistedAccessTokenProvider implements AccessTokenProvider{
 	/**
 	 * Will return the valid {@link AccessToken} based on the {@link Authentication}
 	 * if the provided details are valid will return the {@linkplain AccessToken} else <code>null</code>
-	 * @param auth
-	 * @return
+	 * @param token as parameter
+	 * @return access token
 	 */
 	@Override
 	public AccessToken getValid(String token){
@@ -65,8 +62,8 @@ public class PersistedAccessTokenProvider implements AccessTokenProvider{
 	/**
 	 * Will return the valid {@link AccessToken} based on the {@link Authentication}
 	 * if the provided details are valid will return the {@linkplain AccessToken} else <code>null</code>
-	 * @param auth
-	 * @return
+	 * @param token as parameter
+	 * @return access token
 	 */
 	@Override
 	public AccessToken get(String token){

@@ -25,7 +25,7 @@ public class PersistedUserAccountLogMongoStore extends AbstractMongoStore<Accoun
 	
 	/**
 	 * Assign/ Create collection from the given {@link DBCollection}
-	 * @param collection
+	 * @param collection as parameter
 	 */
 	public PersistedUserAccountLogMongoStore(DBCollection collection){
 		super(collection, AccountLogs.class);

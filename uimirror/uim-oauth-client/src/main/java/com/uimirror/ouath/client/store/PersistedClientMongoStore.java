@@ -40,7 +40,8 @@ public class PersistedClientMongoStore extends AbstractMongoStore<Client> implem
 	
 	/**
 	 * Assign/ Create collection from the given {@link DBCollection}
-	 * @param collection
+	 * @param collection  as first parameter
+	 * @param seqCollection as second parameter
 	 */
 	@Autowired
 	public PersistedClientMongoStore(DBCollection collection, DBCollection seqCollection){

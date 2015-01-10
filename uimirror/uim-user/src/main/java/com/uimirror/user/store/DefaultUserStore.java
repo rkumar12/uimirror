@@ -38,9 +38,9 @@ public interface DefaultUserStore {
 	/**
 	 * Retrieves the list of the profile id whose created time is before given time
 	 * 
-	 * @param serach creteria
+	 * @param minutes as parameter
 	 * @return list of DefaultUser matching to the query
-	 * @throws DBException
+	 * @throws DBException if record not found 
 	 */
 	List<DefaultUser> getUnVerifiedAccountBefore(int minutes) throws DBException;
 	

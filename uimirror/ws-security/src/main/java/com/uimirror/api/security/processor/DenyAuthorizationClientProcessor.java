@@ -26,7 +26,7 @@ import com.uimirror.core.util.thread.AbstractBackgroundProcessor;
 public class DenyAuthorizationClientProcessor extends AbstractBackgroundProcessor<AccessToken, Object>{
 
 	/**
-	 * @param size
+	 * default constructor
 	 */
 	public DenyAuthorizationClientProcessor() {
 		super(1);

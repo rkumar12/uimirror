@@ -72,8 +72,8 @@ public class SecretKeyAuthManager implements AuthenticationManager, MatcherServi
 
 	/**
 	 * Gets the previous {@link AccessToken} object from the {@link Authentication}
-	 * @param authentication
-	 * @return
+	 * @param authentication as parameter
+	 * @return access Token
 	 */
 	@SuppressWarnings("unchecked")
 	private AccessToken authenticateAndGetToken(Authentication authentication){
@@ -93,8 +93,8 @@ public class SecretKeyAuthManager implements AuthenticationManager, MatcherServi
 	
 	/**
 	 * Retrieves the client based on the client apiKey
-	 * @param apiKey
-	 * @return
+	 * @param apiKey as parameter
+	 * @return client object
 	 */
 	private Client reteriveActieveClient(String apiKey){
 		return persistedClientStore.findActieveClientByApiKey(apiKey);
@@ -102,8 +102,8 @@ public class SecretKeyAuthManager implements AuthenticationManager, MatcherServi
 	
 	/**
 	 * Retrieves the {@link AccessToken} associated with the given token
-	 * @param issuedToken
-	 * @return
+	 * @param issuedToken as parameter
+	 * @return access token
 	 */
 	private AccessToken getActiveToken(String issuedToken){
 		return persistedAccessTokenProvider.getValid(issuedToken);
@@ -112,9 +112,9 @@ public class SecretKeyAuthManager implements AuthenticationManager, MatcherServi
 	/**
 	 * This will create a new {@link Authentication} of type {@link APIKeyAuthentication}
 	 * where principal is the {@link AccessToken} and details as passed from the authentication.
-	 * @param auth
-	 * @param token
-	 * @return
+	 * @param auth as parameter
+	 * @param token as parameter
+	 * @return authentication object
 	 */
 	@SuppressWarnings("unchecked")
 	private Authentication getAuthenticatedDetails(Authentication auth, AccessToken token) {
@@ -128,9 +128,9 @@ public class SecretKeyAuthManager implements AuthenticationManager, MatcherServi
 	 * from the previous {@linkplain AccessToken} and provided previous details
 	 * it will create a new {@link AccessToken} of the type {@link TokenType#ACCESS}
 	 * 
-	 * @param prevToken
-	 * @param details
-	 * @return
+	 * @param prevToken as parameter
+	 * @param details as parameter
+	 * @return access Token
 	 */
 	private AccessToken issueANewToken(AccessToken prevToken, Map<String, Object> details){
 		Map<String, Object> prevInstructions = prevToken.getInstructions(); 
@@ -147,8 +147,8 @@ public class SecretKeyAuthManager implements AuthenticationManager, MatcherServi
 	
 	/**
 	 * Decide the {@link AccessToken} expire period
-	 * @param instructions
-	 * @return
+	 * @param instructions as parameter
+	 * @return long object
 	 */
 	private long getTokenExpire(Map<String, Object> instructions){
 		int standtingInstructions = 0;
@@ -159,8 +159,8 @@ public class SecretKeyAuthManager implements AuthenticationManager, MatcherServi
 	
 	/**
 	 * Get details such as IP and user agent
-	 * @param details
-	 * @return
+	 * @param details as parameter
+	 * @return map of object
 	 */
 	private Map<String, Object> getNotes(Map<String, Object> details){
 		Map<String, Object> notes = new WeakHashMap<String, Object>(5);
@@ -171,8 +171,8 @@ public class SecretKeyAuthManager implements AuthenticationManager, MatcherServi
 	
 	/**
 	 * Get instructions for this token such as expire interval
-	 * @param details
-	 * @return
+	 * @param details as parameter
+	 * @return map of object
 	 */
 	private Map<String, Object> getInstructions(Map<String, Object> prevInstructions){
 		Map<String, Object> instructions = new WeakHashMap<String, Object>(5);
@@ -196,9 +196,9 @@ public class SecretKeyAuthManager implements AuthenticationManager, MatcherServi
 	
 	/**
 	 * This will validate the provided credentials and stored credentials are matching or not
-	 * @param src
-	 * @param des
-	 * @return
+	 * @param src as parameter
+	 * @param des as parameter
+	 * @return boolean object 
 	 */
 	public boolean isMatching(String src, String des){
 		return src.equalsIgnoreCase(des);

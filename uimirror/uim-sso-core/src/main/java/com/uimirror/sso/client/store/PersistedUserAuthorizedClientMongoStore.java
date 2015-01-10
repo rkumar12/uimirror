@@ -36,7 +36,7 @@ public class PersistedUserAuthorizedClientMongoStore extends AbstractMongoStore<
 
 	/**
 	 * Assign/ Create collection from the given {@link DBCollection}
-	 * @param collection
+	 * @param collection is object passed as parameter
 	 */
 	public PersistedUserAuthorizedClientMongoStore(DBCollection collection){
 		super(collection, UserAuthorizedClient.class);

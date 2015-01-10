@@ -36,8 +36,8 @@ public class Password {
 
 	/**
 	 * if the paraphrase specified in the constructor is null, it will generate a new one
-	 * @param password
-	 * @param paraphrase
+	 * @param password as parameter
+	 * @param paraphrase as parameter
 	 */
 	public Password(String password, String paraphrase) {
 		this.password = password;
@@ -51,7 +51,7 @@ public class Password {
 	
 	/**
 	 * Tries to encrypt the password, if in case of any issues, returns the original
-	 * @return
+	 * @return password object
 	 */
 	public Password getEncrypted(){
 		try {
@@ -64,7 +64,7 @@ public class Password {
 	
 	/**
 	 * Tries to decrypt the password, if in case of any issues, return the original
-	 * @return
+	 * @return password object
 	 */
 	public Password getDecrypted(){
 		try {
@@ -77,8 +77,8 @@ public class Password {
 	
 	/**
 	 * Gets the Crypto Definitions
-	 * @return
-	 */
+	 * @return CryptoDefination object
+	 */ 
 	private CryptoDefination getCryptoDefination(){
 		CryptoDefination cd = null;
 		if(StringUtils.hasText(paraphrase)){

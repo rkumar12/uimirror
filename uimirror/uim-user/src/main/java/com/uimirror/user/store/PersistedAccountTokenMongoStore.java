@@ -35,7 +35,7 @@ public class PersistedAccountTokenMongoStore extends AbstractMongoStore<DefaultA
 	
 	/**
 	 * Assign/ Create collection from the given {@link DBCollection}
-	 * @param collection
+	 * @param collection as parameter
 	 */
 	public PersistedAccountTokenMongoStore(DBCollection collection){
 		super(collection, DefaultAccessToken.class);
@@ -98,9 +98,9 @@ public class PersistedAccountTokenMongoStore extends AbstractMongoStore<DefaultA
 
 	/**
 	 * gets the web registered verify token field
-	 * @param profileId
-	 * @return
-	 * @throws DBException
+	 * @param profileId as parameter
+	 * @return access token
+	 * @throws DBException if any error or syntax error
 	 */
 	@Override
 	public AccessToken getUserRegisteredWOTPToken(String profileId)throws DBException {

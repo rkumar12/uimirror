@@ -27,47 +27,48 @@ public interface AccessTokenStore {
 
 	/**
 	 * Stores the generated {@link AccessToken}
-	 * @param token
-	 * @throws DBException
+	 * @param token is a parameter
+	 * @throws DBException  if data not found
 	 */
 	void store(AccessToken token) throws DBException;
 	/**
 	 * Gets the {@link AccessToken} by ID, i.e token
-	 * @param token
-	 * @return
-	 * @throws DBException
+	 * @param token using as parameter
+	 * @return access token
+	 * @throws DBException if record not  found
 	 */
 	AccessToken get(String token) throws DBException;
 	/**
 	 * Retrieves a active access Token else {@link RecordNotFoundException}
 	 * 
-	 * @param token
-	 * @return
-	 * @throws DBException
+	 * @param token used as parameter
+	 * @return  access token
+	 * @throws DBException if record not found
 	 */
 	AccessToken getValid(String token) throws DBException;
 	/**
 	 * Retrieves the list of {@linkplain AccessToken} issued to the owner from
 	 * various sources.
 	 * returns <code>null</code> if no record found
-	 * @param ownerId
-	 * @return
-	 * @throws DBException
+	 * @param ownerId is parameter
+	 * @return list of access token object
+	 * @throws DBException if record not found
 	 */
 	List<AccessToken> getByOwner(String ownerId) throws DBException;
 	
 	/**
 	 * Delete documents based on the search criteria
-	 * @param query
-	 * @return
-	 * @throws DBException
+	 * @param query a map using as parameter
+	 * @return integer value
+	 * @throws DBException if record not found
 	 */
 	int deleteByQuery(Map<String, Object> query) throws DBException;
 	
 	/**
 	 * Mark the token issued for the client as expired
-	 * @param clientId
-	 * @throws DBException
+	 * @param token as parameter 
+	 * @throws DBException if record not found
+	 * @return integer if record found
 	 */
 	int markAsExpired(String token)throws DBException;
 	

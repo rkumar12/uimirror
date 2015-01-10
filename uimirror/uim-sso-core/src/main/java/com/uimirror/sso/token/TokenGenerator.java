@@ -24,7 +24,7 @@ public class TokenGenerator {
 	/**
 	 * Generates a new {@link Token} using new random paraphrase and {@link UUID}
 	 * This also generates the para pharse as well
-	 * @return
+	 * @return a token using uuid and parapharse
 	 */
 	public static Token getNewOne(){
 		String paraphrase = RandomKeyGenerator.randomString(6);
@@ -33,7 +33,7 @@ public class TokenGenerator {
 	
 	/**
 	 * Generates a token without parapharse
-	 * @return
+	 * @return a token using uuid and no parapharse
 	 */
 	public static Token getNewOneWithOutPharse(){
 		return new Token(getUUId(), null);
@@ -41,7 +41,7 @@ public class TokenGenerator {
 	
 	/**
 	 * Generates the {@linkplain UUID}
-	 * @return
+	 * @return a token using random uuid
 	 */
 	private static String getUUId(){
 		return UUID.randomUUID().toString();

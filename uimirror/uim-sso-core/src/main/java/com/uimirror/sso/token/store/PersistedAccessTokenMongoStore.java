@@ -32,7 +32,7 @@ public class PersistedAccessTokenMongoStore extends AbstractMongoStore<DefaultAc
 	
 	/**
 	 * Assign/ Create collection from the given {@link DBCollection}
-	 * @param collection
+	 * @param collection as parameter
 	 */
 	public PersistedAccessTokenMongoStore(DBCollection collection){
 		super(collection, DefaultAccessToken.class);

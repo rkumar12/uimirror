@@ -36,7 +36,7 @@ public class PersistedUserCredentialMongoStore extends AbstractMongoStore<Creden
 	
 	/**
 	 * Assign/ Create collection from the given {@link DBCollection}
-	 * @param collection
+	 * @param collection as parameter
 	 */
 	public PersistedUserCredentialMongoStore(DBCollection collection){
 		super(collection, Credentials.class);

@@ -20,9 +20,9 @@ import com.uimirror.sso.auth.OAuth2Authentication;
  * <p>
  * Implementations which use this class should be immutable.
  * Should accomodate the following details
- * accessToken=code&
+ * accessToken=codeAMP;
  * tokenEncryptionStartegy=parapharse
- * &otp=otp
+ * AMP;otp=otp
  *  
  * @author Jay
  */
@@ -31,18 +31,18 @@ public class OTPAuthentication extends OAuth2Authentication{
 	private static final long serialVersionUID = 3795112886906141341L;
 	
 	/**
-	 * @param token
-	 * @param otp
+	 * @param token as parameter
+	 * @param otp as parameter
 	 */
 	public OTPAuthentication(String token, String otp) {
 		super(token);
 		init(otp);
 	}
 	/**
-	 * @param token
-	 * @param otp
-	 * @param ip
-	 * @param userAgent
+	 * @param token as parameter
+	 * @param otp as parameter
+	 * @param ip as parameter
+	 * @param userAgent as parameter
 	 */
 	public OTPAuthentication(String token, String otp, String ip, String userAgent) {
 		super(token, ip, userAgent);
@@ -50,29 +50,29 @@ public class OTPAuthentication extends OAuth2Authentication{
 	}
 
 	/**
-	 * @param tokenPrincipal
-	 * @param details
+	 * @param tokenPrincipal as parameter
+	 * @param details as parameter
 	 */
 	public OTPAuthentication(Object tokenPrincipal, Map<String, Object> details) {
 		super(tokenPrincipal, details);
 	}
 	
 	/**
-	 * @param tokenPrincipal
-	 */
+	 * @param tokenPrincipal as parameter
+	 */ 
 	public OTPAuthentication(Object tokenPrincipal) {
 		super(tokenPrincipal);
 	}
 	
 	/**
-	 * @param otp
+	 * @param otp as parameter
 	 */
 	private void init(String otp){
 		addCrdentials(otp);
 	}
 	
 	/**
-	 * @param otp
+	 * @param otp as parameter
 	 */
 	@SuppressWarnings("unchecked")
 	private void addCrdentials(String otp){

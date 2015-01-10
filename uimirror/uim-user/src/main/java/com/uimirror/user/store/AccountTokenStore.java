@@ -26,23 +26,23 @@ public interface AccountTokenStore {
 
 	/**
 	 * Stores the generated {@link AccessToken}
-	 * @param token
-	 * @throws DBException
+	 * @param token as parameter 
+	 * @throws DBException if synax error or any error
 	 */
 	void store(AccessToken token) throws DBException;
 	/**
 	 * Gets the {@link AccessToken} by ID, i.e token
-	 * @param token
-	 * @return
-	 * @throws DBException
+	 * @param token as parameter
+	 * @return access token
+	 * @throws DBException if synax error or any error
 	 */
 	AccessToken get(String token) throws DBException;
 	/**
 	 * Retrieves a active access Token else {@link RecordNotFoundException}
 	 * 
-	 * @param token
-	 * @return
-	 * @throws DBException
+	 * @param token as parameter
+	 * @return access token
+	 * @throws DBException if synax error or any error
 	 */
 	AccessToken getValid(String token) throws DBException;
 
@@ -50,17 +50,17 @@ public interface AccountTokenStore {
 	 * Retrieve any token available for the user, which he tries to register but due 
 	 * to some reason it was unsuccessful.
 	 * returns <code>null</code> if no record found
-	 * @param profileId
-	 * @return
-	 * @throws DBException
+	 * @param profileId as parameter
+	 * @return access token
+	 * @throws DBException if synax error or any error
 	 */
 	AccessToken getUserRegisteredWOTPToken(String profileId) throws DBException;
 	
 	/**
 	 * Delete documents based on the search criteria
-	 * @param query
-	 * @return
-	 * @throws DBException
+	 * @param query as parameter
+	 * @return access token
+	 * @throws DBException if synax error or any error
 	 */
 	int deleteByQuery(Map<String, Object> query) throws DBException;
 	

@@ -22,9 +22,9 @@ import com.uimirror.sso.auth.OAuth2Authentication;
  * <p>
  * Implementations which use this class should be immutable.
  * Should accomodate the following details
- * accessToken=code&
+ * accessToken=codeAMP;
  * tokenEncryptionStartegy=parapharse
- * &userId=userid&password=password&keepMeLogedIn=y
+ * AMP;userId=useridAMP;password=passwordAMP;keepMeLogedIn=y
  * @author Jay
  */
 public class LoginAuthentication extends OAuth2Authentication{
@@ -80,40 +80,40 @@ public class LoginAuthentication extends OAuth2Authentication{
 	}
 
 	/**
-	 * @param tokenPrincipal
-	 * @param details
+	 * @param tokenPrincipal as parameter
+	 * @param details as parameter
 	 */
 	public LoginAuthentication(String tokenPrincipal, Map<String, Object> details) {
 		super(tokenPrincipal, details);
 	}
 	
 	/**
-	 * @param tokenPrincipal
-	 * @param details
+	 * @param tokenPrincipal as parameter
+	 * @param details as parameter
 	 */
 	public LoginAuthentication(Object tokenPrincipal, Map<String, Object> details) {
 		super(tokenPrincipal, details);
 	}
 	
 	/**
-	 * @param tokenPrincipal
+	 * @param tokenPrincipal as parameter
 	 */
 	public LoginAuthentication(Object tokenPrincipal) {
 		super(tokenPrincipal);
 	}
 	
 	/**
-	 * @param userId
-	 * @param password
-	 * @param keepMeLoggedIn
+	 * @param userId as parameter
+	 * @param password as parameter
+	 * @param keepMeLoggedIn as parameter
 	 */
 	private void init(String userId, String password, boolean keepMeLoggedIn){
 		addCrdentials(password);
 		addDetails(userId, keepMeLoggedIn);
 	}
 	
-	/**
-	 * @param password
+	/** 
+	 * @param password as parameter
 	 */
 	@SuppressWarnings("unchecked")
 	private void addCrdentials(String password){
@@ -123,8 +123,8 @@ public class LoginAuthentication extends OAuth2Authentication{
 	}
 	
 	/**
-	 * @param userId
-	 * @param keepMeLoggedIn
+	 * @param userId as parameter
+	 * @param keepMeLoggedIn as parameter
 	 */
 	@SuppressWarnings("unchecked")
 	private void addDetails(String userId, boolean keepMeLoggedIn){

@@ -30,7 +30,7 @@ public class PersistedUserBasicInfoMongoStore extends AbstractMongoStore<BasicIn
 	
 	/**
 	 * Assign/ Create collection from the given {@link DBCollection}
-	 * @param collection
+	 * @param collection as parameter
 	 */
 	public PersistedUserBasicInfoMongoStore(DBCollection collection){
 		super(collection, BasicInfo.class);

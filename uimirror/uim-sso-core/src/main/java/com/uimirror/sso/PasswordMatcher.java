@@ -33,10 +33,10 @@ public class PasswordMatcher {
 	 * <p>This will match the raw password with the password saved in the data base
 	 * with the strategy specified</p>
 	 * 
-	 * @param rawPassword
-	 * @param originalPassword
-	 * @param encryptionStartegy
-	 * @return
+	 * @param rawPassword as parameter 
+	 * @param originalPassword as parameter
+	 * @param encryptionStartegy as parameter
+	 * @return true or false
 	 */
 	public boolean match(final String rawPassword, final String originalPassword, final String encryptionStartegy){
 		Assert.hasText(rawPassword, "Password to match is invalid");

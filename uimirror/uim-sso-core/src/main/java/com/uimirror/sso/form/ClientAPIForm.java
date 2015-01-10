@@ -23,7 +23,7 @@ import com.uimirror.core.service.BeanValidatorService;
 /**
  * Converts the {@link QueryParam} provided in the GET request for the
  * to get secret key.
- * A standard url will look like /auth?response_type=code&client_id=CLIENT_ID&redirect_uri=REDIRECT_URI&scope=photos&app=rti
+ * A standard url will look like /auth?response_type=codeAMP;client_id=CLIENT_IDAMP;redirect_uri=REDIRECT_URIAMP;scope=photosAMP;app=rti
  * 
  * @author Jay
  */
