@@ -52,6 +52,15 @@ public class DateTimeUtil {
 	public static final boolean isExpired(long epoch){
 		return getCurrentUTCTime().toInstant().isAfter(Instant.ofEpochSecond(epoch));
 	}
+	/**
+	 * Checks the provided epoch time with current time in utc format.
+	 * if the current time is lesser than the provided time then its valid else <code>false</code>.
+	 * @param epoch which needs to be check against current time
+	 * @return true if before
+	 */
+	public static final boolean isBefore(long epoch){
+		return getCurrentUTCTime().toInstant().isBefore(Instant.ofEpochSecond(epoch));
+	}
 	
 	/**
 	 * Gets the system time w.r.t to UTC in EPOCH
