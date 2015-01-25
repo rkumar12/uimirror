@@ -21,7 +21,12 @@ import com.uimirror.core.form.ClientMetaForm;
 
 /**
  * Contains the Basic Authenticated Security context place holder
- * which will be very much handy for the authentications and owner details
+ * which will be very much handy for the authentications and owner details.
+ * 
+ * Whenever, any endpoint is protected via the security context
+ * then this will come handy for the form parameter, which will give the token 
+ * authentication details.
+ * 
  * @author Jay
  */
 public class AuthenticatedPrincipal extends ClientMetaForm implements Serializable{

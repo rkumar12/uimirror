@@ -16,6 +16,7 @@ import com.uimirror.core.Constants;
  * <p>It holds all the possible role available for the API </p>
  * @author Jayaram
  */
+@Deprecated
 public enum Role {
 	ADMIN("1"), 
     PUBLIC("2"), 

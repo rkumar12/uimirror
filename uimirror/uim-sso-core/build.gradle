@@ -1,12 +1,12 @@
 apply plugin:'application'
 
-group = "com.uimirror.api"
-version = 1.0
+//group = "com.uimirror.api"
+//version = 1.0
 
 dependencies {
 	compile project(':uim-core')
 	//compile project(':uim-oauth-client')
-	compile group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet', version: jerseyVersion
+	//compile group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet', version: jerseyVersion
 }
 
 task sourceJar(type: Jar, dependsOn: classes) {
@@ -51,6 +51,4 @@ jacocoTestReport {
 		html.destination "${buildDir}/coverage"
 	}
 }
-defaultTasks 'clean', 'build', 'intsall', 'publishToMavenLocal'
-
 defaultTasks 'clean', 'build', 'intsall', 'publishToMavenLocal'
