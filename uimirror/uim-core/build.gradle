@@ -50,8 +50,6 @@ dependencies {
 		exclude module: 'jersey-common'
 		exclude module: 'jersey-server'
 		exclude module: 'jersey-client'
-		exclude module: 'jersey-container-servlet'
-		
 	}
 	//Jersey END
 	//Genson
