@@ -1,5 +1,6 @@
 apply plugin:'application'
-group = "com.uimirror"
+
+group = "com.uimirror.api"
 version = 1.0
 
 dependencies {
