@@ -24,10 +24,14 @@
 
 **Modules**
 =====
-**uim_core**
+**uimirror**
 ======
 **Features**
-- Basic Abstraction of user
-- Basic abstraction of Mongo document
+- Basic API for the Uimirror
+- 
+
+**uim-oauth2**
+=====
+- oAuth2 Implimentation
 
 
