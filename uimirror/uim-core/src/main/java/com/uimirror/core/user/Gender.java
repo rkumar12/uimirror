@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.core.bean;
+package com.uimirror.core.user;
 
 
 /**

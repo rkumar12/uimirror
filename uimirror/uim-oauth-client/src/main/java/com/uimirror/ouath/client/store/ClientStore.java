@@ -10,7 +10,7 @@
  *******************************************************************************/
 package com.uimirror.ouath.client.store;
 
-import com.uimirror.core.dao.DBException;
+import com.uimirror.core.exceptions.db.DBException;
 import com.uimirror.ouath.client.Client;
 
 /**

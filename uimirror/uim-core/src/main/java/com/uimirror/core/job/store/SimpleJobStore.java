@@ -12,8 +12,8 @@ package com.uimirror.core.job.store;
 
 import java.util.List;
 
-import com.uimirror.core.dao.DBException;
-import com.uimirror.core.dao.RecordNotFoundException;
+import com.uimirror.core.exceptions.db.DBException;
+import com.uimirror.core.exceptions.db.RecordNotFoundException;
 import com.uimirror.core.job.SimpleJob;
 
 /**

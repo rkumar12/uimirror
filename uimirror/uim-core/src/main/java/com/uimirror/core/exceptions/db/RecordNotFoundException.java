@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.core.dao;
+package com.uimirror.core.exceptions.db;
 
 import com.uimirror.core.ErrorCodes;
 

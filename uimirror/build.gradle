@@ -27,7 +27,7 @@ subprojects  {
 		commonLangVersion = '3.3.2'
 	}
   
-	group = 'com.uimirror'
+	group = 'com.uimirror.api'
 	version = '1.0'
 }
 subprojects {

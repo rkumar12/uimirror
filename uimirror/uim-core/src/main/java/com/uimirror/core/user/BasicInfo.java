@@ -27,7 +27,6 @@ import org.apache.commons.lang3.builder.StandardToStringStyle;
 import org.springframework.util.StringUtils;
 
 import com.uimirror.core.Builder;
-import com.uimirror.core.bean.Gender;
 import com.uimirror.core.mongo.feature.AbstractBeanBasedDocument;
 import com.uimirror.core.service.BeanValidatorService;
 

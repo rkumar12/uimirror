@@ -14,7 +14,7 @@ import static com.uimirror.core.user.UserAccountLogDBFields.CREATED_ON;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
-import com.uimirror.core.dao.AbstractMongoStore;
+import com.uimirror.core.store.AbstractMongoStore;
 import com.uimirror.core.user.AccountLogs;
 
 /**

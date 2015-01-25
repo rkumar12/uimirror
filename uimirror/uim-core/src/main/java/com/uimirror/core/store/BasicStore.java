@@ -8,12 +8,13 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.core.dao;
+package com.uimirror.core.store;
 
 import java.util.List;
 import java.util.Map;
 
 import com.mongodb.DBCollection;
+import com.uimirror.core.exceptions.db.DBException;
 import com.uimirror.core.mongo.feature.MongoDocumentSerializer;
 
 /**

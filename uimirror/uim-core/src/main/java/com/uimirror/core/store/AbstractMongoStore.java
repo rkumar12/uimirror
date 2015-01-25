@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.core.dao;
+package com.uimirror.core.store;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -26,6 +26,9 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.WriteResult;
+import com.uimirror.core.exceptions.db.DBException;
+import com.uimirror.core.exceptions.db.MongoExceptionMapper;
+import com.uimirror.core.exceptions.db.RecordNotFoundException;
 import com.uimirror.core.extra.MapException;
 import com.uimirror.core.mongo.BasicMongoOperators;
 import com.uimirror.core.mongo.feature.AbstractBeanBasedDocument;

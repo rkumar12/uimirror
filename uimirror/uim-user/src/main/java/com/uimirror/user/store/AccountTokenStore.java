@@ -13,8 +13,8 @@ package com.uimirror.user.store;
 import java.util.Map;
 
 import com.uimirror.core.auth.AccessToken;
-import com.uimirror.core.dao.DBException;
-import com.uimirror.core.dao.RecordNotFoundException;
+import com.uimirror.core.exceptions.db.DBException;
+import com.uimirror.core.exceptions.db.RecordNotFoundException;
 
 /**
  * The generated access token will be stored and retrieved.

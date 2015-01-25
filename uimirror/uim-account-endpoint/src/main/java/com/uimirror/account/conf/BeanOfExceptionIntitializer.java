@@ -14,10 +14,10 @@ import org.springframework.beans.factory.config.ServiceLocatorFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.uimirror.core.dao.MongoExceptionMapper;
 import com.uimirror.core.exceptions.ApplicationExceptionMapper;
 import com.uimirror.core.exceptions.ExceptionMapper;
 import com.uimirror.core.exceptions.ExceptionMapperFactory;
+import com.uimirror.core.exceptions.db.MongoExceptionMapper;
 import com.uimirror.core.extra.MapExceptionAspect;
 
 /**

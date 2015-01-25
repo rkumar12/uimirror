@@ -37,7 +37,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.uimirror.core.DOB;
-import com.uimirror.core.bean.Gender;
 import com.uimirror.core.util.DateTimeUtil;
 
 /**

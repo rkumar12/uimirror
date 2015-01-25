@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.core.bean;
+package com.uimirror.core.auth;
 
 /**
  * <p>It holds all the possible read write role available for the API</p>

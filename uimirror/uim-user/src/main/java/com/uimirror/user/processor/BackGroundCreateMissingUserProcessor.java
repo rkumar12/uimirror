@@ -16,7 +16,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.uimirror.core.dao.RecordNotFoundException;
+import com.uimirror.core.exceptions.db.RecordNotFoundException;
 import com.uimirror.core.user.AccountLogs;
 import com.uimirror.core.user.BasicDetails;
 import com.uimirror.core.user.BasicInfo;

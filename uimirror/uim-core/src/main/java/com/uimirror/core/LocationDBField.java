@@ -8,7 +8,9 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.core.mongo.feature;
+package com.uimirror.core;
+
+import com.uimirror.core.mongo.feature.BasicDBFields;
 
 /**
  * @author Jay

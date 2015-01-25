@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import com.uimirror.core.auth.token.AccessTokenFields;
-import com.uimirror.core.dao.RecordNotFoundException;
+import com.uimirror.core.exceptions.db.RecordNotFoundException;
 import com.uimirror.core.job.SimpleJob;
 import com.uimirror.core.job.Status;
 import com.uimirror.core.job.store.SimpleJobStore;

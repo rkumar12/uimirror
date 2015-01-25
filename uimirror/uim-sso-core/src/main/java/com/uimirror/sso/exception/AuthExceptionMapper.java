@@ -10,9 +10,9 @@
  *******************************************************************************/
 package com.uimirror.sso.exception;
 
-import com.uimirror.core.dao.DBException;
-import com.uimirror.core.dao.RecordNotFoundException;
 import com.uimirror.core.exceptions.ExceptionMapper;
+import com.uimirror.core.exceptions.db.DBException;
+import com.uimirror.core.exceptions.db.RecordNotFoundException;
 
 /**
  * This translate authentication DB exception to 

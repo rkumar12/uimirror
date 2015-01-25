@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.core.dao;
+package com.uimirror.core.store;
 
 import java.util.Map;
 
@@ -22,6 +22,7 @@ import com.uimirror.core.util.BeanToMap;
  * 
  * @author Jay
  */
+@Deprecated
 public abstract class MongoSerializer extends MongoInitializer{
 
 	/**

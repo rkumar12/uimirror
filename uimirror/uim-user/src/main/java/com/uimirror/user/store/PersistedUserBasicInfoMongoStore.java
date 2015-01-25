@@ -16,7 +16,7 @@ import java.util.WeakHashMap;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
-import com.uimirror.core.dao.AbstractMongoStore;
+import com.uimirror.core.store.AbstractMongoStore;
 import com.uimirror.core.user.AccountState;
 import com.uimirror.core.user.AccountStatus;
 import com.uimirror.core.user.BasicInfo;

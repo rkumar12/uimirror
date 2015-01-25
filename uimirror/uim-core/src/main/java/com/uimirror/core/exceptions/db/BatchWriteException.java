@@ -8,31 +8,31 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.core.dao;
+package com.uimirror.core.exceptions.db;
 
 import com.uimirror.core.ErrorCodes;
 
 
 /**
- * When Data base failed to execute a specified command
- * with code as {@link ErrorCodes#_510}
+ * When Data base failed to write in bulk data
+ * with code as {@link ErrorCodes#_599}
  * @author Jay
  */
-public class SyntaxException extends DBException{
+public class BatchWriteException extends DBException{
 
 	private static final long serialVersionUID = 5952640506213878692L;
 	
-	public SyntaxException() {
-		super(ErrorCodes._510, "Unable to execute command");
+	public BatchWriteException() {
+		super(ErrorCodes._599, "Unable to write bulk record");
 	}
 
 	/**
-     * Constructs an {@code SyntaxException} with the specified message and root cause.
+     * Constructs an {@code BatchWriteException} with the specified message and root cause.
      *
      * @param msg the detail message
      */
-    public SyntaxException(String msg) {
-        super(ErrorCodes._510, msg);
+    public BatchWriteException(String msg) {
+        super(ErrorCodes._599, msg);
     }
 
 }
