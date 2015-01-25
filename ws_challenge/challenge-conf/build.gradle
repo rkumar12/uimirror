@@ -1,6 +1,0 @@
-dependencies {
-	compile project(':challenge-lib')
-	compile project(':challenge-dao')
-	//Security Jars
-	//compile group: 'com.uimirror.ws.api', name: 'ws-resource-security', version: '1.0'
-}
