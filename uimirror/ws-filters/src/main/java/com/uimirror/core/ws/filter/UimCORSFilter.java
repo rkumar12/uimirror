@@ -38,14 +38,36 @@ public class UimCORSFilter implements ContainerResponseFilter{
     private static final String CONTENT_LANG = "Content-Language"; 
 	
 	@Override
-	public void filter(ContainerRequestContext requestContext, ContainerResponseContext cResponse) throws IOException {
+	public final void filter(ContainerRequestContext requestContext, ContainerResponseContext cResponse) throws IOException {
 		LOG.debug("[START]-Putting cross region parameters to response");
-		cResponse.getHeaders().putSingle(ACCESS_C_A_O, ALL);
-		cResponse.getHeaders().putSingle(ACCESS_C_A_M, GET_POST_DELETE);
-		cResponse.getHeaders().putSingle(ACCESS_C_A_H, CONT_ACC_AUTH_API);
-		cResponse.getHeaders().putSingle(ACCESS_C_M_A, ACCESS_C_MAX_AGE);
-		cResponse.getHeaders().putSingle(CONTENT_LANG, "en_US");
+		addAccessControlOrigin(cResponse);
+		addAccessControlMethod(cResponse);
+		addAccessControlHeader(cResponse);
+		addAccessControlMaxAge(cResponse);
+		addContentLanguage(cResponse);
 		LOG.debug("[END]-Putting cross region parameters to response");
+	}
+	
+	public void addContentLanguage(ContainerResponseContext cResponse) {
+		cResponse.getHeaders().putSingle(CONTENT_LANG, "en_US");
+	}
+
+	public void addAccessControlMaxAge(ContainerResponseContext cResponse) {
+		cResponse.getHeaders().putSingle(ACCESS_C_M_A, ACCESS_C_MAX_AGE);
+	}
+
+
+	public void addAccessControlHeader(ContainerResponseContext cResponse) {
+		cResponse.getHeaders().putSingle(ACCESS_C_A_H, CONT_ACC_AUTH_API);
+	}
+
+	
+	public void addAccessControlMethod(ContainerResponseContext cResponse) {
+		cResponse.getHeaders().putSingle(ACCESS_C_A_M, GET_POST_DELETE);
+	}
+
+	public void addAccessControlOrigin(ContainerResponseContext cResponse) {
+		cResponse.getHeaders().putSingle(ACCESS_C_A_O, ALL);
 	}
 
 }

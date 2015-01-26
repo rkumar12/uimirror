@@ -11,10 +11,12 @@
 package com.uimirror.core.ws.filter;
 
 import java.io.IOException;
+
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerResponseContext;
 import javax.ws.rs.container.ContainerResponseFilter;
-import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,23 +29,21 @@ public class PoweredByResponseFilter implements ContainerResponseFilter{
     
     protected static final Logger LOG = LoggerFactory.getLogger(PoweredByResponseFilter.class);
     private static final String X_POWERED_BY = "X-Powered-By";
-    private static final String CONTENT_TYPE = "Content-Type";
-    private static final String CHAR_SET = ";charset=UTF-8";
     private static final String UIMIRROR = "UIMirror";
 
     public PoweredByResponseFilter() {
     }
 
 	@Override
-	public void filter(ContainerRequestContext cRequest, ContainerResponseContext cResponse) throws IOException {
+	public final void filter(ContainerRequestContext cRequest, ContainerResponseContext cResponse) throws IOException {
 		LOG.info("[START]-Adding the response body details to send back to the caller");
-		cResponse.getHeaders().putSingle(X_POWERED_BY, UIMIRROR);
-		//Append other details if present else don't
-		MediaType contentType = cResponse.getMediaType();
-		if (contentType != null){
-			cResponse.getHeaders().putSingle(CONTENT_TYPE, contentType.toString() + CHAR_SET);
-		}
+		addPoweredByHeader(cResponse.getHeaders());
 		LOG.info("[END]-Adding the response body details to send back to the caller");
+	}
+	
+	public void addPoweredByHeader(MultivaluedMap<String, Object> map){
+		map.putSingle(X_POWERED_BY, UIMIRROR);
+		
 	}
 
 
