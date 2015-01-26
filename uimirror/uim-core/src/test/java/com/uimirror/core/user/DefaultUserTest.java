@@ -37,7 +37,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.uimirror.core.DOB;
-import com.uimirror.core.bean.Gender;
 import com.uimirror.core.util.DateTimeUtil;
 
 /**
@@ -59,7 +58,7 @@ public class DefaultUserTest {
 	
 	private MetaInfo dinfo = new MetaInfo.MetaBuilder("America/Los_Angeles").addCountryCode("US").addLang("en").build();
 	private DOB dob = new DOB.DOBBuilder("1988-03-18").build();
-	private BasicDetails dt = new BasicDetails.BasicDetailsBuilder(null).updateMetaInfo(dinfo).build();
+	private BasicDetails dt = new BasicDetails.BasicDetailsBuilder(null).updateDOB(dob).updateMetaInfo(dinfo).build();
 	private Map<String, Object> op = new WeakHashMap<String, Object>();
 	
 	private AccountLogs logs;
