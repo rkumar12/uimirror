@@ -26,11 +26,20 @@ public class UserDBFields extends BasicDBFields{
 	 public static final String EMAIL="email";
 	 public static final String GENDER="gender";
 	 public static final String DATE_OF_BIRTH="dob";
+	 public static final String SNAP_LOC="snap_loc";
+	 public static final String COVER_SNAP_LOC="cover_snap_loc";
+	 
 	 public static final String PRESENT_ADDRESS="present_add";
 	 public static final String PERMANET_ADDRESS="permanet_add";
 	 public static final String ACCOUNT_STATUS="status";
 	 public static final String ACCOUNT_STATE="state";
 	 public static final String INFO = "info";
 	 public static final String META_INFO = "meta";
+	 
+	 public static final String BLOOD_GROUP = "blood_group";
+	 public static final String RELATION_SHIP_STATUS = "relation_ship_status";
+	 public static final String CURRENCY = "currency";
+	 public static final String LOCALE = "locale";
+	 public static final String TIME_ZONE = "TIME_ZONE";
 
 }

@@ -13,18 +13,23 @@ package com.uimirror.core;
 import static com.uimirror.core.user.DOBDBFields.*;
 import static com.uimirror.core.user.UserDBFields.DATE_OF_BIRTH;
 import static com.uimirror.core.user.UserDBFields.META_INFO;
+
 import java.time.LocalDate;
 import java.util.Map;
 import java.util.WeakHashMap;
+
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.StandardToStringStyle;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
+
 import com.uimirror.core.user.MetaInfoDBFields;
 import com.uimirror.core.util.DateTimeUtil;
 
 /**
  * Manages the Date of birth details.
  * which has format and locale details to format the date.
- * it de fragments the dob and maintain the date, month and yesr seperatly.
+ * it de fragments the dob and maintain the date, month and year separately.
  * it has utility method {@link #isMoreThanighteen()} to validate the date of birth 
  * follows the right standard. 
  * @author Jay
@@ -75,7 +80,7 @@ public class DOB{
 		String dob = (String)dobMap.get(DATE_OF_BIRTH);
 		String format = (String)dobMap.get(DOB_FORMAT);
 		Map<String, Object> metaMap = (Map<String, Object>)map.get(META_INFO);
-		String locale = metaMap == null ? null : (String)metaMap.get(MetaInfoDBFields.LOCALE);
+		String locale = (String)metaMap.get(MetaInfoDBFields.LOCALE);
 		return new DOBBuilder(dob).addFormat(format).addLocale(locale).build();
 	}
 	
@@ -163,8 +168,11 @@ public class DOB{
 
 	@Override
 	public String toString() {
-		return "DOB [dob=" + dob + ", format=" + format + ", fragments="
-				+ fragments + "]";
+		StandardToStringStyle style = new StandardToStringStyle();
+	    style.setFieldSeparator(", ");
+	    style.setUseClassName(false);
+	    style.setUseIdentityHashCode(false);
+	    return new ReflectionToStringBuilder(this, style).toString();
 	}
 	
 }

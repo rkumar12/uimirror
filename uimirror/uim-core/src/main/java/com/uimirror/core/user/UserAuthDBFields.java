@@ -25,7 +25,6 @@ public class UserAuthDBFields extends BasicDBFields{
 	//User Credentials
 	public static final String USER_ID = "uid";
 	public static final String PASSWORD = "pwd";
-	public static final String SCREEN_PASSWORD = "screen_pwd";
 	public static final String ACCOUNT_STATE = "state";
 	public static final String ACCOUNT_STATUS = "status";
 	public static final String ENCRYPTION_PWD = "salt";

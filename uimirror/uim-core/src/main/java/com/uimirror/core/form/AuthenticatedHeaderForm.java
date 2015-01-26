@@ -30,6 +30,9 @@ import com.uimirror.core.service.BeanValidatorService;
  * Converts the {@link HeaderParam} provided in the request for the
  * authentication purpose.
  * 
+ * Every request needs an access token to access the system. every calss or operation which are
+ * Dependent of access Token should extend this class
+ * 
  * @author Jay
  */
 public class AuthenticatedHeaderForm extends ClientMetaForm implements Serializable, AuthenticatedRequestParam, BeanValidatorService{
@@ -39,6 +42,7 @@ public class AuthenticatedHeaderForm extends ClientMetaForm implements Serializa
 	@HeaderParam(TOKEN_ENCRYPTION_STARTEGY)
 	private String tokenEncryptionStartegy;
 	
+	//Can be part of the header param
 	@HeaderParam(AUTHORIZATION_TOKEN)
 	private String accessToken;
 	

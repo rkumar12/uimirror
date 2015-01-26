@@ -11,12 +11,12 @@
 package com.uimirror.core.user;
 
 import static com.uimirror.core.mongo.feature.BasicDBFields.ID;
-import static com.uimirror.core.user.UserDBFields.DATE_OF_BIRTH;
 import static com.uimirror.core.user.UserDBFields.INFO;
 import static com.uimirror.core.user.UserDBFields.META_INFO;
 import static com.uimirror.core.user.UserDBFields.PERMANET_ADDRESS;
 import static com.uimirror.core.user.UserDBFields.PRESENT_ADDRESS;
 
+import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
 
@@ -26,7 +26,6 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import com.uimirror.core.Builder;
-import com.uimirror.core.DOB;
 import com.uimirror.core.mongo.feature.AbstractBeanBasedDocument;
 import com.uimirror.core.service.BeanValidatorService;
 
@@ -37,9 +36,18 @@ import com.uimirror.core.service.BeanValidatorService;
 public class BasicDetails extends AbstractBeanBasedDocument<BasicDetails> implements BeanValidatorService {
 
 	private static final long serialVersionUID = -5282406171053226490L;
+	
+	private List<Education> education;
+	private List<Job> jobs;
+	private List<Place> placesLived;
+	private List<FamilyInfo> familyInfo;
+	private String aboutMe;
+	private List<String> knowLanguages;
+	private List<Place> placesVisited;
+	
 	private String presentAddress;
 	private String permanetAddress;
-	private DOB dateOfBirth;
+	
 	private MetaInfo metaInfo;
 	private Map<String, Object> details;
 
@@ -55,7 +63,6 @@ public class BasicDetails extends AbstractBeanBasedDocument<BasicDetails> implem
 	public BasicDetails updateId(String id) {
 		return new BasicDetailsBuilder(id).
 				updateDetails(details).
-				updateDOB(dateOfBirth).
 				updatePermanetAddress(permanetAddress).
 				updatePresentAddress(presentAddress).
 				updateMetaInfo(metaInfo).
@@ -93,8 +100,6 @@ public class BasicDetails extends AbstractBeanBasedDocument<BasicDetails> implem
 	@Override
 	public boolean isValid() {
 		boolean valid = Boolean.TRUE;
-		if(getDateOfBirth() == null || !getDateOfBirth().isMoreThanighteen())
-			valid = Boolean.FALSE;
 		return valid;
 	}
 
@@ -111,7 +116,6 @@ public class BasicDetails extends AbstractBeanBasedDocument<BasicDetails> implem
 			state.put(PERMANET_ADDRESS, getPermanetAddress());
 		if(StringUtils.hasText(getPresentAddress()))
 			state.put(PRESENT_ADDRESS, getPresentAddress());
-		state.put(DATE_OF_BIRTH, getDateOfBirth().toMap());
 
 		if(getMetaInfo() != null){
 			Map<String, Object> meta_info = getMetaInfo().toMap();
@@ -132,7 +136,6 @@ public class BasicDetails extends AbstractBeanBasedDocument<BasicDetails> implem
 	private BasicDetails init(Map<String, Object> raw) {
 		MetaInfo info = null;
 		String id = (String) raw.get(ID);
-		DOB dob = DOB.initFromMap(raw);
 		@SuppressWarnings("unchecked")
 		Map<String, Object> metaMap = (Map<String, Object>)raw.get(META_INFO);
 		if(!CollectionUtils.isEmpty(metaMap))
@@ -143,7 +146,6 @@ public class BasicDetails extends AbstractBeanBasedDocument<BasicDetails> implem
 		Map<String, Object> extraInfo = (Map<String, Object>)raw.get(INFO);
 		return new BasicDetailsBuilder(id).
 				updateDetails(extraInfo).
-				updateDOB(dob).
 				updatePermanetAddress(permanetAddId).
 				updatePresentAddress(presentAddId).
 				updateMetaInfo(info).
@@ -154,7 +156,7 @@ public class BasicDetails extends AbstractBeanBasedDocument<BasicDetails> implem
 		private String profileId;
 		private String presentAddress;
 		private String permanetAddress;
-		private DOB dateOfBirth;
+		
 		private Map<String, Object> details;
 		private MetaInfo metaInfo;
 		
@@ -169,11 +171,6 @@ public class BasicDetails extends AbstractBeanBasedDocument<BasicDetails> implem
 		
 		public BasicDetailsBuilder updatePermanetAddress(String locationId){
 			this.permanetAddress = locationId;
-			return this;
-		}
-		
-		public BasicDetailsBuilder updateDOB(DOB dob){
-			this.dateOfBirth = dob;
 			return this;
 		}
 		
@@ -199,7 +196,6 @@ public class BasicDetails extends AbstractBeanBasedDocument<BasicDetails> implem
 	
 	private BasicDetails(BasicDetailsBuilder builder){
 		super(builder.profileId);
-		this.dateOfBirth = builder.dateOfBirth;
 		this.details = builder.details;
 		this.permanetAddress = builder.permanetAddress;
 		this.presentAddress = builder.presentAddress;
@@ -208,10 +204,6 @@ public class BasicDetails extends AbstractBeanBasedDocument<BasicDetails> implem
 	
 	public String getProfileId() {
 		return getId();
-	}
-
-	public DOB getDateOfBirth() {
-		return this.dateOfBirth;
 	}
 
 	public Map<String, Object> getDetails() {

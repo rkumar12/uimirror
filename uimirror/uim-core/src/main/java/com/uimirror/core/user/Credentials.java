@@ -16,7 +16,6 @@ import static com.uimirror.core.user.UserAuthDBFields.ACCOUNT_STATE;
 import static com.uimirror.core.user.UserAuthDBFields.ACCOUNT_STATUS;
 import static com.uimirror.core.user.UserAuthDBFields.ENCRYPTION_PWD;
 import static com.uimirror.core.user.UserAuthDBFields.PASSWORD;
-import static com.uimirror.core.user.UserAuthDBFields.SCREEN_PASSWORD;
 import static com.uimirror.core.user.UserAuthDBFields.USER_ID;
 
 import java.util.LinkedHashMap;
@@ -39,7 +38,6 @@ public class Credentials extends AbstractBeanBasedDocument<Credentials> implemen
 	private static final long serialVersionUID = -8054579659925533437L;
 	private List<String> userNames;
 	private String password;
-	private String screenPassword;
 	private AccountState accountState;
 	private AccountStatus accountStatus;
 	private String encryptionStratgy;
@@ -72,7 +70,6 @@ public class Credentials extends AbstractBeanBasedDocument<Credentials> implemen
 				addEncStartegy(encryptionStratgy).
 				addInstructions(instructions).
 				addPassword(password).
-				addScreenPassword(screenPassword).
 				addState(accountState).
 				addStatus(accountStatus).
 				addUserNames(userNames).build();
@@ -83,7 +80,6 @@ public class Credentials extends AbstractBeanBasedDocument<Credentials> implemen
 				addEncStartegy(encryptionStratgy).
 				addInstructions(instructions).
 				addPassword(password).
-				addScreenPassword(screenPassword).
 				addState(AccountState.ENABLED).
 				addStatus(accountStatus).
 				addUserNames(userNames).build();
@@ -105,7 +101,6 @@ public class Credentials extends AbstractBeanBasedDocument<Credentials> implemen
 		String id = (String)raw.get(ID);
 		List<String> userNames = (List<String>) raw.get(USER_ID);
 		String password = (String)raw.get(PASSWORD);
-		String screenPassword = (String)raw.get(SCREEN_PASSWORD);
 		String encryptionStratgy = (String)raw.get(ENCRYPTION_PWD);
 		Map<String, Object> instructions = (Map<String, Object>)raw.get(ACCOUNT_INSTRUCTION);
 		String statVal = (String)raw.get(ACCOUNT_STATUS);
@@ -116,7 +111,6 @@ public class Credentials extends AbstractBeanBasedDocument<Credentials> implemen
 				addEncStartegy(encryptionStratgy).
 				addInstructions(instructions).
 				addPassword(password).
-				addScreenPassword(screenPassword).
 				addState(accountState).
 				addStatus(accountStatus).
 				addUserNames(userNames);
@@ -145,8 +139,6 @@ public class Credentials extends AbstractBeanBasedDocument<Credentials> implemen
 		state.put(ID, getId());
 		state.put(USER_ID, getUserId());
 		state.put(PASSWORD, getPassword());
-		if(StringUtils.hasText(getScreenPassword()))
-			state.put(SCREEN_PASSWORD, getScreenPassword());
 		if(StringUtils.hasText(getEncryptionStratgy()))
 			state.put(ENCRYPTION_PWD, getEncryptionStratgy());
 		if(!CollectionUtils.isEmpty(getInstructions()))
@@ -181,17 +173,12 @@ public class Credentials extends AbstractBeanBasedDocument<Credentials> implemen
 	public Map<String, Object> getInstructions() {
 		return instructions;
 	}
-
-	public String getScreenPassword() {
-		return screenPassword;
-	}
 	
 	public static class CredentialsBuilder implements Builder<Credentials>{
 		
 		private String profileId;
 		private List<String> userNames;
 		private String password;
-		private String screenPassword;
 		private AccountState accountState;
 		private AccountStatus accountStatus;
 		private String encryptionStratgy;
@@ -208,11 +195,6 @@ public class Credentials extends AbstractBeanBasedDocument<Credentials> implemen
 		
 		public CredentialsBuilder addPassword(String password){
 			this.password = password;
-			return this;
-		}
-		
-		public CredentialsBuilder addScreenPassword(String screenPassword){
-			this.screenPassword = screenPassword;
 			return this;
 		}
 		
@@ -263,7 +245,6 @@ public class Credentials extends AbstractBeanBasedDocument<Credentials> implemen
 		this.encryptionStratgy = builder.encryptionStratgy;
 		this.instructions = builder.instructions;
 		this.password = builder.password;
-		this.screenPassword = builder.screenPassword;
 		this.userNames = builder.userNames;
 	}
 	
@@ -272,7 +253,6 @@ public class Credentials extends AbstractBeanBasedDocument<Credentials> implemen
 		//NOP
 		this.userNames = null;
 		this.password = null;
-		this.screenPassword = null;
 		this.accountState = null;
 		this.accountStatus = null;
 		this.encryptionStratgy = null;

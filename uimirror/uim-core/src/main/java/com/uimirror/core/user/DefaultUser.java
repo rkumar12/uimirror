@@ -32,6 +32,7 @@ public final class DefaultUser extends AbstractBeanBasedDocument<DefaultUser> im
 	private Credentials credentials;
 	private BasicDetails details;
 	private AccountLogs accountLogs;
+	private ExtraInfo extraInfo;
 	
 	//Don't Use It untill it has some special requirment
 	public DefaultUser() {

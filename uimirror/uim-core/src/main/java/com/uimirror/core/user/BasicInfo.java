@@ -14,10 +14,18 @@ import static com.uimirror.core.Constants.SINGLE_SPACE;
 import static com.uimirror.core.mongo.feature.BasicDBFields.ID;
 import static com.uimirror.core.user.UserDBFields.ACCOUNT_STATE;
 import static com.uimirror.core.user.UserDBFields.ACCOUNT_STATUS;
+import static com.uimirror.core.user.UserDBFields.DATE_OF_BIRTH;
 import static com.uimirror.core.user.UserDBFields.EMAIL;
 import static com.uimirror.core.user.UserDBFields.FIRST_NAME;
 import static com.uimirror.core.user.UserDBFields.GENDER;
 import static com.uimirror.core.user.UserDBFields.LAST_NAME;
+import static com.uimirror.core.user.UserDBFields.BLOOD_GROUP;
+import static com.uimirror.core.user.UserDBFields.RELATION_SHIP_STATUS;
+import static com.uimirror.core.user.UserDBFields.CURRENCY;
+import static com.uimirror.core.user.UserDBFields.LOCALE;
+import static com.uimirror.core.user.UserDBFields.TIME_ZONE;
+import static com.uimirror.core.user.UserDBFields.SNAP_LOC;
+import static com.uimirror.core.user.UserDBFields.COVER_SNAP_LOC;
 
 import java.util.Map;
 import java.util.WeakHashMap;
@@ -27,13 +35,14 @@ import org.apache.commons.lang3.builder.StandardToStringStyle;
 import org.springframework.util.StringUtils;
 
 import com.uimirror.core.Builder;
+import com.uimirror.core.DOB;
 import com.uimirror.core.bean.Gender;
 import com.uimirror.core.mongo.feature.AbstractBeanBasedDocument;
 import com.uimirror.core.service.BeanValidatorService;
 
 /**
  * Basic Information of a user 
- * such as name, email, gender, current account status and state of the account.
+ * such as name, email, gender, date of birth, profile snap location, current account status and state of the account.
  * @author Jay
  */
 public final class BasicInfo extends AbstractBeanBasedDocument<BasicInfo> implements BeanValidatorService {
@@ -43,8 +52,16 @@ public final class BasicInfo extends AbstractBeanBasedDocument<BasicInfo> implem
 	private String lastName;
 	private String email;
 	private Gender gender;
+	private DOB dateOfBirth;
+	private String profileSnapLoc;
+	private String coverSnapLoc;
 	private AccountStatus accountStatus;
 	private AccountState accountState;
+	private RelationShipStatus status;
+	private BloodGroup bloodGroup;
+	private Locales locale;
+	private Currencies currency;
+	private TimeZones timeZone;
 
 	// DOn't Use this until it has specific requirement
 	public BasicInfo() {
@@ -63,7 +80,16 @@ public final class BasicInfo extends AbstractBeanBasedDocument<BasicInfo> implem
 				addGender(gender).
 				addLastName(lastName).
 				addState(accountState).
-				addStatus(accountStatus).build();
+				addDOB(dateOfBirth).
+				addSnapLoc(profileSnapLoc).
+				addCoverSnapLoc(coverSnapLoc).
+				addStatus(accountStatus).
+				addRelationShipStatus(status).
+				addBloodGroup(bloodGroup).
+				addLocale(locale).
+				addCurrency(currency).
+				addTimeZone(timeZone).
+				build();
 	}
 
 	public BasicInfo enable() {
@@ -72,8 +98,17 @@ public final class BasicInfo extends AbstractBeanBasedDocument<BasicInfo> implem
 				addFirstName(firstName).
 				addGender(gender).
 				addLastName(lastName).
+				addDOB(dateOfBirth).
+				addSnapLoc(profileSnapLoc).
+				addCoverSnapLoc(coverSnapLoc).
 				addState(AccountState.ENABLED).
-				addStatus(accountStatus).build();
+				addStatus(accountStatus).
+				addRelationShipStatus(status).
+				addBloodGroup(bloodGroup).
+				addLocale(locale).
+				addCurrency(currency).
+				addTimeZone(timeZone).
+				build();
 	}
 	
 
@@ -103,6 +138,29 @@ public final class BasicInfo extends AbstractBeanBasedDocument<BasicInfo> implem
 			valid = Boolean.FALSE;
 		if(getAccountStatus() == null)
 			valid = Boolean.FALSE;
+		if(getDateOfBirth() == null || !getDateOfBirth().isMoreThanighteen())
+			valid = Boolean.FALSE;
+		if(getBloodGroup() == null){
+			valid = Boolean.FALSE;
+		}
+		if(!StringUtils.hasText(getProfileSnapLoc())){
+			valid = Boolean.FALSE;
+		}
+		if(!StringUtils.hasText(getCoverSnapLoc())){
+			valid = Boolean.FALSE;
+		}
+		if(getStatus() == null){
+			valid = Boolean.FALSE;
+		}
+		if(getTimeZone() == null){
+			valid = Boolean.FALSE;
+		}
+		if(getLocale() == null){
+			valid = Boolean.FALSE;
+		}
+		if(getCurrency() == null){
+			valid = Boolean.FALSE;
+		}
 		return valid;
 
 	}
@@ -123,6 +181,16 @@ public final class BasicInfo extends AbstractBeanBasedDocument<BasicInfo> implem
 		state.put(GENDER, getGender().toString());
 		state.put(ACCOUNT_STATUS, getAccountStatus().getStatus());
 		state.put(ACCOUNT_STATE, getAccountState().getState());
+		state.put(DATE_OF_BIRTH, getDateOfBirth().toMap());
+		if(StringUtils.hasText(getProfileSnapLoc()))
+			state.put(SNAP_LOC, getProfileSnapLoc());
+		if(StringUtils.hasText(getCoverSnapLoc()))
+			state.put(COVER_SNAP_LOC, getCoverSnapLoc());
+		state.put(BLOOD_GROUP, bloodGroup.getGroup());
+		state.put(RELATION_SHIP_STATUS, status.getStatus());
+		state.put(LOCALE, locale.getLocale());
+		state.put(CURRENCY, currency.getCurrency());
+		state.put(TIME_ZONE, timeZone.getTimeZone().getID());
 		return state;
 	}
 
@@ -158,8 +226,30 @@ public final class BasicInfo extends AbstractBeanBasedDocument<BasicInfo> implem
 		String stateVal = (String) raw.get(ACCOUNT_STATE);
 		AccountStatus accountStatus = StringUtils.hasText(statVal) ? AccountStatus.getEnum(statVal): null;
 		AccountState accountState = StringUtils.hasText(stateVal) ? AccountState.getEnum(stateVal): null;
+		DOB dob = DOB.initFromMap(raw);
+		String snapLoc = (String)raw.get(SNAP_LOC);
+		String coverSnapLoc = (String)raw.get(COVER_SNAP_LOC);
+		
+		String group = (String)raw.get(BLOOD_GROUP);
+		BloodGroup bloodGroup = StringUtils.hasText(group) ? BloodGroup.getEnum(group): null;
+		String relationStatus = (String)raw.get(RELATION_SHIP_STATUS);
+		RelationShipStatus status = StringUtils.hasText(relationStatus) ? RelationShipStatus.getEnum(relationStatus): null;
+		String loc = (String)raw.get(LOCALE);
+		Locales locale = StringUtils.hasText(loc) ? Locales.getEnum(loc): null;
+		String curr = (String)raw.get(CURRENCY);
+		Currencies currency = StringUtils.hasText(curr) ? Currencies.getEnum(curr): null;
+		String zone = (String)raw.get(TIME_ZONE);
+		TimeZones timeZone = StringUtils.hasText(zone) ? TimeZones.getEnum(zone): null;
 		BasicInfoBuilder builder = new BasicInfoBuilder(id);
-		builder.addEmail(email).addFirstName(firstName).addGender(genderVal).addLastName(lastName).addState(accountState).addStatus(accountStatus);
+		builder.addEmail(email).addFirstName(firstName).
+		addGender(genderVal).addLastName(lastName).addState(accountState).addStatus(accountStatus)
+		.addDOB(dob).addCoverSnapLoc(coverSnapLoc).addSnapLoc(snapLoc)
+		.addBloodGroup(bloodGroup)
+		.addRelationShipStatus(status)
+		.addLocale(locale)
+		.addCurrency(currency)
+		.addTimeZone(timeZone);
+		
 		return builder.build();
 	}
 	
@@ -178,6 +268,19 @@ public final class BasicInfo extends AbstractBeanBasedDocument<BasicInfo> implem
 			return this.firstName;
 		return this.lastName;
 	}
+	
+	public DOB getDateOfBirth() {
+		return dateOfBirth;
+	}
+
+	public String getProfileSnapLoc() {
+		return profileSnapLoc;
+	}
+
+	public String getCoverSnapLoc() {
+		return coverSnapLoc;
+	}
+
 	public String getEmail() {
 		return email;
 	}
@@ -193,9 +296,32 @@ public final class BasicInfo extends AbstractBeanBasedDocument<BasicInfo> implem
 	public AccountState getAccountState() {
 		return accountState;
 	}
+	
+	
 
 	public String getProfileId() {
 		return getId();
+	}
+	
+
+	public RelationShipStatus getStatus() {
+		return status;
+	}
+
+	public BloodGroup getBloodGroup() {
+		return bloodGroup;
+	}
+
+	public Locales getLocale() {
+		return locale;
+	}
+
+	public Currencies getCurrency() {
+		return currency;
+	}
+
+	public TimeZones getTimeZone() {
+		return timeZone;
 	}
 
 	@Override
@@ -207,7 +333,6 @@ public final class BasicInfo extends AbstractBeanBasedDocument<BasicInfo> implem
 				+ ((getProfileId() == null) ? 0 : getProfileId().hashCode());
 		return result;
 	}
-	
 	
 
 	@Override
@@ -238,8 +363,16 @@ public final class BasicInfo extends AbstractBeanBasedDocument<BasicInfo> implem
 		private String lastName;
 		private String email;
 		private Gender gender;
+		private DOB dateOfBirth;
 		private AccountStatus accountStatus;
 		private AccountState accountState;
+		private String profileSnapLoc;
+		private String coverSnapLoc;
+		private RelationShipStatus status;
+		private BloodGroup bloodGroup;
+		private Locales locale;
+		private Currencies currency;
+		private TimeZones timeZone;
 		
 		public BasicInfoBuilder(String profileId) {
 			this.profileId = profileId;
@@ -257,11 +390,6 @@ public final class BasicInfo extends AbstractBeanBasedDocument<BasicInfo> implem
 		
 		public BasicInfoBuilder addEmail(String email){
 			this.email = email;
-			return this;
-		}
-		
-		public BasicInfoBuilder addGender(String gender){
-			this.gender = Gender.getEnum(gender);
 			return this;
 		}
 		
@@ -289,6 +417,46 @@ public final class BasicInfo extends AbstractBeanBasedDocument<BasicInfo> implem
 			this.accountState = state;
 			return this;
 		}
+		
+		public BasicInfoBuilder addDOB(DOB dob){
+			this.dateOfBirth = dob;
+			return this;
+		}
+		
+		public BasicInfoBuilder addSnapLoc(String snapLoc){
+			this.profileSnapLoc = snapLoc;
+			return this;
+		}
+		
+		public BasicInfoBuilder addCoverSnapLoc(String coverSnapLoc){
+			this.coverSnapLoc = coverSnapLoc;
+			return this;
+		}
+		
+		public BasicInfoBuilder addBloodGroup(BloodGroup bloodGroup){
+			this.bloodGroup = bloodGroup;
+			return this;
+		}
+		
+		public BasicInfoBuilder addRelationShipStatus(RelationShipStatus status){
+			this.status = status;
+			return this;
+		}
+		
+		public BasicInfoBuilder addLocale(Locales locale){
+			this.locale = locale;
+			return this;
+		}
+		
+		public BasicInfoBuilder addCurrency(Currencies currency){
+			this.currency = currency;
+			return this;
+		}
+		
+		public BasicInfoBuilder addTimeZone(TimeZones timeZone){
+			this.timeZone = timeZone;
+			return this;
+		}
 
 		/* (non-Javadoc)
 		 * @see com.uimirror.core.Builder#build()
@@ -308,6 +476,14 @@ public final class BasicInfo extends AbstractBeanBasedDocument<BasicInfo> implem
 		this.firstName = builder.firstName;
 		this.lastName = builder.lastName;
 		this.gender = builder.gender;
+		this.dateOfBirth = builder.dateOfBirth;
+		this.profileSnapLoc = builder.profileSnapLoc;
+		this.coverSnapLoc = builder.coverSnapLoc;
+		this.bloodGroup = builder.bloodGroup;
+		this.status = builder.status;
+		this.currency = builder.currency;
+		this.locale = builder.locale;
+		this.timeZone = builder.timeZone;
 	}
 
 	@Override

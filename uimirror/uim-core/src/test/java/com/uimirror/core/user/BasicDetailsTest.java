@@ -29,7 +29,7 @@ public class BasicDetailsTest {
 	
 	private MetaInfo info = new MetaInfo.MetaBuilder("America/Los_Angeles").addCountryCode("US").addLang("en").build();
 	private DOB dob = new DOB.DOBBuilder("1988-03-18").build();
-	private BasicDetails dt = new BasicDetails.BasicDetailsBuilder(null).updateDOB(dob).updateMetaInfo(info).build();
+	private BasicDetails dt = new BasicDetails.BasicDetailsBuilder(null).updateMetaInfo(info).build();
 	private Map<String, Object> op = new WeakHashMap<String, Object>();
 	
 	@Before
