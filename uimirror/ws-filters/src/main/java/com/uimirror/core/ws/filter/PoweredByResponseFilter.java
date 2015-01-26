@@ -8,7 +8,7 @@
  * Contributors:
  * Uimirror Team
  *******************************************************************************/
-package com.uimirror.ws.api.filter;
+package com.uimirror.core.ws.filter;
 
 import java.io.IOException;
 import javax.ws.rs.container.ContainerRequestContext;

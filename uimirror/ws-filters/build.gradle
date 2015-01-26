@@ -1,33 +1,7 @@
 apply plugin:'application'
 
-group = "com.uimirror.api"
-version = 1.0
-
 dependencies {
 	compile project(':uim-core')
-    compile 'commons-codec:commons-codec:1.5'
-	compile 'commons-lang:commons-lang:2.6'
-	compile 'javax.annotation:javax.annotation-api:1.2'
-	//Jersey Start
-	compile (group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet', version: jerseyVersion){
-		exclude module: 'javax.annotation-api'
-		exclude module: 'aopalliance-repackaged'
-		exclude module: 'javax.inject'
-		exclude module: 'hk2-api'
-		exclude module: 'hk2-locator'
-		exclude module: 'hk2-utils'
-		exclude module: 'tiger-types'
-		exclude module: 'osgi-resource-locator'
-		exclude module: 'jersey-guava'
-		exclude module: 'jersey-container-servlet-core'
-		exclude module: 'jersey-container-servlet'
-		exclude module: 'jersey-common'
-		exclude module: 'jersey-server'
-		exclude module: 'jersey-client'
-		exclude module: 'jersey-container-servlet'
-		
-	}
-	//Jersey END
 }
 
 task sourceJar(type: Jar, dependsOn: classes) {
