@@ -103,7 +103,12 @@
 - Web Releated utils.
  
 
-
+**Usage**
+===================
+Include it as dependency:
+<pre>
+compile group: 'com.uimirror.api', name: 'uim-core', version: '1.0'
+</pre>
 
 
 
