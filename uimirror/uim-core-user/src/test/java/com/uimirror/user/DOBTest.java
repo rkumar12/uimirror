@@ -25,6 +25,12 @@ import org.junit.Test;
 import com.uimirror.core.user.DOB;
 
 /**
+ * <h1>Sample Serilzing Text:</h1>
+ * {dob=1988-03-12, format=MMM dd uuuu}
+ * 
+ * <h1>Sample De-seralize Text:</h1>
+ * [dob=1988-03-18, format=dd-MMM-uuuu, fragments={date=18, year=1988, month=3}, 
+ * 	dobInDate=1988-03-18, locale=en_UK]
  * @author Jay
  */
 public class DOBTest {
