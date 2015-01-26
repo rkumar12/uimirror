@@ -16,18 +16,18 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.mongodb.DBCollection;
-import com.uimirror.user.store.AccountTokenStore;
-import com.uimirror.user.store.DefaultUserStore;
-import com.uimirror.user.store.PersistedAccountTokenMongoStore;
-import com.uimirror.user.store.PersistedDefaultUserMongoStore;
-import com.uimirror.user.store.PersistedUserAccountLogMongoStore;
-import com.uimirror.user.store.PersistedUserBasicDetailsMongoStore;
-import com.uimirror.user.store.PersistedUserBasicInfoMongoStore;
-import com.uimirror.user.store.PersistedUserCredentialMongoStore;
-import com.uimirror.user.store.UserAccountLogStore;
-import com.uimirror.user.store.UserBasicDetailsStore;
-import com.uimirror.user.store.UserBasicInfoStore;
-import com.uimirror.user.store.UserCredentialsStore;
+import com.uimirror.core.user.store.AccountTokenStore;
+import com.uimirror.core.user.store.DefaultUserStore;
+import com.uimirror.core.user.store.PersistedAccountTokenMongoStore;
+import com.uimirror.core.user.store.PersistedDefaultUserMongoStore;
+import com.uimirror.core.user.store.PersistedUserAccountLogMongoStore;
+import com.uimirror.core.user.store.PersistedUserBasicDetailsMongoStore;
+import com.uimirror.core.user.store.PersistedUserBasicInfoMongoStore;
+import com.uimirror.core.user.store.PersistedUserCredentialMongoStore;
+import com.uimirror.core.user.store.UserAccountLogStore;
+import com.uimirror.core.user.store.UserBasicDetailsStore;
+import com.uimirror.core.user.store.UserBasicInfoStore;
+import com.uimirror.core.user.store.UserCredentialsStore;
 
 /**
  * Contains the store repo details for the user.

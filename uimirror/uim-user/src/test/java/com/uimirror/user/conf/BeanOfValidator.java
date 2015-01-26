@@ -14,10 +14,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.uimirror.core.service.ValidatorService;
-import com.uimirror.user.processor.UserRegistrationValidationService;
-import com.uimirror.user.store.AccountTokenStore;
-import com.uimirror.user.store.DefaultUserStore;
-import com.uimirror.user.store.UserBasicInfoStore;
+import com.uimirror.core.user.processor.UserRegistrationValidationService;
+import com.uimirror.core.user.store.AccountTokenStore;
+import com.uimirror.core.user.store.DefaultUserStore;
+import com.uimirror.core.user.store.UserBasicInfoStore;
 
 /**
  * Contains the bean definition for all the user and client process

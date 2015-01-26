@@ -17,16 +17,16 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 
 import com.uimirror.core.user.DefaultUser;
+import com.uimirror.core.user.processor.BackGroundCreateMissingUserProcessor;
+import com.uimirror.core.user.processor.BackGroundCreateUserProcessor;
+import com.uimirror.core.user.processor.InvalidateAccountTokenProcessor;
+import com.uimirror.core.user.store.AccountTokenStore;
+import com.uimirror.core.user.store.DefaultUserStore;
+import com.uimirror.core.user.store.UserAccountLogStore;
+import com.uimirror.core.user.store.UserBasicDetailsStore;
+import com.uimirror.core.user.store.UserBasicInfoStore;
+import com.uimirror.core.user.store.UserCredentialsStore;
 import com.uimirror.core.util.thread.BackgroundProcessor;
-import com.uimirror.user.processor.BackGroundCreateMissingUserProcessor;
-import com.uimirror.user.processor.BackGroundCreateUserProcessor;
-import com.uimirror.user.processor.InvalidateAccountTokenProcessor;
-import com.uimirror.user.store.AccountTokenStore;
-import com.uimirror.user.store.DefaultUserStore;
-import com.uimirror.user.store.UserAccountLogStore;
-import com.uimirror.user.store.UserBasicDetailsStore;
-import com.uimirror.user.store.UserBasicInfoStore;
-import com.uimirror.user.store.UserCredentialsStore;
 
 /**
  * Initialize or configures the service bean getting used for this application
