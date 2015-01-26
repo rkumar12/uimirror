@@ -27,7 +27,7 @@ import com.uimirror.core.auth.Authentication;
 import com.uimirror.core.auth.Token;
 import com.uimirror.core.auth.TokenType;
 import com.uimirror.core.auth.token.DefaultAccessToken;
-import com.uimirror.core.dao.RecordNotFoundException;
+import com.uimirror.core.exceptions.db.RecordNotFoundException;
 import com.uimirror.core.extra.MapException;
 import com.uimirror.core.user.Credentials;
 import com.uimirror.core.util.DateTimeUtil;

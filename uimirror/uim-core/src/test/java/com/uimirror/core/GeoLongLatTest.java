@@ -10,10 +10,10 @@
  *******************************************************************************/
 package com.uimirror.core;
 
-import static com.uimirror.core.mongo.feature.LocationDBField.COORDINATES;
-import static com.uimirror.core.mongo.feature.LocationDBField.LOCATION;
-import static com.uimirror.core.mongo.feature.LocationDBField.LOCATION_NAME;
-import static com.uimirror.core.mongo.feature.LocationDBField.TYPE;
+import static com.uimirror.core.LocationDBField.COORDINATES;
+import static com.uimirror.core.LocationDBField.LOCATION;
+import static com.uimirror.core.LocationDBField.LOCATION_NAME;
+import static com.uimirror.core.LocationDBField.TYPE;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.ArrayList;

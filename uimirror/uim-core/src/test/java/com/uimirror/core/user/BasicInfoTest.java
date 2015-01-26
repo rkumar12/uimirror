@@ -28,8 +28,6 @@ import nl.jqno.equalsverifier.Warning;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.uimirror.core.bean.Gender;
-
 /**
  * @author Jay
  */

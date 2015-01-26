@@ -13,7 +13,7 @@ package com.uimirror.ouath.client.validator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.uimirror.core.dao.RecordNotFoundException;
+import com.uimirror.core.exceptions.db.RecordNotFoundException;
 import com.uimirror.core.service.ValidatorService;
 import com.uimirror.ouath.client.Client;
 import com.uimirror.ouath.client.exception.ClientAlreadyExistException;

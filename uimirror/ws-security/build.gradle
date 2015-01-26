@@ -1,6 +1,7 @@
 apply plugin:'application'
-group = "com.uimirror"
-version = 1.0
+
+//group = "com.uimirror.api"
+//version = 1.0
 
 dependencies {
 	compile project(':uim-sso-core')

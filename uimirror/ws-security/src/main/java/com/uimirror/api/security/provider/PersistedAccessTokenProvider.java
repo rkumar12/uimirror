@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import com.uimirror.core.auth.AccessToken;
 import com.uimirror.core.auth.Authentication;
-import com.uimirror.core.dao.RecordNotFoundException;
+import com.uimirror.core.exceptions.db.RecordNotFoundException;
 import com.uimirror.sso.auth.provider.AccessTokenProvider;
 import com.uimirror.sso.exception.InvalidTokenException;
 import com.uimirror.sso.token.store.AccessTokenStore;

@@ -14,7 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.uimirror.core.auth.AccessToken;
-import com.uimirror.core.dao.RecordNotFoundException;
+import com.uimirror.core.exceptions.db.RecordNotFoundException;
 import com.uimirror.core.rest.extra.AlreadyExistException;
 import com.uimirror.core.service.ValidatorService;
 import com.uimirror.core.user.AccountState;

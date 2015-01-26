@@ -1,26 +1,37 @@
-                                                        uimirror
-                                                        ========
-Challenge
-=========
+**uimirror**
+========
 
-Instructions:
+**Goal**
 =============
-      Step 1: Check out uimirror, ws_challenge module to the loacl git
-      Step 2: In Eclipse Import poject as Gradel project
-              (Please Note, uimirror is the main mdule for all the common tasks and it needs to be build first then       ws_challenge, which is for the challenge module)
-      Step 3: In the uimirror folder issue 'gradlew' command without quote 
-      Step 4: In the ws_challenge folder issue 'gradlew' command without quote
-      Step 5: read read me file present in each module
+- Set up core API library for the applications getting delivered.
+- The main core modules are uim-core, uim-account, uim-ouath2, ws-security
   
-Gradle Tasks For ws_challenge
+**Instructions To Build**
 =============================
-						build : to build the project
-  					distZip: create a distrubtion in zip
+- Check out the project
+- Navigate to the uimirror->build.gradle, <pre>run clean build publishToMavenLocal</pre>
   					
   					
-Don't
+**Does**
 ======
-      1- Never check in project content from build, bin, .gradle folder
-      2- Never check in .class files
-      
-  
+- Take updates always and check the release version and notes
+- Do a careful analysis on the version and its feature before changing the depedancy versions
+
+**Don't**
+=======
+- Never check in any file which is not compling.
+- Never commit anything from bin and build folder.
+
+**Modules**
+=====
+**uimirror**
+======
+**Features**
+- Basic API for the Uimirror
+- 
+
+**uim-oauth2**
+=====
+- oAuth2 Implimentation
+
+

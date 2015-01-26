@@ -20,10 +20,10 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import com.mongodb.DBCollection;
-import com.uimirror.core.dao.AbstractMongoStore;
-import com.uimirror.core.dao.MongoStoreHelper;
 import com.uimirror.core.mongo.BasicMongoOperators;
 import com.uimirror.core.rest.extra.IllegalArgumentException;
+import com.uimirror.core.store.AbstractMongoStore;
+import com.uimirror.core.store.MongoStoreHelper;
 import com.uimirror.sso.client.ClientAuthorizedScope;
 import com.uimirror.sso.client.UserAuthorizedClient;
 import com.uimirror.sso.client.UserAuthorizedClientDBFields;

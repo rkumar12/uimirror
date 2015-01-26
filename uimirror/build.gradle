@@ -16,20 +16,18 @@ subprojects  {
 		javaeeApiVersion = "7.0"
 		springVersion = "4.1.4.RELEASE"
 		springBootVersion = '1.2.1.RELEASE'
-		junitVersion = '4.11'
+		junitVersion = '4.12'
 		//gensonVersion = '1.1-RC2'
-		janinoVersion = '2.7.6'
-		mockitoVersion = '1.9.5'
+		janinoVersion = '2.7.7'
+		mockitoVersion = '1.10.19'
 		//powermockVersion = '1.5.1'
-		uimCoreVersion = '1.0'
-		wsSecurityVersion = '1.0'
-		wsFiltersVersion = '1.0'
-		cucumberJavaVersion = '1.2.0'
-		seertjVersion = '1.7.0'
+		cucumberJavaVersion = '1.2.2'
+		aseertjVersion = '1.7.1'
 		equalsQualiferVersion = '1.5'
+		commonLangVersion = '3.3.2'
 	}
   
-	group = 'com.uimirror'
+	group = 'com.uimirror.api'
 	version = '1.0'
 }
 subprojects {
@@ -41,7 +39,7 @@ subprojects {
 		testCompile group: 'info.cukes', name: 'cucumber-java', version: cucumberJavaVersion
 		testCompile group: 'info.cukes', name: 'cucumber-junit', version: cucumberJavaVersion
 		testCompile group: 'info.cukes', name: 'cucumber-spring', version: cucumberJavaVersion
-		testCompile group: 'org.assertj', name: 'assertj-core', version: seertjVersion
+		testCompile group: 'org.assertj', name: 'assertj-core', version: aseertjVersion
 		//EqualsVerifier
 		testCompile group: 'nl.jqno.equalsverifier', name: 'equalsverifier', version: equalsQualiferVersion
 		//Logging
@@ -64,7 +62,7 @@ subprojects {
 		compile (group: 'org.springframework', name: 'spring-expression', version: springVersion)
 		//Spring End
 		//Common lang
-		compile group: 'org.apache.commons', name: 'commons-lang3', version:'3.1'
+		compile group: 'org.apache.commons', name: 'commons-lang3', version: commonLangVersion
     }
 
 	description = "UIMirror Common Applications."

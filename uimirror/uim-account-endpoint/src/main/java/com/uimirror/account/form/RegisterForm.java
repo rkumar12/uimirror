@@ -27,9 +27,9 @@ import org.springframework.util.StringUtils;
 
 import com.uimirror.account.core.Password;
 import com.uimirror.core.Constants;
-import com.uimirror.core.bean.Gender;
 import com.uimirror.core.rest.extra.IllegalArgumentException;
 import com.uimirror.core.service.BeanValidatorService;
+import com.uimirror.core.user.Gender;
 import com.uimirror.core.util.DateTimeUtil;
 import com.uimirror.core.util.MessageUtil;
 import com.uimirror.core.util.StringRegexUtil;

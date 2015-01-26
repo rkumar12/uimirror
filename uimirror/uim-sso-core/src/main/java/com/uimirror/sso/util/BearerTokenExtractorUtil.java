@@ -23,6 +23,9 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 /**
+ * Extracts the bearer token from {@link ContainerRequestContext}
+ * This will basically comes to use, when using with filters as security check points to get the 
+ * authorization token from the header.
  * @author Jay
  */
 public class BearerTokenExtractorUtil {

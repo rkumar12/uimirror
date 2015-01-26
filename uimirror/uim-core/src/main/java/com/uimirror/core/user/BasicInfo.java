@@ -36,13 +36,12 @@ import org.springframework.util.StringUtils;
 
 import com.uimirror.core.Builder;
 import com.uimirror.core.DOB;
-import com.uimirror.core.bean.Gender;
 import com.uimirror.core.mongo.feature.AbstractBeanBasedDocument;
 import com.uimirror.core.service.BeanValidatorService;
 
 /**
  * Basic Information of a user 
- * such as name, email, gender, date of birth, profile snap location, current account status and state of the account.
+ * such as name, email, gender, current account status and state of the account.
  * @author Jay
  */
 public final class BasicInfo extends AbstractBeanBasedDocument<BasicInfo> implements BeanValidatorService {

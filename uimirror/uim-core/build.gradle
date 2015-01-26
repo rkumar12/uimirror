@@ -1,26 +1,29 @@
 apply plugin:'application'
 ext {
-	mongoVersion = "2.12.2"
+	mongoVersion = "2.12.5"
 	aspectVersion = "1.8.2"
 	gensonVersion = '1.1-RC2'
 	beanUtilVersion = '1.9.2'
 	javaMailVersion = '1.5.0-b01'
-	thymeleafVersion = '2.1.3.RELEASE'
+	thymeleafVersion = '2.1.4.RELEASE'
+	commonIoversion = '2.4'
+	commonValidatorVersion = '1.4.1'
+	commonCodecVersion = '1.10'
 }
-group = "com.uimirror.api"
-version = 1.0
+//group = "com.uimirror.api"
+//version = 1.0
 
 dependencies {
-	//compile 'com.google.code.gson:gson:2.2.4'
-	compile ('org.apache.commons:commons-io:1.3.2')
-	compile ('commons-validator:commons-validator:1.4.0')
+	compile group: 'commons-io', name: 'commons-io', version:commonIoversion
+	compile group: 'commons-validator', name: 'commons-validator', version:commonValidatorVersion
 	compile (group: 'commons-beanutils', name:'commons-beanutils', version: beanUtilVersion)
-	compile ('commons-codec:commons-codec:1.9')
+	compile (group: 'commons-codec', name: 'commons-codec', version: commonCodecVersion)
 	compile group: 'org.mongodb', name: 'mongo-java-driver', version: mongoVersion
 	//Spring Depedancy
 	compile (group: 'org.springframework', name: 'spring-aop', version: springVersion)
 	compile (group: 'org.springframework', name: 'spring-context-support', version: springVersion)
 	//Spring ENd
+
 	//Aspect
 	compile group: 'org.aspectj', name: 'aspectjrt', version: aspectVersion
 	compile group: 'org.aspectj', name: 'aspectjweaver', version: aspectVersion
@@ -47,8 +50,6 @@ dependencies {
 		exclude module: 'jersey-common'
 		exclude module: 'jersey-server'
 		exclude module: 'jersey-client'
-		exclude module: 'jersey-container-servlet'
-		
 	}
 	//Jersey END
 	//Genson

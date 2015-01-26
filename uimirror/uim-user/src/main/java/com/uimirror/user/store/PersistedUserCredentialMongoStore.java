@@ -23,8 +23,8 @@ import org.springframework.util.Assert;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
-import com.uimirror.core.dao.AbstractMongoStore;
-import com.uimirror.core.dao.DBException;
+import com.uimirror.core.exceptions.db.DBException;
+import com.uimirror.core.store.AbstractMongoStore;
 import com.uimirror.core.user.AccountState;
 import com.uimirror.core.user.Credentials;
 
