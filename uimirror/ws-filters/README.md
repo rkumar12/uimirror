@@ -10,12 +10,11 @@
 1. **com.uimirror.core.ws.filter**
 ====================
 <pre>PoweredByResponseFilter</pre>.
-	- Adds the uimirror as the provider in the response
+- Adds the uimirror as the provider in the response
 <pre>ContentTypeResponeFilter</pre>
-	- Adds the content type to the response
-
+- Adds the content type to the response
 <pre>UimCORSFilter</pre>
-	- Adds cross regions to the response
+- Adds cross regions to the response
 	
 
 **Usage**
