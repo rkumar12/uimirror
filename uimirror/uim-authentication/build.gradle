@@ -15,9 +15,9 @@ dependencies {
 	compile project(':uim-core')
 	compile project(':ws-security')
 	compile project(':ws-filters')
-	compile project(':uim-oauth-client')
+	compile project(':uim-core-client')
 	compile project(':uim-sso-core')
-	compile project(':uim-user')
+	compile project(':uim-core-user')
 	
 	compile group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet', version: jerseyVersion
 	compile group: 'org.glassfish.jersey.ext', name: 'jersey-spring3', version: jerseyVersion

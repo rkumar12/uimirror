@@ -5,8 +5,8 @@ apply plugin:'application'
 
 dependencies {
 	compile project(':uim-sso-core')
-	compile project(':uim-oauth-client')
-	compile project(':uim-user')
+	compile project(':uim-core-client')
+	compile project(':uim-core-user')
 }
 
 task sourceJar(type: Jar, dependsOn: classes) {

@@ -45,7 +45,7 @@
 					</matcher>
 					<matcher>
 						<id>org.eclipse.ui.ide.multiFilter</id>
-						<arguments>1.0-projectRelativePath-equals-true-false-uim-oauth-client</arguments>
+						<arguments>1.0-projectRelativePath-equals-true-false-uim-core-client</arguments>
 					</matcher>
 					<matcher>
 						<id>org.eclipse.ui.ide.multiFilter</id>

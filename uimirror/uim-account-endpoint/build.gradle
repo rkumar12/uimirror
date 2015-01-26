@@ -15,7 +15,7 @@ dependencies {
 	//compile project(':uim-core')
 	compile project(':ws-security')
 	compile project(':ws-filters')
-	compile project(':uim-oauth-client')
+	compile project(':uim-core-client')
 	compile project(':uim-sso-core')
 	compile project(':uim-core-user')
 	
