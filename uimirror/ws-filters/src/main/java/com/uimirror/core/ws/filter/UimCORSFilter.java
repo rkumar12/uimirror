@@ -48,24 +48,44 @@ public class UimCORSFilter implements ContainerResponseFilter{
 		LOG.debug("[END]-Putting cross region parameters to response");
 	}
 	
+	/**
+	 * Adds the supported language to the response header
+	 * @param cResponse response object
+	 */
 	public void addContentLanguage(ContainerResponseContext cResponse) {
 		cResponse.getHeaders().putSingle(CONTENT_LANG, "en_US");
 	}
 
+	/**
+	 * Adds access control max age
+	 * @param cResponse response object
+	 */
 	public void addAccessControlMaxAge(ContainerResponseContext cResponse) {
 		cResponse.getHeaders().putSingle(ACCESS_C_M_A, ACCESS_C_MAX_AGE);
 	}
 
 
+	/**
+	 * Adds the access control header parameter for authentications.
+	 * @param cResponse response object
+	 */
 	public void addAccessControlHeader(ContainerResponseContext cResponse) {
 		cResponse.getHeaders().putSingle(ACCESS_C_A_H, CONT_ACC_AUTH_API);
 	}
 
 	
+	/**
+	 * Adds the supporting operations.
+	 * @param cResponse response object
+	 */
 	public void addAccessControlMethod(ContainerResponseContext cResponse) {
 		cResponse.getHeaders().putSingle(ACCESS_C_A_M, GET_POST_DELETE);
 	}
 
+	/**
+	 * Adds the origin control to the response.
+	 * @param cResponse response object
+	 */
 	public void addAccessControlOrigin(ContainerResponseContext cResponse) {
 		cResponse.getHeaders().putSingle(ACCESS_C_A_O, ALL);
 	}

@@ -11,6 +11,12 @@
 ====================
 <pre>PoweredByResponseFilter</pre>.
 	- Adds the uimirror as the provider in the response
+<pre>ContentTypeResponeFilter</pre>
+	- Adds the content type to the response
+
+<pre>UimCORSFilter</pre>
+	- Adds cross regions to the response
+	
 
 **Usage**
 ========

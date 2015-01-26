@@ -15,14 +15,14 @@ import java.io.IOException;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerResponseContext;
 import javax.ws.rs.container.ContainerResponseFilter;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * A response filter that will put the content type By in every call.
+ * A response filter that will put the content type to the response body.
+ * Any module wants to set the diffrent content type can extend this and override the {@link #addContentTypeHeader(ContainerResponseContext)}
+ * 
  * @author Jayaram
  *
  */
@@ -41,15 +41,18 @@ public class ContentTypeResponeFilter implements ContainerResponseFilter {
 	public final void filter(ContainerRequestContext cRequest,
 			ContainerResponseContext cResponse) throws IOException {
 		LOG.info("[START]-Adding the response content type details to send back to the caller");
-		MediaType contentType = cResponse.getMediaType();
-		if (contentType != null){
-			addContentTypeHeader(cResponse.getHeaders(), contentType);
+		if (cResponse.getMediaType() != null){
+			addContentTypeHeader(cResponse);
 			LOG.info("[END]-Adding the response content type details to send back to the caller");
 		}
 	}
 	
-	public void addContentTypeHeader(MultivaluedMap<String, Object> map, MediaType contentType){
-		map.putSingle(CONTENT_TYPE, contentType.toString() + CHAR_SET);
+	/**
+	 * Set the content type and character sets
+	 * @param cResponse where content type will set
+	 */
+	public void addContentTypeHeader(ContainerResponseContext cResponse){
+		cResponse.getHeaders().putSingle(CONTENT_TYPE, cResponse.getMediaType() + CHAR_SET);
 		
 	}
 
