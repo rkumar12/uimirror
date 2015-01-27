@@ -58,6 +58,6 @@ public class SecurityFieldConstants {
 	public static final String _ST_NUM_1 = "1";
 	public static final int NUM_1 = 1;
 	public static final String EMPTY = "";
-	public static final String AUTHORIZATION = "Authorization";
+	
 	public static final String _AUTH_SCHEME = "authScheme";
 }

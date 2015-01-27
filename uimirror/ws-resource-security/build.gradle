@@ -1,7 +1,9 @@
 apply plugin:'application'
 
+
 dependencies {
-	compile project(':uim-core')
+	compile project(':uim-core-client')
+	compile project(':uim-core-user')
 }
 
 task sourceJar(type: Jar, dependsOn: classes) {
@@ -29,5 +31,21 @@ publishing {
 			  }
 		  }
 	  }
+}
+jacoco {
+	applyTo run
+}
+
+task applicationCodeCoverageReport(type:JacocoReport){
+	executionData run
+	sourceSets sourceSets.main
+}
+
+jacocoTestReport {
+	reports {
+		xml.enabled true
+		csv.enabled false
+		html.destination "${buildDir}/coverage"
+	}
 }
 defaultTasks 'clean', 'build', 'intsall', 'publishToMavenLocal'

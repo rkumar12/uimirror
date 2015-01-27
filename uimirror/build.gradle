@@ -25,6 +25,8 @@ subprojects  {
 		aseertjVersion = '1.7.1'
 		equalsQualiferVersion = '1.5'
 		commonLangVersion = '3.3.2'
+		commonsCodecVersion = "1.10"
+		annotationApiVersion = "1.2"
 	}
   
 	group = 'com.uimirror.api'
@@ -47,9 +49,8 @@ subprojects {
 		compile (group: 'ch.qos.logback', name: 'logback-classic', version: qosLogBackVersion){
 			exclude group: 'org.slf4j', module: 'slf4j-api' //by both name and group
 		}
-		compile 'commons-codec:commons-codec:1.5'
-		compile 'commons-lang:commons-lang:2.6'
-		compile 'javax.annotation:javax.annotation-api:1.2'
+		compile group: 'commons-codec', name: 'commons-codec', version: commonsCodecVersion
+		compile group: 'javax.annotation', name: 'javax.annotation-api', version: annotationApiVersion
 		compile (group: 'ch.qos.logback', name: 'logback-core', version: qosLogBackVersion)
 		compile (group: 'org.codehaus.janino', name: 'janino', version: janinoVersion)
 		//Logging End

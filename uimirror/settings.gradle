@@ -4,6 +4,7 @@ include ':ws-resource-auditing'
 include ':uim-authentication'
 include ':uim-core'
 include ':ws-filters'
+include ':ws-resource-security'
 include ':uim-core-client'
 include ':uim-core-user'
 include ':uim-sso-core'
@@ -14,6 +15,7 @@ project(':ws-security').projectDir = "$rootDir/ws-security" as File
 project(':ws-resource-auditing').projectDir = "$rootDir/ws-resource-auditing" as File
 project(':uim-authentication').projectDir = "$rootDir/uim-authentication" as File
 project(':ws-filters').projectDir = "$rootDir/ws-filters" as File
+project(':ws-resource-security').projectDir = "$rootDir/ws-resource-security" as File
 project(':uim-core-client').projectDir = "$rootDir/uim-core-client" as File
 project(':uim-core-user').projectDir = "$rootDir/uim-core-user" as File
 project(':uim-sso-core').projectDir = "$rootDir/uim-sso-core" as File
