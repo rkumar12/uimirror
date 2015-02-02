@@ -10,6 +10,8 @@
  *******************************************************************************/
 package com.uimirror.core.service;
 
+import com.wordnik.swagger.annotations.ApiModelProperty;
+
 /**
  * Validates a bean by choosing if the populated details
  * in the bean are correct or not.
@@ -17,5 +19,6 @@ package com.uimirror.core.service;
  */
 public interface BeanValidatorService {
 
+	@ApiModelProperty(value="valid", hidden=true)
 	boolean isValid();
 }

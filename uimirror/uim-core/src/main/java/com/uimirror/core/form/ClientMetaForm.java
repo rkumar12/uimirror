@@ -17,6 +17,8 @@ import java.io.Serializable;
 
 import javax.ws.rs.HeaderParam;
 
+import com.wordnik.swagger.annotations.ApiModelProperty;
+
 /**
  * Stores the basic information about the client such as 
  * ip and userAgent  
@@ -32,10 +34,12 @@ public class ClientMetaForm implements Serializable, DefaultHeader{
 	@HeaderParam(USER_AGENT)
 	private String userAgent;
 
+	@ApiModelProperty(value="Ip", hidden=true)
 	public String getIp() {
 		return ip;
 	}
 
+	@ApiModelProperty(value="UserAgent", hidden=true)
 	public String getUserAgent() {
 		return userAgent;
 	}

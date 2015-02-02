@@ -25,6 +25,7 @@ import com.uimirror.core.auth.BearerTokenExtractor;
 import com.uimirror.core.auth.Token;
 import com.uimirror.core.rest.extra.IllegalArgumentException;
 import com.uimirror.core.service.BeanValidatorService;
+import com.wordnik.swagger.annotations.ApiModelProperty;
 
 /**
  * Converts the {@link HeaderParam} provided in the request for the
@@ -54,6 +55,7 @@ public class AuthenticatedHeaderForm extends ClientMetaForm implements Serializa
 	 * @see com.uimirror.core.auth.bean.form.AuthenticatedRequestParam#getToken()
 	 */
 	@Override
+	@ApiModelProperty(value="Token", hidden=true)
 	public String getToken() {
 		return new Token(getAccessToken(), tokenEncryptionStartegy).getDecrypted().getToken();
 	}
@@ -80,6 +82,7 @@ public class AuthenticatedHeaderForm extends ClientMetaForm implements Serializa
 	 * @see com.uimirror.core.service.BeanValidatorService#isValid()
 	 */
 	@Override
+	@ApiModelProperty(value="valid", hidden=true)
 	public boolean isValid() {
 		validate();
 		return Boolean.FALSE;
